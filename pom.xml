@@ -4,14 +4,46 @@
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
 
+    <!--  Project Properties  -->
     <groupId>eg.gov.iti.jets</groupId>
     <artifactId>ChatApplicationProject</artifactId>
     <packaging>pom</packaging>
     <version>1.0-SNAPSHOT</version>
+
+    <!--  Project Modules  -->
     <modules>
         <module>Server</module>
         <module>Client</module>
     </modules>
+
+    <!--  Team Members  -->
+    <developers>
+        <developer>
+            <name>Ahmed Aboulroos</name>
+            <email>ahmedaboulroos@gmail.com</email>
+        </developer>
+        <developer>
+            <name>Alaa Albadry</name>
+            <email>albadryalaaa@gmail.com</email>
+        </developer>
+        <developer>
+            <name>Sara Ayman</name>
+            <email>sara.ayman256@gmail.com</email>
+        </developer>
+        <developer>
+            <name>Martina Ihab</name>
+            <email>martina.ihab96@gmail.com</email>
+        </developer>
+        <developer>
+            <name>Ahmed Alnaggar</name>
+            <email>ahmedalnaggar1995@gmail.com</email>
+        </developer>
+        <developer>
+            <name>Nourhan Fadel</name>
+            <email>nourhan.6050@gmail.com</email>
+        </developer>
+
+    </developers>
 
 
 </project>
