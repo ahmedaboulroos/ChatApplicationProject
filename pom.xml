@@ -178,14 +178,6 @@
             <version>11.3.5</version>
         </dependency>
 
-        <dependency>
-            <groupId>com.oracle</groupId>
-            <artifactId>ojdbc</artifactId>
-            <version>6</version>
-            <scope>system</scope>
-            <systemPath>${project.basedir}/lib/ojdbc6.jar</systemPath>
-        </dependency>
-
     </dependencies>
 
 
