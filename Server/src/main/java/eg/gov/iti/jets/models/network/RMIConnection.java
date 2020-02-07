@@ -10,29 +10,29 @@ public class RMIConnection {
     private static RMIConnection instance;
     private Registry registry;
 
-    private RMIConnection() {
-        initConnection();
-    }
+    private RMIConnection() { }
 
     public boolean initConnection() {
-        try {
-            this.registry = LocateRegistry.createRegistry(1234);
-            // TODO:  rebind services here
-            return true;
-        } catch (RemoteException e) {
-            e.printStackTrace();
-        }
+//        try {
+//            this.registry = LocateRegistry.createRegistry(5050);
+//            // TODO:  rebind services here
+//
+//            System.out.println(">> RMI-Registry Connection Established...");
+//            return true;
+//        } catch (RemoteException e) {
+//            e.printStackTrace();
+//        }
         return false;
     }
 
     public void stopConnection() {
-        try {
-            for (String service : this.registry.list()) {
-                this.registry.unbind(service);
-            }
-        } catch (RemoteException | NotBoundException e) {
-            e.printStackTrace();
-        }
+//        try {
+//            for (String service : this.registry.list()) {
+//                this.registry.unbind(service);
+//            }
+//        } catch (RemoteException | NotBoundException e) {
+//            e.printStackTrace();
+//        }
     }
 
     public static synchronized RMIConnection getInstance() {

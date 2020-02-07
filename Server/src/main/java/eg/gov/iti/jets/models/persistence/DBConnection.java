@@ -9,14 +9,13 @@ public class DBConnection {
     private static DBConnection instance;
     private static Connection connection;
 
-    private DBConnection() {
-        initConnection();
-    }
+    private DBConnection() { }
 
     public boolean initConnection() {
         try {
             Class.forName("oracle.jdbc.driver.OracleDriver");
             connection = DriverManager.getConnection("jdbc:oracle:thin:@localhost:1521:xe","CHATAPP","CHATAPP");
+            System.out.println(">> Database Connection Established...");
             return true;
         } catch (SQLException | ClassNotFoundException e) {
             e.printStackTrace();
@@ -27,6 +26,7 @@ public class DBConnection {
     public void stopConnection() {
         try {
             connection.close();
+            System.out.println(">> Database Connection Terminated...");
         } catch (SQLException e) {
             e.printStackTrace();
         }
