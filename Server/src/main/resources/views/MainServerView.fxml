@@ -4,14 +4,17 @@
 <?import javafx.geometry.Insets?>
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.control.Separator?>
+<?import javafx.scene.control.Tab?>
+<?import javafx.scene.control.TabPane?>
 <?import javafx.scene.layout.BorderPane?>
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.Region?>
 <?import javafx.scene.layout.VBox?>
+<?import javafx.scene.shape.Circle?>
 <?import javafx.scene.text.Font?>
 <?import org.kordamp.ikonli.javafx.FontIcon?>
 
-<BorderPane prefHeight="600.0" prefWidth="900.0" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="eg.gov.iti.jets.views.MainServerViewController">
+<BorderPane prefHeight="600.0" prefWidth="900.0" stylesheets="@../styles/MainServerStyles.css" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="eg.gov.iti.jets.views.MainServerViewController">
    <left>
       <HBox prefWidth="250.0" BorderPane.alignment="CENTER">
          <children>
@@ -25,44 +28,45 @@
                                     <Font name="Ebrima" size="19.0" />
                                 </font>
                             </Label>
-                  <VBox spacing="5.0">
+                  <VBox spacing="10.0">
                      <children>
-                        <JFXButton alignment="TOP_LEFT" prefWidth="250.0" text="   Dashboard" textFill="#145374">
+                        <JFXButton fx:id="dashboardBtn" alignment="TOP_LEFT" onAction="#handleDashboardBtnClick" prefWidth="250.0" ripplerFill="#2f98e4" styleClass="menuBtn" text="   Dashboard" textFill="#145374">
                            <font>
                               <Font name="Calibri Light" size="15.0" />
                            </font>
                            <graphic>
                                     <FontIcon iconColor="#7c8184" iconLiteral="fa-dashboard" iconSize="24" />
                            </graphic>
+                           <padding>
+                              <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
+                           </padding>
                         </JFXButton>
-                        <JFXButton alignment="TOP_LEFT" layoutX="10.0" layoutY="50.0" prefWidth="250.0" text="  Register User" textFill="#145374">
-                           <font>
-                              <Font name="Calibri Light" size="15.0" />
-                           </font>
-                           <graphic>
-                              <FontIcon iconColor="#7c8184" iconLiteral="fa-user-plus" iconSize="24" />
-                           </graphic>
-                        </JFXButton>
-                        <JFXButton alignment="TOP_LEFT" prefWidth="250.0" text="   System Users" textFill="#145374">
+                        <JFXButton fx:id="usersBtn" alignment="TOP_LEFT" onAction="#handleUsersBtnClick" prefWidth="250.0" ripplerFill="#2f98e4" styleClass="menuBtn" text="   System Users" textFill="#145374">
                            <font>
                               <Font name="Calibri Light" size="15.0" />
                            </font>
                            <graphic>
                               <FontIcon iconColor="#7c8184" iconLiteral="fa-users" iconSize="24" />
                            </graphic>
+                           <padding>
+                              <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
+                           </padding>
                         </JFXButton>
-                        <JFXButton alignment="TOP_LEFT" prefWidth="250.0" text="   Announcements" textFill="#145374">
+                        <JFXButton fx:id="announcementsBtn" alignment="TOP_LEFT" onAction="#handleAnnouncementsBtnClick" prefWidth="250.0" ripplerFill="#2f98e4" styleClass="menuBtn" text="   Announcements" textFill="#145374">
                            <font>
                               <Font name="Calibri Light" size="15.0" />
                            </font>
                            <graphic>
                               <FontIcon iconColor="#7c8184" iconLiteral="fa-bell-o" iconSize="24" />
                            </graphic>
+                           <padding>
+                              <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
+                           </padding>
                         </JFXButton>
                      </children>
                   </VBox>
                   <Region VBox.vgrow="ALWAYS" />
-                  <JFXButton prefWidth="200.0" ripplerFill="WHITE" style="-fx-background-color: #00A2D3;" text="Development Team" textFill="WHITE">
+                  <JFXButton fx:id="serverStatusBtn" cancelButton="true" contentDisplay="RIGHT" defaultButton="true" graphicTextGap="0.0" onAction="#handleServiceBtnClick" prefWidth="200.0" ripplerFill="BLACK" styleClass="serverStatusBtn" text="Service Running          " textFill="WHITE">
                      <font>
                         <Font name="Microsoft New Tai Lue" size="15.0" />
                      </font>
@@ -72,6 +76,9 @@
                      <padding>
                         <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
                      </padding>
+                     <graphic>
+                        <Circle fx:id="serverStatusCircle" fill="LIGHTGREEN" radius="7.0" stroke="BLACK" strokeType="INSIDE" />
+                     </graphic>
                   </JFXButton>
                </children>
             </VBox>
@@ -84,14 +91,14 @@
       </HBox>
    </left>
    <bottom>
-      <Region prefHeight="10.0" prefWidth="200.0" style="-fx-background-color: #00334e;" BorderPane.alignment="CENTER" />
+      <Region prefHeight="5.0" prefWidth="200.0" style="-fx-background-color: #00A2D3;" BorderPane.alignment="CENTER" />
    </bottom>
    <center>
         <VBox maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" spacing="5.0" BorderPane.alignment="CENTER">
             <children>
             <HBox alignment="CENTER_LEFT" prefHeight="70.0">
                <children>
-                        <Label text="Dashboard" textFill="#7c8184">
+                        <Label fx:id="title" text="Chat Application Service" textFill="#7c8184">
                             <font>
                                 <Font size="18.0" />
                             </font>
@@ -105,56 +112,15 @@
                   <Insets bottom="15.0" left="15.0" right="15.0" top="15.0" />
                </padding>
             </HBox>
+            <TabPane fx:id="tabPane" prefHeight="200.0" prefWidth="200.0" tabClosingPolicy="UNAVAILABLE" VBox.vgrow="ALWAYS">
+              <tabs>
+                  <Tab fx:id="welcomeTab" closable="false" text="Welcome" />
+                <Tab fx:id="dashboardTab" closable="false" text="Dashboard" />
+                <Tab fx:id="usersTab" closable="false" text="System Users" />
+                  <Tab fx:id="announcementsTab" closable="false" text="Announcements" />
+              </tabs>
+            </TabPane>
             </children>
         </VBox>
    </center>
-   <top>
-      <HBox alignment="CENTER" prefHeight="30.0" style="-fx-background-color: #145374;" BorderPane.alignment="CENTER">
-         <children>
-            <FontIcon iconColor="#e8e8e8" iconLiteral="fa-whatsapp" iconSize="20">
-               <HBox.margin>
-                  <Insets left="5.0" />
-               </HBox.margin>
-            </FontIcon>
-            <Region prefHeight="200.0" prefWidth="200.0" HBox.hgrow="ALWAYS" />
-            <Label text="Chat Application Server Panel" textFill="#e8e8e8">
-               <font>
-                  <Font name="Microsoft New Tai Lue" size="14.0" />
-               </font>
-            </Label>
-            <Region layoutX="30.0" layoutY="10.0" prefHeight="200.0" prefWidth="200.0" HBox.hgrow="ALWAYS" />
-            <HBox alignment="CENTER" spacing="3.0">
-               <children>
-                  <JFXButton graphicTextGap="0.0" onAction="#minimizeWindow" prefHeight="30.0" prefWidth="30.0" ripplerFill="WHITE" text=" ">
-                     <graphic>
-                        <FontIcon iconColor="#e8e8e8" iconLiteral="fa-window-minimize" iconSize="14" />
-                     </graphic>
-                     <font>
-                        <Font size="1.0" />
-                     </font>
-                  </JFXButton>
-                  <JFXButton graphicTextGap="0.0" layoutX="10.0" layoutY="10.0" onAction="#maximizeWindow" prefHeight="30.0" prefWidth="30.0" ripplerFill="WHITE" text=" ">
-                     <graphic>
-                        <FontIcon iconColor="#e8e8e8" iconLiteral="far-window-maximize" iconSize="15" />
-                     </graphic>
-                     <font>
-                        <Font size="1.0" />
-                     </font>
-                  </JFXButton>
-                  <JFXButton graphicTextGap="0.0" layoutX="62.0" layoutY="10.0" onAction="#closeWindow" prefHeight="30.0" prefWidth="30.0" ripplerFill="WHITE" text=" ">
-                     <graphic>
-                        <FontIcon iconColor="#e8e8e8" iconLiteral="far-window-close" iconSize="20" />
-                     </graphic>
-                     <font>
-                        <Font size="1.0" />
-                     </font>
-                  </JFXButton>
-               </children>
-               <HBox.margin>
-                  <Insets />
-               </HBox.margin>
-            </HBox>
-         </children>
-      </HBox>
-   </top>
 </BorderPane>
