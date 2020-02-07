@@ -3,7 +3,7 @@ module Server {
     requires java.sql;
     requires java.rmi;
 
-    requires ojdbc6;
+    requires ojdbc;
 
     requires javafx.base;
     requires javafx.controls;
