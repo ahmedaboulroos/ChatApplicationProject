@@ -4,20 +4,20 @@
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
 
-    <!--  Project Properties  -->
+    <!-- Project Properties -->
     <groupId>eg.gov.iti.jets</groupId>
     <artifactId>ChatApplicationProject</artifactId>
     <packaging>pom</packaging>
     <version>1.0-SNAPSHOT</version>
     <name>Chat Application</name>
 
-    <!--  Project Modules  -->
+    <!-- Project Modules -->
     <modules>
         <module>Server</module>
         <module>Client</module>
     </modules>
 
-    <!--  Team Members  -->
+    <!-- Team Members -->
     <developers>
         <developer>
             <name>Ahmed Aboulroos</name>
@@ -46,6 +46,12 @@
 
     </developers>
 
+    <!-- Project Properties -->
+    <properties>
+        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+        <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
+    </properties>
+
     <!-- Configure Maven Plugins -->
     <build>
         <plugins>
@@ -63,7 +69,7 @@
         </plugins>
     </build>
 
-    <!--  Project Dependencies  -->
+    <!-- Project Dependencies -->
     <dependencies>
         <dependency>
             <groupId>org.openjfx</groupId>
@@ -156,6 +162,5 @@
         </dependency>
 
     </dependencies>
-
 
 </project>
