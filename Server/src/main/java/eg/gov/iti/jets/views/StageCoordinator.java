@@ -14,10 +14,8 @@ public class StageCoordinator {
     boolean dbConnectionStarted;
     boolean rmiConnectionStarted;
 
-    public StageCoordinator(Stage stage, boolean dbConnectionStarted, boolean rmiConnectionStarted) {
+    public StageCoordinator(Stage stage) {
         this.stage = stage;
-        this.dbConnectionStarted = dbConnectionStarted;
-        this.rmiConnectionStarted = rmiConnectionStarted;
     }
 
     public void startMainServerScene() throws IOException {
@@ -30,7 +28,7 @@ public class StageCoordinator {
         stage.show();
     }
 
-    public void startServerLoginScene() {
+    public void startServerLoginScene(boolean dbConnStarted, boolean rmiConnStarted) {
 
     }
 
