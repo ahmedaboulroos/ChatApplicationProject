@@ -14,7 +14,7 @@ public class RMIConnection {
 
     public boolean initConnection() {
 //        try {
-//            this.registry = LocateRegistry.createRegistry(5050);
+//            this.registry = LocateRegistry.createRegistry(1995);
 //            // TODO:  rebind services here
 //
 //            System.out.println(">> RMI-Registry Connection Established...");
