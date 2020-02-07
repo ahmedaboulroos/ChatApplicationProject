@@ -25,16 +25,14 @@ public class RMIConnection {
         return false;
     }
 
-    public boolean stopConnection() {
+    public void stopConnection() {
         try {
             for (String service : this.registry.list()) {
                 this.registry.unbind(service);
             }
-            return true;
         } catch (RemoteException | NotBoundException e) {
             e.printStackTrace();
         }
-        return false;
     }
 
     public static synchronized RMIConnection getInstance() {
