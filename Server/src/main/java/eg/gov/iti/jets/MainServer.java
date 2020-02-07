@@ -1,33 +1,36 @@
 package eg.gov.iti.jets;
 
+import eg.gov.iti.jets.models.network.RMIConnection;
+import eg.gov.iti.jets.models.persistence.DBConnection;
+import eg.gov.iti.jets.views.StageCoordinator;
 import javafx.application.Application;
 import javafx.stage.Stage;
 
 public class MainServer extends Application {
 
+    private boolean rmiConnStarted = false;
+    private boolean dbConnStarted = false;
+
     public static void main(String[] args) {
-        System.out.println("Server main...");
         launch(args);
     }
 
     @Override
     public void init() throws Exception {
-        System.out.println("Server init...");
+        this.dbConnStarted = DBConnection.getInstance().initConnection();
+        this.rmiConnStarted = RMIConnection.getInstance().initConnection();
     }
 
     @Override
-    public void start(Stage stage) throws Exception {
-        System.out.println("Server start...");
-
-
-        stage.setTitle("Server Application");
-        stage.show();
+    public void start(Stage primaryStage) throws Exception {
+        StageCoordinator coordinator = new StageCoordinator(primaryStage, dbConnStarted, rmiConnStarted);
+        coordinator.startMainServerScene();
     }
 
     @Override
     public void stop() throws Exception {
-        System.out.println("Server stop...");
-
+        RMIConnection.getInstance().stopConnection();
+        DBConnection.getInstance().stopConnection();
     }
 
 }
