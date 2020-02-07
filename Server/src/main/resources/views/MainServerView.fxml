@@ -27,7 +27,7 @@
                             </Label>
                   <VBox spacing="5.0">
                      <children>
-                        <JFXButton prefWidth="250.0" text="   Dashboard" textFill="#145374">
+                        <JFXButton alignment="TOP_LEFT" prefWidth="250.0" text="   Dashboard" textFill="#145374">
                            <font>
                               <Font name="Calibri Light" size="15.0" />
                            </font>
@@ -35,7 +35,7 @@
                                     <FontIcon iconColor="#7c8184" iconLiteral="fa-dashboard" iconSize="24" />
                            </graphic>
                         </JFXButton>
-                        <JFXButton layoutX="10.0" layoutY="50.0" prefWidth="250.0" text="  Register User" textFill="#145374">
+                        <JFXButton alignment="TOP_LEFT" layoutX="10.0" layoutY="50.0" prefWidth="250.0" text="  Register User" textFill="#145374">
                            <font>
                               <Font name="Calibri Light" size="15.0" />
                            </font>
@@ -43,7 +43,7 @@
                               <FontIcon iconColor="#7c8184" iconLiteral="fa-user-plus" iconSize="24" />
                            </graphic>
                         </JFXButton>
-                        <JFXButton prefWidth="250.0" text="   System Users" textFill="#145374">
+                        <JFXButton alignment="TOP_LEFT" prefWidth="250.0" text="   System Users" textFill="#145374">
                            <font>
                               <Font name="Calibri Light" size="15.0" />
                            </font>
@@ -51,7 +51,7 @@
                               <FontIcon iconColor="#7c8184" iconLiteral="fa-users" iconSize="24" />
                            </graphic>
                         </JFXButton>
-                        <JFXButton prefWidth="250.0" text="   Announcements" textFill="#145374">
+                        <JFXButton alignment="TOP_LEFT" prefWidth="250.0" text="   Announcements" textFill="#145374">
                            <font>
                               <Font name="Calibri Light" size="15.0" />
                            </font>
