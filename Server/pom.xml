@@ -53,9 +53,10 @@
             <groupId>com.oracle</groupId>
             <artifactId>ojdbc</artifactId>
             <version>6</version>
-            <scope>system</scope>
-            <systemPath>${project.basedir}/lib/ojdbc6.jar</systemPath>
         </dependency>
+
+        <!-- to install oracle jdbc driver to your local repository (.m2 directory) type the following command -->
+        <!-- mvn install:install-file -Dfile=ojdbc6.jar -DgroupId=com.oracle -DartifactId=ojdbc -Dversion=6 -Dpackaging=jar -->
 
     </dependencies>
 
