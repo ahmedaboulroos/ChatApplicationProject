@@ -23,8 +23,7 @@ public class StageCoordinator {
         Parent mainServerView = fxmlLoader.load();
         MainServerViewController mainServerViewController = fxmlLoader.getController();
         stage.setScene(new Scene(mainServerView));
-        stage.setTitle("Server Application");
-        stage.initStyle(StageStyle.UNDECORATED);
+        stage.setTitle("Chat Application Server - Admin Panel");
         stage.show();
     }
 
