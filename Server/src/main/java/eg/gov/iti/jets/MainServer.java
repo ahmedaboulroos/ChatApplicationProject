@@ -23,7 +23,7 @@ public class MainServer extends Application {
 
     @Override
     public void start(Stage primaryStage) throws Exception {
-        StageCoordinator coordinator = new StageCoordinator(primaryStage, dbConnStarted, rmiConnStarted);
+        StageCoordinator coordinator = new StageCoordinator(primaryStage);
         coordinator.startMainServerScene();
     }
 
