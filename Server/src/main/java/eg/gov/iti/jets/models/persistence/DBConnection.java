@@ -24,14 +24,12 @@ public class DBConnection {
         return false;
     }
 
-    public boolean stopConnection() {
+    public void stopConnection() {
         try {
             connection.close();
-            return true;
         } catch (SQLException e) {
             e.printStackTrace();
         }
-        return false;
     }
 
     public Connection getConnection() {
