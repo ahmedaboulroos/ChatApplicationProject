@@ -1,0 +1,20 @@
+.tab-pane {
+    -fx-tab-max-height: 0 ;
+}
+.tab-pane .tab-header-area {
+    visibility: hidden ;
+}
+
+.menuBtn {
+    -fx-border-radius: 0;
+    -fx-background-radius: 0;
+}
+
+.menuBtn:hover {
+    -fx-background-color: #EEEEEE;
+}
+
+.serverStatusBtn {
+    -fx-background-color:  #00A2D3;
+}
+
