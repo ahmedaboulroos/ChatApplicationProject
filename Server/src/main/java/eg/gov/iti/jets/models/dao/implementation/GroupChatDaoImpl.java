@@ -25,11 +25,11 @@ public class GroupChatDaoImpl implements GroupChatDao {
 
     Connection connection = DBConnection.getInstance().getConnection();
 
-    public static void main(String[] args) {
-        GroupChatDaoImpl croupChat = new GroupChatDaoImpl();
-        GroupChat g = new GroupChat();
-        croupChat.createGroupChat();
-    }
+//    public static void main(String[] args) {
+//        GroupChatDaoImpl croupChat = new GroupChatDaoImpl();
+//        GroupChat g = new GroupChat();
+//        croupChat.createGroupChat();
+//    }
 
     @Override
     public boolean createGroupChat(GroupChat groupChat) {
@@ -39,14 +39,14 @@ public class GroupChatDaoImpl implements GroupChatDao {
             String sql = "INSERT INTO group_chat (group_chat_id, title, description,group_image,creation_time_stamp) VALUES (1,?,?,?,?)";
 
             PreparedStatement stmt = connection.prepareStatement(sql);
-            stmt.setString(2, groupChat.getTitle());
-            stmt.setString(3, groupChat.getDescription());
+            stmt.setString(1, groupChat.getTitle());
+            stmt.setString(2, groupChat.getDescription());
             ByteArrayOutputStream os = new ByteArrayOutputStream();
             BufferedImage bImage = SwingFXUtils.fromFXImage(groupChat.getGroupImage(), null);
             ImageIO.write(bImage, "png", os);
             InputStream fis = new ByteArrayInputStream(os.toByteArray());
-            stmt.setBlob(4, fis);
-            stmt.setTimestamp(5, Timestamp.valueOf(groupChat.getCreationTimestamp()));
+            stmt.setBlob(3, fis);
+            stmt.setTimestamp(4, Timestamp.valueOf(groupChat.getCreationTimestamp()));
             if (stmt.execute()) {
                 b = true;
             }
