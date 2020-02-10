@@ -3,31 +3,31 @@ package eg.gov.iti.jets.models.entities;
 import java.time.LocalDateTime;
 
 public class GroupChatMessage {
-    private int groupMessageId;
+    private int groupChatMessageId;
     private int userId;
     private String content;
-    private LocalDateTime timestamp;
+    private LocalDateTime messageTimestamp;
 
     public GroupChatMessage(int userId, String content) {
         this.userId = userId;
         this.content = content;
-        this.timestamp = LocalDateTime.now();
+        this.messageTimestamp = LocalDateTime.now();
     }
 
     // constructor for populating data from database
-    public GroupChatMessage(int groupMessageId, int userId, String content, LocalDateTime timestamp) {
-        this.groupMessageId = groupMessageId;
+    public GroupChatMessage(int groupChatMessageId, int userId, String content, LocalDateTime messageTimestamp) {
+        this.groupChatMessageId = groupChatMessageId;
         this.userId = userId;
         this.content = content;
-        this.timestamp = timestamp;
+        this.messageTimestamp = messageTimestamp;
     }
 
-    public int getGroupMessageId() {
-        return groupMessageId;
+    public int getGroupChatMessageId() {
+        return groupChatMessageId;
     }
 
-    public void setGroupMessageId(int groupMessageId) {
-        this.groupMessageId = groupMessageId;
+    public void setGroupChatMessageId(int groupChatMessageId) {
+        this.groupChatMessageId = groupChatMessageId;
     }
 
     public int getUserId() {
@@ -46,11 +46,11 @@ public class GroupChatMessage {
         this.content = content;
     }
 
-    public LocalDateTime getTimestamp() {
-        return timestamp;
+    public LocalDateTime getMessageTimestamp() {
+        return messageTimestamp;
     }
 
-    public void setTimestamp(LocalDateTime timestamp) {
-        this.timestamp = timestamp;
+    public void setMessageTimestamp(LocalDateTime messageTimestamp) {
+        this.messageTimestamp = messageTimestamp;
     }
 }

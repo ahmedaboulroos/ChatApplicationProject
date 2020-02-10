@@ -3,7 +3,7 @@ package eg.gov.iti.jets.models.entities;
 import java.time.LocalDateTime;
 
 public class Membership {
-    private int groupChatUserId;
+    private int membershipId;
     private int userId;
     private int groupChatId;
     private LocalDateTime joinedTimestamp;
@@ -15,19 +15,19 @@ public class Membership {
     }
 
     // constructor for populating data from database
-    public Membership(int groupChatUserId, int userId, int groupChatId, LocalDateTime joinedTimestamp) {
-        this.groupChatUserId = groupChatUserId;
+    public Membership(int membershipId, int userId, int groupChatId, LocalDateTime joinedTimestamp) {
+        this.membershipId = membershipId;
         this.userId = userId;
         this.groupChatId = groupChatId;
         this.joinedTimestamp = joinedTimestamp;
     }
 
-    public int getGroupChatUserId() {
-        return groupChatUserId;
+    public int getMembershipId() {
+        return membershipId;
     }
 
-    public void setGroupChatUserId(int groupChatUserId) {
-        this.groupChatUserId = groupChatUserId;
+    public void setMembershipId(int membershipId) {
+        this.membershipId = membershipId;
     }
 
     public int getUserId() {

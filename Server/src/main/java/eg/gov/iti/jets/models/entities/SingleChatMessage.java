@@ -3,31 +3,31 @@ package eg.gov.iti.jets.models.entities;
 import java.time.LocalDateTime;
 
 public class SingleChatMessage {
-    private int singleMessageId;
+    private int singleChatMessageId;
     private int userId;
     private String content;
-    private LocalDateTime timestamp;
+    private LocalDateTime messageTimestamp;
 
     public SingleChatMessage(int userId, String content) {
         this.userId = userId;
         this.content = content;
-        this.timestamp = LocalDateTime.now();
+        this.messageTimestamp = LocalDateTime.now();
     }
 
     // constructor for populating data from database
-    public SingleChatMessage(int singleMessageId, int userId, String content, LocalDateTime timestamp) {
-        this.singleMessageId = singleMessageId;
+    public SingleChatMessage(int singleChatMessageId, int userId, String content, LocalDateTime messageTimestamp) {
+        this.singleChatMessageId = singleChatMessageId;
         this.userId = userId;
         this.content = content;
-        this.timestamp = timestamp;
+        this.messageTimestamp = messageTimestamp;
     }
 
-    public int getSingleMessageId() {
-        return singleMessageId;
+    public int getSingleChatMessageId() {
+        return singleChatMessageId;
     }
 
-    public void setSingleMessageId(int singleMessageId) {
-        this.singleMessageId = singleMessageId;
+    public void setSingleChatMessageId(int singleChatMessageId) {
+        this.singleChatMessageId = singleChatMessageId;
     }
 
     public int getUserId() {
@@ -46,11 +46,11 @@ public class SingleChatMessage {
         this.content = content;
     }
 
-    public LocalDateTime getTimestamp() {
-        return timestamp;
+    public LocalDateTime getMessageTimestamp() {
+        return messageTimestamp;
     }
 
-    public void setTimestamp(LocalDateTime timestamp) {
-        this.timestamp = timestamp;
+    public void setMessageTimestamp(LocalDateTime messageTimestamp) {
+        this.messageTimestamp = messageTimestamp;
     }
 }
