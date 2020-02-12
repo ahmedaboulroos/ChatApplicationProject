@@ -12,7 +12,10 @@ import javafx.scene.image.Image;
 
 import javax.imageio.ImageIO;
 import java.awt.image.BufferedImage;
-import java.io.*;
+import java.io.ByteArrayInputStream;
+import java.io.ByteArrayOutputStream;
+import java.io.IOException;
+import java.io.InputStream;
 import java.sql.*;
 import java.time.LocalDateTime;
 import java.util.List;
@@ -21,19 +24,22 @@ public class GroupChatDaoImpl implements GroupChatDao {
 
     public static void main(String[] args) {
         DBConnection.getInstance().initConnection();
-
-        GroupChatDaoImpl groupChat = new GroupChatDaoImpl();
-        Image img = null;
-        try {
-            img = new Image(new FileInputStream("hh.png"));
-        } catch (FileNotFoundException e) {
-            e.printStackTrace();
-        }
-        LocalDateTime timestamp = LocalDateTime.now();
-        GroupChat g = new GroupChat(0, "alaa", "alaa", img);
-
-        boolean b = groupChat.createGroupChat(g);
-        System.out.println(b);
+        GroupChatDaoImpl groupChatImpl = new GroupChatDaoImpl();
+        GroupChat g;
+//        Image img = null;
+//        try {
+//            img = new Image(new FileInputStream("hh.png"));
+//        } catch (FileNotFoundException e) {
+//            e.printStackTrace();
+//        }
+//        LocalDateTime timestamp = LocalDateTime.now();
+//        GroupChat g = new GroupChat(0, "alaa", "alaa", img);
+//        boolean b = groupChatImpl.createGroupChat(g);
+//        System.out.println(b);
+        g = groupChatImpl.getGroupChat(1);
+        System.out.println("id " + g.getGroupChatId()
+                + ":: title " + g.getTitle() + ":: desc "
+                + g.getDescription() + ":: image " + g.getGroupImage() + ":: time " + g.getCreationTimestamp());
     }
 
     @Override
@@ -64,13 +70,19 @@ public class GroupChatDaoImpl implements GroupChatDao {
     @Override
     public GroupChat getGroupChat(int groupChatId) {
         Connection connection = DBConnection.getInstance().getConnection();
-        ResultSet rs = null;
-        int id;
-        String tilte, description;
+        ResultSet rs;
+        int id = 0;
+        String tilte = null;
+        String description = null;
         Image group_image;
         LocalDateTime creation_time_stamp;
+        Timestamp timestamp = null;
+        InputStream in;
+        Blob blob = null;
+        BufferedImage imagen;
+        GroupChat groupChat = null;
         try {
-            String sql = "select group_chat_id,title,description,group_image,creation_time_stamp from group_chat where group_chat_id=?";
+            String sql = "select group_chat_id, title, description, group_image, creation_timestamp from group_chat where group_chat_id=?";
             PreparedStatement stmt = connection.prepareStatement(sql);
             stmt.setInt(1, groupChatId);
             rs = stmt.executeQuery();
@@ -78,17 +90,22 @@ public class GroupChatDaoImpl implements GroupChatDao {
                 id = rs.getInt("group_chat_id");
                 tilte = rs.getString("title");
                 description = rs.getString("description");
-                // Image imagenMonstruo = SwingFXUtils.toFXImage(rs.getBlob("group_image"), null );
-                // group_image=rs.getBlob("group_image");
-                //creation_time_stamp=rs.getTimestamp("creation_time_stamp");
+                blob = rs.getBlob("group_image");
+                timestamp = rs.getTimestamp("creation_timestamp");
             }
-            //new GroupChat()
+            in = blob.getBinaryStream();
+            imagen = ImageIO.read(in);
+            group_image = SwingFXUtils.toFXImage(imagen, null);
+            creation_time_stamp = timestamp.toLocalDateTime();
+            groupChat = new GroupChat(id, tilte, description, group_image, creation_time_stamp);
+
         } catch (SQLException e) {
             e.printStackTrace();
+
+        } catch (IOException e) {
+            e.printStackTrace();
         }
-
-
-        return null;
+        return groupChat;
     }
 
     @Override
