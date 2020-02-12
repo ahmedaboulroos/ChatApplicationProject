@@ -7,22 +7,17 @@ import javafx.fxml.Initializable;
 import javafx.scene.control.ListCell;
 import javafx.scene.control.ListView;
 import javafx.scene.image.Image;
-import javafx.scene.image.ImageView;
-import javafx.scene.layout.HBox;
 import javafx.scene.paint.ImagePattern;
 import javafx.scene.shape.Circle;
 import javafx.util.Callback;
-
-import java.io.FileInputStream;
-import java.io.FileNotFoundException;
-import java.io.FileOutputStream;
+import com.jfoenix.controls.JFXListView;
 import java.net.URL;
 import java.util.Arrays;
 import java.util.ResourceBundle;
 
 public class ChatViewController implements Initializable {
     @FXML
-    ListView<String> listView;
+    JFXListView<String> listView;
     @FXML
     Circle chatPictureCircle;
 
@@ -38,10 +33,10 @@ public class ChatViewController implements Initializable {
                         if (empty) {
                             setText(null);
                             setGraphic(null);
-                        } else{
+                        } else {
                             Circle userChatImage = new Circle();
                             userChatImage.setRadius(30);
-                            userChatImage.setFill(new ImagePattern(new Image(getClass().getResourceAsStream("2.jpg"))));
+                            userChatImage.setFill(new ImagePattern(new Image(getClass().getResourceAsStream("/images/2.jpg"))));
                             setText(string);
                             setGraphic(userChatImage);
                         }
@@ -49,9 +44,8 @@ public class ChatViewController implements Initializable {
                 };
             }
         });
-        ObservableList<String> list = FXCollections.observableList(Arrays.asList("Hey","Hello","I'm Tuna! ;)"));
+        ObservableList<String> list = FXCollections.observableList(Arrays.asList("Hey", "Hello", "I'm Tuna! ;)"));
         listView.setItems(list);
-        chatPictureCircle.setFill(new ImagePattern(new Image(getClass().getResourceAsStream("2.jpg"))));
-
+        chatPictureCircle.setFill(new ImagePattern(new Image(getClass().getResourceAsStream("/images/2.jpg"))));
     }
 }
