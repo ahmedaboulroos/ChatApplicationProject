@@ -1,4 +1,4 @@
-package eg.gov.iti.jets.models.dao.implementation;
+package eg.gov.iti.jets.models.dao.implementations;
 
 import eg.gov.iti.jets.models.dao.interfaces.SingleChatMessageDao;
 import eg.gov.iti.jets.models.entities.SingleChatMessage;
