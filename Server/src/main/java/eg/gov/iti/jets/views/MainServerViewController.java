@@ -1,7 +1,7 @@
 package eg.gov.iti.jets.views;
 
 import com.jfoenix.controls.JFXButton;
-import javafx.application.Platform;
+import com.jfoenix.controls.JFXTextField;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -11,7 +11,6 @@ import javafx.scene.control.Label;
 import javafx.scene.control.Tab;
 import javafx.scene.control.TabPane;
 import javafx.scene.paint.Color;
-import javafx.scene.paint.Paint;
 import javafx.scene.shape.Circle;
 
 import java.io.IOException;
@@ -53,6 +52,12 @@ public class MainServerViewController implements Initializable {
     @FXML
     private Circle serverStatusCircle;
 
+    @FXML
+    private JFXTextField internetAddressTf;
+
+    @FXML
+    private JFXTextField portNumberTf;
+
     private boolean serviceRunning = true;
 
     @Override
@@ -60,10 +65,10 @@ public class MainServerViewController implements Initializable {
         try {
             Parent welcomeScene = FXMLLoader.load(getClass().getResource("/views/WelcomeView.fxml"));
             welcomeTab.setContent(welcomeScene);
+            stopService();
         } catch (IOException e) {
             e.printStackTrace();
         }
-        tabPane.getSelectionModel().select(welcomeTab);
     }
 
     @FXML
@@ -89,24 +94,35 @@ public class MainServerViewController implements Initializable {
 
     @FXML
     void handleServiceBtnClick(ActionEvent event) {
-
         if (serviceRunning) {
-            tabPane.getSelectionModel().select(welcomeTab);
-            title.setText("Chat Application Service");
-            serverStatusBtn.setText("Service Stopped          ");
-            serverStatusCircle.setFill(Color.PINK);
-            dashboardBtn.setDisable(true);
-            usersBtn.setDisable(true);
-            announcementsBtn.setDisable(true);
-            serviceRunning = false;
+            stopService();
         } else {
-            serverStatusBtn.setText("Service Running          ");
-            serverStatusCircle.setFill(Color.LIGHTGREEN);
-            dashboardBtn.setDisable(false);
-            usersBtn.setDisable(false);
-            announcementsBtn.setDisable(false);
-            serviceRunning = true;
+            startService();
         }
+    }
+
+    private void startService() {
+        serverStatusBtn.setText("Service Running          ");
+        serverStatusCircle.setFill(Color.LIGHTGREEN);
+        dashboardBtn.setDisable(false);
+        usersBtn.setDisable(false);
+        announcementsBtn.setDisable(false);
+        internetAddressTf.setDisable(true);
+        portNumberTf.setDisable(true);
+        serviceRunning = true;
+    }
+
+    private void stopService() {
+        tabPane.getSelectionModel().select(welcomeTab);
+        title.setText("Chat Application Service");
+        serverStatusBtn.setText("Service Stopped          ");
+        serverStatusCircle.setFill(Color.PINK);
+        dashboardBtn.setDisable(true);
+        usersBtn.setDisable(true);
+        announcementsBtn.setDisable(true);
+        internetAddressTf.setDisable(false);
+        portNumberTf.setDisable(false);
+        serviceRunning = false;
     }
 
     public void setController() {
