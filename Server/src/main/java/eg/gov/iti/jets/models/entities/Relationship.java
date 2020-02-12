@@ -2,7 +2,9 @@ package eg.gov.iti.jets.models.entities;
 
 import eg.gov.iti.jets.models.entities.enums.RelationshipStatus;
 
-public class Relationship {
+import java.io.Serializable;
+
+public class Relationship implements Serializable {
     private int relationshipId;
     private int firstUserId;
     private int secondUserId;

@@ -1,6 +1,8 @@
 package eg.gov.iti.jets.models.entities;
 
-public class SeenByStatus {
+import java.io.Serializable;
+
+public class SeenByStatus implements Serializable {
     private int seenByStatusId;
     private int groupChatMessageId;
     private int userId;

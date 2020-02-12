@@ -1,8 +1,9 @@
 package eg.gov.iti.jets.models.entities;
 
+import java.io.Serializable;
 import java.time.LocalDateTime;
 
-public class SingleChatMessage {
+public class SingleChatMessage implements Serializable {
     private int singleChatMessageId;
     private int userId;
     private String content;

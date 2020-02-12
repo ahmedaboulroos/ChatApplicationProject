@@ -2,9 +2,10 @@ package eg.gov.iti.jets.models.entities;
 
 import javafx.scene.image.Image;
 
+import java.io.Serializable;
 import java.time.LocalDateTime;
 
-public class GroupChat {
+public class GroupChat implements Serializable {
     private int groupChatId;
     private String title;
     private String description;
