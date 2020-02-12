@@ -1,0 +1,104 @@
+
+.parent {
+
+    -fx-background-color: transparent;
+}
+
+.dark-panel {
+    -fx-background-color: #45515F;
+}
+
+.main-btns {
+    -fx-background-color: transparent;
+    -fx-background-radius: 0px;
+    -fx-text-fill: transparent;
+}
+
+.icons {
+    -fx-fill: #596575;
+}
+
+.main-btns:hover {
+    -fx-background-color: transparent;
+    -fx-background-radius: 0px;
+    -fx-border-color: #F3A978;
+    -fx-border-width: 0px 0px 3px 0px;
+    -fx-border-radius: 0px;
+    -fx-text-fill: transparent;
+
+}
+
+.main-btns:hover .icons {
+    -fx-fill: white;
+}
+
+.buttons {
+    -fx-background-color: #596575;
+    -fx-background-radius: 0px;
+    -fx-text-fill: white;
+}
+
+.buttons:hover {
+    -fx-background-color: #F3A978;
+    -fx-background-radius: 0px;
+    -fx-text-fill: white;
+}
+
+.circle {
+    -fx-background-radius: 100%;
+    -fx-border-radius: 100%;
+    -fx-border-color: #596575;
+    -fx-border-width: 2px;
+}
+
+.online {
+    -fx-background-color: #00cc33;
+    -fx-background-radius: 100%;
+}
+
+.circleIcon {
+    -fx-background-color: #00334E;
+    -fx-background-radius: 100%;
+}
+
+.pane {
+    -fx-background-color: #e1f4f3;
+}
+
+.BtnHbox {
+    -fx-background-color: transparent;
+    -fx-background-radius: 0px;
+    -fx-border-color: #dad6d6;
+    -fx-border-width: 0px 0px 1px 0px;
+    -fx-border-radius: 0px;
+    -fx-text-fill: transparent;
+}
+
+.labelX {
+    -fx-border-color: #00334E;
+    -fx-border-width: 1px 1px 1px 1px;
+    -fx-border-radius: 5px;
+
+}
+
+.Btnbox {
+    -fx-background-color: transparent;
+    -fx-background-radius: 0px;
+    -fx-border-color: #dad6d6;
+    -fx-border-width: 0px 0px 1px 0px;
+    -fx-border-radius: 0px;
+    -fx-text-fill: transparent;
+}
+
+.Btnbox:hover {
+    -fx-background-color: #f6f4e6;
+    -fx-background-radius: 0px;
+    -fx-border-color: #dad6d6;
+    -fx-border-width: 0px 0px 1px 0px;
+    -fx-border-radius: 0px;
+    -fx-text-fill: transparent;
+}
+
+.scroll-bar:vertical {
+    -fx-background-color: transparent;
+}

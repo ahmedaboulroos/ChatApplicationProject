@@ -1,0 +1,452 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import com.jfoenix.controls.*?>
+<?import javafx.geometry.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.image.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.shape.Circle?>
+<?import javafx.scene.text.*?>
+<?import org.kordamp.ikonli.javafx.*?>
+<AnchorPane xmlns:fx="http://javafx.com/fxml/1" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity"
+            minWidth="-Infinity" prefHeight="600.0" prefWidth="400.0" xmlns="http://javafx.com/javafx/11.0.1"
+            fx:controller="eg.gov.iti.jets.views.GroupInfoController">
+    <children>
+        <ScrollPane hbarPolicy="NEVER" layoutY="0.6000000238418579" maxHeight="-Infinity" maxWidth="-Infinity"
+                    minHeight="-Infinity" minWidth="-Infinity" prefHeight="600.0" prefWidth="400.0" vbarPolicy="ALWAYS">
+            <content>
+                <AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity"
+                            prefHeight="1175.0" prefWidth="400.0" stylesheets="@../styles/style1.css">
+                    <children>
+                        <Pane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity"
+                              prefHeight="258.0" prefWidth="400.0" styleClass="pane">
+                            <children>
+                                <Circle fill="WHITE" layoutX="200.0" layoutY="113.0" radius="74.0" stroke="BLACK"
+                                        strokeType="INSIDE" strokeWidth="0.0"/>
+                                <ImageView fitHeight="105.0" fitWidth="114.0" layoutX="147.0" layoutY="61.0"
+                                           pickOnBounds="true"
+                                           preserveRatio="true">
+                                    <image>
+                                        <Image url="@../images/groupInfo.png"/>
+                                    </image>
+                                </ImageView>
+                                <Label layoutX="13.0" layoutY="196.0" maxHeight="-Infinity" maxWidth="-Infinity"
+                                       minHeight="-Infinity" minWidth="-Infinity" prefHeight="30.0" prefWidth="295.0"
+                                       text="My Lovely Group" textFill="#595555">
+                                    <font>
+                                        <Font size="18.0"/>
+                                    </font>
+                                </Label>
+                                <Label layoutX="13.0" layoutY="226.0" prefHeight="17.0" prefWidth="187.0"
+                                       text="Created 26/08/2019 at 2:56 pm" textFill="#a29494"/>
+                                <JFXButton layoutX="343.0" layoutY="196.0" maxHeight="-Infinity" maxWidth="-Infinity"
+                                           minHeight="-Infinity" minWidth="-Infinity" prefHeight="30.0" prefWidth="30.0"
+                                           textFill="#ffffff00">
+                                    <graphic>
+                                        <FontIcon iconLiteral="ws-edit" iconSize="17" styleClass="icons"/>
+                                    </graphic>
+                                </JFXButton>
+                            </children>
+                        </Pane>
+                        <Pane layoutY="265.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity"
+                              minWidth="-Infinity" prefHeight="70.0" prefWidth="400.0" styleClass="pane">
+                            <children>
+                                <Label layoutX="13.0" layoutY="11.0" maxHeight="-Infinity" maxWidth="-Infinity"
+                                       minHeight="-Infinity" minWidth="-Infinity" prefHeight="30.0" prefWidth="295.0"
+                                       text="Description" textFill="#00334e">
+                                    <font>
+                                        <Font size="18.0"/>
+                                    </font>
+                                </Label>
+                                <Label layoutX="13.0" layoutY="41.0" prefHeight="17.0" prefWidth="187.0"
+                                       text="Add Group Description" textFill="#5f5959"/>
+                                <JFXButton layoutX="343.0" layoutY="35.0" maxHeight="-Infinity" maxWidth="-Infinity"
+                                           minHeight="-Infinity" minWidth="-Infinity" prefHeight="30.0" prefWidth="30.0"
+                                           textFill="#ffffff00">
+                                    <graphic>
+                                        <FontIcon iconLiteral="ws-edit" iconSize="17" styleClass="icons"/>
+                                    </graphic>
+                                </JFXButton>
+                            </children>
+                            <opaqueInsets>
+                                <Insets/>
+                            </opaqueInsets>
+                        </Pane>
+                        <Pane layoutY="343.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity"
+                              minWidth="-Infinity" prefHeight="148.0" prefWidth="400.0" styleClass="pane">
+                            <children>
+                                <Label layoutX="13.0" layoutY="11.0" maxHeight="-Infinity" maxWidth="-Infinity"
+                                       minHeight="-Infinity" minWidth="-Infinity" prefHeight="30.0" prefWidth="295.0"
+                                       text="Media, Links and Docs" textFill="#00334e">
+                                    <font>
+                                        <Font size="18.0"/>
+                                    </font>
+                                </Label>
+                                <JFXButton layoutX="342.0" layoutY="11.0" maxHeight="-Infinity" maxWidth="-Infinity"
+                                           minHeight="-Infinity" minWidth="-Infinity" prefHeight="30.0" prefWidth="30.0"
+                                           textFill="#ffffff00">
+                                    <graphic>
+                                        <FontIcon iconLiteral="zondi-cheveron-right" iconSize="18" styleClass="icons"/>
+                                    </graphic>
+                                </JFXButton>
+                                <ImageView fitHeight="97.0" fitWidth="105.0" layoutX="14.0" layoutY="43.0"
+                                           pickOnBounds="true"
+                                           preserveRatio="true">
+                                    <image>
+                                        <Image url="@../images/s1.png"/>
+                                    </image>
+                                </ImageView>
+                                <ImageView fitHeight="91.0" fitWidth="111.0" layoutX="141.0" layoutY="43.0"
+                                           pickOnBounds="true"
+                                           preserveRatio="true">
+                                    <image>
+                                        <Image url="@../images/s2.png"/>
+                                    </image>
+                                </ImageView>
+                                <ImageView fitHeight="91.0" fitWidth="105.0" layoutX="262.0" layoutY="43.0"
+                                           pickOnBounds="true"
+                                           preserveRatio="true">
+                                    <image>
+                                        <Image url="@../images/s5.png"/>
+                                    </image>
+                                </ImageView>
+                            </children>
+                        </Pane>
+                        <Pane layoutY="498.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity"
+                              minWidth="-Infinity" prefHeight="158.0" prefWidth="400.0" styleClass="pane">
+                            <children>
+                                <JFXButton maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity"
+                                           minWidth="-Infinity"
+                                           prefHeight="53.0" prefWidth="400.0" styleClass="BtnHbox"
+                                           textFill="#dad6d600">
+                                    <graphic>
+                                        <HBox prefHeight="53.0" prefWidth="384.0">
+                                            <children>
+                                                <Label prefHeight="30.0" prefWidth="334.0" text="Mute Notifications"
+                                                       textFill="#00334e">
+                                                    <font>
+                                                        <Font size="18.0"/>
+                                                    </font>
+                                                    <HBox.margin>
+                                                        <Insets left="10.0" top="10.0"/>
+                                                    </HBox.margin>
+                                                </Label>
+                                                <FontIcon iconLiteral="typ-media-stop-outline" iconSize="26"
+                                                          styleClass="icons">
+                                                    <HBox.margin>
+                                                        <Insets left="10.0" top="10.0"/>
+                                                    </HBox.margin>
+                                                </FontIcon>
+                                            </children>
+                                        </HBox>
+                                    </graphic>
+                                </JFXButton>
+                                <JFXButton layoutY="53.0" maxHeight="-Infinity" maxWidth="-Infinity"
+                                           minHeight="-Infinity"
+                                           minWidth="-Infinity" prefHeight="53.0" prefWidth="400.0" styleClass="BtnHbox"
+                                           text="Button" textFill="#dad6d600">
+                                    <graphic>
+                                        <HBox prefHeight="53.0" prefWidth="384.0">
+                                            <children>
+                                                <Label prefHeight="30.0" prefWidth="334.0" text="Starred Messages"
+                                                       textFill="#00334e">
+                                                    <font>
+                                                        <Font size="18.0"/>
+                                                    </font>
+                                                    <HBox.margin>
+                                                        <Insets left="10.0" top="10.0"/>
+                                                    </HBox.margin>
+                                                </Label>
+                                                <FontIcon iconLiteral="zondi-cheveron-right" iconSize="18"
+                                                          styleClass="icons">
+                                                    <HBox.margin>
+                                                        <Insets left="10.0" top="10.0"/>
+                                                    </HBox.margin>
+                                                </FontIcon>
+                                            </children>
+                                        </HBox>
+                                    </graphic>
+                                </JFXButton>
+                                <JFXButton layoutY="106.0" maxHeight="-Infinity" maxWidth="-Infinity"
+                                           minHeight="-Infinity"
+                                           minWidth="-Infinity" prefHeight="53.0" prefWidth="400.0" styleClass="BtnHbox"
+                                           textFill="#dad6d600">
+                                    <graphic>
+                                        <HBox prefHeight="53.0" prefWidth="384.0">
+                                            <children>
+                                                <Label prefHeight="30.0" prefWidth="334.0" text="Group Settings"
+                                                       textFill="#00334e">
+                                                    <font>
+                                                        <Font size="18.0"/>
+                                                    </font>
+                                                    <HBox.margin>
+                                                        <Insets left="10.0" top="10.0"/>
+                                                    </HBox.margin>
+                                                </Label>
+                                                <FontIcon iconLiteral="zondi-cheveron-right" iconSize="18"
+                                                          styleClass="icons">
+                                                    <HBox.margin>
+                                                        <Insets left="10.0" top="10.0"/>
+                                                    </HBox.margin>
+                                                </FontIcon>
+                                            </children>
+                                        </HBox>
+                                    </graphic>
+                                </JFXButton>
+                            </children>
+                        </Pane>
+                        <Pane layoutY="667.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity"
+                              minWidth="-Infinity" prefHeight="327.0" prefWidth="400.0" styleClass="pane">
+                            <children>
+                                <JFXButton maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity"
+                                           minWidth="-Infinity"
+                                           prefHeight="46.0" prefWidth="400.0" styleClass="BtnHbox"
+                                           textFill="#dad6d600">
+                                    <graphic>
+                                        <HBox maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity"
+                                              minWidth="-Infinity" prefHeight="53.0" prefWidth="400.0">
+                                            <children>
+                                                <Label prefHeight="30.0" prefWidth="334.0" text="3 Participants"
+                                                       textFill="#145374">
+                                                    <HBox.margin>
+                                                        <Insets left="10.0" top="10.0"/>
+                                                    </HBox.margin>
+                                                </Label>
+                                                <FontIcon fill="#aca6a6" iconLiteral="ws-search" iconSize="13">
+                                                    <HBox.margin>
+                                                        <Insets left="10.0" top="10.0"/>
+                                                    </HBox.margin>
+                                                </FontIcon>
+                                            </children>
+                                        </HBox>
+                                    </graphic>
+                                </JFXButton>
+                                <JFXButton layoutY="46.0" maxHeight="-Infinity" maxWidth="-Infinity"
+                                           minHeight="-Infinity"
+                                           minWidth="-Infinity" prefHeight="61.0" prefWidth="400.0" styleClass="Btnbox"
+                                           textFill="#dad6d600">
+                                    <graphic>
+                                        <HBox maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity"
+                                              minWidth="-Infinity" prefHeight="53.0" prefWidth="400.0">
+                                            <children>
+                                                <Label alignment="CENTER" maxHeight="-Infinity" maxWidth="-Infinity"
+                                                       minHeight="-Infinity" minWidth="-Infinity" prefHeight="36.0"
+                                                       prefWidth="38.0"
+                                                       styleClass="circleIcon" textAlignment="CENTER">
+                                                    <graphic>
+                                                        <FontIcon iconColor="#eadfdf" iconLiteral="zondi-user-add"
+                                                                  iconSize="17"
+                                                                  textAlignment="CENTER"/>
+                                                    </graphic>
+                                                    <HBox.margin>
+                                                        <Insets bottom="5.0" left="10.0" top="10.0"/>
+                                                    </HBox.margin>
+                                                </Label>
+                                                <Label maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity"
+                                                       minWidth="-Infinity" prefHeight="30.0" prefWidth="300.0"
+                                                       text="Add Participant" textFill="#00334e">
+                                                    <font>
+                                                        <Font size="17.0"/>
+                                                    </font>
+                                                    <HBox.margin>
+                                                        <Insets left="10.0" top="10.0"/>
+                                                    </HBox.margin>
+                                                </Label>
+                                            </children>
+                                        </HBox>
+                                    </graphic>
+                                </JFXButton>
+                                <JFXButton layoutY="107.0" maxHeight="-Infinity" maxWidth="-Infinity"
+                                           minHeight="-Infinity"
+                                           minWidth="-Infinity" prefHeight="61.0" prefWidth="400.0" styleClass="Btnbox"
+                                           textFill="#dad6d600">
+                                    <graphic>
+                                        <HBox prefHeight="53.0" prefWidth="400.0">
+                                            <children>
+                                                <Label alignment="CENTER" maxHeight="-Infinity" maxWidth="-Infinity"
+                                                       minHeight="-Infinity" minWidth="-Infinity" prefHeight="36.0"
+                                                       prefWidth="38.0"
+                                                       styleClass="circleIcon" textAlignment="CENTER">
+                                                    <graphic>
+                                                        <FontIcon iconColor="#eadfdf" iconLiteral="ws-link"
+                                                                  iconSize="17"
+                                                                  textAlignment="CENTER"/>
+                                                    </graphic>
+                                                    <HBox.margin>
+                                                        <Insets bottom="5.0" left="10.0" top="10.0"/>
+                                                    </HBox.margin>
+                                                </Label>
+                                                <Label maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity"
+                                                       minWidth="-Infinity" prefHeight="30.0" prefWidth="300.0"
+                                                       text="Invite to group via link" textFill="#00334e">
+                                                    <font>
+                                                        <Font size="17.0"/>
+                                                    </font>
+                                                    <HBox.margin>
+                                                        <Insets left="10.0" top="10.0"/>
+                                                    </HBox.margin>
+                                                </Label>
+                                            </children>
+                                        </HBox>
+                                    </graphic>
+                                </JFXButton>
+                                <JFXButton layoutY="168.0" maxHeight="-Infinity" maxWidth="-Infinity"
+                                           minHeight="-Infinity"
+                                           minWidth="-Infinity" prefHeight="53.0" prefWidth="400.0" styleClass="Btnbox"
+                                           textFill="#dad6d600">
+                                    <graphic>
+                                        <HBox alignment="TOP_RIGHT" prefHeight="53.0" prefWidth="400.0">
+                                            <children>
+                                                <Pane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity"
+                                                      minWidth="-Infinity" prefHeight="53.0" prefWidth="400.0">
+                                                    <children>
+                                                        <Circle fill="WHITE" layoutX="26.0" layoutY="27.0" radius="21.0"
+                                                                stroke="BLACK" strokeType="INSIDE" strokeWidth="0.0"/>
+                                                        <ImageView fitHeight="30.0" fitWidth="30.0" layoutX="14.0"
+                                                                   layoutY="12.0"
+                                                                   pickOnBounds="true" preserveRatio="true">
+                                                            <image>
+                                                                <Image url="@../images/userInfo.png"/>
+                                                            </image>
+                                                        </ImageView>
+                                                        <Label alignment="CENTER" contentDisplay="CENTER"
+                                                               layoutX="296.0"
+                                                               layoutY="12.0" maxHeight="-Infinity" maxWidth="-Infinity"
+                                                               minHeight="-Infinity" minWidth="-Infinity"
+                                                               prefHeight="20.0"
+                                                               prefWidth="82.0" styleClass="labelX" text="Group Admin"
+                                                               textAlignment="CENTER" textFill="#145374"/>
+                                                        <Label layoutX="58.0" layoutY="12.0" maxHeight="-Infinity"
+                                                               maxWidth="-Infinity" minHeight="-Infinity"
+                                                               minWidth="-Infinity"
+                                                               prefHeight="30.0" prefWidth="128.0" text="You"
+                                                               textFill="#145374">
+                                                            <font>
+                                                                <Font size="13.0"/>
+                                                            </font>
+                                                        </Label>
+                                                    </children>
+                                                </Pane>
+                                            </children>
+                                        </HBox>
+                                    </graphic>
+                                </JFXButton>
+                                <JFXButton layoutY="221.0" maxHeight="-Infinity" maxWidth="-Infinity"
+                                           minHeight="-Infinity"
+                                           minWidth="-Infinity" prefHeight="53.0" prefWidth="400.0" styleClass="Btnbox"
+                                           textFill="#dad6d600">
+                                    <graphic>
+                                        <HBox alignment="TOP_RIGHT" prefHeight="53.0" prefWidth="400.0">
+                                            <children>
+                                                <Pane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity"
+                                                      minWidth="-Infinity" prefHeight="53.0" prefWidth="400.0">
+                                                    <children>
+                                                        <Circle fill="WHITE" layoutX="26.0" layoutY="27.0" radius="21.0"
+                                                                stroke="BLACK" strokeType="INSIDE" strokeWidth="0.0"/>
+                                                        <ImageView fitHeight="30.0" fitWidth="30.0" layoutX="14.0"
+                                                                   layoutY="12.0"
+                                                                   pickOnBounds="true" preserveRatio="true">
+                                                            <image>
+                                                                <Image url="@../images/userInfo.png"/>
+                                                            </image>
+                                                        </ImageView>
+                                                        <Label layoutX="59.0" layoutY="12.0" maxHeight="-Infinity"
+                                                               maxWidth="-Infinity" minHeight="-Infinity"
+                                                               minWidth="-Infinity"
+                                                               prefHeight="30.0" prefWidth="91.0" text="+01010900681"
+                                                               textFill="#145374">
+                                                            <font>
+                                                                <Font size="13.0"/>
+                                                            </font>
+                                                        </Label>
+                                                    </children>
+                                                </Pane>
+                                            </children>
+                                        </HBox>
+                                    </graphic>
+                                </JFXButton>
+                                <JFXButton layoutY="274.0" maxHeight="-Infinity" maxWidth="-Infinity"
+                                           minHeight="-Infinity"
+                                           minWidth="-Infinity" prefHeight="53.0" prefWidth="400.0" styleClass="Btnbox"
+                                           textFill="#dad6d600">
+                                    <graphic>
+                                        <HBox alignment="TOP_RIGHT" prefHeight="53.0" prefWidth="400.0">
+                                            <children>
+                                                <Pane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity"
+                                                      minWidth="-Infinity" prefHeight="53.0" prefWidth="400.0">
+                                                    <children>
+                                                        <Circle fill="WHITE" layoutX="26.0" layoutY="27.0" radius="21.0"
+                                                                stroke="BLACK" strokeType="INSIDE" strokeWidth="0.0"/>
+                                                        <ImageView fitHeight="30.0" fitWidth="30.0" layoutX="14.0"
+                                                                   layoutY="12.0"
+                                                                   pickOnBounds="true" preserveRatio="true">
+                                                            <image>
+                                                                <Image url="@../images/userInfo.png"/>
+                                                            </image>
+                                                        </ImageView>
+                                                        <Label layoutX="57.0" layoutY="12.0" maxHeight="-Infinity"
+                                                               maxWidth="-Infinity" minHeight="-Infinity"
+                                                               minWidth="-Infinity"
+                                                               prefHeight="30.0" prefWidth="91.0" text="Alaa"
+                                                               textFill="#145374">
+                                                            <font>
+                                                                <Font size="13.0"/>
+                                                            </font>
+                                                        </Label>
+                                                    </children>
+                                                </Pane>
+                                            </children>
+                                        </HBox>
+                                    </graphic>
+                                </JFXButton>
+                            </children>
+                        </Pane>
+                        <Pane layoutY="1004.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity"
+                              minWidth="-Infinity" prefHeight="62.0" prefWidth="400.0" styleClass="pane">
+                            <children>
+                                <JFXButton maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity"
+                                           minWidth="-Infinity"
+                                           prefHeight="62.0" prefWidth="400.0" styleClass="Btnbox"
+                                           textFill="#ffffff00"/>
+                                <Label layoutX="53.0" layoutY="16.0" maxHeight="-Infinity" maxWidth="-Infinity"
+                                       minHeight="-Infinity" minWidth="-Infinity" prefHeight="30.0" prefWidth="295.0"
+                                       text="Exit Group" textFill="#c71123">
+                                    <font>
+                                        <Font size="18.0"/>
+                                    </font>
+                                </Label>
+                                <FontIcon iconColor="#c71123" iconLiteral="icm-exit" iconSize="20" layoutX="23.0"
+                                          layoutY="40.0"/>
+                            </children>
+                            <opaqueInsets>
+                                <Insets/>
+                            </opaqueInsets>
+                        </Pane>
+                        <Pane layoutY="1078.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity"
+                              minWidth="-Infinity" prefHeight="61.0" prefWidth="400.0" styleClass="pane">
+                            <children>
+                                <JFXButton maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity"
+                                           minWidth="-Infinity"
+                                           prefHeight="62.0" prefWidth="400.0" styleClass="Btnbox"
+                                           textFill="#ffffff00"/>
+                                <Label layoutX="52.0" layoutY="16.0" maxHeight="-Infinity" maxWidth="-Infinity"
+                                       minHeight="-Infinity" minWidth="-Infinity" prefHeight="30.0" prefWidth="295.0"
+                                       text="Report Group" textFill="#c71123">
+                                    <font>
+                                        <Font size="18.0"/>
+                                    </font>
+                                </Label>
+                                <FontIcon iconColor="#c71123" iconLiteral="zondi-thumbs-down" iconSize="20"
+                                          layoutX="21.0"
+                                          layoutY="42.0"/>
+                            </children>
+                            <opaqueInsets>
+                                <Insets/>
+                            </opaqueInsets>
+                        </Pane>
+                    </children>
+                </AnchorPane>
+            </content>
+        </ScrollPane>
+    </children>
+</AnchorPane>
