@@ -3,7 +3,14 @@ package eg.gov.iti.jets.models.dao.implementations;
 import eg.gov.iti.jets.models.dao.interfaces.SingleChatMessageDao;
 import eg.gov.iti.jets.models.entities.SingleChatMessage;
 
-public class SingleChatMessageDaoImpl implements SingleChatMessageDao {
+import java.rmi.RemoteException;
+import java.rmi.server.UnicastRemoteObject;
+
+public class SingleChatMessageDaoImpl extends UnicastRemoteObject implements SingleChatMessageDao {
+
+    protected SingleChatMessageDaoImpl() throws RemoteException {
+    }
+
     @Override
     public boolean createSingleChatMessage(SingleChatMessage singleChatMessage) {
         return false;

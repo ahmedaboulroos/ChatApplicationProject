@@ -4,9 +4,15 @@ import eg.gov.iti.jets.models.dao.interfaces.GroupChatMessageDao;
 import eg.gov.iti.jets.models.entities.GroupChatMessage;
 import eg.gov.iti.jets.models.entities.SeenByStatus;
 
+import java.rmi.RemoteException;
+import java.rmi.server.UnicastRemoteObject;
 import java.util.List;
 
-public class GroupChatMessageDaoImpl implements GroupChatMessageDao {
+public class GroupChatMessageDaoImpl extends UnicastRemoteObject implements GroupChatMessageDao {
+
+    protected GroupChatMessageDaoImpl() throws RemoteException {
+    }
+
     @Override
     public boolean createGroupChatMessage(GroupChatMessage groupChatMessage) {
         return false;

@@ -3,9 +3,15 @@ package eg.gov.iti.jets.models.dao.implementations;
 import eg.gov.iti.jets.models.dao.interfaces.UserDao;
 import eg.gov.iti.jets.models.entities.*;
 
+import java.rmi.RemoteException;
+import java.rmi.server.UnicastRemoteObject;
 import java.util.List;
 
-public class UserDaoImpl implements UserDao {
+public class UserDaoImpl extends UnicastRemoteObject implements UserDao {
+
+    protected UserDaoImpl() throws RemoteException {
+    }
+
     @Override
     public boolean createUser(User user) {
         return false;

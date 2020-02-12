@@ -3,7 +3,14 @@ package eg.gov.iti.jets.models.dao.implementations;
 import eg.gov.iti.jets.models.dao.interfaces.AnnouncementDeliveryDao;
 import eg.gov.iti.jets.models.entities.AnnouncementDelivery;
 
-public class AnnouncementDeliveryDaoImpl implements AnnouncementDeliveryDao {
+import java.rmi.RemoteException;
+import java.rmi.server.UnicastRemoteObject;
+
+public class AnnouncementDeliveryDaoImpl extends UnicastRemoteObject implements AnnouncementDeliveryDao {
+
+    protected AnnouncementDeliveryDaoImpl() throws RemoteException {
+    }
+
     @Override
     public boolean createAnnouncementDelivery(AnnouncementDelivery announcementDelivery) {
         return false;
