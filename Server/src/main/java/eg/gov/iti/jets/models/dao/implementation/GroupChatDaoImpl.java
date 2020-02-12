@@ -8,36 +8,40 @@ import eg.gov.iti.jets.models.entities.Membership;
 import eg.gov.iti.jets.models.entities.User;
 import eg.gov.iti.jets.models.persistence.DBConnection;
 import javafx.embed.swing.SwingFXUtils;
+import javafx.scene.image.Image;
 
 import javax.imageio.ImageIO;
 import java.awt.image.BufferedImage;
-import java.io.ByteArrayInputStream;
-import java.io.ByteArrayOutputStream;
-import java.io.IOException;
-import java.io.InputStream;
-import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.SQLException;
-import java.sql.Timestamp;
+import java.io.*;
+import java.sql.*;
+import java.time.LocalDateTime;
 import java.util.List;
 
 public class GroupChatDaoImpl implements GroupChatDao {
 
-    Connection connection = DBConnection.getInstance().getConnection();
+    public static void main(String[] args) {
+        DBConnection.getInstance().initConnection();
 
-//    public static void main(String[] args) {
-//        GroupChatDaoImpl croupChat = new GroupChatDaoImpl();
-//        GroupChat g = new GroupChat();
-//        croupChat.createGroupChat();
-//    }
+        GroupChatDaoImpl groupChat = new GroupChatDaoImpl();
+        Image img = null;
+        try {
+            img = new Image(new FileInputStream("hh.png"));
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+        }
+        LocalDateTime timestamp = LocalDateTime.now();
+        GroupChat g = new GroupChat(0, "alaa", "alaa", img);
+
+        boolean b = groupChat.createGroupChat(g);
+        System.out.println(b);
+    }
 
     @Override
     public boolean createGroupChat(GroupChat groupChat) {
+        Connection connection = DBConnection.getInstance().getConnection();
         boolean b = false;
         try {
-            //String sql = "INSERT INTO group_chat (group_chat_id, title, description,group_image,creation_time_stamp) VALUES (seq_group_chat.NEXTVAL,?,?,?,?)";
-            String sql = "INSERT INTO group_chat (group_chat_id, title, description,group_image,creation_time_stamp) VALUES (1,?,?,?,?)";
-
+            String sql = "INSERT INTO group_chat (group_chat_id, title, description,group_image,creation_timestamp) VALUES (SEQ_GROUP_CHAT_ID.nextval,?,?,?,?)";
             PreparedStatement stmt = connection.prepareStatement(sql);
             stmt.setString(1, groupChat.getTitle());
             stmt.setString(2, groupChat.getDescription());
@@ -47,7 +51,7 @@ public class GroupChatDaoImpl implements GroupChatDao {
             InputStream fis = new ByteArrayInputStream(os.toByteArray());
             stmt.setBlob(3, fis);
             stmt.setTimestamp(4, Timestamp.valueOf(groupChat.getCreationTimestamp()));
-            if (stmt.execute()) {
+            if (stmt.executeUpdate() != 0) {
                 b = true;
             }
         } catch (SQLException | IOException e) {
@@ -59,6 +63,31 @@ public class GroupChatDaoImpl implements GroupChatDao {
 
     @Override
     public GroupChat getGroupChat(int groupChatId) {
+        Connection connection = DBConnection.getInstance().getConnection();
+        ResultSet rs = null;
+        int id;
+        String tilte, description;
+        Image group_image;
+        LocalDateTime creation_time_stamp;
+        try {
+            String sql = "select group_chat_id,title,description,group_image,creation_time_stamp from group_chat where group_chat_id=?";
+            PreparedStatement stmt = connection.prepareStatement(sql);
+            stmt.setInt(1, groupChatId);
+            rs = stmt.executeQuery();
+            if (rs.next()) {
+                id = rs.getInt("group_chat_id");
+                tilte = rs.getString("title");
+                description = rs.getString("description");
+                // Image imagenMonstruo = SwingFXUtils.toFXImage(rs.getBlob("group_image"), null );
+                // group_image=rs.getBlob("group_image");
+                //creation_time_stamp=rs.getTimestamp("creation_time_stamp");
+            }
+            //new GroupChat()
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+
+
         return null;
     }
 
