@@ -3,20 +3,19 @@ package eg.gov.iti.jets.models.dao.interfaces;
 
 import eg.gov.iti.jets.models.entities.SingleChatMessage;
 
-import java.rmi.Remote;
-import java.rmi.RemoteException;
+import java.sql.SQLException;
 
-public interface SingleChatMessageDao extends Remote {
+public interface SingleChatMessageDao {
 
     // Create
-    boolean createSingleChatMessage(SingleChatMessage singleChatMessage) throws RemoteException;
+    boolean createSingleChatMessage(SingleChatMessage singleChatMessage) throws SQLException;
 
     // Read
-    SingleChatMessage getSingleChatMessage(int singleChatMessageId) throws RemoteException;
+    SingleChatMessage getSingleChatMessage(int singleChatMessageId);
 
     // Update
-    boolean updateSingleChatMessage(SingleChatMessage singleChatMessage) throws RemoteException;
+    boolean updateSingleChatMessage(SingleChatMessage singleChatMessage);
 
     // Delete
-    boolean deleteSingleChatMessage(int singleChatMessageId) throws RemoteException;
+    boolean deleteSingleChatMessage(int singleChatMessageId);
 }

@@ -1,5 +1,6 @@
 module Client {
 
+
     requires javafx.base;
     requires javafx.controls;
     requires javafx.graphics;
@@ -7,6 +8,16 @@ module Client {
     requires javafx.media;
     requires javafx.web;
     requires com.jfoenix;
+
+    requires com.jfoenix;
+    requires org.controlsfx.controls;
+
+    requires org.kordamp.iconli.core;
+    requires org.kordamp.ikonli.javafx;
+    requires org.kordamp.ikonli.material;
+    requires org.kordamp.ikonli.materialdesign;
+    requires org.kordamp.ikonli.fontawesome;
+    requires org.kordamp.ikonli.fontawesome5;
 
     opens eg.gov.iti.jets;
     opens eg.gov.iti.jets.views;
