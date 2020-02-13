@@ -8,6 +8,7 @@ module Client {
     requires javafx.media;
     requires javafx.web;
     requires com.jfoenix;
+    requires java.rmi;
 
     requires com.jfoenix;
     requires org.controlsfx.controls;

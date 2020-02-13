@@ -20,7 +20,6 @@ public class GroupChat implements Serializable {
         this.creationTimestamp = LocalDateTime.now();
     }
 
-    // constructor for populating data from database
     public GroupChat(int groupChatId, String title, String description, Image groupImage, LocalDateTime creationTimestamp) {
         this.groupChatId = groupChatId;
         this.title = title;

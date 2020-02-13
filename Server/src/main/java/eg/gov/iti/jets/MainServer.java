@@ -18,7 +18,6 @@ public class MainServer extends Application {
     @Override
     public void init() throws Exception {
         this.dbConnStarted = DBConnection.getInstance().initConnection();
-        this.rmiConnStarted = RMIConnection.getInstance().initConnection();
     }
 
     @Override

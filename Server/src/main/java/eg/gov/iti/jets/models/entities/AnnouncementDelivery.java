@@ -16,7 +16,6 @@ public class AnnouncementDelivery implements Serializable {
         this.announcementDeliveryStatus = AnnouncementDeliveryStatus.DELIVERED;
     }
 
-    // constructor for populating data from database
     public AnnouncementDelivery(int announcementDeliveryId, int userId, int announcementId, AnnouncementDeliveryStatus announcementDeliveryStatus) {
         this.announcementDeliveryId = announcementDeliveryId;
         this.userId = userId;
