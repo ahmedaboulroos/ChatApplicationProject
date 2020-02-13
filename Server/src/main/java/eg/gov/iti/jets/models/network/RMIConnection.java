@@ -1,5 +1,7 @@
 package eg.gov.iti.jets.models.network;
 
+import eg.gov.iti.jets.models.network.implementations.ServerService;
+
 import java.rmi.NotBoundException;
 import java.rmi.RemoteException;
 import java.rmi.registry.LocateRegistry;
@@ -17,6 +19,10 @@ public class RMIConnection {
         try {
             this.registry = LocateRegistry.createRegistry(port);
             // TODO:  rebind services here
+            ServerService userService=  new ServerService();
+
+            registry.rebind("userService",userService);
+
             System.out.println(">> RMI-Registry Connection Established...");
             return true;
         } catch (RemoteException e) {
