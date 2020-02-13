@@ -3,9 +3,15 @@ package eg.gov.iti.jets.models.dao.implementations;
 import eg.gov.iti.jets.models.dao.interfaces.RelationshipDao;
 import eg.gov.iti.jets.models.entities.Relationship;
 
+import java.rmi.RemoteException;
+import java.rmi.server.UnicastRemoteObject;
 import java.util.List;
 
-public class RelationshipDaoImpl implements RelationshipDao {
+public class RelationshipDaoImpl extends UnicastRemoteObject implements RelationshipDao {
+
+    protected RelationshipDaoImpl() throws RemoteException {
+    }
+
     @Override
     public boolean createRelationship(Relationship relationship) {
         return false;

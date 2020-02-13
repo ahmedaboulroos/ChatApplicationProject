@@ -1,6 +1,8 @@
 package eg.gov.iti.jets.models.entities;
 
-public class SingleChat {
+import java.io.Serializable;
+
+public class SingleChat implements Serializable {
     private int singleChatId;
     private int userOneId;
     private int userTwoId;
@@ -10,7 +12,6 @@ public class SingleChat {
         this.userTwoId = userTwoId;
     }
 
-    // constructor for populating data from database
     public SingleChat(int singleChatId, int userOneId, int userTwoId) {
         this.singleChatId = singleChatId;
         this.userOneId = userOneId;

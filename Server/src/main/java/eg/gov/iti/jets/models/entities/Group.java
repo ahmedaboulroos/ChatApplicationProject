@@ -1,6 +1,8 @@
 package eg.gov.iti.jets.models.entities;
 
-public class Group {
+import java.io.Serializable;
+
+public class Group implements Serializable {
     private int groupId;
     private int userId;
     private String groupName;

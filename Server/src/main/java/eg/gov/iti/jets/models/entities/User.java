@@ -4,9 +4,10 @@ import eg.gov.iti.jets.models.entities.enums.UserGender;
 import eg.gov.iti.jets.models.entities.enums.UserStatus;
 import javafx.scene.image.Image;
 
+import java.io.Serializable;
 import java.time.LocalDate;
 
-public class User {
+public class User implements Serializable {
     private int userId;
     private String phoneNumber;
     private String username;
@@ -29,7 +30,6 @@ public class User {
         this.password = password;
     }
 
-    // constructor for populating data from database
     public User(int userId, String phoneNumber, String username, String password, String email, String country, String bio, LocalDate birthDate, UserGender userGender, Image profileImage, UserStatus userStatus, boolean currentlyLoggedIn) {
         this.userId = userId;
         this.phoneNumber = phoneNumber;

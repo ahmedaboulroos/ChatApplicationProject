@@ -3,7 +3,14 @@ package eg.gov.iti.jets.models.dao.implementations;
 import eg.gov.iti.jets.models.dao.interfaces.SeenByStatusDao;
 import eg.gov.iti.jets.models.entities.SeenByStatus;
 
-public class SeenByStatusDaoImpl implements SeenByStatusDao {
+import java.rmi.RemoteException;
+import java.rmi.server.UnicastRemoteObject;
+
+public class SeenByStatusDaoImpl extends UnicastRemoteObject implements SeenByStatusDao {
+
+    protected SeenByStatusDaoImpl() throws RemoteException {
+    }
+
     @Override
     public boolean createSeenByStatus(SeenByStatus seenByStatus) {
         return false;

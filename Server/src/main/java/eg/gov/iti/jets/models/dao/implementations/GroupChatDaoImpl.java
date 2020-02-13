@@ -12,37 +12,50 @@ import javafx.scene.image.Image;
 
 import javax.imageio.ImageIO;
 import java.awt.image.BufferedImage;
-import java.io.*;
+import java.io.ByteArrayInputStream;
+import java.io.ByteArrayOutputStream;
+import java.io.IOException;
+import java.io.InputStream;
+import java.rmi.RemoteException;
+import java.rmi.server.UnicastRemoteObject;
 import java.sql.*;
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.List;
 
-public class GroupChatDaoImpl implements GroupChatDao {
+public class GroupChatDaoImpl extends UnicastRemoteObject implements GroupChatDao {
 
-    public static void main(String[] args) {
-        DBConnection.getInstance().initConnection();
-
-        GroupChatDaoImpl groupChat = new GroupChatDaoImpl();
-        Image img = null;
-        try {
-            img = new Image(new FileInputStream("hh.png"));
-        } catch (FileNotFoundException e) {
-            e.printStackTrace();
-        }
-        LocalDateTime timestamp = LocalDateTime.now();
-        GroupChat g = new GroupChat(0, "alaa", "alaa", img);
-
-        boolean b = groupChat.createGroupChat(g);
-        System.out.println(b);
+    protected GroupChatDaoImpl() throws RemoteException {
     }
+
+//    public static void main(String[] args) throws RemoteException {
+//        DBConnection.getInstance().initConnection();
+//        GroupChatDaoImpl groupChatImpl = new GroupChatDaoImpl();
+//        GroupChat g;
+////        Image img = null;
+////        try {
+////            img = new Image(new FileInputStream("hh.png"));
+////        } catch (FileNotFoundException e) {
+////            e.printStackTrace();
+////        }
+////        LocalDateTime timestamp = LocalDateTime.now();
+////         g = new GroupChat(0, "zozo", "alaa", img);
+////        boolean b = groupChatImpl.createGroupChat(g);
+////        System.out.println(b);
+//        g = groupChatImpl.getGroupChat(2);
+//        System.out.println("id " + g.getGroupChatId()
+//                + ":: title " + g.getTitle() + ":: desc "
+//                + g.getDescription() + ":: image " + g.getGroupImage() + ":: time " + g.getCreationTimestamp());
+//    }
 
     @Override
     public boolean createGroupChat(GroupChat groupChat) {
         Connection connection = DBConnection.getInstance().getConnection();
         boolean b = false;
+        PreparedStatement stmt = null;
         try {
             String sql = "INSERT INTO group_chat (group_chat_id, title, description,group_image,creation_timestamp) VALUES (SEQ_GROUP_CHAT_ID.nextval,?,?,?,?)";
-            PreparedStatement stmt = connection.prepareStatement(sql);
+            stmt = connection.prepareStatement(sql);
             stmt.setString(1, groupChat.getTitle());
             stmt.setString(2, groupChat.getDescription());
             ByteArrayOutputStream os = new ByteArrayOutputStream();
@@ -56,6 +69,12 @@ public class GroupChatDaoImpl implements GroupChatDao {
             }
         } catch (SQLException | IOException e) {
             e.printStackTrace();
+        } finally {
+            try {
+                stmt.close();
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
         }
 
         return b;
@@ -65,35 +84,81 @@ public class GroupChatDaoImpl implements GroupChatDao {
     public GroupChat getGroupChat(int groupChatId) {
         Connection connection = DBConnection.getInstance().getConnection();
         ResultSet rs = null;
-        int id;
-        String tilte, description;
+        int id = 0;
+        String tilte = null;
+        String description = null;
         Image group_image;
         LocalDateTime creation_time_stamp;
+        Timestamp timestamp = null;
+        InputStream in;
+        Blob blob = null;
+        BufferedImage imagen;
+        GroupChat groupChat = null;
+        PreparedStatement stmt = null;
         try {
-            String sql = "select group_chat_id,title,description,group_image,creation_time_stamp from group_chat where group_chat_id=?";
-            PreparedStatement stmt = connection.prepareStatement(sql);
+            String sql = "select group_chat_id, title, description, group_image, creation_timestamp from group_chat where group_chat_id=?";
+            stmt = connection.prepareStatement(sql);
             stmt.setInt(1, groupChatId);
             rs = stmt.executeQuery();
             if (rs.next()) {
                 id = rs.getInt("group_chat_id");
                 tilte = rs.getString("title");
                 description = rs.getString("description");
-                // Image imagenMonstruo = SwingFXUtils.toFXImage(rs.getBlob("group_image"), null );
-                // group_image=rs.getBlob("group_image");
-                //creation_time_stamp=rs.getTimestamp("creation_time_stamp");
+                blob = rs.getBlob("group_image");
+                timestamp = rs.getTimestamp("creation_timestamp");
             }
-            //new GroupChat()
+            in = blob.getBinaryStream();
+            imagen = ImageIO.read(in);
+            group_image = SwingFXUtils.toFXImage(imagen, null);
+            creation_time_stamp = timestamp.toLocalDateTime();
+            groupChat = new GroupChat(id, tilte, description, group_image, creation_time_stamp);
+
         } catch (SQLException e) {
             e.printStackTrace();
+
+        } catch (IOException e) {
+            e.printStackTrace();
+        } finally {
+
+            try {
+                rs.close();
+                stmt.close();
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
+
         }
-
-
-        return null;
+        return groupChat;
     }
 
     @Override
     public List<Membership> getGroupChatMemberships(int groupChatId) {
-        return null;
+        String sql = "select membership_id, user_id, group_chat_id, joined_timestamp from membership where group_chat_id=?";
+        Connection connection = DBConnection.getInstance().getConnection();
+        List<Membership> membershipList = new ArrayList<>();
+        ResultSet rs = null;
+        int membership_id = 0;
+        int group_chat_id = 0;
+        int user_id = 0;
+        LocalDateTime joined_timestamp;
+        Timestamp timestamp = null;
+        PreparedStatement stmt = null;
+        try {
+            stmt = connection.prepareStatement(sql);
+            stmt.setInt(1, groupChatId);
+            rs = stmt.executeQuery();
+            while (rs.next()) {
+                membership_id = rs.getInt("membership_id");
+                group_chat_id = rs.getInt("group_chat_id");
+                user_id = rs.getInt("user_id");
+                timestamp = rs.getTimestamp("joined_timestamp");
+                joined_timestamp = timestamp.toLocalDateTime();
+                membershipList.add(new Membership(membership_id, user_id, group_chat_id, joined_timestamp));
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return membershipList;
     }
 
     @Override
@@ -103,12 +168,61 @@ public class GroupChatDaoImpl implements GroupChatDao {
 
     @Override
     public List<GroupChatMessage> getGroupChatMessages(int groupChatId) {
-        return null;
+        String sql = "select group_chat_message_id, user_id, content, message_timestamp from group_Chat_Message where group_chat_id=?";
+        Connection connection = DBConnection.getInstance().getConnection();
+        List<GroupChatMessage> groupChatMessageList = new ArrayList<>();
+        ResultSet rs = null;
+        int membership_id = 0;
+        int group_chat_id = 0;
+        int user_id = 0;
+        LocalDateTime joined_timestamp;
+        Timestamp timestamp = null;
+        PreparedStatement stmt = null;
+        try {
+            stmt = connection.prepareStatement(sql);
+            stmt.setInt(1, groupChatId);
+            rs = stmt.executeQuery();
+            while (rs.next()) {
+                membership_id = rs.getInt("membership_id");
+                group_chat_id = rs.getInt("group_chat_id");
+                user_id = rs.getInt("user_id");
+                timestamp = rs.getTimestamp("joined_timestamp");
+                joined_timestamp = timestamp.toLocalDateTime();
+                //groupChatMessageList.add(new Membership(membership_id, user_id, group_chat_id, joined_timestamp));
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return groupChatMessageList;
     }
 
     @Override
     public boolean updateGroupChat(GroupChat groupChat) {
-        return false;
+        Connection connection = DBConnection.getInstance().getConnection();
+        boolean b = false;
+        PreparedStatement stmt = null;
+        try {
+            String sql = "update GROUP_CHAT set  title=?, description=?, group_image=?, creation_timestamp=? where group_chat_id=? ";
+            stmt = connection.prepareStatement(sql);
+            stmt.setString(1, groupChat.getTitle());
+            stmt.setString(2, groupChat.getDescription());
+            ByteArrayOutputStream os = new ByteArrayOutputStream();
+            BufferedImage bImage = SwingFXUtils.fromFXImage(groupChat.getGroupImage(), null);
+            ImageIO.write(bImage, "png", os);
+            InputStream fis = new ByteArrayInputStream(os.toByteArray());
+            stmt.setBlob(3, fis);
+            stmt.setTimestamp(4, Timestamp.valueOf(groupChat.getCreationTimestamp()));
+            stmt.setInt(5, groupChat.getGroupChatId());
+            if (stmt.executeUpdate() != 0) {
+                b = true;
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+        return b;
     }
 
     @Override

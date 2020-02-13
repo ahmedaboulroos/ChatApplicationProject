@@ -1,8 +1,9 @@
 package eg.gov.iti.jets.models.entities;
 
+import java.io.Serializable;
 import java.time.LocalDateTime;
 
-public class Announcement {
+public class Announcement implements Serializable {
     private int announcementId;
     private String content;
     private LocalDateTime announcementTimestamp;
@@ -12,7 +13,6 @@ public class Announcement {
         this.announcementTimestamp = LocalDateTime.now();
     }
 
-    // constructor for populating data from database
     public Announcement(int announcementId, String content, LocalDateTime announcementTimestamp) {
         this.announcementId = announcementId;
         this.content = content;

@@ -2,9 +2,10 @@ package eg.gov.iti.jets.models.entities;
 
 import javafx.scene.image.Image;
 
+import java.io.Serializable;
 import java.time.LocalDateTime;
 
-public class GroupChat {
+public class GroupChat implements Serializable {
     private int groupChatId;
     private String title;
     private String description;
@@ -19,7 +20,6 @@ public class GroupChat {
         this.creationTimestamp = LocalDateTime.now();
     }
 
-    // constructor for populating data from database
     public GroupChat(int groupChatId, String title, String description, Image groupImage, LocalDateTime creationTimestamp) {
         this.groupChatId = groupChatId;
         this.title = title;

@@ -1,8 +1,9 @@
 package eg.gov.iti.jets.models.entities;
 
+import java.io.Serializable;
 import java.time.LocalDateTime;
 
-public class SingleChatMessage {
+public class SingleChatMessage implements Serializable {
     private int singleChatMessageId;
     private int userId;
     private String content;
@@ -14,7 +15,6 @@ public class SingleChatMessage {
         this.messageTimestamp = LocalDateTime.now();
     }
 
-    // constructor for populating data from database
     public SingleChatMessage(int singleChatMessageId, int userId, String content, LocalDateTime messageTimestamp) {
         this.singleChatMessageId = singleChatMessageId;
         this.userId = userId;

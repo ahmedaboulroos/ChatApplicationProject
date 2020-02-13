@@ -4,19 +4,24 @@ import eg.gov.iti.jets.models.entities.GroupChat;
 import eg.gov.iti.jets.models.entities.Membership;
 import eg.gov.iti.jets.models.entities.User;
 
-public interface MembershipDao {
+import java.rmi.Remote;
+import java.rmi.RemoteException;
+
+public interface MembershipDao extends Remote {
     // Create
-    boolean createMembership(Membership membership);
+    boolean createMembership(Membership membership) throws RemoteException;
 
     // Read
-    Membership getMembership(int membershipId);
-    User getUser(int membershipId);
-    GroupChat getGroupChat(int membershipId);
+    Membership getMembership(int membershipId) throws RemoteException;
+
+    User getUser(int membershipId) throws RemoteException;
+
+    GroupChat getGroupChat(int membershipId) throws RemoteException;
 
     // Update
-    boolean updateMembership(Membership membership);
+    boolean updateMembership(Membership membership) throws RemoteException;
 
     // Delete
-    boolean deleteMembership(int membershipId);
+    boolean deleteMembership(int membershipId) throws RemoteException;
 
 }
