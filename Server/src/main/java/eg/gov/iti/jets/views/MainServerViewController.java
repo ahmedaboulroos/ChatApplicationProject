@@ -63,7 +63,11 @@ public class MainServerViewController implements Initializable {
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
         try {
-            Parent welcomeScene = FXMLLoader.load(getClass().getResource("/views/WelcomeView.fxml"));
+           ////////////////////////////////////////////////////////
+        //  Parent welcomeScene = FXMLLoader.load(getClass().getResource("/views/FXMLDocument.fxml"));
+
+            ///////////////////////////////////////////////////////
+          Parent welcomeScene = FXMLLoader.load(getClass().getResource("/views/WelcomeView.fxml"));
             welcomeTab.setContent(welcomeScene);
             stopService();
         } catch (IOException e) {

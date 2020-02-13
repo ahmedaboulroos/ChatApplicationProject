@@ -1,6 +1,9 @@
 package eg.gov.iti.jets;
 
 import javafx.application.Application;
+import javafx.fxml.FXMLLoader;
+import javafx.scene.Parent;
+import javafx.scene.Scene;
 import javafx.stage.Stage;
 
 public class MainClient extends Application {
@@ -19,9 +22,13 @@ public class MainClient extends Application {
     public void start(Stage stage) throws Exception {
         System.out.println("Client start...");
 
-
-        stage.setTitle("Client Application");
+        FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/views/ContactList.fxml"));
+        Parent mainServerView = fxmlLoader.load();
+        stage.setScene(new Scene(mainServerView));
+        stage.setTitle("Chat Application Server - Admin Panel");
         stage.show();
+
+
     }
 
     @Override
