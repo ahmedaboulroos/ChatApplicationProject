@@ -53,4 +53,14 @@ public class Membership implements Serializable {
     public void setJoinedTimestamp(LocalDateTime joinedTimestamp) {
         this.joinedTimestamp = joinedTimestamp;
     }
+
+    @Override
+    public String toString() {
+        return "Membership{" +
+                "membershipId=" + membershipId +
+                ", userId=" + userId +
+                ", groupChatId=" + groupChatId +
+                ", joinedTimestamp=" + joinedTimestamp +
+                '}';
+    }
 }
