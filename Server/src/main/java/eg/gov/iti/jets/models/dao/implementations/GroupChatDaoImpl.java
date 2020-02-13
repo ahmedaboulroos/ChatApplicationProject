@@ -28,25 +28,7 @@ public class GroupChatDaoImpl extends UnicastRemoteObject implements GroupChatDa
     protected GroupChatDaoImpl() throws RemoteException {
     }
 
-//    public static void main(String[] args) throws RemoteException {
-//        DBConnection.getInstance().initConnection();
-//        GroupChatDaoImpl groupChatImpl = new GroupChatDaoImpl();
-//        GroupChat g;
-////        Image img = null;
-////        try {
-////            img = new Image(new FileInputStream("hh.png"));
-////        } catch (FileNotFoundException e) {
-////            e.printStackTrace();
-////        }
-////        LocalDateTime timestamp = LocalDateTime.now();
-////         g = new GroupChat(0, "zozo", "alaa", img);
-////        boolean b = groupChatImpl.createGroupChat(g);
-////        System.out.println(b);
-//        g = groupChatImpl.getGroupChat(2);
-//        System.out.println("id " + g.getGroupChatId()
-//                + ":: title " + g.getTitle() + ":: desc "
-//                + g.getDescription() + ":: image " + g.getGroupImage() + ":: time " + g.getCreationTimestamp());
-//    }
+
 
     @Override
     public boolean createGroupChat(GroupChat groupChat) {
@@ -157,6 +139,13 @@ public class GroupChatDaoImpl extends UnicastRemoteObject implements GroupChatDa
             }
         } catch (SQLException e) {
             e.printStackTrace();
+        } finally {
+            try {
+                rs.close();
+                stmt.close();
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
         }
         return membershipList;
     }
@@ -164,7 +153,7 @@ public class GroupChatDaoImpl extends UnicastRemoteObject implements GroupChatDa
     @Override
     public List<User> getGroupChatUsers(int groupChatId) {
         return null;
-    }
+    }//m4 fahma
 
     @Override
     public List<GroupChatMessage> getGroupChatMessages(int groupChatId) {
@@ -220,6 +209,12 @@ public class GroupChatDaoImpl extends UnicastRemoteObject implements GroupChatDa
             e.printStackTrace();
         } catch (IOException e) {
             e.printStackTrace();
+        } finally {
+            try {
+                stmt.close();
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
         }
 
         return b;
@@ -228,16 +223,37 @@ public class GroupChatDaoImpl extends UnicastRemoteObject implements GroupChatDa
     @Override
     public boolean addGroupChatMessage(int groupMessageId) {
         return false;
-    }
+    }//m4 fahma
 
     @Override
     public boolean addGroupChatUser(int userId) {
         return false;
-    }
+    }//m4 fahma
 
     @Override
     public boolean deleteGroupChat(int groupChatId) {
-        return false;
+
+        Connection connection = DBConnection.getInstance().getConnection();
+        boolean b = false;
+        PreparedStatement stmt = null;
+        try {
+            String sql = "delete from GROUP_CHAT where group_chat_id=?";
+            stmt = connection.prepareStatement(sql);
+            stmt.setInt(1, groupChatId);
+            if (stmt.executeUpdate() != 0) {
+                b = true;
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        } finally {
+            try {
+                stmt.close();
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
+        }
+
+        return b;
     }
 
 }
