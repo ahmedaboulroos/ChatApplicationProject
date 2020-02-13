@@ -21,6 +21,8 @@ public interface ClientInterface extends Remote {
 
     void receiveRelationship(int relationshipId) throws RemoteException;
 
+    void receiveMembership(int membershipId) throws RemoteException;
+
     void receiveGroup(int groupId) throws RemoteException;
 
     void receiveGroupContact(int groupContactId) throws RemoteException;
