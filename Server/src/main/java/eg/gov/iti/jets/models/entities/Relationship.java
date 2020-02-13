@@ -16,7 +16,6 @@ public class Relationship implements Serializable {
         this.relationshipStatus = RelationshipStatus.PENDING;
     }
 
-    // constructor for populating data from database
     public Relationship(int relationshipId, int firstUserId, int secondUserId, RelationshipStatus relationshipStatus) {
         this.relationshipId = relationshipId;
         this.firstUserId = firstUserId;

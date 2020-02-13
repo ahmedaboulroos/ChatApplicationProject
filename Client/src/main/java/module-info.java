@@ -7,6 +7,7 @@ module Client {
     requires javafx.media;
     requires javafx.web;
     requires com.jfoenix;
+    requires java.rmi;
 
     opens eg.gov.iti.jets;
     opens eg.gov.iti.jets.views;

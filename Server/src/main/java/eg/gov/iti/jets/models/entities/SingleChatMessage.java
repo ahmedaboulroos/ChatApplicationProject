@@ -15,7 +15,6 @@ public class SingleChatMessage implements Serializable {
         this.messageTimestamp = LocalDateTime.now();
     }
 
-    // constructor for populating data from database
     public SingleChatMessage(int singleChatMessageId, int userId, String content, LocalDateTime messageTimestamp) {
         this.singleChatMessageId = singleChatMessageId;
         this.userId = userId;

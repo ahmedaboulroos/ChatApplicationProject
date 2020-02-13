@@ -12,7 +12,6 @@ public class SingleChat implements Serializable {
         this.userTwoId = userTwoId;
     }
 
-    // constructor for populating data from database
     public SingleChat(int singleChatId, int userOneId, int userTwoId) {
         this.singleChatId = singleChatId;
         this.userOneId = userOneId;

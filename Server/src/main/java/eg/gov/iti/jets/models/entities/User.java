@@ -30,7 +30,6 @@ public class User implements Serializable {
         this.password = password;
     }
 
-    // constructor for populating data from database
     public User(int userId, String phoneNumber, String username, String password, String email, String country, String bio, LocalDate birthDate, UserGender userGender, Image profileImage, UserStatus userStatus, boolean currentlyLoggedIn) {
         this.userId = userId;
         this.phoneNumber = phoneNumber;
