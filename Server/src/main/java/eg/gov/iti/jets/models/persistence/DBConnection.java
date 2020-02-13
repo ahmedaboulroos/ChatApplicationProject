@@ -14,7 +14,8 @@ public class DBConnection {
     public boolean initConnection() {
         try {
             Class.forName("oracle.jdbc.driver.OracleDriver");
-            connection = DriverManager.getConnection("jdbc:oracle:thin:@localhost:1521:xe","CHATAPP","CHATAPP");
+            connection = DriverManager.getConnection("jdbc:oracle:thin:@localhost:1521:xe", "CHATAPP", "CHATAPP");
+            connection.setAutoCommit(true);
             System.out.println(">> Database Connection Established...");
             return true;
         } catch (SQLException | ClassNotFoundException e) {
