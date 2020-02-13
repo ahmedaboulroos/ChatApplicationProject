@@ -140,4 +140,22 @@ public class User implements Serializable {
     public void setCurrentlyLoggedIn(boolean currentlyLoggedIn) {
         this.currentlyLoggedIn = currentlyLoggedIn;
     }
+
+    @Override
+    public String toString() {
+        return "User{" +
+                "userId=" + userId +
+                ", phoneNumber='" + phoneNumber + '\'' +
+                ", username='" + username + '\'' +
+                ", password='" + password + '\'' +
+                ", email='" + email + '\'' +
+                ", country='" + country + '\'' +
+                ", bio='" + bio + '\'' +
+                ", birthDate=" + birthDate +
+                ", userGender=" + userGender +
+                ", profileImage=" + profileImage +
+                ", userStatus=" + userStatus +
+                ", currentlyLoggedIn=" + currentlyLoggedIn +
+                '}';
+    }
 }
