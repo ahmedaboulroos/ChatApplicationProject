@@ -19,7 +19,7 @@ import java.io.File;
 import java.net.URL;
 import java.util.ResourceBundle;
 
-public class ContactListView extends ListView<String> implements Initializable {
+public class ContactListController extends ListView<String> implements Initializable {
     final FileChooser fileChooser = new FileChooser();
     public Image profileimage;
     Stage stages = new Stage();
