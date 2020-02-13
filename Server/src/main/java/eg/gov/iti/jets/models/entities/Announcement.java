@@ -1,8 +1,9 @@
 package eg.gov.iti.jets.models.entities;
 
+import java.io.Serializable;
 import java.time.LocalDateTime;
 
-public class Announcement {
+public class Announcement implements Serializable {
     private int announcementId;
     private String content;
     private LocalDateTime announcementTimestamp;

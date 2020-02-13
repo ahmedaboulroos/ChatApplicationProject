@@ -12,6 +12,9 @@ import javafx.scene.image.Image;
 
 import javax.imageio.ImageIO;
 import java.awt.image.BufferedImage;
+import java.io.*;
+import java.rmi.RemoteException;
+import java.rmi.server.UnicastRemoteObject;
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
@@ -20,9 +23,12 @@ import java.sql.*;
 import java.time.LocalDateTime;
 import java.util.List;
 
-public class GroupChatDaoImpl implements GroupChatDao {
+public class GroupChatDaoImpl extends UnicastRemoteObject implements GroupChatDao {
 
-    public static void main(String[] args) {
+    protected GroupChatDaoImpl() throws RemoteException {
+    }
+
+    public static void main(String[] args) throws RemoteException {
         DBConnection.getInstance().initConnection();
         GroupChatDaoImpl groupChatImpl = new GroupChatDaoImpl();
         GroupChat g;

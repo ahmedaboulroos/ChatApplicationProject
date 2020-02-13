@@ -2,7 +2,9 @@ package eg.gov.iti.jets.models.entities;
 
 import eg.gov.iti.jets.models.entities.enums.AnnouncementDeliveryStatus;
 
-public class AnnouncementDelivery {
+import java.io.Serializable;
+
+public class AnnouncementDelivery implements Serializable {
     private int announcementDeliveryId;
     private int userId;
     private int announcementId;

@@ -1,6 +1,8 @@
 package eg.gov.iti.jets.models.entities;
 
-public class SingleChat {
+import java.io.Serializable;
+
+public class SingleChat implements Serializable {
     private int singleChatId;
     private int userOneId;
     private int userTwoId;

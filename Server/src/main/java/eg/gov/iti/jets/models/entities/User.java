@@ -4,9 +4,10 @@ import eg.gov.iti.jets.models.entities.enums.UserGender;
 import eg.gov.iti.jets.models.entities.enums.UserStatus;
 import javafx.scene.image.Image;
 
+import java.io.Serializable;
 import java.time.LocalDate;
 
-public class User {
+public class User implements Serializable {
     private int userId;
     private String phoneNumber;
     private String username;

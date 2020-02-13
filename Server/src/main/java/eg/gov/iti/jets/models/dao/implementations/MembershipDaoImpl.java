@@ -5,7 +5,14 @@ import eg.gov.iti.jets.models.entities.GroupChat;
 import eg.gov.iti.jets.models.entities.Membership;
 import eg.gov.iti.jets.models.entities.User;
 
-public class MembershipDaoImpl implements MembershipDao {
+import java.rmi.RemoteException;
+import java.rmi.server.UnicastRemoteObject;
+
+public class MembershipDaoImpl extends UnicastRemoteObject implements MembershipDao {
+
+    protected MembershipDaoImpl() throws RemoteException {
+    }
+
     @Override
     public boolean createMembership(Membership membership) {
         return false;

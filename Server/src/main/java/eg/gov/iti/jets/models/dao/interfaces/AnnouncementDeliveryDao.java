@@ -2,7 +2,9 @@ package eg.gov.iti.jets.models.dao.interfaces;
 
 import eg.gov.iti.jets.models.entities.AnnouncementDelivery;
 
-public interface AnnouncementDeliveryDao {
+import java.rmi.Remote;
+
+public interface AnnouncementDeliveryDao extends Remote {
     // Create
     boolean createAnnouncementDelivery(AnnouncementDelivery announcementDelivery);
 

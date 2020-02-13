@@ -2,18 +2,21 @@ package eg.gov.iti.jets.models.dao.interfaces;
 
 import eg.gov.iti.jets.models.entities.SeenByStatus;
 
-public interface SeenByStatusDao {
+import java.rmi.Remote;
+import java.rmi.RemoteException;
+
+public interface SeenByStatusDao extends Remote {
 
     // Create
-    boolean createSeenByStatus(SeenByStatus seenByStatus);
+    boolean createSeenByStatus(SeenByStatus seenByStatus) throws RemoteException;
 
     // Read
-    SeenByStatus getSeenByStatus(int seenByStatusId);
+    SeenByStatus getSeenByStatus(int seenByStatusId) throws RemoteException;
 
     // Update
-    boolean updateSeenByStatus(SeenByStatus seenByStatus);
+    boolean updateSeenByStatus(SeenByStatus seenByStatus) throws RemoteException;
 
     // Delete
-    boolean deleteSeenByStatus(int seenByStatusId);
+    boolean deleteSeenByStatus(int seenByStatusId) throws RemoteException;
 
 }
