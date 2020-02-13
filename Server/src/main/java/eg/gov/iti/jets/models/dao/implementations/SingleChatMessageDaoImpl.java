@@ -1,30 +1,29 @@
-package eg.gov.iti.jets.models.dao.implementation;
+package eg.gov.iti.jets.models.dao.implementations;
 
 import eg.gov.iti.jets.models.dao.interfaces.SingleChatMessageDao;
 import eg.gov.iti.jets.models.entities.SingleChatMessage;
 import eg.gov.iti.jets.models.persistence.DBConnection;
-import oracle.net.aso.f;
 
-import java.io.ByteArrayOutputStream;
-import java.io.IOException;
 import java.sql.*;
+import java.time.LocalDateTime;
 
 public class SingleChatMessageDaoImpl implements SingleChatMessageDao {
-     Connection connection ;
+    private static Connection connection;
+
     public static void main(String[] args) {
 
-
-        SingleChatMessageDaoImpl SingleChatMessage1 = new SingleChatMessageDaoImpl();
-        SingleChatMessage1. deleteSingleChatMessage(21);
-       // SingleChatMessage obj = SingleChatMessage1.getSingleChatMessage(21);
-//        System.out.println(obj.getUserId());
-
-    }
-
-    public SingleChatMessageDaoImpl(){
         DBConnection.getInstance().initConnection();
         connection = DBConnection.getInstance().getConnection();
-        System.out.println(connection);
+
+
+        SingleChatMessageDaoImpl ss = new SingleChatMessageDaoImpl();
+
+        LocalDateTime datetime1 = LocalDateTime.of(2017, 1, 14, 10, 34);
+        SingleChatMessage ob = new SingleChatMessage(1, 124,
+                "rrrr", datetime1);
+        boolean falg = ss.updateSingleChatMessage(ob);
+        System.out.println(falg);
+
     }
 
     @Override
@@ -57,42 +56,45 @@ public class SingleChatMessageDaoImpl implements SingleChatMessageDao {
 
     @Override
     public SingleChatMessage getSingleChatMessage(int singleChatMessageId) {
-        System.out.println(singleChatMessageId);
-        SingleChatMessage singleChatMessageObj = null;
+
+        SingleChatMessage singleChatMessageRef = null;
         try {
             PreparedStatement statement;
-            String sql="select * from SINGLE_CHAT_MESSAGE where SINGLE_CHAT_MESSAGE_ID = ? ";
+            String sql = "select * from SINGLE_CHAT_MESSAGE where SINGLE_CHAT_MESSAGE_ID = ? ";
             statement = connection.prepareStatement(sql);
             statement.setInt(1, singleChatMessageId);
             ResultSet resultset = statement.executeQuery();
 
             System.out.println(resultset);
-                while (resultset.next()) {
-                    System.out.println("inside");
-                    System.out.println(resultset.getInt("SINGLE_CHAT_MESSAGE_ID"));
-                    singleChatMessageObj.setSingleChatMessageId(resultset.getInt("SINGLE_CHAT_MESSAGE_ID"));
-                    singleChatMessageObj.setContent(resultset.getString("CONTENT"));
-                }
+            while (resultset.next()) {
+                System.out.println("inside" + singleChatMessageRef);
+                System.out.println(resultset.getInt("SINGLE_CHAT_MESSAGE_ID"));
+                singleChatMessageRef = new SingleChatMessage(resultset.getInt("SINGLE_CHAT_MESSAGE_ID"), resultset.getString("CONTENT"));
+
+            }
 
         } catch (SQLException sqe) {
             sqe.printStackTrace();
         }
-        return singleChatMessageObj;
+        return singleChatMessageRef;
     }
 
     @Override
     public boolean updateSingleChatMessage(SingleChatMessage singleChatMessage) {
-        String sql = "UPDATE  SINGLE_CHAT_MESSAGE SET SINGLE_CHAT_MESSAGE_ID= SEQ_SINGLE_CHAT_MESSAGE_ID.NEXTVAL," +
-                "USER_ID = ?,CONTENT = ?,MESSAGE_TIMESTAMP= ?  " +
-                " WHERE SINGLE_CHAT_MESSAGE_ID = ?";
+        String sql = "UPDATE  SINGLE_CHAT_MESSAGE SET CONTENT= ? " +
+                " where SINGLE_CHAT_MESSAGE_ID=? and USER_ID = ? ";
+
 
         try {
             PreparedStatement preparedStatement = connection.prepareStatement(sql);
-            preparedStatement.setInt(1, singleChatMessage.getUserId());
-            preparedStatement.setString(2, singleChatMessage.getContent());
-            preparedStatement.setTimestamp(3, Timestamp.valueOf(singleChatMessage.getMessageTimestamp()));
-            preparedStatement.setLong(4, singleChatMessage.getSingleChatMessageId());
-            if (preparedStatement.executeUpdate() == 1) {
+            preparedStatement.setString(1, singleChatMessage.getContent());
+            preparedStatement.setInt(2, singleChatMessage.getSingleChatMessageId());
+
+            preparedStatement.setInt(3, singleChatMessage.getUserId());
+            int rowAffected = preparedStatement.executeUpdate();
+
+            if (rowAffected != 0) {
+                System.out.println("true");
                 return true;
             }
 
@@ -107,29 +109,23 @@ public class SingleChatMessageDaoImpl implements SingleChatMessageDao {
     public boolean deleteSingleChatMessage(int singleChatMessageId) {
         try {
 
-            String sql = "delete from SINGLE_CHAT_MESSAGE where  SINGLE_CHAT_MESSAGE_ID=?";
+            String sql = "delete from SINGLE_CHAT_MESSAGE where SINGLE_CHAT_MESSAGE_ID = ?";
 
             PreparedStatement stmt = connection.prepareStatement(sql);
 
             stmt.setInt(1, singleChatMessageId);
-            if (stmt.executeUpdate() == 1) {
+
+            System.out.println(singleChatMessageId);
+            int affectedRow = stmt.executeUpdate();
+            if (affectedRow != 0) {
                 return true;
             }
+
+
         } catch (SQLException sqe) {
-
-
             sqe.printStackTrace();
         }
         return false;
     }
 
-    private void closeResultSetAndPreparedStatement(ResultSet resultSet, PreparedStatement preparedStatement) {
-        try {
-            preparedStatement.close();
-            resultSet.close();
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
-
-    }
 }
