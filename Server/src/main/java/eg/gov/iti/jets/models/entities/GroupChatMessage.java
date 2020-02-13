@@ -6,18 +6,21 @@ import java.time.LocalDateTime;
 public class GroupChatMessage implements Serializable {
     private int groupChatMessageId;
     private int userId;
+    private int groupChatId;
     private String content;
     private LocalDateTime messageTimestamp;
 
-    public GroupChatMessage(int userId, String content) {
+    public GroupChatMessage(int userId, int groupChatId, String content) {
         this.userId = userId;
+        this.groupChatId = groupChatId;
         this.content = content;
         this.messageTimestamp = LocalDateTime.now();
     }
 
-    public GroupChatMessage(int groupChatMessageId, int userId, String content, LocalDateTime messageTimestamp) {
+    public GroupChatMessage(int groupChatMessageId, int userId, int groupChatId, String content, LocalDateTime messageTimestamp) {
         this.groupChatMessageId = groupChatMessageId;
         this.userId = userId;
+        this.groupChatId = groupChatId;
         this.content = content;
         this.messageTimestamp = messageTimestamp;
     }
@@ -36,6 +39,14 @@ public class GroupChatMessage implements Serializable {
 
     public void setUserId(int userId) {
         this.userId = userId;
+    }
+
+    public int getGroupChatId() {
+        return groupChatId;
+    }
+
+    public void setGroupChatId(int groupChatId) {
+        this.groupChatId = groupChatId;
     }
 
     public String getContent() {
