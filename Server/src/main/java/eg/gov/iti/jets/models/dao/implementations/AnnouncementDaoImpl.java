@@ -23,7 +23,7 @@ public class AnnouncementDaoImpl extends UnicastRemoteObject implements Announce
         boolean result = false;
         String insertSQL = "INSERT INTO ANNOUNCEMENT  \n" +
                 "(ANNOUNCEMENT_ID,CONTENT,ANNOUNCEMENT_TIMESTAMP ) VALUES (" +
-                " SEQ_GROUP_CHAT_ID.nextval , ? , ? )  ";
+                " SEQ_ANNOUNCEMENT_ID.nextval , ? , ? )  ";
 
         try (PreparedStatement insert = connection.prepareStatement(insertSQL)) {
             insert.setString(1, announcement.getContent());
