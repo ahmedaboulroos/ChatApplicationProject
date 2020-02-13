@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.layout.BorderPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.shape.Circle?>
+<?import javafx.scene.text.Font?>
+<?import org.kordamp.ikonli.javafx.FontIcon?>
+
+<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" onMouseDragged="#dragged" onMousePressed="#pressed" prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="eg.gov.iti.jets.views.TitleBarScene">
+<top>
+    <HBox alignment="CENTER_RIGHT" prefHeight="33.0" prefWidth="600.0" BorderPane.alignment="CENTER">
+        <children>
+            <FontIcon iconLiteral="fi-minus-circle" iconSize="20" onMouseClicked="#min">
+                <HBox.margin>
+                    <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
+                </HBox.margin>
+            </FontIcon>
+            <FontIcon iconLiteral="gmi-filter-none" iconSize="20" onMouseClicked="#max">
+                <HBox.margin>
+                    <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
+                </HBox.margin>
+            </FontIcon>
+            <FontIcon iconLiteral="fi-x-circle" iconSize="20" onMouseClicked="#close">
+                <HBox.margin>
+                    <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
+                </HBox.margin>
+            </FontIcon>
+        </children>
+    </HBox>
+</top>
+<center>
+    <VBox alignment="CENTER" prefHeight="200.0" prefWidth="100.0" BorderPane.alignment="CENTER">
+         <children>
+            <Circle fx:id="chatImage" fill="DODGERBLUE" onMouseClicked="#chatImageHandelr" radius="70.0" stroke="BLACK" strokeType="INSIDE" strokeWidth="0.0" style="-fx-fill: FFFFFF; -fx-stroke-dash-array: 70;" />
+            <Label fx:id="infoChatLabel" prefHeight="20.0" prefWidth="281.0" text="welcome to chatAPP">
+               <font>
+                  <Font size="31.0" />
+               </font>
+            </Label>
+         </children></VBox>
+</center>
+</BorderPane>
