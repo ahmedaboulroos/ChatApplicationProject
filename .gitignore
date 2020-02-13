@@ -1,6 +1,6 @@
-/.idea
-/Client/target
-/Server/target
+.idea
+Client/target
+Server/target
 /ChatApplicationProject.iml
 /Client/Client.iml
 /Server/Server.iml
