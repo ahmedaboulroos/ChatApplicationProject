@@ -13,7 +13,6 @@ public class Announcement implements Serializable {
         this.announcementTimestamp = LocalDateTime.now();
     }
 
-    // constructor for populating data from database
     public Announcement(int announcementId, String content, LocalDateTime announcementTimestamp) {
         this.announcementId = announcementId;
         this.content = content;

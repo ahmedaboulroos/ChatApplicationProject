@@ -15,7 +15,6 @@ public class GroupChatMessage implements Serializable {
         this.messageTimestamp = LocalDateTime.now();
     }
 
-    // constructor for populating data from database
     public GroupChatMessage(int groupChatMessageId, int userId, String content, LocalDateTime messageTimestamp) {
         this.groupChatMessageId = groupChatMessageId;
         this.userId = userId;

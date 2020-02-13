@@ -15,7 +15,6 @@ public class Membership implements Serializable {
         this.joinedTimestamp = LocalDateTime.now();
     }
 
-    // constructor for populating data from database
     public Membership(int membershipId, int userId, int groupChatId, LocalDateTime joinedTimestamp) {
         this.membershipId = membershipId;
         this.userId = userId;
