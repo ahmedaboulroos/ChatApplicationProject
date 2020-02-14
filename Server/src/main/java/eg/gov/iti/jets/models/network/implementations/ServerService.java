@@ -1,5 +1,7 @@
 package eg.gov.iti.jets.models.network.implementations;
 
+import eg.gov.iti.jets.models.dao.implementations.UserDaoImpl;
+import eg.gov.iti.jets.models.entities.User;
 import eg.gov.iti.jets.models.network.interfaces.ClientInterface;
 import eg.gov.iti.jets.models.network.interfaces.ServerInterface;
 
@@ -13,7 +15,7 @@ public class ServerService extends UnicastRemoteObject implements ServerInterfac
 
     private static ConcurrentHashMap<Integer, ClientInterface> clients = new ConcurrentHashMap<>();
 
-    protected ServerService() throws RemoteException {
+     public ServerService() throws RemoteException {
     }
 
     public static Enumeration<Integer> getAllOnlineUsers() {
@@ -26,7 +28,16 @@ public class ServerService extends UnicastRemoteObject implements ServerInterfac
 
     @Override
     public void login(int userId, ClientInterface client) throws RemoteException {
-        clients.put(userId, client);
+
+        UserDaoImpl userDao = new UserDaoImpl();
+        //User user=userDao.getUser("","");
+        User user = userDao.getUser(userId);
+        if (user != null) {
+            clients.put(user.getUserId(), client);
+        } else {
+            System.out.println("error in login");
+        }
+       // clients.put(userId, client);
     }
 
     @Override

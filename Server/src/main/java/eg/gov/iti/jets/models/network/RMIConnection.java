@@ -13,7 +13,7 @@ public class RMIConnection {
     private RMIConnection() {
     }
 
-    public boolean initConnection(int port) {
+    public boolean startConnection(int port) {
         try {
             this.registry = LocateRegistry.createRegistry(port);
             // TODO:  rebind services here
@@ -26,12 +26,17 @@ public class RMIConnection {
     }
 
     public void stopConnection() {
-        try {
-            for (String service : this.registry.list()) {
-                this.registry.unbind(service);
+        if (registry != null) {
+            try {
+                for (String service : this.registry.list()) {
+                    this.registry.unbind(service);
+                }
+                System.out.println(">> RMI-Registry Connection Terminated...");
+            } catch (RemoteException | NotBoundException e) {
+                e.printStackTrace();
             }
-        } catch (RemoteException | NotBoundException e) {
-            e.printStackTrace();
+        } else {
+            System.out.println(">> RMI-Registry Connection Already Closed");
         }
     }
 
