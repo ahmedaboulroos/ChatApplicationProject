@@ -71,4 +71,15 @@ public class GroupChat implements Serializable {
     public void setGroupImage(Image groupImage) {
         this.groupImage = groupImage;
     }
+
+    @Override
+    public String toString() {
+        return "GroupChat{" +
+                "groupChatId=" + groupChatId +
+                ", title='" + title + '\'' +
+                ", description='" + description + '\'' +
+                ", groupImage=" + groupImage +
+                ", creationTimestamp=" + creationTimestamp +
+                '}';
+    }
 }

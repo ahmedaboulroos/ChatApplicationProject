@@ -41,4 +41,13 @@ public class GroupContact implements Serializable {
     public void setGroupId(int groupId) {
         this.groupId = groupId;
     }
+
+    @Override
+    public String toString() {
+        return "GroupContact{" +
+                "groupContactId=" + groupContactId +
+                ", userId=" + userId +
+                ", groupId=" + groupId +
+                '}';
+    }
 }
