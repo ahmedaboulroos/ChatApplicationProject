@@ -80,12 +80,19 @@ public class MembershipDaoImpl extends UnicastRemoteObject implements Membership
 
     @Override
     public User getUser(int membershipId) {
-        return null;
+        Membership membership = getMembership(membershipId);
+        User user = UserDaoImpl.getInstance().getUser(membership.getUserId());
+
+        return user;
     }
+
 
     @Override
     public GroupChat getGroupChat(int membershipId) {
-        return null;
+        Membership membership = getMembership(membershipId);
+        GroupChat groupChat = GroupChatDaoImpl.getInstance().getGroupChat(membership.getGroupChatId());
+
+        return groupChat;
     }
 
     @Override
