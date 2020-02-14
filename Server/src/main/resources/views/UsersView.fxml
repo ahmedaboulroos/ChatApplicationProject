@@ -1,14 +1,50 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import java.lang.*?>
-<?import java.util.*?>
-<?import javafx.scene.*?>
+
+<?import com.jfoenix.controls.*?>
 <?import javafx.scene.control.*?>
-<?import javafx.scene.layout.*?>
-
-<AnchorPane xmlns="http://javafx.com/javafx"
-            xmlns:fx="http://javafx.com/fxml"
-            fx:controller="eg.gov.iti.jets.views.UsersViewController"
-            prefHeight="400.0" prefWidth="600.0">
-
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.Pane?>
+<AnchorPane xmlns:fx="http://javafx.com/fxml/1" prefHeight="531.0" prefWidth="600.0"
+            xmlns="http://javafx.com/javafx/11.0.1" fx:controller="eg.gov.iti.jets.views.UsersViewController">
+    <children>
+        <Pane layoutX="-1.0" layoutY="259.0" prefHeight="272.0" prefWidth="600.0">
+            <children>
+                <TableView prefHeight="272.0" prefWidth="600.0">
+                    <columns>
+                        <TableColumn fx:id="phoneNoCol" prefWidth="116.00000303983688" text="phone Number"/>
+                        <TableColumn fx:id="userNameCol" minWidth="6.4000244140625" prefWidth="96.0" text="user name"/>
+                        <TableColumn fx:id="passCol" prefWidth="75.0" text="Password"/>
+                        <TableColumn fx:id="EmailCol" prefWidth="75.0" text="Email"/>
+                    </columns>
+                </TableView>
+            </children>
+        </Pane>
+        <Pane prefHeight="257.0" prefWidth="600.0">
+            <children>
+                <JFXTextField fx:id="phoneNo" layoutX="89.0" layoutY="14.0" prefHeight="25.0" prefWidth="251.0"
+                              promptText="phoneNo"/>
+                <JFXTextField fx:id="userName" layoutX="89.0" layoutY="48.0" prefHeight="25.0" prefWidth="251.0"
+                              promptText="userName"/>
+                <JFXTextField fx:id="Password" layoutX="89.0" layoutY="84.0" prefHeight="25.0" prefWidth="251.0"
+                              promptText="Password"/>
+                <JFXTextField fx:id="email" layoutX="89.0" layoutY="129.0" prefHeight="25.0" prefWidth="251.0"
+                              promptText="email"/>
+                <JFXTextField fx:id="country" layoutX="89.0" layoutY="169.0" prefHeight="25.0" prefWidth="251.0"
+                              promptText="country"/>
+                <JFXTextField fx:id="bio" layoutX="89.0" layoutY="210.0" prefHeight="25.0" prefWidth="251.0"
+                              promptText="bio"/>
+                <JFXTextField fx:id="birthDate" layoutX="364.0" layoutY="14.0" prefHeight="25.0" prefWidth="169.0"
+                              promptText="birthDate"/>
+                <JFXTextField fx:id="userGender" layoutX="364.0" layoutY="48.0" prefHeight="25.0" prefWidth="169.0"
+                              promptText="userGender"/>
+                <JFXTextField fx:id="profileImage" layoutX="358.0" layoutY="84.0" prefHeight="25.0" prefWidth="169.0"
+                              promptText="profileImage"/>
+                <JFXTextField fx:id="userStatus" layoutX="358.0" layoutY="129.0" prefHeight="25.0" prefWidth="169.0"
+                              promptText="userStatus"/>
+                <JFXTextField fx:id="currentlyLoggedIn" layoutX="358.0" layoutY="169.0" prefHeight="25.0"
+                              prefWidth="169.0" promptText="currentlyLoggedIn"/>
+            </children>
+        </Pane>
+    </children>
 </AnchorPane>
