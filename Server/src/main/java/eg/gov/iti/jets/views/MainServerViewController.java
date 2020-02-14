@@ -1,8 +1,8 @@
 package eg.gov.iti.jets.views;
 
 import com.jfoenix.controls.JFXButton;
-import com.jfoenix.controls.JFXTextField;
 import eg.gov.iti.jets.controllers.MainServerController;
+import eg.gov.iti.jets.models.network.RMIConnection;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -53,11 +53,6 @@ public class MainServerViewController implements Initializable {
     @FXML
     private Circle serverStatusCircle;
 
-    @FXML
-    private JFXTextField internetAddressTf;
-
-    @FXML
-    private JFXTextField portNumberTf;
 
     private boolean serviceRunning = true;
     private MainServerController mainServerController;
@@ -119,17 +114,17 @@ public class MainServerViewController implements Initializable {
     }
 
     private void startService() {
+        RMIConnection.getInstance().startConnection();
         serverStatusBtn.setText("Service Running          ");
         serverStatusCircle.setFill(Color.LIGHTGREEN);
         dashboardBtn.setDisable(false);
         usersBtn.setDisable(false);
         announcementsBtn.setDisable(false);
-        internetAddressTf.setDisable(true);
-        portNumberTf.setDisable(true);
         serviceRunning = true;
     }
 
     private void stopService() {
+        RMIConnection.getInstance().stopConnection();
         tabPane.getSelectionModel().select(welcomeTab);
         title.setText("Chat Application Service");
         serverStatusBtn.setText("Service Stopped          ");
@@ -137,8 +132,6 @@ public class MainServerViewController implements Initializable {
         dashboardBtn.setDisable(true);
         usersBtn.setDisable(true);
         announcementsBtn.setDisable(true);
-        internetAddressTf.setDisable(false);
-        portNumberTf.setDisable(false);
         serviceRunning = false;
     }
 
