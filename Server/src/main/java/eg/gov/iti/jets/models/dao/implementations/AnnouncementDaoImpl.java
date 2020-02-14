@@ -152,6 +152,33 @@ public class AnnouncementDaoImpl extends UnicastRemoteObject implements Announce
         return result;
     }
 
+    @Override
+    public List<Announcement> getAllAnnouncements() {
+        List<Announcement> announcements = new ArrayList<>();
+        Connection connection = DBConnection.getInstance().getConnection();
+        int announcementID = 0;
+        String content = null;
+        Timestamp announcTimestamp = null;
+
+        String selectSQL = "SELECT *  \n" +
+                "FROM ANNOUNCEMENT ";
+        try (PreparedStatement preparedStatement = connection.prepareStatement(selectSQL)) {
+            ResultSet resultSet = preparedStatement.executeQuery();
+            while (resultSet.next()) {
+                announcementID = resultSet.getInt(1);
+                content = resultSet.getString(2);
+                announcTimestamp = resultSet.getTimestamp(3);
+                Announcement announcement = new Announcement(announcementID, content, announcTimestamp.toLocalDateTime());
+                announcements.add(announcement);
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+
+        return announcements;
+    }
+
+
     /*public static void main(String[]args){
         DBConnection.getInstance().initConnection();
         System.out.println(Instant.now());

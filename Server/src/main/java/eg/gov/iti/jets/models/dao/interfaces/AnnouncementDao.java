@@ -22,4 +22,6 @@ public interface AnnouncementDao extends Remote {
     // Delete
     boolean deleteAnnouncement(int announcementId) throws RemoteException;
 
+    List<Announcement> getAllAnnouncements() throws RemoteException;
+
 }
