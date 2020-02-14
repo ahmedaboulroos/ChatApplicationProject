@@ -26,24 +26,20 @@ import java.util.List;
 
 public class UserDaoImpl extends UnicastRemoteObject implements UserDao {
 
+    private static UserDaoImpl instance;
+
     public UserDaoImpl() throws RemoteException {
     }
 
-    public static void main(String[] args) throws RemoteException {
-        UserDaoImpl userDao = new UserDaoImpl();
-        DBConnection.getInstance().initConnection();
-        User user = new User("0137", "555");
-        System.out.println(userDao.createUser(user));
-        /*System.out.println(userDao.getUser("012"));
-        System.out.println(userDao.getAllUsers());
-        System.out.println(userDao.getUserRelationships(5));
-        System.out.println(userDao.getUserSingleChats(5));
-        System.out.println(userDao.deleteUser(5));
-        System.out.println(userDao.getUserGroups(6));*/
-        user.setEmail("123@456.com");
-        System.out.println(userDao.updateUser(user));
-        System.out.println(user);
-        DBConnection.getInstance().stopConnection();
+    public static UserDao getInstance() {
+        if (instance == null) {
+            try {
+                instance = new UserDaoImpl();
+            } catch (RemoteException e) {
+                e.printStackTrace();
+            }
+        }
+        return instance;
     }
 
     @Override

@@ -2,25 +2,34 @@ package eg.gov.iti.jets.models.dao.implementations;
 
 import eg.gov.iti.jets.models.dao.interfaces.SingleChatDao;
 import eg.gov.iti.jets.models.entities.SingleChat;
-import eg.gov.iti.jets.models.entities.SingleChatMessage;
 import eg.gov.iti.jets.models.entities.User;
-import eg.gov.iti.jets.models.entities.enums.UserGender;
-import eg.gov.iti.jets.models.entities.enums.UserStatus;
-import eg.gov.iti.jets.models.persistence.DBConnection;
-import javafx.embed.swing.SwingFXUtils;
-import javafx.scene.image.Image;
 
-import javax.imageio.ImageIO;
-import java.awt.image.BufferedImage;
-import java.io.IOException;
-import java.io.InputStream;
-import java.sql.*;
-import java.time.LocalDate;
-import java.util.ArrayList;
+import java.rmi.RemoteException;
+import java.rmi.server.UnicastRemoteObject;
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.util.List;
 
-public class SingleChatDaoImpl implements SingleChatDao {
+public class SingleChatDaoImpl extends UnicastRemoteObject implements SingleChatDao {
     private static Connection connection;
+
+    private static SingleChatDaoImpl instance;
+
+    protected SingleChatDaoImpl() throws RemoteException {
+    }
+
+    public static SingleChatDao getInstance() {
+        if (instance == null) {
+            try {
+                instance = new SingleChatDaoImpl();
+            } catch (RemoteException e) {
+                e.printStackTrace();
+            }
+        }
+        return instance;
+    }
 
 //    public static void main(String[] args) {
 //        DBConnection.getInstance().initConnection();

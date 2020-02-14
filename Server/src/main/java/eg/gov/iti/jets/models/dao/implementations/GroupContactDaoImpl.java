@@ -13,9 +13,21 @@ import java.sql.SQLException;
 
 public class GroupContactDaoImpl extends UnicastRemoteObject implements GroupContactDao {
 
+    private static GroupContactDaoImpl instance;
+
     protected GroupContactDaoImpl() throws RemoteException {
     }
 
+    public static GroupContactDao getInstance() {
+        if (instance == null) {
+            try {
+                instance = new GroupContactDaoImpl();
+            } catch (RemoteException e) {
+                e.printStackTrace();
+            }
+        }
+        return instance;
+    }
 
     @Override
     public boolean createGroupContact(GroupContact groupContact) {
@@ -42,7 +54,6 @@ public class GroupContactDaoImpl extends UnicastRemoteObject implements GroupCon
 
         return flag;
     }
-
 
     @Override
     public GroupContact getGroupContact(int groupContactId) {
@@ -97,7 +108,6 @@ public class GroupContactDaoImpl extends UnicastRemoteObject implements GroupCon
         }
         return flag;
     }
-
 
     @Override
     public boolean deleteGroupContact(int groupContactId) {

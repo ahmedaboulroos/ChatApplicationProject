@@ -14,20 +14,20 @@ import java.sql.SQLException;
 
 public class AnnouncementDeliveryDaoImpl extends UnicastRemoteObject implements AnnouncementDeliveryDao {
 
-    private static AnnouncementDeliveryDao announcementDeliveryDao;
+    private static AnnouncementDeliveryDao instance;
 
     protected AnnouncementDeliveryDaoImpl() throws RemoteException {
     }
 
     public static AnnouncementDeliveryDao getInstance() {
-        if (announcementDeliveryDao == null) {
+        if (instance == null) {
             try {
-                announcementDeliveryDao = new AnnouncementDeliveryDaoImpl();
+                instance = new AnnouncementDeliveryDaoImpl();
             } catch (RemoteException e) {
                 e.printStackTrace();
             }
         }
-        return announcementDeliveryDao;
+        return instance;
     }
 
     @Override

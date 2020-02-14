@@ -25,10 +25,21 @@ import java.util.List;
 
 public class GroupChatDaoImpl extends UnicastRemoteObject implements GroupChatDao {
 
+    private static GroupChatDaoImpl instance;
+
     protected GroupChatDaoImpl() throws RemoteException {
     }
 
-
+    public static GroupChatDao getInstance() {
+        if (instance == null) {
+            try {
+                instance = new GroupChatDaoImpl();
+            } catch (RemoteException e) {
+                e.printStackTrace();
+            }
+        }
+        return instance;
+    }
 
     @Override
     public boolean createGroupChat(GroupChat groupChat) {

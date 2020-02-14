@@ -14,20 +14,20 @@ import java.util.List;
 
 public class AnnouncementDaoImpl extends UnicastRemoteObject implements AnnouncementDao {
 
-    private static AnnouncementDao announcementDao;
+    private static AnnouncementDao instance;
 
     protected AnnouncementDaoImpl() throws RemoteException {
     }
 
     public static AnnouncementDao getInstance() {
-        if (announcementDao == null) {
+        if (instance == null) {
             try {
-                announcementDao = new AnnouncementDaoImpl();
+                instance = new AnnouncementDaoImpl();
             } catch (RemoteException e) {
                 e.printStackTrace();
             }
         }
-        return announcementDao;
+        return instance;
     }
 
     @Override

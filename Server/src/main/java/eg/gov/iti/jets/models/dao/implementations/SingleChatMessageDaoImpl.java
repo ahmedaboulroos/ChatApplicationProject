@@ -2,28 +2,28 @@ package eg.gov.iti.jets.models.dao.implementations;
 
 import eg.gov.iti.jets.models.dao.interfaces.SingleChatMessageDao;
 import eg.gov.iti.jets.models.entities.SingleChatMessage;
-import eg.gov.iti.jets.models.persistence.DBConnection;
 
+import java.rmi.RemoteException;
+import java.rmi.server.UnicastRemoteObject;
 import java.sql.*;
-import java.time.LocalDateTime;
 
-public class SingleChatMessageDaoImpl implements SingleChatMessageDao {
+public class SingleChatMessageDaoImpl extends UnicastRemoteObject implements SingleChatMessageDao {
     private static Connection connection;
 
-    public static void main(String[] args) {
+    private static SingleChatMessageDaoImpl instance;
 
-        DBConnection.getInstance().initConnection();
-        connection = DBConnection.getInstance().getConnection();
+    protected SingleChatMessageDaoImpl() throws RemoteException {
+    }
 
-
-        SingleChatMessageDaoImpl ss = new SingleChatMessageDaoImpl();
-
-        LocalDateTime datetime1 = LocalDateTime.of(2017, 1, 14, 10, 34);
-        SingleChatMessage ob = new SingleChatMessage(1, 124,
-                "rrrr", datetime1);
-        boolean falg = ss.updateSingleChatMessage(ob);
-        System.out.println(falg);
-
+    public static SingleChatMessageDao getInstance() {
+        if (instance == null) {
+            try {
+                instance = new SingleChatMessageDaoImpl();
+            } catch (RemoteException e) {
+                e.printStackTrace();
+            }
+        }
+        return instance;
     }
 
     @Override

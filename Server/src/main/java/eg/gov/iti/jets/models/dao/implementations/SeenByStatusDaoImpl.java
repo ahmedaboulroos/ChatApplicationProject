@@ -17,6 +17,19 @@ public class SeenByStatusDaoImpl extends UnicastRemoteObject implements SeenBySt
     protected SeenByStatusDaoImpl() throws RemoteException {
     }
 
+    private static SeenByStatusDaoImpl instance;
+
+    public static SeenByStatusDao getInstance() {
+        if (instance == null) {
+            try {
+                instance = new SeenByStatusDaoImpl();
+            } catch (RemoteException e) {
+                e.printStackTrace();
+            }
+        }
+        return instance;
+    }
+
     /*
         public static void main(String[] args) {
             DBConnection.getInstance().initConnection();

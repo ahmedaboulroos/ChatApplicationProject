@@ -14,19 +14,23 @@ import java.util.List;
 
 public class GroupChatMessageDaoImpl extends UnicastRemoteObject implements GroupChatMessageDao {
 
+    private static GroupChatMessageDaoImpl instance;
+
     protected GroupChatMessageDaoImpl() throws RemoteException {
     }
 
-    /*  public static  void  main(String[] args){
-          DBConnection.getInstance().initConnection();
-          GroupChatMessageDaoImpl groupChatMessageDaoImp= new GroupChatMessageDaoImpl();
-          GroupChatMessage sm= new GroupChatMessage(26,"nour");
-          groupChatMessageDaoImp.createGroupChatMessage(sm);
+    public static GroupChatMessageDaoImpl getInstance() {
+        if (instance == null) {
+            try {
+                instance = new GroupChatMessageDaoImpl();
+            } catch (RemoteException e) {
+                e.printStackTrace();
+            }
+        }
+        return instance;
 
+    }
 
-  //        groupChatMessageDaoImp.getGroupChatMessage(12);
-
-      }*/
     @Override
     public boolean createGroupChatMessage(GroupChatMessage groupChatMessage) {
 

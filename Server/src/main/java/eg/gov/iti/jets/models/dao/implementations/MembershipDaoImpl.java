@@ -11,36 +11,34 @@ import java.rmi.server.UnicastRemoteObject;
 import java.sql.*;
 
 public class MembershipDaoImpl extends UnicastRemoteObject implements MembershipDao {
-    private static Connection connection;
+
+    private static Connection connection = DBConnection.getInstance().getConnection();
+
+    private static MembershipDaoImpl instance;
 
     protected MembershipDaoImpl() throws RemoteException {
     }
 
-    public static void main(String[] args) throws RemoteException {
-
-        DBConnection.getInstance().initConnection();
-        connection = DBConnection.getInstance().getConnection();
-        MembershipDaoImpl obj = new MembershipDaoImpl();
-        Membership ref = new Membership(125, 1);
-        Membership refff = new Membership(125, 1);
-        boolean flag = obj.createMembership(ref);
-
-
+    public static MembershipDao getInstance() {
+        if (instance == null) {
+            try {
+                instance = new MembershipDaoImpl();
+            } catch (RemoteException e) {
+                e.printStackTrace();
+            }
+        }
+        return instance;
     }
 
     @Override
     public boolean createMembership(Membership membership) {
-
         try {
-
-
             String sql = "INSERT INTO MEMBERSHIP (MEMBERSHIP_ID,  USER_ID, GROUP_CHAT_ID, JOINED_TIMESTAMP) VALUES (SEQ_MEMBERSHIP_ID.NEXTVAL,?,?,?)";
 
             PreparedStatement stmt = connection.prepareStatement(sql);
             stmt.setInt(1, membership.getUserId());
             stmt.setInt(2, membership.getGroupChatId());
             stmt.setTimestamp(3, Timestamp.valueOf(membership.getJoinedTimestamp()));
-
 
             int affectedRow = stmt.executeUpdate();
             if (affectedRow > 0) {
@@ -80,19 +78,24 @@ public class MembershipDaoImpl extends UnicastRemoteObject implements Membership
 
     @Override
     public User getUser(int membershipId) {
-        Membership membership = getMembership(membershipId);
-        User user = UserDaoImpl.getInstance().getUser(membership.getUserId());
-
-        return user;
+        try {
+            Membership membership = getMembership(membershipId);
+            return UserDaoImpl.getInstance().getUser(membership.getUserId());
+        } catch (RemoteException e) {
+            e.printStackTrace();
+        }
+        return null;
     }
-
 
     @Override
     public GroupChat getGroupChat(int membershipId) {
-        Membership membership = getMembership(membershipId);
-        GroupChat groupChat = GroupChatDaoImpl.getInstance().getGroupChat(membership.getGroupChatId());
-
-        return groupChat;
+        try {
+            Membership membership = getMembership(membershipId);
+            return GroupChatDaoImpl.getInstance().getGroupChat(membership.getGroupChatId());
+        } catch (RemoteException e) {
+            e.printStackTrace();
+        }
+        return null;
     }
 
     @Override

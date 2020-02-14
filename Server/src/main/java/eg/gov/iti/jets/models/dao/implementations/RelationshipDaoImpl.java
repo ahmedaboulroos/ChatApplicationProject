@@ -17,19 +17,20 @@ import java.util.List;
 
 public class RelationshipDaoImpl extends UnicastRemoteObject implements RelationshipDao {
 
-//    public static void main(String[] args) throws RemoteException {
-//        RelationshipDaoImpl relationshipDao = new RelationshipDaoImpl();
-//        DBConnection.getInstance().initConnection();
-//        /*Relationship relationship = new Relationship(5,41);
-//        System.out.println(relationshipDao.createRelationship(relationship));
-//        System.out.println(relationship);*/
-//        //System.out.println(relationshipDao.deleteRelationship(43));
-//        //System.out.println(relationshipDao.getRelationshipBetween(41,2));
-//        System.out.println(relationshipDao.getRelationship(42));
-//        DBConnection.getInstance().stopConnection();
-//    }
+    private static RelationshipDaoImpl instance;
 
     protected RelationshipDaoImpl() throws RemoteException {
+    }
+
+    public static RelationshipDao getInstance() {
+        if (instance == null) {
+            try {
+                instance = new RelationshipDaoImpl();
+            } catch (RemoteException e) {
+                e.printStackTrace();
+            }
+        }
+        return instance;
     }
 
     @Override
