@@ -14,6 +14,8 @@ public interface AnnouncementDao extends Remote {
     // Read
     Announcement getAnnouncement(int announcementId) throws RemoteException;
 
+    List<Announcement> getAllAnnouncements() throws RemoteException;
+
     List<AnnouncementDelivery> getAnnouncementDeliveries(int announcementId) throws RemoteException;
 
     // Update
@@ -21,7 +23,5 @@ public interface AnnouncementDao extends Remote {
 
     // Delete
     boolean deleteAnnouncement(int announcementId) throws RemoteException;
-
-    List<Announcement> getAllAnnouncements() throws RemoteException;
 
 }
