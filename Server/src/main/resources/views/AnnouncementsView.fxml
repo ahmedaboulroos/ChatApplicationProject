@@ -21,7 +21,8 @@
                   <Font size="18.0"/>
                </font>
             </JFXButton>
-            <TableView fx:id="announcementsTv" layoutX="74.0" layoutY="152.0" prefHeight="200.0" prefWidth="469.0">
+            <TableView fx:id="announcementsTv" layoutX="74.0" layoutY="152.0" onMouseClicked="#handleAnnouncementsMc"
+                       prefHeight="200.0" prefWidth="469.0">
                <columns>
                   <TableColumn prefWidth="75.0" text="C1"/>
                   <TableColumn prefWidth="75.0" text="C2"/>
