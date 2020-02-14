@@ -26,7 +26,6 @@ public class UserDaoImpl extends UnicastRemoteObject implements UserDao {
     protected UserDaoImpl() throws RemoteException {
     }
 
-
     @Override
     public boolean createUser(User user) {
         Connection connection = DBConnection.getInstance().getConnection();
@@ -144,6 +143,7 @@ public class UserDaoImpl extends UnicastRemoteObject implements UserDao {
         }
         return singleChats;
     }
+
     @Override
     public List<Membership> getUserGroupChatsMembership(int userId) {
 
