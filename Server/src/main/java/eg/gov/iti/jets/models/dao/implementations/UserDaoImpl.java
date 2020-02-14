@@ -2,6 +2,7 @@ package eg.gov.iti.jets.models.dao.implementations;
 
 import eg.gov.iti.jets.models.dao.interfaces.UserDao;
 import eg.gov.iti.jets.models.entities.*;
+import eg.gov.iti.jets.models.entities.enums.AnnouncementDeliveryStatus;
 import eg.gov.iti.jets.models.entities.enums.RelationshipStatus;
 import eg.gov.iti.jets.models.entities.enums.UserGender;
 import eg.gov.iti.jets.models.entities.enums.UserStatus;
@@ -11,6 +12,8 @@ import javafx.scene.image.Image;
 
 import javax.imageio.ImageIO;
 import java.awt.image.BufferedImage;
+import java.io.ByteArrayInputStream;
+import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.rmi.RemoteException;
@@ -29,13 +32,16 @@ public class UserDaoImpl extends UnicastRemoteObject implements UserDao {
     public static void main(String[] args) throws RemoteException {
         UserDaoImpl userDao = new UserDaoImpl();
         DBConnection.getInstance().initConnection();
-        System.out.println(userDao.createUser(new User("0124", "555")));
-        System.out.println(userDao.getUser("012"));
+        User user = new User("0134", "555");
+        System.out.println(userDao.createUser(user));
+        /*System.out.println(userDao.getUser("012"));
         System.out.println(userDao.getAllUsers());
         System.out.println(userDao.getUserRelationships(5));
         System.out.println(userDao.getUserSingleChats(5));
         System.out.println(userDao.deleteUser(5));
-        System.out.println(userDao.getUserGroups(6));
+        System.out.println(userDao.getUserGroups(6));*/
+        user.setEmail("123@456.com");
+        System.out.println(userDao.updateUser(user));
         DBConnection.getInstance().stopConnection();
     }
 
@@ -44,12 +50,23 @@ public class UserDaoImpl extends UnicastRemoteObject implements UserDao {
         Connection connection = DBConnection.getInstance().getConnection();
         int result = 0;
         try {
-            PreparedStatement preparedStatement = connection.prepareStatement(
-                    "insert into APP_USER (USER_ID, PHONE_NUMBER, PASSWORD)" +
-                            " values (SEQ_USER_ID.nextval,?,?)");
-            preparedStatement.setString(1, user.getPhoneNumber());
-            preparedStatement.setString(2, user.getPassword());
-            result = preparedStatement.executeUpdate();
+            PreparedStatement preparedStatement = connection.prepareStatement("select SEQ_USER_ID.nextval from DUAL");
+            ResultSet resultSet = preparedStatement.executeQuery();
+            if (resultSet.next()) {
+                int userId = resultSet.getInt(1);
+                user.setUserId(userId);
+                preparedStatement = connection.prepareStatement(
+                        "insert into APP_USER (USER_ID, PHONE_NUMBER, PASSWORD)" +
+                                " values (?,?,?)");
+                preparedStatement.setInt(1, userId);
+                preparedStatement.setString(2, user.getPhoneNumber());
+                preparedStatement.setString(3, user.getPassword());
+                result = preparedStatement.executeUpdate();
+                preparedStatement = connection.prepareStatement("select USER_ID from APP_USER" +
+                        " where PHONE_NUMBER = '" + user.getPhoneNumber() + "'");
+                result = preparedStatement.executeUpdate();
+            }
+            resultSet.close();
             preparedStatement.close();
         } catch (SQLException e) {
             e.printStackTrace();
@@ -156,6 +173,7 @@ public class UserDaoImpl extends UnicastRemoteObject implements UserDao {
         }
         return singleChats;
     }
+
     @Override
     public List<Membership> getUserGroupChatsMembership(int userId) {
 
@@ -202,9 +220,20 @@ public class UserDaoImpl extends UnicastRemoteObject implements UserDao {
 
     @Override
     public List<AnnouncementDelivery> getUserAnnouncementDeliveries(int userId) {
-        return null;
+        Connection connection = DBConnection.getInstance().getConnection();
+        List<AnnouncementDelivery> announcementDeliveries = null;
+        try {
+            PreparedStatement preparedStatement = connection.prepareStatement(
+                    "select * from ANNOUNCEMENT_DELIVERY where USER_ID = " + userId);
+            ResultSet resultSet = preparedStatement.executeQuery();
+            announcementDeliveries = getAnnouncementDeliveriesFromResultSet(resultSet);
+            resultSet.close();
+            preparedStatement.close();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return announcementDeliveries;
     }
-
 
     @Override
     public List<Group> getUserGroups(int userId) {
@@ -225,7 +254,69 @@ public class UserDaoImpl extends UnicastRemoteObject implements UserDao {
 
     @Override
     public boolean updateUser(User user) {
-        return false;
+        Connection connection = DBConnection.getInstance().getConnection();
+        int result = 0;
+        try {
+            Date birthDate = user.getBirthDate() == null ?
+                    null : Date.valueOf(user.getBirthDate());
+            String userGender = user.getUserGender() == null ?
+                    null : user.getUserGender().toString();
+            //InputStream inputStream = getInputStreamFromImage(user.getProfileImage());
+            String userStatus = user.getUserStatus() == null ?
+                    null : user.getUserStatus().toString();
+            String currentlyLoggedIn = user.isCurrentlyLoggedIn() ? "ONLINE" : "OFFLINE";
+            PreparedStatement preparedStatement = connection.prepareStatement(
+                    "update APP_USER set" +
+                            " PHONE_NUMBER = ?," +
+                            " USERNAME = ?," +
+                            " PASSWORD = ?," +
+                            " EMAIL = ?," +
+                            " COUNTRY = ?," +
+                            " BIO = ?," +
+                            " BIRTH_DATE = ?," +
+                            " USER_GENDER = ?," +
+                            " USER_STATUS = ?," +
+                            " CURRENTLY_LOGGED_IN = ?" +
+                            //", PROFILE_IMAGE = ?" +
+                            " where USER_ID = " + user.getUserId());
+            preparedStatement.setString(1, user.getPhoneNumber());
+            preparedStatement.setString(2, user.getUsername());
+            preparedStatement.setString(3, user.getPassword());
+            preparedStatement.setString(4, user.getEmail());
+            preparedStatement.setString(5, user.getCountry());
+            preparedStatement.setString(6, user.getBio());
+            preparedStatement.setDate(7, birthDate);
+            preparedStatement.setString(8, userGender);
+            preparedStatement.setString(9, userStatus);
+            preparedStatement.setString(10, currentlyLoggedIn);
+            /*preparedStatement.setBinaryStream(11, (InputStream) inputStream,
+                    (int)(inputStream.length()));*/
+            result = preparedStatement.executeUpdate();
+            preparedStatement.close();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return result == 1;
+    }
+
+    private InputStream getInputStreamFromImage(Image profileImage) {
+        BufferedImage bImage = SwingFXUtils.fromFXImage(profileImage, null);
+        ByteArrayOutputStream baos = null;
+        try {
+            baos = new ByteArrayOutputStream();
+            ImageIO.write(bImage, "jpg", baos);
+        } catch (IOException e) {
+            e.printStackTrace();
+        } finally {
+            try {
+                if (baos != null) {
+                    baos.close();
+                }
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }
+        return new ByteArrayInputStream(baos.toByteArray());
     }
 
     @Override
@@ -320,8 +411,8 @@ public class UserDaoImpl extends UnicastRemoteObject implements UserDao {
         List<Relationship> relationships = new ArrayList<>();
         Relationship relationship;
         while (resultSet.next()) {
-            RelationshipStatus relationshipStatus = resultSet.getString(4) == null ?
-                    null : RelationshipStatus.valueOf(resultSet.getString(4).toUpperCase());
+            RelationshipStatus relationshipStatus =
+                    RelationshipStatus.valueOf(resultSet.getString(4));
             relationship = new Relationship(resultSet.getInt(1),
                     resultSet.getInt(2),
                     resultSet.getInt(3),
@@ -360,6 +451,25 @@ public class UserDaoImpl extends UnicastRemoteObject implements UserDao {
         }
         if (!groups.isEmpty())
             return groups;
+        else
+            return null;
+    }
+
+    private List<AnnouncementDelivery> getAnnouncementDeliveriesFromResultSet(ResultSet resultSet) throws SQLException {
+        List<AnnouncementDelivery> announcementDeliveries = new ArrayList<>();
+        AnnouncementDelivery announcementDelivery;
+        while (resultSet.next()) {
+            AnnouncementDeliveryStatus announcementDeliveryStatus =
+                    AnnouncementDeliveryStatus.valueOf(resultSet.getString(4));
+            announcementDelivery = new AnnouncementDelivery(
+                    resultSet.getInt(1),
+                    resultSet.getInt(2),
+                    resultSet.getInt(3),
+                    announcementDeliveryStatus);
+            announcementDeliveries.add(announcementDelivery);
+        }
+        if (!announcementDeliveries.isEmpty())
+            return announcementDeliveries;
         else
             return null;
     }

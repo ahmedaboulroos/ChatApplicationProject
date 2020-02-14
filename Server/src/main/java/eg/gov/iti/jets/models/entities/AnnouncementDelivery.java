@@ -54,4 +54,14 @@ public class AnnouncementDelivery implements Serializable {
     public void setAnnouncementDeliveryStatus(AnnouncementDeliveryStatus announcementDeliveryStatus) {
         this.announcementDeliveryStatus = announcementDeliveryStatus;
     }
+
+    @Override
+    public String toString() {
+        return "AnnouncementDelivery{" +
+                "announcementDeliveryId=" + announcementDeliveryId +
+                ", userId=" + userId +
+                ", announcementId=" + announcementId +
+                ", announcementDeliveryStatus=" + announcementDeliveryStatus +
+                '}';
+    }
 }
