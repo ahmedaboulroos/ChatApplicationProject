@@ -2,6 +2,7 @@ package eg.gov.iti.jets.views;
 
 import com.jfoenix.controls.JFXButton;
 import com.jfoenix.controls.JFXTextField;
+import eg.gov.iti.jets.controllers.MainServerController;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -59,15 +60,12 @@ public class MainServerViewController implements Initializable {
     private JFXTextField portNumberTf;
 
     private boolean serviceRunning = true;
+    private MainServerController mainServerController;
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
         try {
-           ////////////////////////////////////////////////////////
-        //  Parent welcomeScene = FXMLLoader.load(getClass().getResource("/views/FXMLDocument.fxml"));
-
-            ///////////////////////////////////////////////////////
-          Parent welcomeScene = FXMLLoader.load(getClass().getResource("/views/WelcomeView.fxml"));
+            Parent welcomeScene = FXMLLoader.load(getClass().getResource("/views/WelcomeView.fxml"));
             welcomeTab.setContent(welcomeScene);
             stopService();
         } catch (IOException e) {
@@ -77,23 +75,38 @@ public class MainServerViewController implements Initializable {
 
     @FXML
     void handleDashboardBtnClick(ActionEvent event) {
-        tabPane.getSelectionModel().select(dashboardTab);
-        title.setText("Dashboard");
-
+        try {
+            Parent announcementScene = FXMLLoader.load(getClass().getResource("/views/DashboardView.fxml"));
+            announcementsTab.setContent(announcementScene);
+            tabPane.getSelectionModel().select(dashboardTab);
+            title.setText("Dashboard");
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 
     @FXML
     void handleUsersBtnClick(ActionEvent event) {
-        tabPane.getSelectionModel().select(usersTab);
-        title.setText("System Users");
-
+        try {
+            Parent announcementScene = FXMLLoader.load(getClass().getResource("/views/UsersView.fxml"));
+            announcementsTab.setContent(announcementScene);
+            tabPane.getSelectionModel().select(usersTab);
+            title.setText("System Users");
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 
     @FXML
     void handleAnnouncementsBtnClick(ActionEvent event) {
-        tabPane.getSelectionModel().select(announcementsTab);
-        title.setText("Announcements");
-
+        try {
+            Parent announcementScene = FXMLLoader.load(getClass().getResource("/views/AnnouncementsView.fxml"));
+            announcementsTab.setContent(announcementScene);
+            tabPane.getSelectionModel().select(announcementsTab);
+            title.setText("Announcements");
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 
     @FXML
@@ -129,8 +142,8 @@ public class MainServerViewController implements Initializable {
         serviceRunning = false;
     }
 
-    public void setController() {
-
+    public void setController(MainServerController mainServerController) {
+        this.mainServerController = mainServerController;
     }
 
 }
