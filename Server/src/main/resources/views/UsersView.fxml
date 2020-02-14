@@ -1,6 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-
 <?import com.jfoenix.controls.*?>
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.AnchorPane?>
@@ -12,8 +11,8 @@
             <children>
                 <TableView prefHeight="272.0" prefWidth="600.0">
                     <columns>
-                        <TableColumn fx:id="phoneNoCol" prefWidth="116.00000303983688" text="phone Number"/>
-                        <TableColumn fx:id="userNameCol" minWidth="6.4000244140625" prefWidth="96.0" text="user name"/>
+                        <TableColumn fx:id="phoneNoCol" prefWidth="116.00000303983688" text="Phone No."/>
+                        <TableColumn fx:id="userNameCol" minWidth="6.4000244140625" prefWidth="96.0" text="Username"/>
                         <TableColumn fx:id="passCol" prefWidth="75.0" text="Password"/>
                         <TableColumn fx:id="EmailCol" prefWidth="75.0" text="Email"/>
                     </columns>
@@ -22,28 +21,23 @@
         </Pane>
         <Pane prefHeight="257.0" prefWidth="600.0">
             <children>
-                <JFXTextField fx:id="phoneNo" layoutX="89.0" layoutY="14.0" prefHeight="25.0" prefWidth="251.0"
+                <JFXTextField fx:id="phoneNoTf" layoutX="89.0" layoutY="14.0" prefHeight="25.0" prefWidth="251.0"
                               promptText="phoneNo"/>
-                <JFXTextField fx:id="userName" layoutX="89.0" layoutY="48.0" prefHeight="25.0" prefWidth="251.0"
+                <JFXTextField fx:id="usernameTf" layoutX="89.0" layoutY="48.0" prefHeight="25.0" prefWidth="251.0"
                               promptText="userName"/>
-                <JFXTextField fx:id="Password" layoutX="89.0" layoutY="84.0" prefHeight="25.0" prefWidth="251.0"
-                              promptText="Password"/>
-                <JFXTextField fx:id="email" layoutX="89.0" layoutY="129.0" prefHeight="25.0" prefWidth="251.0"
+                <JFXTextField fx:id="passwordTf" layoutX="89.0" layoutY="84.0" prefHeight="25.0" prefWidth="251.0"
+                              promptText="Password" text="password"/>
+                <JFXTextField fx:id="emailTf" layoutX="89.0" layoutY="129.0" prefHeight="25.0" prefWidth="251.0"
                               promptText="email"/>
-                <JFXTextField fx:id="country" layoutX="89.0" layoutY="169.0" prefHeight="25.0" prefWidth="251.0"
+                <JFXTextField fx:id="countryTf" layoutX="89.0" layoutY="169.0" prefHeight="25.0" prefWidth="251.0"
                               promptText="country"/>
-                <JFXTextField fx:id="bio" layoutX="89.0" layoutY="210.0" prefHeight="25.0" prefWidth="251.0"
+                <JFXTextField fx:id="bioTf" layoutX="89.0" layoutY="210.0" prefHeight="25.0" prefWidth="251.0"
                               promptText="bio"/>
-                <JFXTextField fx:id="birthDate" layoutX="364.0" layoutY="14.0" prefHeight="25.0" prefWidth="169.0"
+                <JFXTextField fx:id="birthDateTf" layoutX="364.0" layoutY="14.0" prefHeight="25.0" prefWidth="169.0"
                               promptText="birthDate"/>
-                <JFXTextField fx:id="userGender" layoutX="364.0" layoutY="48.0" prefHeight="25.0" prefWidth="169.0"
+                <JFXTextField fx:id="userGenderTf" layoutX="362.0" layoutY="97.0" prefHeight="25.0" prefWidth="169.0"
                               promptText="userGender"/>
-                <JFXTextField fx:id="profileImage" layoutX="358.0" layoutY="84.0" prefHeight="25.0" prefWidth="169.0"
-                              promptText="profileImage"/>
-                <JFXTextField fx:id="userStatus" layoutX="358.0" layoutY="129.0" prefHeight="25.0" prefWidth="169.0"
-                              promptText="userStatus"/>
-                <JFXTextField fx:id="currentlyLoggedIn" layoutX="358.0" layoutY="169.0" prefHeight="25.0"
-                              prefWidth="169.0" promptText="currentlyLoggedIn"/>
+                <JFXButton fx:id="registerBtn" layoutX="417.0" layoutY="210.0" text="Register"/>
             </children>
         </Pane>
     </children>

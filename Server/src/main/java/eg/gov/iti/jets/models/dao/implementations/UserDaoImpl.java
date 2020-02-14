@@ -32,7 +32,7 @@ public class UserDaoImpl extends UnicastRemoteObject implements UserDao {
     public static void main(String[] args) throws RemoteException {
         UserDaoImpl userDao = new UserDaoImpl();
         DBConnection.getInstance().initConnection();
-        User user = new User("0136", "555");
+        User user = new User("0137", "555");
         System.out.println(userDao.createUser(user));
         /*System.out.println(userDao.getUser("012"));
         System.out.println(userDao.getAllUsers());
@@ -52,16 +52,36 @@ public class UserDaoImpl extends UnicastRemoteObject implements UserDao {
         int result = 0;
         try {
             PreparedStatement preparedStatement = connection.prepareStatement("select SEQ_USER_ID.nextval from DUAL");
+            Date birthDate = user.getBirthDate() == null ?
+                    null : Date.valueOf(user.getBirthDate());
+            String userGender = user.getUserGender() == null ?
+                    null : user.getUserGender().toString();
+            //InputStream inputStream = getInputStreamFromImage(user.getProfileImage());
+            String userStatus = user.getUserStatus() == null ?
+                    null : user.getUserStatus().toString();
+            String currentlyLoggedIn = user.isCurrentlyLoggedIn() ? "ONLINE" : "OFFLINE";
             ResultSet resultSet = preparedStatement.executeQuery();
             if (resultSet.next()) {
                 int userId = resultSet.getInt(1);
                 user.setUserId(userId);
                 preparedStatement = connection.prepareStatement(
-                        "insert into APP_USER (USER_ID, PHONE_NUMBER, PASSWORD)" +
-                                " values (?,?,?)");
+                        "insert into APP_USER (user_id, phone_number, username, " +
+                                "password, email, country, bio, birth_date, user_gender, " +
+                                "user_status, currently_logged_in)" +
+                                " values (?,?,?,?,?,?,?,?,?,?,?)");
                 preparedStatement.setInt(1, userId);
                 preparedStatement.setString(2, user.getPhoneNumber());
-                preparedStatement.setString(3, user.getPassword());
+                preparedStatement.setString(3, user.getUsername());
+                preparedStatement.setString(4, user.getPassword());
+                preparedStatement.setString(5, user.getEmail());
+                preparedStatement.setString(6, user.getCountry());
+                preparedStatement.setString(7, user.getBio());
+                preparedStatement.setDate(8, birthDate);
+                preparedStatement.setString(9, userGender);
+                //TODO: handle sending images to database (convert to blob)
+                //preparedStatement.setBlob(10, null);
+                preparedStatement.setString(10, userStatus);
+                preparedStatement.setString(11, currentlyLoggedIn);
                 result = preparedStatement.executeUpdate();
             }
             resultSet.close();
@@ -316,6 +336,7 @@ public class UserDaoImpl extends UnicastRemoteObject implements UserDao {
                             " USER_GENDER = ?," +
                             " USER_STATUS = ?," +
                             " CURRENTLY_LOGGED_IN = ?" +
+                            //TODO: handle sending images to database (convert to blob)
                             //", PROFILE_IMAGE = ?" +
                             " where USER_ID = " + user.getUserId());
             preparedStatement.setString(1, user.getPhoneNumber());
