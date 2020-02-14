@@ -11,6 +11,7 @@ import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.TableView;
+import javafx.scene.input.MouseEvent;
 
 import java.net.URL;
 import java.rmi.RemoteException;
@@ -44,18 +45,32 @@ public class AnnouncementsViewController implements Initializable {
         Announcement announcement = new Announcement(content);
         try {
             announcementDao.createAnnouncement(announcement);
+            updateAnnouncementsTable();
         } catch (RemoteException e) {
             e.printStackTrace();
         }
         announcementTf.clear();
     }
 
-    void updateAnnouncementsTable() {
-//        announcementDao.getAllAnnouncements();
+    @FXML
+    void handleAnnouncementsMc(MouseEvent event) {
+//        announcementsTv.getSelectionModel().getSelectedItem();
     }
 
-    void updateAnnouncementsDeliveryTable() {
-//        announcementDao.getAnnouncementDeliveries();
+    void updateAnnouncementsTable() {
+        try {
+            System.out.println(announcementDao.getAllAnnouncements());
+        } catch (RemoteException e) {
+            e.printStackTrace();
+        }
+    }
+
+    void updateAnnouncementsDeliveryTable(int id) {
+        try {
+            System.out.println(announcementDao.getAnnouncementDeliveries(id));
+        } catch (RemoteException e) {
+            e.printStackTrace();
+        }
     }
 
 }
