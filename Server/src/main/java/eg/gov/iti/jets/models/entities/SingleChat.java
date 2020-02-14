@@ -41,4 +41,13 @@ public class SingleChat implements Serializable {
     public void setUserTwoId(int userTwoId) {
         this.userTwoId = userTwoId;
     }
+
+    @Override
+    public String toString() {
+        return "SingleChat{" +
+                "singleChatId=" + singleChatId +
+                ", userOneId=" + userOneId +
+                ", userTwoId=" + userTwoId +
+                '}';
+    }
 }

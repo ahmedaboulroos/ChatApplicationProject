@@ -32,7 +32,7 @@ public class UserDaoImpl extends UnicastRemoteObject implements UserDao {
     public static void main(String[] args) throws RemoteException {
         UserDaoImpl userDao = new UserDaoImpl();
         DBConnection.getInstance().initConnection();
-        User user = new User("0134", "555");
+        User user = new User("0136", "555");
         System.out.println(userDao.createUser(user));
         /*System.out.println(userDao.getUser("012"));
         System.out.println(userDao.getAllUsers());
@@ -42,6 +42,7 @@ public class UserDaoImpl extends UnicastRemoteObject implements UserDao {
         System.out.println(userDao.getUserGroups(6));*/
         user.setEmail("123@456.com");
         System.out.println(userDao.updateUser(user));
+        System.out.println(user);
         DBConnection.getInstance().stopConnection();
     }
 
@@ -61,9 +62,6 @@ public class UserDaoImpl extends UnicastRemoteObject implements UserDao {
                 preparedStatement.setInt(1, userId);
                 preparedStatement.setString(2, user.getPhoneNumber());
                 preparedStatement.setString(3, user.getPassword());
-                result = preparedStatement.executeUpdate();
-                preparedStatement = connection.prepareStatement("select USER_ID from APP_USER" +
-                        " where PHONE_NUMBER = '" + user.getPhoneNumber() + "'");
                 result = preparedStatement.executeUpdate();
             }
             resultSet.close();
@@ -211,7 +209,6 @@ public class UserDaoImpl extends UnicastRemoteObject implements UserDao {
         }
         return membershipList;
     }
-
 
     @Override
     public List<GroupChat> getUserGroupChats(int userId) {
