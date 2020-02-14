@@ -42,4 +42,13 @@ public class Announcement implements Serializable {
     public void setAnnouncementId(int announcementId) {
         this.announcementId = announcementId;
     }
+
+    @Override
+    public String toString() {
+        return "Announcement{" +
+                "announcementId=" + announcementId +
+                ", content='" + content + '\'' +
+                ", announcementTimestamp=" + announcementTimestamp +
+                '}';
+    }
 }

@@ -64,4 +64,15 @@ public class GroupChatMessage implements Serializable {
     public void setMessageTimestamp(LocalDateTime messageTimestamp) {
         this.messageTimestamp = messageTimestamp;
     }
+
+    @Override
+    public String toString() {
+        return "GroupChatMessage{" +
+                "groupChatMessageId=" + groupChatMessageId +
+                ", userId=" + userId +
+                ", groupChatId=" + groupChatId +
+                ", content='" + content + '\'' +
+                ", messageTimestamp=" + messageTimestamp +
+                '}';
+    }
 }

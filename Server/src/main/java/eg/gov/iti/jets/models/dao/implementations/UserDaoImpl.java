@@ -32,7 +32,7 @@ public class UserDaoImpl extends UnicastRemoteObject implements UserDao {
     public static void main(String[] args) throws RemoteException {
         UserDaoImpl userDao = new UserDaoImpl();
         DBConnection.getInstance().initConnection();
-        User user = new User("0134", "555");
+        User user = new User("0136", "555");
         System.out.println(userDao.createUser(user));
         /*System.out.println(userDao.getUser("012"));
         System.out.println(userDao.getAllUsers());
@@ -42,6 +42,7 @@ public class UserDaoImpl extends UnicastRemoteObject implements UserDao {
         System.out.println(userDao.getUserGroups(6));*/
         user.setEmail("123@456.com");
         System.out.println(userDao.updateUser(user));
+        System.out.println(user);
         DBConnection.getInstance().stopConnection();
     }
 
@@ -61,9 +62,6 @@ public class UserDaoImpl extends UnicastRemoteObject implements UserDao {
                 preparedStatement.setInt(1, userId);
                 preparedStatement.setString(2, user.getPhoneNumber());
                 preparedStatement.setString(3, user.getPassword());
-                result = preparedStatement.executeUpdate();
-                preparedStatement = connection.prepareStatement("select USER_ID from APP_USER" +
-                        " where PHONE_NUMBER = '" + user.getPhoneNumber() + "'");
                 result = preparedStatement.executeUpdate();
             }
             resultSet.close();
@@ -212,10 +210,51 @@ public class UserDaoImpl extends UnicastRemoteObject implements UserDao {
         return membershipList;
     }
 
-
     @Override
     public List<GroupChat> getUserGroupChats(int userId) {
-        return null;
+        List<Membership> membershipList = getUserGroupChatsMembership(userId);
+        List<GroupChat> groupChatList = new ArrayList<>();
+        // int groupChatId=0;
+        String sql = null;
+        ResultSet rs = null;
+        int id = 0;
+        String tilte = null;
+        String description = null;
+        Image group_image;
+        LocalDateTime creation_time_stamp;
+        Timestamp timestamp = null;
+        InputStream in;
+        Blob blob = null;
+        BufferedImage imagen;
+        PreparedStatement stmt = null;
+        Connection connection = DBConnection.getInstance().getConnection();
+        for (int i = 0; i < membershipList.size(); i++) {
+            sql = "select group_chat_id, title, description, group_image, creation_timestamp from GROUP_CHAT where group_chat_id=?";
+            int groupChatId = membershipList.get(i).getGroupChatId();
+            try (PreparedStatement preparedStatement = stmt = connection.prepareStatement(sql)) {
+                stmt.setInt(1, groupChatId);
+                rs = stmt.executeQuery();
+                if (rs.next()) {
+                    id = rs.getInt("group_chat_id");
+                    tilte = rs.getString("title");
+                    description = rs.getString("description");
+                    blob = rs.getBlob("group_image");
+                    timestamp = rs.getTimestamp("creation_timestamp");
+                }
+                in = blob.getBinaryStream();
+                imagen = ImageIO.read(in);
+                group_image = SwingFXUtils.toFXImage(imagen, null);
+                creation_time_stamp = timestamp.toLocalDateTime();
+                groupChatList.add(new GroupChat(id, tilte, description, group_image, creation_time_stamp));
+            } catch (SQLException e) {
+                e.printStackTrace();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+
+
+        }
+        return groupChatList;
     }//alaa
 
     @Override
