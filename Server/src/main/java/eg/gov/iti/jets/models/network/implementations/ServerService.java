@@ -30,10 +30,10 @@ public class ServerService extends UnicastRemoteObject implements ServerInterfac
     public void login(int userId, ClientInterface client) throws RemoteException {
 
         UserDaoImpl userDao = new UserDaoImpl();
-
+        //User user=userDao.getUser("","");
         User user = userDao.getUser(userId);
         if (user != null) {
-            clients.put(userId, client);
+            clients.put(user.getUserId(), client);
         } else {
             System.out.println("error in login");
         }

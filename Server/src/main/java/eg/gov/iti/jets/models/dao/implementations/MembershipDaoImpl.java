@@ -4,18 +4,32 @@ import eg.gov.iti.jets.models.dao.interfaces.MembershipDao;
 import eg.gov.iti.jets.models.entities.GroupChat;
 import eg.gov.iti.jets.models.entities.Membership;
 import eg.gov.iti.jets.models.entities.User;
+import eg.gov.iti.jets.models.persistence.DBConnection;
 
 import java.rmi.RemoteException;
 import java.rmi.server.UnicastRemoteObject;
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.SQLException;
+import java.sql.Timestamp;
 
 public class MembershipDaoImpl extends UnicastRemoteObject implements MembershipDao {
+
 
     protected MembershipDaoImpl() throws RemoteException {
     }
 
+
     @Override
     public boolean createMembership(Membership membership) {
-        return false;
+
+
+
+
+
+
+
+            return false;
     }
 
     @Override
