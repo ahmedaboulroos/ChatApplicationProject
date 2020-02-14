@@ -41,4 +41,13 @@ public class SeenByStatus implements Serializable {
     public void setUserId(int userId) {
         this.userId = userId;
     }
+
+    @Override
+    public String toString() {
+        return "SeenByStatus{" +
+                "seenByStatusId=" + seenByStatusId +
+                ", groupChatMessageId=" + groupChatMessageId +
+                ", userId=" + userId +
+                '}';
+    }
 }
