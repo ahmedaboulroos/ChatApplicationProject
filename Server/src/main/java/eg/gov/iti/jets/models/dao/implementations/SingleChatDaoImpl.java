@@ -22,23 +22,23 @@ import java.util.List;
 public class SingleChatDaoImpl implements SingleChatDao {
     private static Connection connection;
 
-    public static void main(String[] args) {
-        DBConnection.getInstance().initConnection();
-        connection = DBConnection.getInstance().getConnection();
-        SingleChatDaoImpl obj = new SingleChatDaoImpl();
-        //SingleChat singleChat = new SingleChat(1, 123, 124);
-       // SingleChat.createSingleChat(singleChat);
-       // SingleChat.deleteSingleChat(3);
-//        SingleChat ss= obj.getSingleChat(1);
-//        System.out.println(ss.getUserOneId());
-//        SingleChat ob = new SingleChat(1, 123, 125);
-//        boolean falg = obj .updateSingleChat(ob);
-//        System.out.println(falg);
-        List<SingleChat> singlechats = new ArrayList<>();
-        singlechats=obj.getSingleChatMessages(1);
-
-        System.out.println("First element of the ArrayList: "+singlechats.get(0));
-    }
+//    public static void main(String[] args) {
+//        DBConnection.getInstance().initConnection();
+//        connection = DBConnection.getInstance().getConnection();
+//        SingleChatDaoImpl obj = new SingleChatDaoImpl();
+//        //SingleChat singleChat = new SingleChat(1, 123, 124);
+//       // SingleChat.createSingleChat(singleChat);
+//       // SingleChat.deleteSingleChat(3);
+////        SingleChat ss= obj.getSingleChat(1);
+////        System.out.println(ss.getUserOneId());
+////        SingleChat ob = new SingleChat(1, 123, 125);
+////        boolean falg = obj .updateSingleChat(ob);
+////        System.out.println(falg);
+//        List<SingleChat> singlechats = new ArrayList<>();
+//        singlechats=obj.getSingleChatMessages(1);
+//
+//        System.out.println("First element of the ArrayList: "+singlechats.get(0));
+//    }
 
     @Override
     public boolean createSingleChat(SingleChat singleChat) {
@@ -97,20 +97,8 @@ public class SingleChatDaoImpl implements SingleChatDao {
 
     @Override
     public List<User> getSingleChatTwoUsers(int singleChatId) {
-        Connection connection = DBConnection.getInstance().getConnection();
-        List<User> userList = null;
-        try {
-            PreparedStatement preparedStatement = connection.prepareStatement(
-                    "select * SINGLE_CHAT  from  where SINGLE_CHAT_ID= ?");
-            preparedStatement.setInt(1, singleChatId);
-            ResultSet resultSet = preparedStatement.executeQuery();
-            userList = getUsersListFromResultSet(resultSet);
-            resultSet.close();
-            preparedStatement.close();
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
-        return userList;
+
+        return null;
 
 
     }
@@ -119,19 +107,8 @@ public class SingleChatDaoImpl implements SingleChatDao {
     @Override
     public List<SingleChat> getSingleChatMessages(int singleChatId) {
 
-        List<SingleChat> singleChats = null;
-//        try {
-//            PreparedStatement preparedStatement = connection.prepareStatement(
-//                    "select * from SINGLE_CHAT where
-//                            );
-//            ResultSet resultSet = preparedStatement.executeQuery();
-//            singleChats = getSingleChatsFromResultSet(resultSet);
-//            resultSet.close();
-//            preparedStatement.close();
-//        } catch (SQLException e) {
-//            e.printStackTrace();
-//        }
-       return singleChats;
+
+        return null;
 
     }
 
@@ -191,69 +168,5 @@ public class SingleChatDaoImpl implements SingleChatDao {
 
     }
 
-    private List<User> getUsersListFromResultSet(ResultSet resultSet) throws SQLException {
-        List<User> users = new ArrayList<>();
-        User user;
-        while (resultSet.next()) {
-            user = getUserFromRecord(resultSet);
-            users.add(user);
-        }
-        if (!users.isEmpty())
-            return users;
-        else
-            return null;
-    }
-
-    private User getUserFromRecord(ResultSet resultSet) throws SQLException {
-        LocalDate birthDate = getLocalDateFromDate(resultSet.getDate(8));
-        UserGender userGender = getUserGenderFromString(resultSet.getString(9));
-
-        Image profileImage = getImageFromBlob(resultSet.getBlob(10));
-        UserStatus userStatus = getUserStatusFromString(resultSet.getString(11));
-        boolean currentlyLoggedIn = getCurrentlyLoggedInFromString(resultSet.getString(12));
-        return new User(resultSet.getInt(1),
-                resultSet.getString(2),
-                resultSet.getString(3),
-                resultSet.getString(4),
-                resultSet.getString(5),
-                resultSet.getString(6),
-                resultSet.getString(7),
-                birthDate,
-                userGender,
-                profileImage,
-                userStatus,
-                currentlyLoggedIn);
-    }
-
-    private UserStatus getUserStatusFromString(String string) {
-        return string == null ? null : UserStatus.valueOf(string);
-    }
-
-    private UserGender getUserGenderFromString(String string) {
-        return string == null ? null : UserGender.valueOf(string);
-    }
-
-    private LocalDate getLocalDateFromDate(Date date) {
-        return date == null ? null : date.toLocalDate();
-    }
-
-    private boolean getCurrentlyLoggedInFromString(String string) {
-        return string != null && string.equals("Online");
-    }
-
-    private Image getImageFromBlob(Blob blob) {
-        if (blob != null) {
-            try {
-                InputStream in = blob.getBinaryStream();
-                BufferedImage bufferedImage = ImageIO.read(in);
-                Image image = SwingFXUtils.toFXImage(bufferedImage, null);
-            } catch (SQLException e) {
-                e.printStackTrace();
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
-        }
-        return null;
-    }
 
 }
