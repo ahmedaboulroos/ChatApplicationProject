@@ -10,7 +10,6 @@ module Client {
     requires com.jfoenix;
     requires java.rmi;
 
-    requires com.jfoenix;
     requires org.controlsfx.controls;
 
     requires org.kordamp.iconli.core;

@@ -13,13 +13,18 @@
          <children>
             <VBox alignment="TOP_CENTER" spacing="5.0">
                <children>
-                            <Label maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" minHeight="-Infinity" prefHeight="75.0" prefWidth="250.0" style="-fx-background-color: #00A2D3;" text="Admin Panel" textFill="WHITE">
+                            <Label maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308"
+                                   minHeight="-Infinity" prefHeight="75.0" prefWidth="250.0"
+                                   style="-fx-background-color: #00A2D3;" text="Admin Panel" textFill="WHITE">
                                 <padding>
-                                    <Insets left="10.0" />
+                                    <Insets left="10.0"/>
                                 </padding>
                                 <font>
-                                    <Font name="Ebrima" size="19.0" />
+                                    <Font name="Ebrima" size="19.0"/>
                                 </font>
+                                <VBox.margin>
+                                    <Insets right="1.0"/>
+                                </VBox.margin>
                             </Label>
                   <VBox spacing="10.0">
                      <children>
@@ -98,9 +103,6 @@
          </children>
       </HBox>
    </left>
-   <bottom>
-      <Region prefHeight="5.0" prefWidth="200.0" style="-fx-background-color: #00A2D3;" BorderPane.alignment="CENTER" />
-   </bottom>
    <center>
         <VBox maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" spacing="5.0" BorderPane.alignment="CENTER">
             <children>
@@ -120,14 +122,20 @@
                   <Insets bottom="15.0" left="15.0" right="15.0" top="15.0" />
                </padding>
             </HBox>
-            <TabPane fx:id="tabPane" prefHeight="200.0" prefWidth="200.0" tabClosingPolicy="UNAVAILABLE" VBox.vgrow="ALWAYS">
-              <tabs>
-                  <Tab fx:id="welcomeTab" closable="false" text="Welcome" />
-                <Tab fx:id="dashboardTab" closable="false" text="Dashboard" />
-                <Tab fx:id="usersTab" closable="false" text="System Users" />
-                  <Tab fx:id="announcementsTab" closable="false" text="Announcements" />
-              </tabs>
-            </TabPane>
+                <TabPane fx:id="tabPane" prefHeight="200.0" prefWidth="200.0" tabClosingPolicy="UNAVAILABLE"
+                         VBox.vgrow="ALWAYS">
+                    <tabs>
+                        <Tab fx:id="welcomeTab" closable="false" text="Welcome"/>
+                        <Tab fx:id="dashboardTab" closable="false" text="Dashboard"/>
+                        <Tab fx:id="usersTab" closable="false" text="System Users"/>
+                        <Tab fx:id="announcementsTab" closable="false" text="Announcements"/>
+                    </tabs>
+                </TabPane>
+                <Region prefHeight="5.0" prefWidth="200.0" style="-fx-background-color: #00A2D3;">
+                    <VBox.margin>
+                        <Insets left="-4.0"/>
+                    </VBox.margin>
+                </Region>
             </children>
         </VBox>
    </center>

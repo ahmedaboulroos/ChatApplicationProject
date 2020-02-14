@@ -26,7 +26,7 @@ import java.util.List;
 
 public class UserDaoImpl extends UnicastRemoteObject implements UserDao {
 
-    protected UserDaoImpl() throws RemoteException {
+    public UserDaoImpl() throws RemoteException {
     }
 
     public static void main(String[] args) throws RemoteException {
