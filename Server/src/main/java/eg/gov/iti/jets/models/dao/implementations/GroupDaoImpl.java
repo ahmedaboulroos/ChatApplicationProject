@@ -16,7 +16,20 @@ import java.util.List;
 
 public class GroupDaoImpl extends UnicastRemoteObject implements GroupDao {
 
+    private static GroupDaoImpl instance;
+
     protected GroupDaoImpl() throws RemoteException {
+    }
+
+    public static GroupDao getInstance() {
+        if (instance == null) {
+            try {
+                instance = new GroupDaoImpl();
+            } catch (RemoteException e) {
+                e.printStackTrace();
+            }
+        }
+        return instance;
     }
 
     @Override
@@ -136,20 +149,5 @@ public class GroupDaoImpl extends UnicastRemoteObject implements GroupDao {
         }
         return result;
     }
-
-//    public static void main(String[]args){
-//        DBConnection.getInstance().initConnection();
-//        GroupDaoImpl obj=new GroupDaoImpl();
-////        Group g=new Group(7,1,"3ylty");
-//        List<GroupContact> list=obj.getGroupContacts(7);
-//        for (GroupContact contact : list) {
-//            System.out.println("hello");
-//            System.out.println(contact.getGroupContactId());
-//            System.out.println(contact.getUserId());
-//            System.out.println(contact.getGroupId());
-//        }
-//
-//
-//    }
 
 }
