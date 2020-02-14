@@ -14,7 +14,20 @@ import java.util.List;
 
 public class AnnouncementDaoImpl extends UnicastRemoteObject implements AnnouncementDao {
 
+    private static AnnouncementDao announcementDao;
+
     protected AnnouncementDaoImpl() throws RemoteException {
+    }
+
+    public static AnnouncementDao getInstance() {
+        if (announcementDao == null) {
+            try {
+                announcementDao = new AnnouncementDaoImpl();
+            } catch (RemoteException e) {
+                e.printStackTrace();
+            }
+        }
+        return announcementDao;
     }
 
     @Override
@@ -65,7 +78,6 @@ public class AnnouncementDaoImpl extends UnicastRemoteObject implements Announce
 
         return announcement;
     }
-
 
     @Override
     public List<AnnouncementDelivery> getAnnouncementDeliveries(int announcementId) {
