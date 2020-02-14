@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import com.jfoenix.controls.*?>
+<?import com.jfoenix.controls.JFXButton?>
 <?import javafx.geometry.*?>
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
@@ -13,19 +13,19 @@
          <children>
             <VBox alignment="TOP_CENTER" spacing="5.0">
                <children>
-                            <Label maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308"
-                                   minHeight="-Infinity" prefHeight="75.0" prefWidth="250.0"
-                                   style="-fx-background-color: #00A2D3;" text="Admin Panel" textFill="WHITE">
-                                <padding>
-                                    <Insets left="10.0"/>
-                                </padding>
-                                <font>
-                                    <Font name="Ebrima" size="19.0"/>
-                                </font>
-                                <VBox.margin>
-                                    <Insets right="1.0"/>
-                                </VBox.margin>
-                            </Label>
+                   <Label maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" minHeight="-Infinity"
+                          prefHeight="75.0" prefWidth="250.0" style="-fx-background-color: #00A2D3;" text="Admin Panel"
+                          textFill="WHITE">
+                       <padding>
+                           <Insets left="10.0"/>
+                       </padding>
+                       <font>
+                           <Font name="Ebrima" size="19.0"/>
+                       </font>
+                       <VBox.margin>
+                           <Insets right="1.0"/>
+                       </VBox.margin>
+                   </Label>
                   <VBox spacing="10.0">
                      <children>
                         <JFXButton fx:id="dashboardBtn" alignment="TOP_LEFT" onAction="#handleDashboardBtnClick" prefWidth="250.0" ripplerFill="#2f98e4" styleClass="menuBtn" text="   Dashboard" textFill="#145374">
@@ -69,7 +69,7 @@
                         <Font name="Microsoft New Tai Lue" size="15.0" />
                      </font>
                       <VBox.margin>
-                          <Insets/>
+                          <Insets bottom="15.0" left="15.0" right="15.0" top="15.0"/>
                       </VBox.margin>
                       <padding>
                           <Insets bottom="10.0" left="10.0" right="10.0" top="10.0"/>
@@ -79,20 +79,6 @@
                                   strokeType="INSIDE"/>
                       </graphic>
                   </JFXButton>
-                   <HBox prefWidth="200.0">
-                       <children>
-                           <JFXTextField fx:id="internetAddressTf" labelFloat="true" prefWidth="140.0"
-                                         promptText="Internet Address" HBox.hgrow="ALWAYS"/>
-                           <JFXTextField fx:id="portNumberTf" labelFloat="true" layoutX="10.0" layoutY="10.0"
-                                         prefWidth="60.0" promptText="Port"/>
-                       </children>
-                       <VBox.margin>
-                           <Insets bottom="20.0" left="20.0" right="20.0"/>
-                       </VBox.margin>
-                       <padding>
-                           <Insets bottom="10.0" left="10.0" right="10.0" top="10.0"/>
-                       </padding>
-                   </HBox>
                </children>
             </VBox>
             <Separator orientation="VERTICAL" prefHeight="200.0">

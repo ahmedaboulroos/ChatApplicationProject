@@ -13,16 +13,32 @@ public class RMIConnection {
     private RMIConnection() {
     }
 
-    public boolean startConnection(int port) {
-        try {
-            this.registry = LocateRegistry.createRegistry(port);
-            // TODO:  rebind services here
-            System.out.println(">> RMI-Registry Connection Established...");
+    public boolean initConnection() {
+        if (registry == null) {
+            try {
+                this.registry = LocateRegistry.createRegistry(1234);
+                System.out.println(">> RMI-Registry Connection Established...");
+                return true;
+            } catch (RemoteException e) {
+                e.printStackTrace();
+                return false;
+            }
+        } else {
+            System.out.println(">> RMI-Registry Connection Already Established...");
             return true;
-        } catch (RemoteException e) {
-            e.printStackTrace();
-            return false;
         }
+    }
+
+    public void startConnection() {
+//        try {
+//            this.registry.rebind();
+//            // TODO:  rebind services here
+//            System.out.println(">> RMI-Registry Services Binded...");
+//            return true;
+//        } catch (RemoteException e) {
+//            e.printStackTrace();
+//            return false;
+//        }
     }
 
     public void stopConnection() {
