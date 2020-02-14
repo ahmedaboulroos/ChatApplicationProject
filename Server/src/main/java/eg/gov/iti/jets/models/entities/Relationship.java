@@ -55,4 +55,13 @@ public class Relationship implements Serializable {
         this.relationshipStatus = relationshipStatus;
     }
 
+    @Override
+    public String toString() {
+        return "Relationship{" +
+                "relationshipId=" + relationshipId +
+                ", firstUserId=" + firstUserId +
+                ", secondUserId=" + secondUserId +
+                ", relationshipStatus=" + relationshipStatus +
+                '}';
+    }
 }
