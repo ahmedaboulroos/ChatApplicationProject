@@ -62,7 +62,7 @@ public class MainServerViewController implements Initializable {
         try {
             Parent welcomeScene = FXMLLoader.load(getClass().getResource("/views/WelcomeView.fxml"));
             welcomeTab.setContent(welcomeScene);
-            stopService();
+            startService();
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -83,8 +83,8 @@ public class MainServerViewController implements Initializable {
     @FXML
     void handleUsersBtnClick(ActionEvent event) {
         try {
-            Parent announcementScene = FXMLLoader.load(getClass().getResource("/views/UsersView.fxml"));
-            announcementsTab.setContent(announcementScene);
+            Parent usersScene = FXMLLoader.load(getClass().getResource("/views/UsersView.fxml"));
+            usersTab.setContent(usersScene);
             tabPane.getSelectionModel().select(usersTab);
             title.setText("System Users");
         } catch (IOException e) {
