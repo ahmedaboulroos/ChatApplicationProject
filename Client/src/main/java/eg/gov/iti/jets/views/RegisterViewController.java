@@ -11,6 +11,8 @@ import java.rmi.RemoteException;
 
 public class RegisterViewController {
 
+    private StageCoordinator stageCoordinator;
+
     @FXML
     private JFXTextField phoneNoTf;
 
@@ -46,6 +48,10 @@ public class RegisterViewController {
         } catch (RemoteException e) {
             e.printStackTrace();
         }
+    }
+
+    public void setStageCoordinator(StageCoordinator stageCoordinator) {
+        this.stageCoordinator = stageCoordinator;
     }
 
 }

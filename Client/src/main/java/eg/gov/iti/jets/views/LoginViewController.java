@@ -12,11 +12,13 @@ import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.Label;
 
+import java.io.IOException;
 import java.net.URL;
-import java.rmi.RemoteException;
 import java.util.ResourceBundle;
 
 public class LoginViewController implements Initializable {
+
+    private StageCoordinator stageCoordinator;
 
     @FXML
     private JFXTextField phoneNumberTf;
@@ -41,25 +43,32 @@ public class LoginViewController implements Initializable {
 
     }
 
-
     @FXML
     void handleSignInBtn(ActionEvent event) {
         try {
             UserDao userDao = RMIConnection.getInstance().getUserDao();
             User user = userDao.getUser(phoneNumberTf.getText(), passwordPf.getText());
             if (user != null) {
-                System.out.println("hooraaaaa");
+                this.stageCoordinator.startMainChatAppScene();
             } else {
                 errorLbl.setText("Invalid PhoneNumber or Password");
             }
-        } catch (RemoteException e) {
+        } catch (IOException e) {
             e.printStackTrace();
         }
     }
 
     @FXML
     void handleSignUpBtn(ActionEvent event) {
+        try {
+            this.stageCoordinator.startRegistrationScene();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
 
+    public void setStageCoordinator(StageCoordinator stageCoordinator) {
+        this.stageCoordinator = stageCoordinator;
     }
 
 }
