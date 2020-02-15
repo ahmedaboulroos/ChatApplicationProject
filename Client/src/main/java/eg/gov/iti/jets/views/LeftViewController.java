@@ -3,10 +3,14 @@ package eg.gov.iti.jets.views;
 import eg.gov.iti.jets.models.dao.interfaces.UserDao;
 import eg.gov.iti.jets.models.network.RMIConnection;
 import javafx.fxml.FXML;
+import javafx.fxml.Initializable;
 import javafx.scene.control.Accordion;
 import javafx.scene.control.ListView;
 
-public class LeftViewController {
+import java.net.URL;
+import java.util.ResourceBundle;
+
+public class LeftViewController implements Initializable {
 
     @FXML
     private Accordion groupsAccordion;
@@ -23,6 +27,11 @@ public class LeftViewController {
 
     public void setStageCoordinator(StageCoordinator stageCoordinator) {
         this.stageCoordinator = stageCoordinator;
+    }
+
+    @Override
+    public void initialize(URL location, ResourceBundle resources) {
+
     }
 
 }
