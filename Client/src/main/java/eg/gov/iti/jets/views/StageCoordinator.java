@@ -1,5 +1,6 @@
 package eg.gov.iti.jets.views;
 
+import eg.gov.iti.jets.models.entities.User;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
@@ -8,6 +9,8 @@ import javafx.stage.Stage;
 import java.io.IOException;
 
 public class StageCoordinator {
+
+    public User currentUser;
 
     private Stage stage;
 

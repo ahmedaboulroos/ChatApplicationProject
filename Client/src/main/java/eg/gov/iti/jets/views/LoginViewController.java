@@ -50,6 +50,7 @@ public class LoginViewController implements Initializable {
             User user = userDao.getUser(phoneNumberTf.getText(), passwordPf.getText());
             if (user != null) {
                 this.stageCoordinator.startMainChatAppScene();
+                this.stageCoordinator.currentUser = user;
             } else {
                 errorLbl.setText("Invalid PhoneNumber or Password");
             }
