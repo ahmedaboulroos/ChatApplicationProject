@@ -126,7 +126,7 @@ public class UserDaoImpl extends UnicastRemoteObject implements UserDao {
         User user = null;
         try {
             PreparedStatement preparedStatement = connection.prepareStatement(
-                    "select * from APP_USER where PHONE_NUMBER = " + phoneNumber + " and PASSWORD = " + password);
+                    "select * from APP_USER where PHONE_NUMBER = '" + phoneNumber + "' and PASSWORD = '" + password + "'");
             ResultSet resultSet = preparedStatement.executeQuery();
             user = getUserFromResultSet(resultSet);
             preparedStatement.close();
