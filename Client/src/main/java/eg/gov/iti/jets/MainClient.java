@@ -21,7 +21,8 @@ public class MainClient extends Application {
     @Override
     public void start(Stage primaryStage) throws Exception {
         System.out.println("Client start...");
-        StageCoordinator coordinator = new StageCoordinator(primaryStage);
+        StageCoordinator coordinator = StageCoordinator.getInstance();
+        coordinator.setStage(primaryStage);
         coordinator.startLoginScene();
     }
 
