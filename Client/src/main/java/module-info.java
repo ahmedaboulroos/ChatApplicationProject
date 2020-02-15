@@ -1,5 +1,6 @@
 module Client {
 
+    requires java.rmi;
 
     requires javafx.base;
     requires javafx.controls;
@@ -7,9 +8,8 @@ module Client {
     requires javafx.fxml;
     requires javafx.media;
     requires javafx.web;
-    requires com.jfoenix;
-    requires java.rmi;
 
+    requires com.jfoenix;
     requires org.controlsfx.controls;
 
     requires org.kordamp.iconli.core;
@@ -22,5 +22,4 @@ module Client {
     opens eg.gov.iti.jets;
     opens eg.gov.iti.jets.views;
 
-//export eg.gov.iti.jets.views to module javafx.fxml
 }
