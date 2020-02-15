@@ -1,5 +1,6 @@
 package eg.gov.iti.jets.views;
 
+import com.jfoenix.controls.JFXListView;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
@@ -10,7 +11,7 @@ import javafx.scene.image.Image;
 import javafx.scene.paint.ImagePattern;
 import javafx.scene.shape.Circle;
 import javafx.util.Callback;
-import com.jfoenix.controls.JFXListView;
+
 import java.net.URL;
 import java.util.Arrays;
 import java.util.ResourceBundle;
@@ -20,6 +21,7 @@ public class ChatViewController implements Initializable {
     JFXListView<String> listView;
     @FXML
     Circle chatPictureCircle;
+    private StageCoordinator stageCoordinator;
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
@@ -48,4 +50,9 @@ public class ChatViewController implements Initializable {
         listView.setItems(list);
         chatPictureCircle.setFill(new ImagePattern(new Image(getClass().getResourceAsStream("/images/2.jpg"))));
     }
+
+    public void setStageCoordinator(StageCoordinator stageCoordinator) {
+        this.stageCoordinator = stageCoordinator;
+    }
+
 }
