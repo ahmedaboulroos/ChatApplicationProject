@@ -1,25 +1,15 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import javafx.scene.control.*?>
-<?import javafx.scene.layout.*?>
+<?import javafx.scene.layout.BorderPane?>
 <BorderPane xmlns:fx="http://javafx.com/fxml/1" xmlns="http://javafx.com/javafx/11.0.1"
             fx:controller="eg.gov.iti.jets.views.MainChatAppViewController">
-   <top>
-      <Label text="T" BorderPane.alignment="CENTER"/>
-   </top>
    <left>
-      <Label text="L" BorderPane.alignment="CENTER"/>
       <fx:include fx:id="leftView" source="LeftView.fxml"/>
    </left>
    <center>
-      <Label text="C" BorderPane.alignment="CENTER"/>
       <fx:include fx:id="chatView" source="ChatView.fxml"/>
    </center>
    <right>
-      <Label text="R" BorderPane.alignment="CENTER"/>
       <fx:include fx:id="rightView" source="RightView.fxml"/>
    </right>
-   <bottom>
-      <Label text="B" BorderPane.alignment="CENTER"/>
-   </bottom>
 </BorderPane>
