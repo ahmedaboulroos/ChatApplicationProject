@@ -71,8 +71,8 @@ public class MainServerViewController implements Initializable {
     @FXML
     void handleDashboardBtnClick(ActionEvent event) {
         try {
-            Parent announcementScene = FXMLLoader.load(getClass().getResource("/views/DashboardView.fxml"));
-            announcementsTab.setContent(announcementScene);
+            Parent dashboardView = FXMLLoader.load(getClass().getResource("/views/DashboardView.fxml"));
+            dashboardTab.setContent(dashboardView);
             tabPane.getSelectionModel().select(dashboardTab);
             title.setText("Dashboard");
         } catch (IOException e) {
