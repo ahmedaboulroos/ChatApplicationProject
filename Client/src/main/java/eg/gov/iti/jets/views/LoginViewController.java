@@ -47,8 +47,8 @@ public class LoginViewController implements Initializable {
             UserDao userDao = RMIConnection.getInstance().getUserDao();
             User user = userDao.getUser(phoneNumberTf.getText(), passwordPf.getText());
             if (user != null) {
-                StageCoordinator.getInstance().currentUser = user;
-                StageCoordinator.getInstance().startMainChatAppScene();
+                ClientStageCoordinator.getInstance().currentUser = user;
+                ClientStageCoordinator.getInstance().startMainChatAppScene();
             } else {
                 errorLbl.setText("Invalid PhoneNumber or Password");
             }
@@ -60,7 +60,7 @@ public class LoginViewController implements Initializable {
     @FXML
     void handleSignUpBtn(ActionEvent event) {
         try {
-            StageCoordinator.getInstance().startRegistrationScene();
+            ClientStageCoordinator.getInstance().startRegistrationScene();
         } catch (IOException e) {
             e.printStackTrace();
         }

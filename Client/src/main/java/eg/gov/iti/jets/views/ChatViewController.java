@@ -19,9 +19,6 @@ import java.util.ResourceBundle;
 public class ChatViewController implements Initializable {
     @FXML
     JFXListView<String> listView;
-    @FXML
-    Circle chatPictureCircle;
-    private StageCoordinator stageCoordinator;
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
@@ -48,11 +45,6 @@ public class ChatViewController implements Initializable {
         });
         ObservableList<String> list = FXCollections.observableList(Arrays.asList("Hey", "Hello", "I'm Tuna! ;)"));
         listView.setItems(list);
-        chatPictureCircle.setFill(new ImagePattern(new Image(getClass().getResourceAsStream("/images/2.jpg"))));
-    }
-
-    public void setStageCoordinator(StageCoordinator stageCoordinator) {
-        this.stageCoordinator = stageCoordinator;
     }
 
 }

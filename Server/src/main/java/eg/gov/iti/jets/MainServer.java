@@ -2,7 +2,7 @@ package eg.gov.iti.jets;
 
 import eg.gov.iti.jets.models.network.RMIConnection;
 import eg.gov.iti.jets.models.persistence.DBConnection;
-import eg.gov.iti.jets.views.StageCoordinator;
+import eg.gov.iti.jets.views.ServerStageCoordinator;
 import javafx.application.Application;
 import javafx.stage.Stage;
 
@@ -23,7 +23,8 @@ public class MainServer extends Application {
 
     @Override
     public void start(Stage primaryStage) throws Exception {
-        StageCoordinator coordinator = new StageCoordinator(primaryStage);
+        ServerStageCoordinator coordinator = ServerStageCoordinator.getInstance();
+        coordinator.setStage(primaryStage);
         coordinator.startMainServerScene();
     }
 
