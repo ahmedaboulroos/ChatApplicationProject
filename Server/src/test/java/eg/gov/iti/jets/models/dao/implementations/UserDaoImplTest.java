@@ -12,8 +12,7 @@ import java.sql.SQLException;
 import java.time.LocalDate;
 import java.util.ArrayList;
 
-import static org.junit.jupiter.api.Assertions.assertArrayEquals;
-import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.junit.jupiter.api.Assertions.*;
 
 class UserDaoImplTest {
     static UserDaoImpl userDao;
@@ -135,9 +134,30 @@ class UserDaoImplTest {
 
     @org.junit.jupiter.api.Test
     void testUpdateUser() {
+
     }
 
     @org.junit.jupiter.api.Test
-    void testDeleteUser() {
+    void testDeleteUser() throws SQLException {
+        PreparedStatement preparedStatement = connection.prepareStatement("delete from APP_USER" +
+                " where PHONE_NUMBER = 345");
+        preparedStatement.executeUpdate();
+        //create user by phone number
+        User user = new User(0, "345", "ahmed", "ahmed1",
+                "222@def.com", null, null, null, null,
+                null, null, false);
+        userDao.createUser(user);
+        String expectedUserString = user.toString();
+        //get user id
+        preparedStatement = connection.prepareStatement("select " +
+                "SEQ_USER_ID.currval from DUAL");
+        ResultSet resultSet = preparedStatement.executeQuery();
+        assertTrue(resultSet.next());
+        int userId = resultSet.getInt(1);
+
+        assertTrue(userDao.deleteUser(userId));
+        assertNull(userDao.getUser(userId));
     }
 }
+
+
