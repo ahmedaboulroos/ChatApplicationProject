@@ -8,34 +8,36 @@
 <?import javafx.scene.text.Font?>
 <BorderPane xmlns:fx="http://javafx.com/fxml/1" xmlns="http://javafx.com/javafx/11.0.1"
             fx:controller="eg.gov.iti.jets.views.AnnouncementsViewController">
-   <center>
-      <AnchorPane prefHeight="665.0" prefWidth="839.0">
-         <children>
-            <JFXTextField fx:id="announcementTf" layoutX="74.0" layoutY="48.0" promptText="Announcement">
-               <font>
-                  <Font size="24.0"/>
-               </font>
-            </JFXTextField>
-            <JFXButton fx:id="sendAnnouncementBtn" layoutX="492.0" layoutY="60.0" onAction="#handleSendBtn" text="Send">
-               <font>
-                  <Font size="18.0"/>
-               </font>
-            </JFXButton>
-            <TableView fx:id="announcementsTv" layoutX="74.0" layoutY="152.0" onMouseClicked="#handleAnnouncementsMc"
-                       prefHeight="200.0" prefWidth="469.0">
-               <columns>
-                  <TableColumn prefWidth="75.0" text="C1"/>
-                  <TableColumn prefWidth="75.0" text="C2"/>
-               </columns>
-            </TableView>
-            <TableView fx:id="announcementsDeliveryTv" layoutX="74.0" layoutY="399.0" prefHeight="200.0"
-                       prefWidth="469.0">
-               <columns>
-                  <TableColumn prefWidth="75.0" text="C1"/>
-                  <TableColumn prefWidth="75.0" text="C2"/>
-               </columns>
-            </TableView>
-         </children>
-      </AnchorPane>
-   </center>
+    <center>
+        <AnchorPane prefHeight="665.0" prefWidth="839.0">
+            <children>
+                <JFXTextField fx:id="announcementTf" layoutX="74.0" layoutY="48.0" promptText="Announcement">
+                    <font>
+                        <Font size="24.0"/>
+                    </font>
+                </JFXTextField>
+                <JFXButton fx:id="sendAnnouncementBtn" layoutX="492.0" layoutY="60.0" onAction="#handleSendBtn"
+                           style="-fx-background-color: #2222;" text="Send">
+                    <font>
+                        <Font size="18.0"/>
+                    </font>
+                </JFXButton>
+                <TableView fx:id="announcementsTv" layoutX="74.0" layoutY="152.0"
+                           onMouseClicked="#handleAnnouncementsMc" prefHeight="200.0" prefWidth="469.0">
+                    <columns>
+                        <TableColumn fx:id="announcementId" prefWidth="134.4000244140625" text="ID"/>
+                        <TableColumn fx:id="content" prefWidth="170.39996337890625" text="content"/>
+                        <TableColumn fx:id="announcementTimestamp" minWidth="0.0" prefWidth="164.0" text="Timestamp"/>
+                    </columns>
+                </TableView>
+                <TableView fx:id="announcementsDeliveryTv" layoutX="74.0" layoutY="399.0" prefHeight="200.0"
+                           prefWidth="469.0">
+                    <columns>
+                        <TableColumn prefWidth="75.0" text="C1"/>
+                        <TableColumn prefWidth="75.0" text="C2"/>
+                    </columns>
+                </TableView>
+            </children>
+        </AnchorPane>
+    </center>
 </BorderPane>
