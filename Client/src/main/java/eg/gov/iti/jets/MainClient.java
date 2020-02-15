@@ -1,10 +1,8 @@
 package eg.gov.iti.jets;
 
 import eg.gov.iti.jets.models.network.RMIConnection;
+import eg.gov.iti.jets.views.StageCoordinator;
 import javafx.application.Application;
-import javafx.fxml.FXMLLoader;
-import javafx.scene.Parent;
-import javafx.scene.Scene;
 import javafx.stage.Stage;
 
 public class MainClient extends Application {
@@ -21,13 +19,10 @@ public class MainClient extends Application {
     }
 
     @Override
-    public void start(Stage stage) throws Exception {
+    public void start(Stage primaryStage) throws Exception {
         System.out.println("Client start...");
-        FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/views/RegisterView.fxml"));
-        Parent mainServerView = fxmlLoader.load();
-        stage.setScene(new Scene(mainServerView));
-        stage.setTitle("Chat Application Server - Admin Panel");
-        stage.show();
+        StageCoordinator coordinator = new StageCoordinator(primaryStage);
+        coordinator.startLoginScene();
     }
 
     @Override
