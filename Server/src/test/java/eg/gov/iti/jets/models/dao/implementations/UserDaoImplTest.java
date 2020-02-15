@@ -1,8 +1,11 @@
 package eg.gov.iti.jets.models.dao.implementations;
 
+import com.sun.scenario.effect.impl.state.LinearConvolveRenderState;
+import eg.gov.iti.jets.models.entities.SingleChat;
 import eg.gov.iti.jets.models.entities.User;
 import eg.gov.iti.jets.models.entities.enums.UserStatus;
 import eg.gov.iti.jets.models.persistence.DBConnection;
+import org.junit.jupiter.api.function.Executable;
 
 import java.rmi.RemoteException;
 import java.sql.Connection;
@@ -11,6 +14,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.time.LocalDate;
 import java.util.ArrayList;
+import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -96,24 +100,94 @@ class UserDaoImplTest {
     }
 
     @org.junit.jupiter.api.Test
-    void testGetUserByPhoneNumberAndPassword() {
+    void testGetUserByPhoneNumberAndPassword() throws SQLException {
+        PreparedStatement preparedStatement = connection.prepareStatement("delete from APP_USER" +
+                " where PHONE_NUMBER = 345");
+        preparedStatement.executeUpdate();
+        //create user by phone number
+        User user = new User(1, "345", "ahmed", "ahmed1",
+                "222@def.com", null, null, null, null,
+                null, null, false);
+        userDao.createUser(user);
+        String expectedUserString = user.toString();
+        System.out.println(expectedUserString);
+        //get user id
+        preparedStatement = connection.prepareStatement("select " +
+                "SEQ_USER_ID.currval from DUAL");
+        ResultSet resultSet = preparedStatement.executeQuery();
+        assertTrue(resultSet.next());
+        int userId = resultSet.getInt(1);
+        //get User
+        user = userDao.getUser("345", "ahmed1");
+
+        System.out.println(user);
+        assertArrayEquals(user.toString().toCharArray(), expectedUserString.toCharArray());
+
 
     }
 
     @org.junit.jupiter.api.Test
-    void testGetUserById() {
+    void testGetUserById() throws SQLException {
+        PreparedStatement preparedStatement = connection.prepareStatement("delete from APP_USER" +
+                " where PHONE_NUMBER = 345");
+        preparedStatement.executeUpdate();
+        //create user by phone number
+        User user = new User(1, "345", "ahmed", "ahmed1",
+                "222@def.com", null, null, null, null,
+                null, null, false);
+        userDao.createUser(user);
+        String expectedUserString = user.toString();
+        System.out.println(expectedUserString);
+        //get user id
+        preparedStatement = connection.prepareStatement("select " +
+                "SEQ_USER_ID.currval from DUAL");
+        ResultSet resultSet = preparedStatement.executeQuery();
+        assertTrue(resultSet.next());
+        int userId = resultSet.getInt(1);
+        //get User
+        user = userDao.getUser(userId);
+        System.out.println(user);
+        assertArrayEquals(user.toString().toCharArray(), expectedUserString.toCharArray());
+
+
     }
 
     @org.junit.jupiter.api.Test
-    void testGetAllUsers() {
+    void testGetAllUsers() throws SQLException {
+        PreparedStatement preparedStatement = connection.prepareStatement("delete from APP_USER" +
+                " where PHONE_NUMBER = 345");
+        preparedStatement.executeUpdate();
+        //create user by phone number
+        User user = new User(1, "345", "nour", "fadel",
+                "222@def.com", null, null, null, null,
+                null, null, false);
+        User user1 = new User(2, "5", "sara", "ahmed",
+                "222@def.com", null, null, null, null,
+                null, null, false);
+        userDao.createUser(user);
+        userDao.createUser(user1);
+        int expectedUserString = userDao.getAllUsers().size();
+        System.out.println(expectedUserString);
+        preparedStatement = connection.prepareStatement("select * from DUAL");
+        ResultSet resultSet = preparedStatement.executeQuery();
+        assertTrue(resultSet.next());
+        int userlist = userDao.getAllUsers().size();
+        System.out.println(userlist);
+
+        assertEquals(userlist, expectedUserString);
+
+
     }
 
     @org.junit.jupiter.api.Test
-    void testGetUserRelationships() {
+    void testGetUserRelationships() throws SQLException {
+
     }
 
     @org.junit.jupiter.api.Test
-    void testGetUserSingleChats() {
+    void testGetUserSingleChats() throws SQLException {
+
+
     }
 
     @org.junit.jupiter.api.Test
