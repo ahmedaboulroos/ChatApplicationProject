@@ -8,11 +8,11 @@
 <?import javafx.scene.shape.Circle?>
 <?import javafx.scene.text.Font?>
 <?import org.kordamp.ikonli.javafx.*?>
-<BorderPane xmlns:fx="http://javafx.com/fxml/1" prefWidth="1075.0" stylesheets="@../styles/ContactList.css"
+<BorderPane xmlns:fx="http://javafx.com/fxml/1" prefWidth="1075.0"
             xmlns="http://javafx.com/javafx/11.0.1" fx:controller="eg.gov.iti.jets.views.ContactListController">
     <left>
         <VBox prefHeight="677.0" prefWidth="330.0" style="-fx-background-color: #5588a3;" styleClass="sidebar"
-              stylesheets="@../styles/ContactList.css" BorderPane.alignment="CENTER">
+              BorderPane.alignment="CENTER">
             <children>
                 <HBox alignment="CENTER_LEFT" layoutX="10.0" layoutY="235.0" spacing="20.0"
                       style="-fx-background-color: e8e8e8; -fx-background-radius: 10; -fx-background-color: FFFFFF;">

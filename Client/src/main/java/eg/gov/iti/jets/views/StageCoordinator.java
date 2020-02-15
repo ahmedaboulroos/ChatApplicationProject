@@ -35,6 +35,16 @@ public class StageCoordinator {
         this.stage.show();
     }
 
+    public void startChatScene() throws IOException {
+        FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/views/ChatView.fxml"));
+        Parent chatView = fxmlLoader.load();
+        ChatViewController chatViewController = fxmlLoader.getController();
+        chatViewController.setStageCoordinator(this);
+        this.stage.setScene(new Scene(chatView));
+        this.stage.setTitle("Chat");
+        this.stage.show();
+    }
+
     public void startRegistrationScene() throws IOException {
         FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/views/RegisterView.fxml"));
         Parent registrationView = fxmlLoader.load();

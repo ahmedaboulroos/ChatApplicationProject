@@ -1,26 +1,26 @@
 package eg.gov.iti.jets.views;
 
 
+import com.jfoenix.controls.JFXListView;
 import eg.gov.iti.jets.models.dao.implementations.StatisticsImpl;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.Node;
-import javafx.scene.chart.BarChart;
-import javafx.scene.chart.PieChart;
+import javafx.scene.chart.*;
+import javafx.scene.control.ListCell;
 import javafx.scene.control.Tooltip;
 import javafx.scene.layout.StackPane;
 
 import java.net.URL;
 import java.rmi.RemoteException;
-import java.sql.Connection;
 import java.util.Map;
 import java.util.ResourceBundle;
 
 
 public class DashboardViewController implements Initializable {
-    private static Connection connection;
+
     @FXML
     private StackPane userGenderChartPane;
     @FXML
@@ -29,26 +29,47 @@ public class DashboardViewController implements Initializable {
     private BarChart usresCountryChart;
     @FXML
     private PieChart usersStatusChart;
-    private ObservableList<PieChart.Data> usersGenderdata = FXCollections.observableArrayList();
-    private ObservableList<PieChart.Data> usersStatusrdata = FXCollections.observableArrayList();
-    private StatisticsImpl statistics;
+    ObservableList<String> listview = FXCollections.observableArrayList("Statistics Of server", "1", "2");
+    @FXML
+    private JFXListView<String> list;
+    private ObservableList<XYChart.Series<String, Number>> usersCountriestdata = FXCollections.observableArrayList();
 
-    public void setUsersDAO(StatisticsImpl statistics) throws RemoteException {
+    public void setUsersDAO(StatisticsImpl statistics) {
         this.statistics = statistics;
-
+        drawUsersCountryChart(usersCountriestdata);
         drawUsersStatusChart(userstatusChartPane, usersStatusrdata);
         drawUsersGenderChart(userGenderChartPane, usersGenderdata);
     }
 
+    private ObservableList<PieChart.Data> usersGenderdata = FXCollections.observableArrayList();
+    private ObservableList<PieChart.Data> usersStatusrdata = FXCollections.observableArrayList();
+    private StatisticsImpl statistics;
+
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
+        list.setItems(listview);
+        list.setCellFactory(param -> new ListCell<String>() {
 
+            public void updateItem(String name, boolean empty) {
+                super.updateItem(name, empty);
+                if (empty) {
+
+                    setText(null);
+
+                } else {
+                    setText(name);
+
+                }
+            }
+
+
+        });
         try {
             setUsersDAO(new StatisticsImpl());
+
         } catch (RemoteException e) {
             e.printStackTrace();
         }
-
 
     }
 
@@ -98,6 +119,24 @@ public class DashboardViewController implements Initializable {
 
     }
 
+    private void drawUsersCountryChart(ObservableList<XYChart.Series<String, Number>> usersCountriesList) {
+        CategoryAxis xAxis = new CategoryAxis();
+        xAxis.setLabel("Countries");
+        NumberAxis yAxis = new NumberAxis();
+        yAxis.setLabel("(NO.of Users)");
+        XYChart.Series countriesSeries = new XYChart.Series();
 
+        Map<String, Integer> map = statistics.getUsersNumByCountry();
+        for (Map.Entry m : map.entrySet()) {
+            countriesSeries.getData().add(new XYChart.Data(m.getKey(), m.getValue()));
+        }
+
+        usersCountriestdata.add(countriesSeries);
+        usresCountryChart.setData(usersCountriestdata);
+        usresCountryChart.setTitle("statistics about the users’ country");
+        usresCountryChart.setBarGap(50);
+        usresCountryChart.setAnimated(true);
+
+
+    }
 }
-
