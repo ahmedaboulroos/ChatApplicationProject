@@ -6,17 +6,28 @@ import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.Accordion;
 import javafx.scene.control.ListView;
+import javafx.scene.control.Tab;
 
 import java.net.URL;
 import java.util.ResourceBundle;
 
 public class LeftViewController implements Initializable {
 
+
     @FXML
-    private Accordion groupsAccordion;
+    private Tab contactsTab;
+
+    @FXML
+    private Tab groupChatTab;
 
     @FXML
     private ListView<?> groupChatsLv;
+
+    @FXML
+    private Tab singleChatTab;
+
+    @FXML
+    private Accordion groupsAccordion;
 
     @FXML
     private ListView<?> singleChatsLv;
