@@ -7,6 +7,7 @@ import eg.gov.iti.jets.models.network.RMIConnection;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 
+import java.io.IOException;
 import java.rmi.RemoteException;
 
 public class RegisterViewController {
@@ -39,6 +40,18 @@ public class RegisterViewController {
 
     @FXML
     private JFXButton registerBtn;
+
+    @FXML
+    private JFXButton signInBtn;
+
+    @FXML
+    void handleBackToSignInBtn(ActionEvent event) {
+        try {
+            stageCoordinator.startLoginScene();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
 
     @FXML
     void handleSignUpBtn(ActionEvent event) {
