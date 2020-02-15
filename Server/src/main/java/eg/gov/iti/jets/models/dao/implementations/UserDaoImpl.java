@@ -217,8 +217,12 @@ public class UserDaoImpl extends UnicastRemoteObject implements UserDao {
             e.printStackTrace();
         } finally {
             try {
-                rs.close();
-                stmt.close();
+                if (rs != null) {
+                    rs.close();
+                }
+                if (stmt != null) {
+                    stmt.close();
+                }
             } catch (SQLException e) {
                 e.printStackTrace();
             }
