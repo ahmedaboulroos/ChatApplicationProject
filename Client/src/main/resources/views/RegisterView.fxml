@@ -31,8 +31,14 @@
             <JFXTextField fx:id="emailTf" prefHeight="25.0" prefWidth="251.0" promptText="email"/>
             <JFXTextField fx:id="countryTf" prefHeight="25.0" prefWidth="251.0" promptText="country"/>
             <JFXTextField fx:id="bioTf" prefHeight="25.0" prefWidth="251.0" promptText="bio"/>
-            <JFXButton fx:id="registerBtn" onAction="#handleSignUpBtn" prefWidth="200.0"
-                       style="-fx-background-color: lightgray;" text="Register"/>
+            <HBox spacing="20.0">
+               <children>
+                  <JFXButton fx:id="signInBtn" onAction="#handleBackToSignInBtn" prefWidth="200.0"
+                             style="-fx-background-color: lightgray;" text="Back to Login"/>
+                  <JFXButton fx:id="registerBtn" onAction="#handleSignUpBtn" prefWidth="200.0"
+                             style="-fx-background-color: lightgray;" text="Register"/>
+               </children>
+            </HBox>
          </children>
          <BorderPane.margin>
             <Insets bottom="10.0" left="10.0" right="10.0" top="10.0"/>
