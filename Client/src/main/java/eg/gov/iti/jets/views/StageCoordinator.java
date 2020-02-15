@@ -55,4 +55,24 @@ public class StageCoordinator {
         this.stage.show();
     }
 
+    public void startLeftScene() throws IOException {
+        FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/views/LeftView.fxml"));
+        Parent leftView = fxmlLoader.load();
+        LeftViewController leftViewController = fxmlLoader.getController();
+        leftViewController.setStageCoordinator(this);
+        this.stage.setScene(new Scene(leftView));
+        this.stage.setTitle("Left View");
+        this.stage.show();
+    }
+
+    public void startRightScene() throws IOException {
+        FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/views/RightView.fxml"));
+        Parent rightView = fxmlLoader.load();
+        RightViewController rightViewController = fxmlLoader.getController();
+        rightViewController.setStageCoordinator(this);
+        this.stage.setScene(new Scene(rightView));
+        this.stage.setTitle("Left View");
+        this.stage.show();
+    }
+
 }
