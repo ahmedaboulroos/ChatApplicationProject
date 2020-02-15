@@ -6,10 +6,13 @@ import eg.gov.iti.jets.models.persistence.DBConnection;
 
 import java.rmi.RemoteException;
 import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.time.LocalDate;
 import java.util.ArrayList;
 
+import static org.junit.jupiter.api.Assertions.assertArrayEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 class UserDaoImplTest {
@@ -17,28 +20,13 @@ class UserDaoImplTest {
     static Connection connection;
     private static ArrayList<String> testFileNames = new ArrayList<>();
     private String testFilesDirectoryPath = "TestResources/JavaConversionTestFiles";
-    private int lastPhoneNumberUsed = 145;
-    private int lastPasswordUsed = 556;
+
 
     @org.junit.jupiter.api.BeforeAll
     static void setUp() throws SQLException, RemoteException {
         testFileNames.add("resources/UserDaoImplTests");
         DBConnection.getInstance().initConnection();
         connection = DBConnection.getInstance().getConnection();
-        /*PreparedStatement preparedStatement =
-                        connection.prepareStatement("insert into APP_USER" +
-                                " (USER_ID, PHONE_NUMBER, USERNAME, PASSWORD, EMAIL," +
-                                " COUNTRY, BIO, BIRTH_DATE, USER_GENDER, USER_STATUS, CURRENTLY_LOGGED_IN)" +
-                                " VALUES (SEQ_USER_ID.nextval,?,?,?,?,?,?,?,?,?,?)");
-        preparedStatement.setString(1, "1234");
-        preparedStatement.setString(2, "tunafish");
-        preparedStatement.setString(3, "tunella");
-        preparedStatement.setString(4, "123@def.com");
-        preparedStatement.setString(5, "Egypt");
-        preparedStatement.setString(6, "on fire");
-        preparedStatement.setDate(7, birthDate);
-        preparedStatement.setString(9, userGender);
-*/
         userDao = new UserDaoImpl();
     }
 
@@ -49,12 +37,13 @@ class UserDaoImplTest {
 
     @org.junit.jupiter.api.Test
     void testCreateUser() throws SQLException {
-        int userId;
+        int lastPhoneNumberUsed = 111;
+        int lastPasswordUsed = 11;
         User user;
-//        PreparedStatement preparedStatement;
 
         user = new User("0" + ++lastPhoneNumberUsed, "0" + ++lastPasswordUsed);
         assertTrue(userDao.createUser(user));
+        System.out.println(user);
 
         user = new User(0, "0" + ++lastPhoneNumberUsed, "ahmed", "ahmed1",
                 "222@def.com", null, null, null, null,
@@ -76,54 +65,79 @@ class UserDaoImplTest {
                 null, UserStatus.BUSY, true);
         assertTrue(userDao.createUser(user));
 
+        PreparedStatement preparedStatement = connection.prepareStatement("delete from APP_USER" +
+                " where PHONE_NUMBER = ?");
+        for (int i = 0; i < 5; i++) {
+            preparedStatement.setString(1, "0" + lastPhoneNumberUsed--);
+            preparedStatement.executeUpdate();
+        }
     }
 
     @org.junit.jupiter.api.Test
-    void testGetUserBy() {
+    void testGetUserByPhoneNumber() throws SQLException {
+        //delete user from database
+        PreparedStatement preparedStatement = connection.prepareStatement("delete from APP_USER" +
+                " where PHONE_NUMBER = 345");
+        preparedStatement.executeUpdate();
+        //create user by phone number
+        User user = new User(0, "345", "ahmed", "ahmed1",
+                "222@def.com", null, null, null, null,
+                null, null, false);
+        userDao.createUser(user);
+        String expectedUserString = user.toString();
+        //get user id
+        preparedStatement = connection.prepareStatement("select " +
+                "SEQ_USER_ID.currval from DUAL");
+        ResultSet resultSet = preparedStatement.executeQuery();
+        assertTrue(resultSet.next());
+        int userId = resultSet.getInt(1);
+        //get User
+        user = userDao.getUser("345");
+        assertArrayEquals(user.toString().toCharArray(), expectedUserString.toCharArray());
+    }
+
+    @org.junit.jupiter.api.Test
+    void testGetUserByPhoneNumberAndPassword() {
 
     }
 
     @org.junit.jupiter.api.Test
-    void testGetUser() {
+    void testGetUserById() {
     }
 
     @org.junit.jupiter.api.Test
-    void testGetUser1() {
+    void testGetAllUsers() {
     }
 
     @org.junit.jupiter.api.Test
-    void getAllUsers() {
+    void testGetUserRelationships() {
     }
 
     @org.junit.jupiter.api.Test
-    void getUserRelationships() {
+    void testGetUserSingleChats() {
     }
 
     @org.junit.jupiter.api.Test
-    void getUserSingleChats() {
+    void testGetUserGroupChatsMembership() {
     }
 
     @org.junit.jupiter.api.Test
-    void getUserGroupChatsMembership() {
+    void testGetUserGroupChats() {
     }
 
     @org.junit.jupiter.api.Test
-    void getUserGroupChats() {
+    void testGetUserAnnouncementDeliveries() {
     }
 
     @org.junit.jupiter.api.Test
-    void getUserAnnouncementDeliveries() {
+    void testGetUserGroups() {
     }
 
     @org.junit.jupiter.api.Test
-    void getUserGroups() {
+    void testUpdateUser() {
     }
 
     @org.junit.jupiter.api.Test
-    void updateUser() {
-    }
-
-    @org.junit.jupiter.api.Test
-    void deleteUser() {
+    void testDeleteUser() {
     }
 }
