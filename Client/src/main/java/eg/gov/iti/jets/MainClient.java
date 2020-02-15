@@ -1,7 +1,7 @@
 package eg.gov.iti.jets;
 
 import eg.gov.iti.jets.models.network.RMIConnection;
-import eg.gov.iti.jets.views.StageCoordinator;
+import eg.gov.iti.jets.views.ClientStageCoordinator;
 import javafx.application.Application;
 import javafx.stage.Stage;
 
@@ -21,7 +21,8 @@ public class MainClient extends Application {
     @Override
     public void start(Stage primaryStage) throws Exception {
         System.out.println("Client start...");
-        StageCoordinator coordinator = new StageCoordinator(primaryStage);
+        ClientStageCoordinator coordinator = ClientStageCoordinator.getInstance();
+        coordinator.setStage(primaryStage);
         coordinator.startLoginScene();
     }
 

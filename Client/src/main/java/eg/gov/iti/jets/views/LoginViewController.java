@@ -18,8 +18,6 @@ import java.util.ResourceBundle;
 
 public class LoginViewController implements Initializable {
 
-    private StageCoordinator stageCoordinator;
-
     @FXML
     private JFXTextField phoneNumberTf;
 
@@ -49,7 +47,8 @@ public class LoginViewController implements Initializable {
             UserDao userDao = RMIConnection.getInstance().getUserDao();
             User user = userDao.getUser(phoneNumberTf.getText(), passwordPf.getText());
             if (user != null) {
-                this.stageCoordinator.startMainChatAppScene();
+                ClientStageCoordinator.getInstance().currentUser = user;
+                ClientStageCoordinator.getInstance().startMainChatAppScene();
             } else {
                 errorLbl.setText("Invalid PhoneNumber or Password");
             }
@@ -61,14 +60,10 @@ public class LoginViewController implements Initializable {
     @FXML
     void handleSignUpBtn(ActionEvent event) {
         try {
-            this.stageCoordinator.startRegistrationScene();
+            ClientStageCoordinator.getInstance().startRegistrationScene();
         } catch (IOException e) {
             e.printStackTrace();
         }
-    }
-
-    public void setStageCoordinator(StageCoordinator stageCoordinator) {
-        this.stageCoordinator = stageCoordinator;
     }
 
 }

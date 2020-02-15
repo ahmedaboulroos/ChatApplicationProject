@@ -176,8 +176,8 @@ public class UserDaoImpl extends UnicastRemoteObject implements UserDao {
         List<SingleChat> singleChats = null;
         try {
             PreparedStatement preparedStatement = connection.prepareStatement(
-                    "select * from SINGLE_CHAT where USER_ONE_ID = " + userId
-                            + " or USER_TWO_ID = " + userId);
+                    "select * from SINGLE_CHAT where USER_ONE_ID = '" + userId
+                            + "' or USER_TWO_ID = '" + userId + "'");
             ResultSet resultSet = preparedStatement.executeQuery();
             singleChats = getSingleChatsFromResultSet(resultSet);
             resultSet.close();

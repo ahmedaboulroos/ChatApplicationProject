@@ -9,7 +9,7 @@
         <TabPane prefHeight="200.0" prefWidth="200.0" tabClosingPolicy="UNAVAILABLE" tabMinHeight="30.0"
                  tabMinWidth="70.0">
             <tabs>
-                <Tab text="Contacts">
+                <Tab fx:id="contactsTab" text="Contacts">
                     <content>
                         <Accordion fx:id="groupsAccordion">
                             <padding>
@@ -18,18 +18,18 @@
                         </Accordion>
                     </content>
                 </Tab>
-                <Tab text="Groups">
+                <Tab fx:id="groupChatTab" text="Groups">
                     <content>
-                        <ListView fx:id="groupChatsLv" prefHeight="200.0" prefWidth="200.0">
+                        <ListView fx:id="groupChatsLv">
                             <padding>
                                 <Insets bottom="10.0" left="10.0" right="10.0" top="10.0"/>
                             </padding>
                         </ListView>
                     </content>
                 </Tab>
-                <Tab text="Chats">
+                <Tab fx:id="singleChatTab" text="Chats">
                     <content>
-                        <ListView fx:id="singleChatsLv" prefHeight="200.0" prefWidth="200.0">
+                        <ListView fx:id="singleChatsLv">
                             <padding>
                                 <Insets bottom="10.0" left="10.0" right="10.0" top="10.0"/>
                             </padding>
