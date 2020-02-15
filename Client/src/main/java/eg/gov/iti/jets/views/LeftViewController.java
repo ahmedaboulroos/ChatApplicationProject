@@ -47,7 +47,7 @@ public class LeftViewController implements Initializable {
 
     private void loadSingleChats() {
         try {
-            List<SingleChat> singleChats = userDao.getUserSingleChats(StageCoordinator.getInstance().currentUser.getUserId());
+            List<SingleChat> singleChats = userDao.getUserSingleChats(ClientStageCoordinator.getInstance().currentUser.getUserId());
             System.out.println(singleChats);
             singleChatsLv.setItems(FXCollections.observableList(singleChats));
         } catch (RemoteException e) {
@@ -57,7 +57,7 @@ public class LeftViewController implements Initializable {
 
     private void loadGroupChats() {
         try {
-            List<GroupChat> groupChats = userDao.getUserGroupChats(StageCoordinator.getInstance().currentUser.getUserId());
+            List<GroupChat> groupChats = userDao.getUserGroupChats(ClientStageCoordinator.getInstance().currentUser.getUserId());
             System.out.println(groupChats);
             groupChatsLv.setItems(FXCollections.observableList(groupChats));
         } catch (RemoteException e) {

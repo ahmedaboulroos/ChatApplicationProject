@@ -12,8 +12,6 @@ import java.rmi.RemoteException;
 
 public class RegisterViewController {
 
-    private StageCoordinator stageCoordinator;
-
     @FXML
     private JFXTextField phoneNoTf;
 
@@ -47,7 +45,7 @@ public class RegisterViewController {
     @FXML
     void handleBackToSignInBtn(ActionEvent event) {
         try {
-            stageCoordinator.startLoginScene();
+            ClientStageCoordinator.getInstance().startLoginScene();
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -63,8 +61,5 @@ public class RegisterViewController {
         }
     }
 
-    public void setStageCoordinator(StageCoordinator stageCoordinator) {
-        this.stageCoordinator = stageCoordinator;
-    }
 
 }

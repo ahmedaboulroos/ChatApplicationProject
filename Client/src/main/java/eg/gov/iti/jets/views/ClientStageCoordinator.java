@@ -8,23 +8,21 @@ import javafx.stage.Stage;
 
 import java.io.IOException;
 
-public class StageCoordinator {
+public class ClientStageCoordinator {
 
-    private static StageCoordinator instance;
+    private static ClientStageCoordinator instance;
+    public User currentUser;
+    private Stage stage;
 
-    private StageCoordinator() {
+    private ClientStageCoordinator() {
     }
 
-    public static StageCoordinator getInstance() {
+    public static ClientStageCoordinator getInstance() {
         if (instance == null) {
-            instance = new StageCoordinator();
+            instance = new ClientStageCoordinator();
         }
         return instance;
     }
-
-    public User currentUser;
-
-    private Stage stage;
 
     public void setStage(Stage stage) {
         this.stage = stage;
@@ -47,36 +45,11 @@ public class StageCoordinator {
         this.stage.show();
     }
 
-    public void startChatScene() throws IOException {
-        FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/views/ChatView.fxml"));
-        Parent chatView = fxmlLoader.load();
-        this.stage.setScene(new Scene(chatView));
-        this.stage.setTitle("Chat");
-        this.stage.show();
-    }
-
     public void startRegistrationScene() throws IOException {
         FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/views/RegisterView.fxml"));
         Parent registrationView = fxmlLoader.load();
         this.stage.setScene(new Scene(registrationView));
         this.stage.setTitle("Registration");
-        this.stage.show();
-    }
-
-//    public void startLeftScene() throws IOException {
-//        FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/views/LeftView.fxml"));
-//        Parent leftView = fxmlLoader.load();
-//        LeftViewController leftViewController = fxmlLoader.getController();
-//        this.stage.setScene(new Scene(leftView));
-//        this.stage.setTitle("Left View");
-//        this.stage.show();
-//    }
-
-    public void startRightScene() throws IOException {
-        FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/views/RightView.fxml"));
-        Parent rightView = fxmlLoader.load();
-        this.stage.setScene(new Scene(rightView));
-        this.stage.setTitle("Left View");
         this.stage.show();
     }
 
