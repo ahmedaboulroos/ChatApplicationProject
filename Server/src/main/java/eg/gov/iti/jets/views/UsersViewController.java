@@ -8,6 +8,7 @@ import eg.gov.iti.jets.models.entities.enums.UserGender;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.TableColumn;
+import javafx.scene.control.TableView;
 
 import java.net.URL;
 import java.rmi.RemoteException;
@@ -46,6 +47,8 @@ public class UsersViewController implements Initializable {
     private JFXTextField birthDateTf;
     @FXML
     private JFXTextField userGenderTf;
+    @FXML
+    private TableView<?> userViewTv;
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
