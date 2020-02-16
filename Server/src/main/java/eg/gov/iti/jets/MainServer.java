@@ -34,5 +34,4 @@ public class MainServer extends Application {
         DBConnection.getInstance().stopConnection();
         System.exit(0);
     }
-
 }
