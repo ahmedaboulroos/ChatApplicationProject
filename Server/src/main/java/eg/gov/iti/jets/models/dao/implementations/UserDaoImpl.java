@@ -547,4 +547,5 @@ public UserDaoImpl() throws RemoteException {
         else
             return null;
     }
+
 }
