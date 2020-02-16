@@ -27,9 +27,15 @@ import java.util.List;
 public class UserDaoImpl extends UnicastRemoteObject implements UserDao {
 
     private static UserDaoImpl instance;
-
-    public UserDaoImpl() throws RemoteException {
-    }
+//
+//    public static void main(String[] args) throws RemoteException {
+//        DBConnection.getInstance().initConnection();
+//        UserDaoImpl userDao = new UserDaoImpl();
+//        System.out.println(userDao.getUserGroupChats(2));
+//        DBConnection.getInstance().stopConnection();
+//    }
+public UserDaoImpl() throws RemoteException {
+}
 
     public static UserDao getInstance() {
         if (instance == null) {
@@ -110,7 +116,7 @@ public class UserDaoImpl extends UnicastRemoteObject implements UserDao {
         User user = null;
         try {
             PreparedStatement preparedStatement = connection.prepareStatement(
-                    "select * from APP_USER where PHONE_NUMBER = " + phoneNumber);
+                    "select * from APP_USER where PHONE_NUMBER = '" + phoneNumber + "'");
             ResultSet resultSet = preparedStatement.executeQuery();
             user = getUserFromResultSet(resultSet);
             preparedStatement.close();
@@ -198,7 +204,7 @@ public class UserDaoImpl extends UnicastRemoteObject implements UserDao {
         int membership_id = 0;
         int group_chat_id = 0;
         int user_id = 0;
-        LocalDateTime joined_timestamp;
+        LocalDateTime joined_timestamp = null;
         Timestamp timestamp = null;
         PreparedStatement stmt = null;
         try {
@@ -210,7 +216,8 @@ public class UserDaoImpl extends UnicastRemoteObject implements UserDao {
                 group_chat_id = rs.getInt("group_chat_id");
                 user_id = rs.getInt("user_id");
                 timestamp = rs.getTimestamp("joined_timestamp");
-                joined_timestamp = timestamp.toLocalDateTime();
+                if (timestamp != null)
+                    joined_timestamp = timestamp.toLocalDateTime();
                 membershipList.add(new Membership(membership_id, user_id, group_chat_id, joined_timestamp));
             }
         } catch (SQLException e) {
@@ -261,10 +268,17 @@ public class UserDaoImpl extends UnicastRemoteObject implements UserDao {
                     blob = rs.getBlob("group_image");
                     timestamp = rs.getTimestamp("creation_timestamp");
                 }
-                in = blob.getBinaryStream();
-                imagen = ImageIO.read(in);
-                group_image = SwingFXUtils.toFXImage(imagen, null);
-                creation_time_stamp = timestamp.toLocalDateTime();
+                if (blob != null) {
+                    in = blob.getBinaryStream();
+                    imagen = ImageIO.read(in);
+                    group_image = SwingFXUtils.toFXImage(imagen, null);
+                } else
+                    group_image = null;
+
+                if (timestamp != null) {
+                    creation_time_stamp = timestamp.toLocalDateTime();
+                } else
+                    creation_time_stamp = null;
                 groupChatList.add(new GroupChat(id, tilte, description, group_image, creation_time_stamp));
             } catch (SQLException e) {
                 e.printStackTrace();
@@ -472,7 +486,7 @@ public class UserDaoImpl extends UnicastRemoteObject implements UserDao {
         Relationship relationship;
         while (resultSet.next()) {
             RelationshipStatus relationshipStatus =
-                    RelationshipStatus.valueOf(resultSet.getString(4));
+                    RelationshipStatus.valueOf(resultSet.getString(4).toUpperCase());
             relationship = new Relationship(resultSet.getInt(1),
                     resultSet.getInt(2),
                     resultSet.getInt(3),
