@@ -1,26 +1,19 @@
 package eg.gov.iti.jets.views.models;
 
-import eg.gov.iti.jets.models.entities.AnnouncementDelivery;
-import eg.gov.iti.jets.models.entities.enums.AnnouncementDeliveryStatus;
 import javafx.beans.property.SimpleIntegerProperty;
-import javafx.beans.property.SimpleObjectProperty;
 import javafx.beans.property.SimpleStringProperty;
-
-import java.rmi.RemoteException;
-import java.util.ArrayList;
-import java.util.List;
 
 public class AnnouncementDeliveryModel {
 
     private SimpleIntegerProperty announcementDeliveryId;
     private SimpleIntegerProperty userId;
-    private SimpleIntegerProperty announcementId;
+    private SimpleIntegerProperty announcementDelId;
     private SimpleStringProperty announcementDeliveryStatus;
 
     public AnnouncementDeliveryModel(int deliveryID, int Id, int announceId, String status) {
 
         announcementDeliveryId = new SimpleIntegerProperty(deliveryID);
-        announcementId = new SimpleIntegerProperty(announceId);
+        announcementDelId = new SimpleIntegerProperty(announceId);
         userId = new SimpleIntegerProperty(Id);
         announcementDeliveryStatus = new SimpleStringProperty(status);
 
@@ -50,16 +43,16 @@ public class AnnouncementDeliveryModel {
         return userId;
     }
 
-    public int getAnnouncementId() {
-        return announcementId.get();
+    public int getAnnouncementDelId() {
+        return announcementDelId.get();
     }
 
-    public void setAnnouncementId(int announcementId) {
-        this.announcementId.set(announcementId);
+    public void setAnnouncementDelId(int announcementDelId) {
+        this.announcementDelId.set(announcementDelId);
     }
 
-    public SimpleIntegerProperty announcementIdProperty() {
-        return announcementId;
+    public SimpleIntegerProperty announcementDelIdProperty() {
+        return announcementDelId;
     }
 
     public String getAnnouncementDeliveryStatus() {
@@ -77,6 +70,6 @@ public class AnnouncementDeliveryModel {
     @Override
     public String toString() {
 
-        return (announcementDeliveryId.get() + ", " + userId.get() + "," + announcementId.get() + "," + announcementDeliveryStatus.get());
+        return (announcementDeliveryId.get() + ", " + userId.get() + "," + announcementDelId.get() + "," + announcementDeliveryStatus.get());
     }
 }
