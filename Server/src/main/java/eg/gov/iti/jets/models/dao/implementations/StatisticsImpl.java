@@ -24,7 +24,7 @@ public class StatisticsImpl extends UnicastRemoteObject implements Statistics {
         DBConnection.getInstance().initConnection();
         connection = DBConnection.getInstance().getConnection();
         StatisticsImpl rr = new StatisticsImpl();
-        Map<String, Integer> map = rr.getUsersByGender();
+        Map<String, Integer> map = rr.getUsersNumByCountry();
         System.out.println("The collection is: " + map.values());
     }
 
