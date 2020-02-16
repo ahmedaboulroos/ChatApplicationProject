@@ -3,17 +3,16 @@ package eg.gov.iti.jets.views;
 import com.jfoenix.controls.JFXButton;
 import com.jfoenix.controls.JFXTextField;
 import eg.gov.iti.jets.models.dao.implementations.AnnouncementDaoImpl;
-import eg.gov.iti.jets.models.dao.implementations.AnnouncementDeliveryDaoImpl;
 import eg.gov.iti.jets.models.dao.interfaces.AnnouncementDao;
-import eg.gov.iti.jets.models.dao.interfaces.AnnouncementDeliveryDao;
 import eg.gov.iti.jets.models.entities.Announcement;
 import eg.gov.iti.jets.models.entities.AnnouncementDelivery;
-import eg.gov.iti.jets.views.models.AnnouncementViewModel;
 import eg.gov.iti.jets.views.models.AnnouncementDeliveryModel;
+import eg.gov.iti.jets.views.models.AnnouncementViewModel;
 import javafx.collections.FXCollections;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
+import javafx.scene.control.SelectionMode;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.cell.PropertyValueFactory;
@@ -28,8 +27,6 @@ import java.util.ResourceBundle;
 public class AnnouncementsViewController implements Initializable {
 
     AnnouncementDao announcementDao = AnnouncementDaoImpl.getInstance();
-    AnnouncementDeliveryDao announcementDeliveryDao = AnnouncementDeliveryDaoImpl.getInstance();
-
     @FXML
     private JFXTextField announcementTf;
 
@@ -61,10 +58,6 @@ public class AnnouncementsViewController implements Initializable {
     @FXML
     private TableColumn<AnnouncementDeliveryModel, String> announcementDeliveryStatus;
 
-
-    //@FXML
-    //private TableView<?> announcementsDeliveryTv;
-
     public List<AnnouncementViewModel> getAllAnnouncements() throws RemoteException {
         List<AnnouncementViewModel> announcementList = new ArrayList<>();
         List<Announcement> announcements = announcementDao.getAllAnnouncements();
@@ -75,38 +68,32 @@ public class AnnouncementsViewController implements Initializable {
         return announcementList;
     }
 
-    public List<AnnouncementDeliveryModel> getAnnouncementDeliveries(int announcementId) throws RemoteException {
-
-        List<AnnouncementDeliveryModel> announcementDeliveryList = new ArrayList<>();
-        List<AnnouncementDelivery> announcements = announcementDao.getAnnouncementDeliveries(1);
-        for (int i = 0; i < announcements.size(); i++) {
-            announcementDeliveryList.add(new AnnouncementDeliveryModel(announcements.get(i).getAnnouncementDeliveryId(), announcements.get(i).getUserId(), announcements.get(i).getAnnouncementId(), announcements.get(i).getAnnouncementDeliveryStatus().toString()));
-            System.out.println(announcements.get(i).getAnnouncementDeliveryId() + " " + announcements.get(i).getUserId() + " " + announcements.get(i).getAnnouncementId() + "" + announcements.get(i).getAnnouncementDeliveryStatus().toString());
+    public List<AnnouncementDeliveryModel> getAllAnnouncementsDelivery(int announcementDeliveryId) throws RemoteException {
+        List<AnnouncementDeliveryModel> announcementList = new ArrayList<>();
+        List<AnnouncementDelivery> announcementsDelivery = announcementDao.getAnnouncementDeliveries(announcementDeliveryId);
+        for (int i = 0; i < announcementsDelivery.size(); i++) {
+            announcementList.add(new AnnouncementDeliveryModel(announcementsDelivery.get(i).getAnnouncementDeliveryId(), announcementsDelivery.get(i).getUserId(), announcementsDelivery.get(i).getAnnouncementId(), announcementsDelivery.get(i).getAnnouncementDeliveryStatus().name()));
+            System.out.println("" + announcementsDelivery.get(i).getAnnouncementDeliveryId() + announcementsDelivery.get(i).getUserId() + announcementsDelivery.get(i).getAnnouncementId() + announcementsDelivery.get(i).getAnnouncementDeliveryStatus() + " ");
         }
-        return announcementDeliveryList;
+        return announcementList;
     }
 
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
         try {
+            announcementsTv.getSelectionModel().setSelectionMode(SelectionMode.SINGLE);
             announcementsTv.setItems(FXCollections.observableList(getAllAnnouncements()));
             announcementId.setCellValueFactory(new PropertyValueFactory<AnnouncementViewModel, Integer>("announcementId"));
             content.setCellValueFactory(new PropertyValueFactory<AnnouncementViewModel, String>("content"));
             announcementTimestamp.setCellValueFactory(new PropertyValueFactory<AnnouncementViewModel, String>("announcementTimestamp"));
-            //announcementsTv.getSelectionModel().selectedIndexProperty().addListener(new RowSelectChangeListener());
-
-
-            announcementsDeliveryTv.setItems(FXCollections.observableList(getAnnouncementDeliveries(11)));
             announcementDeliveryId.setCellValueFactory(new PropertyValueFactory<AnnouncementDeliveryModel, Integer>("announcementDeliveryId"));
             userId.setCellValueFactory(new PropertyValueFactory<AnnouncementDeliveryModel, Integer>("userId"));
             announcementDelId.setCellValueFactory(new PropertyValueFactory<AnnouncementDeliveryModel, Integer>("announcementDelId"));
-
             announcementDeliveryStatus.setCellValueFactory(new PropertyValueFactory<AnnouncementDeliveryModel, String>("announcementDeliveryStatus"));
         } catch (RemoteException e) {
             e.printStackTrace();
         }
-
     }
 
     @FXML
@@ -124,9 +111,11 @@ public class AnnouncementsViewController implements Initializable {
 
     @FXML
     void handleAnnouncementsMc(MouseEvent event) {
-//        announcementsTv.getSelectionModel().getSelectedItem();
         try {
-            getAnnouncementDeliveries(1);
+            AnnouncementViewModel announcementViewModel = announcementsTv.getSelectionModel().getSelectedItem();
+            int id = announcementViewModel.getAnnouncementId();
+            System.out.println(id);
+            announcementsDeliveryTv.setItems(FXCollections.observableList(getAllAnnouncementsDelivery(id)));
         } catch (RemoteException e) {
             e.printStackTrace();
         }
