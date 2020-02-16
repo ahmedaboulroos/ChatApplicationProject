@@ -2,10 +2,13 @@
 
 <?import com.jfoenix.controls.JFXButton?>
 <?import com.jfoenix.controls.JFXTextField?>
-<?import javafx.scene.control.*?>
+<?import javafx.scene.control.ScrollPane?>
+<?import javafx.scene.control.TableColumn?>
+<?import javafx.scene.control.TableView?>
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.layout.BorderPane?>
 <?import javafx.scene.text.Font?>
+
 <BorderPane xmlns:fx="http://javafx.com/fxml/1" xmlns="http://javafx.com/javafx/11.0.1"
             fx:controller="eg.gov.iti.jets.views.AnnouncementsViewController">
     <center>
@@ -36,11 +39,11 @@
                         <TableView fx:id="announcementsDeliveryTv" layoutX="74.0" layoutY="399.0" prefHeight="200.0"
                                    prefWidth="469.0">
                             <columns>
-                                <TableColumn fx:id="announcementsDeliveryId" prefWidth="75.0" text="ID"/>
-                                <TableColumn fx:id="userID" prefWidth="75.0" text="userID"/>
-                                <TableColumn fx:id="announcementsId" prefWidth="126.40003967285156"
+                                <TableColumn fx:id="announcementDeliveryId" prefWidth="75.0" text="ID"/>
+                                <TableColumn fx:id="userId" prefWidth="75.0" text="userID"/>
+                                <TableColumn fx:id="announcementDelId" prefWidth="126.40003967285156"
                                              text="annoucementID"/>
-                                <TableColumn fx:id="Status" prefWidth="128.0" text="Status"/>
+                                <TableColumn fx:id="announcementDeliveryStatus" prefWidth="128.0" text="Status"/>
                             </columns>
                         </TableView>
                     </children>
