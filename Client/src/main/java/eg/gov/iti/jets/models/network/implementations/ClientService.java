@@ -1,6 +1,7 @@
 package eg.gov.iti.jets.models.network.implementations;
 
 import eg.gov.iti.jets.controllers.MainController;
+import eg.gov.iti.jets.controllers.SingleChatMessageController;
 import eg.gov.iti.jets.models.network.interfaces.ClientInterface;
 
 import java.rmi.RemoteException;
@@ -10,12 +11,18 @@ import java.rmi.server.UnicastRemoteObject;
 
 public class ClientService extends UnicastRemoteObject implements ClientInterface {
     private MainController mainController;
+    private SingleChatMessageController singleChatMessageController;
 
     public ClientService() throws RemoteException {
     }
 
     public ClientService(MainController mainController) throws RemoteException {
         this.mainController = mainController;
+        //mainController.displayMsg("HI");
+    }
+
+    public ClientService(SingleChatMessageController singleChatMessageController) throws RemoteException {
+        this.singleChatMessageController = singleChatMessageController;
         //mainController.displayMsg("HI");
     }
 
@@ -44,7 +51,7 @@ public class ClientService extends UnicastRemoteObject implements ClientInterfac
 
     @Override
     public void receiveNewSingleChatMessage(int singleChatMessageId) throws RemoteException {
-
+        singleChatMessageController.displayNewSingleChatMessage(singleChatMessageId);
     }
 
     @Override
