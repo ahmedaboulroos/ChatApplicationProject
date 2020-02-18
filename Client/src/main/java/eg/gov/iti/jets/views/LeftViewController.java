@@ -15,6 +15,8 @@ import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
@@ -147,6 +149,22 @@ public class LeftViewController implements Initializable {
             System.out.println(singleChats);
             if (singleChats != null) {
                 singleChatsLv.setItems(FXCollections.observableList(singleChats));
+
+                ImageView imageview = new ImageView();
+                singleChatsLv.setCellFactory(param -> new ListCell<SingleChat>() {
+                    public void updateItem(SingleChat single, boolean empty) {
+                        super.updateItem(single, empty);
+
+                        setText(single.toString());
+                        Image imageForTasting = new Image("images/chat-circle-blue-512.png");
+                        imageview.setImage(imageForTasting);
+                        imageview.setFitHeight(20);
+                        imageview.setFitWidth(20);
+
+                        setGraphic(imageview);
+                    }
+
+                });
             } else {
                 System.out.println("No Single chats for this user");
             }
@@ -161,6 +179,22 @@ public class LeftViewController implements Initializable {
             System.out.println(groupChats);
             if (groupChats != null) {
                 groupChatsLv.setItems(FXCollections.observableList(groupChats));
+
+                ImageView imageview = new ImageView();
+                groupChatsLv.setCellFactory(param -> new ListCell<GroupChat>() {
+                    public void updateItem(GroupChat group, boolean empty) {
+                        super.updateItem(group, empty);
+
+                        setText(group.toString());
+                        Image imageForTasting = new Image("images/chat-circle-blue-512.png");
+                        imageview.setImage(imageForTasting);
+                        imageview.setFitHeight(20);
+                        imageview.setFitWidth(20);
+
+                        setGraphic(imageview);
+                    }
+
+                });
             } else {
                 System.out.println("No Group chats for this user");
             }
