@@ -2,6 +2,8 @@ package eg.gov.iti.jets.models.network.implementations;
 
 import eg.gov.iti.jets.controllers.MainController;
 import eg.gov.iti.jets.controllers.SingleChatMessageController;
+import eg.gov.iti.jets.models.entities.SingleChatMessage;
+import eg.gov.iti.jets.models.network.RMIConnection;
 import eg.gov.iti.jets.models.network.interfaces.ClientInterface;
 
 import java.rmi.RemoteException;
@@ -51,7 +53,8 @@ public class ClientService extends UnicastRemoteObject implements ClientInterfac
 
     @Override
     public void receiveNewSingleChatMessage(int singleChatMessageId) throws RemoteException {
-        singleChatMessageController.displayNewSingleChatMessage(singleChatMessageId);
+        SingleChatMessage singleChatMessage = RMIConnection.getInstance().getSingleChatMessageDao().getSingleChatMessage(singleChatMessageId);
+        singleChatMessageController.displayNewSingleChatMessage(singleChatMessage);
     }
 
     @Override
