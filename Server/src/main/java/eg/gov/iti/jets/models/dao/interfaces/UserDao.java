@@ -32,6 +32,8 @@ public interface UserDao extends Remote {
 
     List<Group> getUserGroups(int userId) throws RemoteException;
 
+    List<GroupContact> getUserContacts(int userId) throws RemoteException;
+
     // Update
     boolean updateUser(User user) throws RemoteException;
 

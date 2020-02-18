@@ -69,7 +69,6 @@ public class GroupChatDaoImpl extends UnicastRemoteObject implements GroupChatDa
                 e.printStackTrace();
             }
         }
-
         return b;
     }
 
@@ -230,16 +229,6 @@ public class GroupChatDaoImpl extends UnicastRemoteObject implements GroupChatDa
 
         return b;
     }
-
-    @Override
-    public boolean addGroupChatMessage(int groupMessageId) {
-        return false;
-    }//m4 fahma
-
-    @Override
-    public boolean addGroupChatUser(int userId) {
-        return false;
-    }//m4 fahma
 
     @Override
     public boolean deleteGroupChat(int groupChatId) {

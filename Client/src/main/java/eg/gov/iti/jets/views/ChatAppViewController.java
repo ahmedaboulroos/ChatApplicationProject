@@ -11,11 +11,13 @@ import java.io.IOException;
 import java.net.URL;
 import java.util.ResourceBundle;
 
-public class MainChatAppViewController implements Initializable {
+public class ChatAppViewController implements Initializable {
 
     @FXML
     private BorderPane chatAppBp;
     private MainController mainController;
+
+    CenterViewController centerViewController;
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
@@ -26,6 +28,7 @@ public class MainChatAppViewController implements Initializable {
 
             FXMLLoader centerViewFxmlLoader = new FXMLLoader(getClass().getResource("/views/CenterView.fxml"));
             Parent centerView = centerViewFxmlLoader.load();
+            centerViewController = centerViewFxmlLoader.getController();
             chatAppBp.setCenter(centerView);
 
             FXMLLoader rightViewFxmlLoader = new FXMLLoader(getClass().getResource("/views/RightView.fxml"));
@@ -45,5 +48,13 @@ public class MainChatAppViewController implements Initializable {
     public void displayMsg(String hi) {
         System.out.println(hi);
         mainController.sendMsg("HI HI");
+    }
+
+    public void openSingleChat(int singleChatId) {
+        centerViewController.addSingleChat(singleChatId);
+    }
+
+    public void openGroupChat(int groupChatId) {
+        centerViewController.addGroupChat(groupChatId);
     }
 }

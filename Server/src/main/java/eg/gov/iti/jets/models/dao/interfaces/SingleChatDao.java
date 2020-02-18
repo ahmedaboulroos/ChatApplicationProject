@@ -1,6 +1,7 @@
 package eg.gov.iti.jets.models.dao.interfaces;
 
 import eg.gov.iti.jets.models.entities.SingleChat;
+import eg.gov.iti.jets.models.entities.SingleChatMessage;
 import eg.gov.iti.jets.models.entities.User;
 
 import java.rmi.Remote;
@@ -17,12 +18,10 @@ public interface SingleChatDao extends Remote {
 
     List<User> getSingleChatTwoUsers(int singleChatId) throws RemoteException;
 
-    List<SingleChat> getSingleChatMessages(int singleChatId) throws RemoteException;
+    List<SingleChatMessage> getSingleChatMessages(int singleChatId) throws RemoteException;
 
     // Update
     boolean updateSingleChat(SingleChat singleChat) throws RemoteException;
-
-    boolean addSingleChatMessage(int singleChatMessageId) throws RemoteException;
 
     // Delete
     boolean deleteSingleChat(int singleChatId) throws RemoteException;

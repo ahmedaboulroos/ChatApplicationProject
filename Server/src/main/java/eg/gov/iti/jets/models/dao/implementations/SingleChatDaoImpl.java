@@ -2,7 +2,9 @@ package eg.gov.iti.jets.models.dao.implementations;
 
 import eg.gov.iti.jets.models.dao.interfaces.SingleChatDao;
 import eg.gov.iti.jets.models.entities.SingleChat;
+import eg.gov.iti.jets.models.entities.SingleChatMessage;
 import eg.gov.iti.jets.models.entities.User;
+import eg.gov.iti.jets.models.persistence.DBConnection;
 
 import java.rmi.RemoteException;
 import java.rmi.server.UnicastRemoteObject;
@@ -10,10 +12,11 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.ArrayList;
 import java.util.List;
 
 public class SingleChatDaoImpl extends UnicastRemoteObject implements SingleChatDao {
-    private static Connection connection;
+    private static Connection connection = DBConnection.getInstance().getConnection();
 
     private static SingleChatDaoImpl instance;
 
@@ -112,13 +115,21 @@ public class SingleChatDaoImpl extends UnicastRemoteObject implements SingleChat
 
     }
 
-
     @Override
-    public List<SingleChat> getSingleChatMessages(int singleChatId) {
-
-
-        return null;
-
+    public List<SingleChatMessage> getSingleChatMessages(int singleChatId) {
+        String sql = "select * from SINGLE_CHAT_MESSAGE where SINGLE_CHAT_ID = ?";
+        List<SingleChatMessage> singleChatMessages = new ArrayList<>();
+        try {
+            PreparedStatement preparedStatement = connection.prepareStatement(sql);
+            preparedStatement.setInt(1, singleChatId);
+            ResultSet rs = preparedStatement.executeQuery();
+            while (rs.next()) {
+                singleChatMessages.add(new SingleChatMessage(rs.getInt(1), rs.getInt(2), rs.getString(3), rs.getTimestamp(4).toLocalDateTime()));
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return singleChatMessages;
     }
 
     @Override
@@ -144,13 +155,6 @@ public class SingleChatDaoImpl extends UnicastRemoteObject implements SingleChat
         } catch (SQLException e) {
             e.printStackTrace();
         }
-        return false;
-    }
-
-
-    @Override
-    public boolean addSingleChatMessage(int singleChatMessageId) {
-
         return false;
     }
 

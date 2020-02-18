@@ -81,6 +81,33 @@ public class GroupDaoImpl extends UnicastRemoteObject implements GroupDao {
     }
 
     @Override
+    public List<Group> getAllUserGroups(int userId) throws RemoteException {
+        List<Group> groupList = new ArrayList<>();
+        Connection connection = DBConnection.getInstance().getConnection();
+        int groupID = 0;
+        int userID = 0;
+        String groupName = null;
+
+        String selectSQL = "SELECT *  \n" +
+                "FROM APP_USER_GROUP  \n" +
+                "WHERE USER_ID = ? ";
+        try (PreparedStatement preparedStatement = connection.prepareStatement(selectSQL)) {
+            preparedStatement.setInt(1, userId);
+            ResultSet resultSet = preparedStatement.executeQuery();
+            while (resultSet.next()) {
+                groupID = resultSet.getInt(1);
+                userID = resultSet.getInt(2);
+                groupName = resultSet.getString(3);
+                groupList.add(new Group(groupID, userID, groupName));
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+
+        return groupList;
+    }
+
+    @Override
     public List<GroupContact> getGroupContacts(int groupId) {
         List<GroupContact> groupContactList = new ArrayList<>();
         Connection connection = DBConnection.getInstance().getConnection();

@@ -6,18 +6,28 @@ import java.time.LocalDateTime;
 public class SingleChatMessage implements Serializable {
     private static final long serialVersionUID = 6569665098267657690L;
     private int singleChatMessageId;
+    private int singleChatId;
     private int userId;
     private String content;
     private LocalDateTime messageTimestamp;
 
-    public SingleChatMessage(int userId, String content) {
+    public SingleChatMessage(int singleChatId, int userId, String content) {
+        this.singleChatId = singleChatId;
         this.userId = userId;
         this.content = content;
         this.messageTimestamp = LocalDateTime.now();
     }
 
-    public SingleChatMessage(int singleChatMessageId, int userId, String content, LocalDateTime messageTimestamp) {
+    public SingleChatMessage(int singleChatId, int userId, String content, LocalDateTime messageTimestamp) {
+        this.singleChatId = singleChatId;
+        this.userId = userId;
+        this.content = content;
+        this.messageTimestamp = messageTimestamp;
+    }
+
+    public SingleChatMessage(int singleChatMessageId, int singleChatId, int userId, String content, LocalDateTime messageTimestamp) {
         this.singleChatMessageId = singleChatMessageId;
+        this.singleChatId = singleChatId;
         this.userId = userId;
         this.content = content;
         this.messageTimestamp = messageTimestamp;
@@ -63,5 +73,13 @@ public class SingleChatMessage implements Serializable {
                 ", content='" + content + '\'' +
                 ", messageTimestamp=" + messageTimestamp +
                 '}';
+    }
+
+    public int getSingleChatId() {
+        return singleChatId;
+    }
+
+    public void setSingleChatId(int singleChatId) {
+        this.singleChatId = singleChatId;
     }
 }

@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import com.jfoenix.controls.JFXButton?>
+<?import com.jfoenix.controls.JFXTextField?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.AnchorPane?>
+<AnchorPane xmlns:fx="http://javafx.com/fxml/1" prefHeight="412.0" prefWidth="791.0"
+            xmlns="http://javafx.com/javafx/11.0.1" fx:controller="eg.gov.iti.jets.views.AddContactGroupViewController">
+    <children>
+        <JFXButton fx:id="createGroupBtn" layoutX="301.0" layoutY="44.0" onAction="#handleCreateGroupBtn"
+                   text="Create Group"/>
+        <JFXTextField fx:id="groupNameTf" layoutX="44.0" layoutY="38.0"/>
+        <ListView fx:id="availableGroupsLv" layoutX="44.0" layoutY="149.0" onMouseClicked="#handleSelectionMc"
+                  prefHeight="200.0" prefWidth="200.0"/>
+        <ListView fx:id="availableGroupContactsLv" layoutX="287.0" layoutY="149.0" prefHeight="200.0"
+                  prefWidth="200.0"/>
+        <Label layoutX="44.0" layoutY="122.0" text="List Of Available Groups"/>
+        <Label layoutX="287.0" layoutY="122.0" text="List Of Contacts in the Group"/>
+        <ListView fx:id="availableContactsLv" layoutX="563.0" layoutY="149.0" prefHeight="200.0" prefWidth="200.0"/>
+        <Button layoutX="505.0" layoutY="237.0" mnemonicParsing="false" onAction="#handleAddContactToGroup"
+                text="&lt;&lt;"/>
+        <Label layoutX="563.0" layoutY="122.0" text="List of all contacts"/>
+        <Separator layoutX="6.0" layoutY="84.0" prefHeight="10.0" prefWidth="772.0"/>
+    </children>
+</AnchorPane>
