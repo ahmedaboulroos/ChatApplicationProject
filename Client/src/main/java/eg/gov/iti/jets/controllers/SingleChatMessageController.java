@@ -3,10 +3,12 @@ package eg.gov.iti.jets.controllers;
 import eg.gov.iti.jets.models.dao.interfaces.SingleChatMessageDao;
 import eg.gov.iti.jets.models.entities.SingleChatMessage;
 import eg.gov.iti.jets.models.network.RMIConnection;
+import eg.gov.iti.jets.views.SingleChatViewController;
 
 import java.rmi.RemoteException;
 
 public class SingleChatMessageController {
+    private static SingleChatViewController singleChatViewController;
     private static SingleChatMessageController instance;
 
     public static SingleChatMessageController getInstance() {
@@ -28,5 +30,8 @@ public class SingleChatMessageController {
 
     }
 
+    public void displayNewSingleChatMessage(SingleChatMessage singleChatMessage) {
+        singleChatViewController.displayNewSingleChatMessage(singleChatMessage);
+    }
 
 }

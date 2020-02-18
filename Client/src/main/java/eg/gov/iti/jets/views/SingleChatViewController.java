@@ -15,6 +15,15 @@ import java.util.List;
 
 public class SingleChatViewController {
 
+    private static SingleChatViewController instance;
+
+    public static SingleChatViewController getInstance() {
+        if (instance == null) {
+            instance = new SingleChatViewController();
+        }
+        return instance;
+    }
+
     private User currentUser = ClientStageCoordinator.getInstance().currentUser;
     private int singleChatId;
     private SingleChatMessageController singleChatMessageController = SingleChatMessageController.getInstance();
@@ -44,5 +53,13 @@ public class SingleChatViewController {
         } catch (RemoteException e) {
             e.printStackTrace();
         }
+    }
+
+    public void displayNewSingleChatMessage(SingleChatMessage singleChatMessage) {
+        System.out.println(" singleChatMessageId : " + singleChatMessage.getSingleChatMessageId()
+                + "\n userId: " + singleChatMessage.getUserId()
+                + "\n singleChatId: " + singleChatMessage.getSingleChatId()
+                + "\n contentMsg " + singleChatMessage.getContent()
+                + "\n messageTimeStamp " + singleChatMessage.getMessageTimestamp());
     }
 }
