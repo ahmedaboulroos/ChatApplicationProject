@@ -1,5 +1,6 @@
 package eg.gov.iti.jets.views;
 
+import eg.gov.iti.jets.controllers.MainController;
 import eg.gov.iti.jets.models.entities.User;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
@@ -32,6 +33,7 @@ public class ClientStageCoordinator {
         FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/views/ChatAppView.fxml"));
         Parent mainChatAppView = fxmlLoader.load();
         MainChatAppViewController mainChatAppViewController = fxmlLoader.getController();
+        MainController mainController = new MainController(mainChatAppViewController);
         this.stage.setScene(new Scene(mainChatAppView));
         this.stage.setTitle("Chat Application");
         this.stage.show();

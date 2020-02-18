@@ -1,5 +1,6 @@
 package eg.gov.iti.jets.views;
 
+import eg.gov.iti.jets.controllers.MainController;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
@@ -14,6 +15,7 @@ public class MainChatAppViewController implements Initializable {
 
     @FXML
     private BorderPane chatAppBp;
+    private MainController mainController;
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
@@ -29,9 +31,19 @@ public class MainChatAppViewController implements Initializable {
             FXMLLoader rightViewFxmlLoader = new FXMLLoader(getClass().getResource("/views/RightView.fxml"));
             Parent rightView = rightViewFxmlLoader.load();
             chatAppBp.setRight(rightView);
+
         } catch (IOException e) {
             e.printStackTrace();
         }
 
+    }
+
+    public void setController(MainController mainController) {
+        this.mainController = mainController;
+    }
+
+    public void displayMsg(String hi) {
+        System.out.println(hi);
+        mainController.sendMsg("HI HI");
     }
 }
