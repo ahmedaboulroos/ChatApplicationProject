@@ -7,13 +7,19 @@ import eg.gov.iti.jets.models.entities.enums.RelationshipStatus;
 import eg.gov.iti.jets.models.network.RMIConnection;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
+import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 import javafx.scene.Node;
+import javafx.scene.Parent;
+import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.VBox;
+import javafx.stage.Stage;
 
+import java.io.IOException;
 import java.net.URL;
 import java.rmi.RemoteException;
 import java.util.*;
@@ -178,6 +184,52 @@ public class LeftViewController implements Initializable {
         if (groupChat != null) {
             System.out.println(groupChat.getGroupChatId());
             ClientStageCoordinator.getInstance().openNewGroupChat(groupChat.getGroupChatId());
+        }
+    }
+
+
+    @FXML
+    void handleAddContact(ActionEvent event) {
+        try {
+            FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/views/AddContactView.fxml"));
+            Parent addContactView = fxmlLoader.load();
+            Stage stage = new Stage();
+            Scene scene = new Scene(addContactView);
+            stage.setScene(scene);
+            stage.setTitle("Add Contact");
+            stage.show();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+    @FXML
+    void handleAddContactGroup(ActionEvent event) {
+        try {
+            FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/views/AddContactGroupView.fxml"));
+            Parent addContactGroupView = fxmlLoader.load();
+            Stage stage = new Stage();
+            Scene scene = new Scene(addContactGroupView);
+            stage.setScene(scene);
+            stage.setTitle("Add Contact Group");
+            stage.show();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+    @FXML
+    void handleAddGroupChat(ActionEvent event) {
+        try {
+            FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/views/AddGroupChatView.fxml"));
+            Parent addGroupChatView = fxmlLoader.load();
+            Stage stage = new Stage();
+            Scene scene = new Scene(addGroupChatView);
+            stage.setScene(scene);
+            stage.setTitle("Add Group Chat");
+            stage.show();
+        } catch (IOException e) {
+            e.printStackTrace();
         }
     }
 
