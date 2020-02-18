@@ -1,6 +1,7 @@
 package eg.gov.iti.jets.controllers;
 
 import eg.gov.iti.jets.models.network.implementations.ClientService;
+import eg.gov.iti.jets.models.network.interfaces.ServerInterface;
 import eg.gov.iti.jets.views.ChatAppViewController;
 
 import java.rmi.RemoteException;
@@ -18,16 +19,18 @@ public class MainController {
     private SingleChatController singleChatController;
     private SingleChatMessageController singleChatMessageController;
     private UserController userController;
+    private ServerInterface serverService;
 
     private ClientService clientService;
     private ChatAppViewController chatAppViewController;
 
-    public MainController(ChatAppViewController chatAppViewController) {
+    public MainController(ChatAppViewController chatAppViewController, ServerInterface serverService, int userId) {
         this.chatAppViewController = chatAppViewController;
         chatAppViewController.setController(this);
         try {
             this.clientService = new ClientService(this);
-
+            this.serverService = serverService;
+            serverService.login(userId, clientService);
         } catch (RemoteException e) {
             e.printStackTrace();
         }
@@ -101,11 +104,11 @@ public class MainController {
         return chatAppViewController;
     }
 
-    public void displayMsg(String hi) {
+    /*public void displayMsg(String hi) {
         chatAppViewController.displayMsg(hi);
     }
 
     public void sendMsg(String hi_hi) {
         System.out.println(hi_hi);
-    }
+    }*/
 }

@@ -16,7 +16,7 @@ public class ClientService extends UnicastRemoteObject implements ClientInterfac
 
     public ClientService(MainController mainController) throws RemoteException {
         this.mainController = mainController;
-        mainController.displayMsg("HI");
+        //mainController.displayMsg("HI");
     }
 
     public ClientService(int port) throws RemoteException {

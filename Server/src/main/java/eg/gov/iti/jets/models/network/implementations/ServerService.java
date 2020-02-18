@@ -34,6 +34,7 @@ public class ServerService extends UnicastRemoteObject implements ServerInterfac
         User user = userDao.getUser(userId);
         if (user != null) {
             clients.put(user.getUserId(), client);
+            //System.out.println(user.getUserId());
         } else {
             System.out.println("error in login");
         }

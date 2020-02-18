@@ -31,5 +31,6 @@ module Server {
     opens eg.gov.iti.jets.models.dao.interfaces;
 
     exports eg.gov.iti.jets.models.dao.interfaces to java.rmi;
+    exports eg.gov.iti.jets.models.network.interfaces to java.rmi;
 
 }

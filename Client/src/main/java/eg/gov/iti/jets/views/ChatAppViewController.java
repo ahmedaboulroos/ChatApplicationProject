@@ -45,10 +45,10 @@ public class ChatAppViewController implements Initializable {
         this.mainController = mainController;
     }
 
-    public void displayMsg(String hi) {
+    /*public void displayMsg(String hi) {
         System.out.println(hi);
         mainController.sendMsg("HI HI");
-    }
+    }*/
 
     public void openSingleChat(int singleChatId) {
         centerViewController.addSingleChat(singleChatId);

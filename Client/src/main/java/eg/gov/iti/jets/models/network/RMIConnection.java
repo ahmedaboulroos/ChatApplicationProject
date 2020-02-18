@@ -1,6 +1,7 @@
 package eg.gov.iti.jets.models.network;
 
 import eg.gov.iti.jets.models.dao.interfaces.*;
+import eg.gov.iti.jets.models.network.interfaces.ServerInterface;
 
 import java.rmi.NotBoundException;
 import java.rmi.RemoteException;
@@ -22,6 +23,7 @@ public class RMIConnection {
     private SingleChatDao singleChatDao;
     private SingleChatMessageDao singleChatMessageDao;
     private UserDao userDao;
+    private ServerInterface serverService;
     private Registry registry;
 
     private RMIConnection() {
@@ -81,6 +83,10 @@ public class RMIConnection {
         return this.userDao;
     }
 
+    public ServerInterface getServerService() {
+        return serverService;
+    }
+
     public boolean initConnection() {
         if (registry == null) {
             try {
@@ -110,6 +116,7 @@ public class RMIConnection {
             singleChatDao = (SingleChatDao) this.registry.lookup("SingleChatDao");
             singleChatMessageDao = (SingleChatMessageDao) this.registry.lookup("SingleChatMessageDao");
             userDao = (UserDao) this.registry.lookup("UserDao");
+            serverService = (ServerInterface) this.registry.lookup("ServerService");
             System.out.println(">> RMI-Registry Services Bounded...");
         } catch (RemoteException | NotBoundException e) {
             e.printStackTrace();

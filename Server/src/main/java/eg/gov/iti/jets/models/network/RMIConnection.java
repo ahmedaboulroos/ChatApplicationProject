@@ -2,6 +2,8 @@ package eg.gov.iti.jets.models.network;
 
 import eg.gov.iti.jets.models.dao.implementations.*;
 import eg.gov.iti.jets.models.dao.interfaces.*;
+import eg.gov.iti.jets.models.network.implementations.ServerService;
+import eg.gov.iti.jets.models.network.interfaces.ServerInterface;
 
 import java.rmi.NotBoundException;
 import java.rmi.RemoteException;
@@ -23,9 +25,16 @@ public class RMIConnection {
     private SingleChatDao singleChatDao = SingleChatDaoImpl.getInstance();
     private SingleChatMessageDao singleChatMessageDao = SingleChatMessageDaoImpl.getInstance();
     private UserDao userDao = UserDaoImpl.getInstance();
+    private ServerInterface serverService;
+
     private Registry registry;
 
     private RMIConnection() {
+        try {
+            serverService = new ServerService();
+        } catch (RemoteException e) {
+            e.printStackTrace();
+        }
     }
 
     public static synchronized RMIConnection getInstance() {
@@ -64,6 +73,7 @@ public class RMIConnection {
             this.registry.rebind("SingleChatDao", singleChatDao);
             this.registry.rebind("SingleChatMessageDao", singleChatMessageDao);
             this.registry.rebind("UserDao", userDao);
+            this.registry.rebind("ServerService", serverService);
 
             System.out.println(">> RMI-Registry Services Bounded...");
         } catch (RemoteException e) {
