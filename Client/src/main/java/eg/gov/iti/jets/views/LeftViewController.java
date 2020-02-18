@@ -11,6 +11,7 @@ import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.Node;
 import javafx.scene.control.*;
+import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.VBox;
 
 import java.net.URL;
@@ -18,6 +19,7 @@ import java.rmi.RemoteException;
 import java.util.*;
 
 public class LeftViewController implements Initializable {
+
 
     @FXML
     private Tab contactsTab;
@@ -137,7 +139,11 @@ public class LeftViewController implements Initializable {
         try {
             List<SingleChat> singleChats = userDao.getUserSingleChats(ClientStageCoordinator.getInstance().currentUser.getUserId());
             System.out.println(singleChats);
-            singleChatsLv.setItems(FXCollections.observableList(singleChats));
+            if (singleChats != null) {
+                singleChatsLv.setItems(FXCollections.observableList(singleChats));
+            } else {
+                System.out.println("No Single chats for this user");
+            }
         } catch (RemoteException e) {
             e.printStackTrace();
         }
@@ -147,9 +153,31 @@ public class LeftViewController implements Initializable {
         try {
             List<GroupChat> groupChats = userDao.getUserGroupChats(ClientStageCoordinator.getInstance().currentUser.getUserId());
             System.out.println(groupChats);
-            groupChatsLv.setItems(FXCollections.observableList(groupChats));
+            if (groupChats != null) {
+                groupChatsLv.setItems(FXCollections.observableList(groupChats));
+            } else {
+                System.out.println("No Group chats for this user");
+            }
         } catch (RemoteException e) {
             e.printStackTrace();
+        }
+    }
+
+    @FXML
+    void handleSingleChatSelection(MouseEvent event) {
+        SingleChat singleChat = singleChatsLv.getSelectionModel().getSelectedItem();
+        if (singleChat != null) {
+            System.out.println(singleChat.getSingleChatId());
+            ClientStageCoordinator.getInstance().openNewSingleChat(singleChat.getSingleChatId());
+        }
+    }
+
+    @FXML
+    void handleGroupChatSelection(MouseEvent event) {
+        GroupChat groupChat = groupChatsLv.getSelectionModel().getSelectedItem();
+        if (groupChat != null) {
+            System.out.println(groupChat.getGroupChatId());
+            ClientStageCoordinator.getInstance().openNewGroupChat(groupChat.getGroupChatId());
         }
     }
 

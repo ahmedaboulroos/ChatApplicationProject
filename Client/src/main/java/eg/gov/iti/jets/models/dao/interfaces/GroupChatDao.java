@@ -25,10 +25,6 @@ public interface GroupChatDao extends Remote {
     // Update
     boolean updateGroupChat(GroupChat groupChat) throws RemoteException;
 
-    boolean addGroupChatMessage(int groupMessageId) throws RemoteException;
-
-    boolean addGroupChatUser(int userId) throws RemoteException;
-
     // Delete
     boolean deleteGroupChat(int groupChatId) throws RemoteException;
 

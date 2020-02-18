@@ -326,6 +326,23 @@ public UserDaoImpl() throws RemoteException {
     }
 
     @Override
+    public List<GroupContact> getUserContacts(int userId) throws RemoteException {
+        Connection connection = DBConnection.getInstance().getConnection();
+        List<GroupContact> groupContacts = null;
+        try {
+            PreparedStatement preparedStatement = connection.prepareStatement(
+                    "select * from GROUP_CONTACT where USER_ID = " + userId);
+            ResultSet resultSet = preparedStatement.executeQuery();
+            groupContacts = getGroupContactsFromResultSet(resultSet);
+            resultSet.close();
+            preparedStatement.close();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return groupContacts;
+    }
+
+    @Override
     public boolean updateUser(User user) {
         Connection connection = DBConnection.getInstance().getConnection();
         int result = 0;
@@ -528,6 +545,22 @@ public UserDaoImpl() throws RemoteException {
         else
             return null;
     }
+
+    private List<GroupContact> getGroupContactsFromResultSet(ResultSet resultSet) throws SQLException {
+        List<GroupContact> groupContacts = new ArrayList<>();
+        GroupContact groupContact;
+        while (resultSet.next()) {
+            groupContact = new GroupContact(resultSet.getInt(1),
+                    resultSet.getInt(2),
+                    resultSet.getInt(3));
+            groupContacts.add(groupContact);
+        }
+        if (!groupContacts.isEmpty())
+            return groupContacts;
+        else
+            return null;
+    }
+
 
     private List<AnnouncementDelivery> getAnnouncementDeliveriesFromResultSet(ResultSet resultSet) throws SQLException {
         List<AnnouncementDelivery> announcementDeliveries = new ArrayList<>();

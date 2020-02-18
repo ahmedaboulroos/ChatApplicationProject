@@ -15,6 +15,8 @@ public interface GroupDao extends Remote {
     // Read
     Group getGroup(int groupId) throws RemoteException;
 
+    List<Group> getAllUserGroups(int userId) throws RemoteException;
+
     List<GroupContact> getGroupContacts(int groupId) throws RemoteException;
 
     // Update

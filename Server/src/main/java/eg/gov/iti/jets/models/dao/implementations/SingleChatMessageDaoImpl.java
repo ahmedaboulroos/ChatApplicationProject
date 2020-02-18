@@ -2,13 +2,14 @@ package eg.gov.iti.jets.models.dao.implementations;
 
 import eg.gov.iti.jets.models.dao.interfaces.SingleChatMessageDao;
 import eg.gov.iti.jets.models.entities.SingleChatMessage;
+import eg.gov.iti.jets.models.persistence.DBConnection;
 
 import java.rmi.RemoteException;
 import java.rmi.server.UnicastRemoteObject;
 import java.sql.*;
 
 public class SingleChatMessageDaoImpl extends UnicastRemoteObject implements SingleChatMessageDao {
-    private static Connection connection;
+    private static Connection connection = DBConnection.getInstance().getConnection();
 
     private static SingleChatMessageDaoImpl instance;
 
@@ -29,18 +30,13 @@ public class SingleChatMessageDaoImpl extends UnicastRemoteObject implements Sin
     @Override
     public boolean createSingleChatMessage(SingleChatMessage singleChatMessage) {
 
-
         try {
-
-            connection.setAutoCommit(false);
-            String sql = "INSERT INTO SINGLE_CHAT_MESSAGE (SINGLE_CHAT_MESSAGE_ID,  USER_ID, CONTENT, MESSAGE_TIMESTAMP) VALUES (SEQ_SINGLE_CHAT_MESSAGE_ID.NEXTVAL,?,?,?)";
-
+            String sql = "INSERT INTO SINGLE_CHAT_MESSAGE (SINGLE_CHAT_MESSAGE_ID, SINGLE_CHAT_ID,  USER_ID, CONTENT, MESSAGE_TIMESTAMP) VALUES (SEQ_SINGLE_CHAT_MESSAGE_ID.NEXTVAL,?,?,?,?)";
             PreparedStatement stmt = connection.prepareStatement(sql);
-            stmt.setInt(1, singleChatMessage.getUserId());
-            stmt.setString(2, singleChatMessage.getContent());
-
-
-            stmt.setTimestamp(3, Timestamp.valueOf(singleChatMessage.getMessageTimestamp()));
+            stmt.setInt(1, singleChatMessage.getSingleChatId());
+            stmt.setInt(2, singleChatMessage.getUserId());
+            stmt.setString(3, singleChatMessage.getContent());
+            stmt.setTimestamp(4, Timestamp.valueOf(singleChatMessage.getMessageTimestamp()));
             int affectedRow = stmt.executeUpdate();
             if (affectedRow > 0) {
                 return true;
@@ -69,8 +65,7 @@ public class SingleChatMessageDaoImpl extends UnicastRemoteObject implements Sin
             while (resultset.next()) {
                 System.out.println("inside" + singleChatMessageRef);
                 System.out.println(resultset.getInt("SINGLE_CHAT_MESSAGE_ID"));
-                singleChatMessageRef = new SingleChatMessage(resultset.getInt("SINGLE_CHAT_MESSAGE_ID"), resultset.getString("CONTENT"));
-
+                singleChatMessageRef = new SingleChatMessage(resultset.getInt("SINGLE_CHAT_MESSAGE_ID"), resultset.getInt("SINGLE_CHAT_ID"), resultset.getString("CONTENT"));
             }
 
         } catch (SQLException sqe) {

@@ -13,12 +13,24 @@ public class GroupChat implements Serializable {
     private Image groupImage;
     private LocalDateTime creationTimestamp;
 
-    public GroupChat(int groupChatId, String title, String description, Image groupImage) {
-        this.groupChatId = groupChatId;
+    public GroupChat(String title, String description) {
+        this.title = title;
+        this.description = description;
+        this.creationTimestamp = LocalDateTime.now();
+    }
+
+    public GroupChat(String title, String description, Image groupImage) {
         this.title = title;
         this.description = description;
         this.groupImage = groupImage;
         this.creationTimestamp = LocalDateTime.now();
+    }
+
+    public GroupChat(String title, String description, Image groupImage, LocalDateTime creationTimestamp) {
+        this.title = title;
+        this.description = description;
+        this.groupImage = groupImage;
+        this.creationTimestamp = creationTimestamp;
     }
 
     public GroupChat(int groupChatId, String title, String description, Image groupImage, LocalDateTime creationTimestamp) {
@@ -27,10 +39,6 @@ public class GroupChat implements Serializable {
         this.description = description;
         this.groupImage = groupImage;
         this.creationTimestamp = creationTimestamp;
-    }
-
-    public GroupChat(String title) {
-        this.title = title;
     }
 
     public int getGroupChatId() {
