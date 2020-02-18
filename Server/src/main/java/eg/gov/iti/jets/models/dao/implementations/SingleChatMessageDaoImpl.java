@@ -2,6 +2,7 @@ package eg.gov.iti.jets.models.dao.implementations;
 
 import eg.gov.iti.jets.models.dao.interfaces.SingleChatMessageDao;
 import eg.gov.iti.jets.models.entities.SingleChatMessage;
+import eg.gov.iti.jets.models.network.implementations.ServerService;
 import eg.gov.iti.jets.models.persistence.DBConnection;
 
 import java.rmi.RemoteException;
@@ -12,7 +13,7 @@ public class SingleChatMessageDaoImpl extends UnicastRemoteObject implements Sin
     private static Connection connection = DBConnection.getInstance().getConnection();
 
     private static SingleChatMessageDaoImpl instance;
-
+    private static ServerService serverService = ServerService.getInstance();
     protected SingleChatMessageDaoImpl() throws RemoteException {
     }
 
@@ -45,8 +46,8 @@ public class SingleChatMessageDaoImpl extends UnicastRemoteObject implements Sin
         } catch (SQLException e) {
             e.printStackTrace();
         }
-
-
+// a call recieve function mn elclient receiveNewSingleChatMessage();
+        serverService.recieveSingleChatMessage(singleChatMessage.getUserId(), singleChatMessage.getSingleChatMessageId());
         return false;
     }
 
