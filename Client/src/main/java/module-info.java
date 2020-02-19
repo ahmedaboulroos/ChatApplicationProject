@@ -22,5 +22,4 @@ module Client {
     opens eg.gov.iti.jets;
     opens eg.gov.iti.jets.views;
     opens eg.gov.iti.jets.models.network.interfaces;
-
 }

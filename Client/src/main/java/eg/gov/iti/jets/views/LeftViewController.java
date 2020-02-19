@@ -1,9 +1,8 @@
 package eg.gov.iti.jets.views;
 
-import eg.gov.iti.jets.controllers.GroupChatController;
-import eg.gov.iti.jets.controllers.GroupChatMessageController;
 import eg.gov.iti.jets.models.dao.interfaces.GroupDao;
 import eg.gov.iti.jets.models.dao.interfaces.UserDao;
+import eg.gov.iti.jets.models.dto.GroupDto;
 import eg.gov.iti.jets.models.entities.*;
 import eg.gov.iti.jets.models.entities.enums.RelationshipStatus;
 import eg.gov.iti.jets.models.network.RMIConnection;
@@ -17,7 +16,6 @@ import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
-import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.VBox;
@@ -153,7 +151,7 @@ public class LeftViewController implements Initializable {
                 singleChatsLv.setItems(FXCollections.observableList(singleChats));
 
                 ImageView imageview = new ImageView();
-                singleChatsLv.setCellFactory(param -> new ListCell<SingleChat>() {
+                /*singleChatsLv.setCellFactory(param -> new ListCell<SingleChat>() {
                     public void updateItem(SingleChat single, boolean empty) {
                         super.updateItem(single, empty);
 
@@ -166,7 +164,7 @@ public class LeftViewController implements Initializable {
                         setGraphic(imageview);
                     }
 
-                });
+                });*/
             } else {
                 System.out.println("No Single chats for this user");
             }
@@ -177,10 +175,12 @@ public class LeftViewController implements Initializable {
 
     private void loadGroupChats() {
 
-        GroupChatController groupChatController = new GroupChatController();
-        List<GroupChat> groupChats = groupChatController.getAllGroupChats();
-
-        //List<GroupChat> groupChats = userDao.getUserGroupChats(ClientStageCoordinator.getInstance().currentUser.getUserId());
+        List<GroupChat> groupChats = null;
+        try {
+            groupChats = userDao.getUserGroupChats(ClientStageCoordinator.getInstance().currentUser.getUserId());
+        } catch (RemoteException e) {
+            e.printStackTrace();
+        }
 
         System.out.println(groupChats);
 
@@ -188,7 +188,7 @@ public class LeftViewController implements Initializable {
             groupChatsLv.setItems(FXCollections.observableList(groupChats));
             System.out.println("55555555555555555");
             ImageView imageview = new ImageView();
-            groupChatsLv.setCellFactory(param -> new ListCell<GroupChat>() {
+            /*groupChatsLv.setCellFactory(param -> new ListCell<GroupChat>() {
                 public void updateItem(GroupChat group, boolean empty) {
                     super.updateItem(group, empty);
 
@@ -200,11 +200,10 @@ public class LeftViewController implements Initializable {
 
                         setGraphic(imageview);
                     }
-
-                });
-            } else {
-                System.out.println("No Group chats for this user");
-            }
+            });*/
+        } else {
+            System.out.println("No Group chats for this user");
+        }
 
     }
 
@@ -222,9 +221,16 @@ public class LeftViewController implements Initializable {
         GroupChat groupChat = groupChatsLv.getSelectionModel().getSelectedItem();
 
         ////groupchatmessages controller to get the messages list from the DB
-        GroupChatMessageController groupChatMessageController = new GroupChatMessageController();
+        /*GroupChatMessageController groupChatMessageController = new GroupChatMessageController();
         List<GroupChatMessage> groupChatMessageList = groupChatMessageController.getAllGroupChatMessages(groupChat.getGroupChatId());
-        ///printing message list
+        ///printing message list*/
+        List<GroupChatMessage> groupChatMessageList =
+                null;
+        try {
+            groupChatMessageList = RMIConnection.getInstance().getGroupChatDao().getGroupChatMessages(groupChat.getGroupChatId());
+        } catch (RemoteException e) {
+            e.printStackTrace();
+        }
         System.out.println(groupChatMessageList);
 
         if (groupChat != null) {
@@ -279,4 +285,11 @@ public class LeftViewController implements Initializable {
         }
     }
 
+    public void addNewGroup(GroupDto groupDto) {
+        TitledPane titledPane = new TitledPane();
+        titledPane.setText(groupDto.getGroupName());
+        //TODO: maintain photo
+        groupDto.getUsers().stream().forEach(userDto -> titledPane.getChildrenUnmodifiable().add(new Label(userDto.getUsername())));
+        groupsAccordion.getPanes().add(titledPane);
+    }
 }
