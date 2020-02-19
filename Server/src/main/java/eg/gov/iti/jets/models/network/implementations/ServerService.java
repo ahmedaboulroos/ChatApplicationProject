@@ -58,14 +58,11 @@ public class ServerService extends UnicastRemoteObject implements ServerInterfac
         clients.remove(userId, client);
     }
 
-    public void recieveSingleChatMessage(int userId, int singleChatMessageId) {
-        try {
-            ClientInterface client = clients.get(userId);
-            client.receiveNewSingleChatMessage(singleChatMessageId);
-        } catch (RemoteException e) {
-            e.printStackTrace();
-        }
 
+    public ClientInterface getClient(int userId) {
+        ClientInterface client = clients.get(userId);
+        return client;
     }
+
 
 }
