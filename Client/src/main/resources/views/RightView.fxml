@@ -4,8 +4,8 @@
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.layout.BorderPane?>
 <BorderPane xmlns:fx="http://javafx.com/fxml/1" xmlns="http://javafx.com/javafx/11.0.1"
-            fx:controller="eg.gov.iti.jets.views.RightViewController">
-   <center>
-      <Label text="right hena" BorderPane.alignment="CENTER"/>
-   </center>
+            fx:controller="eg.gov.iti.jets.controllers.RightViewController">
+    <center>
+        <Label text="right hena" BorderPane.alignment="CENTER"/>
+    </center>
 </BorderPane>

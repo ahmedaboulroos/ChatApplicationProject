@@ -1,4 +1,4 @@
-package eg.gov.iti.jets.views;
+package eg.gov.iti.jets.controllers;
 
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;

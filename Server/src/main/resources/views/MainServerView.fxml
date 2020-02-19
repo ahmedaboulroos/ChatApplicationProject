@@ -7,17 +7,21 @@
 <?import javafx.scene.shape.Circle?>
 <?import javafx.scene.text.*?>
 <?import org.kordamp.ikonli.javafx.FontIcon?>
-<BorderPane prefHeight="600.0" prefWidth="900.0" stylesheets="@../styles/MainServerStyles.css" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="eg.gov.iti.jets.views.MainServerViewController">
-   <left>
-      <HBox prefWidth="250.0" BorderPane.alignment="CENTER">
-         <children>
-            <VBox alignment="TOP_CENTER" spacing="5.0">
-               <children>
-                   <Label maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" minHeight="-Infinity"
-                          prefHeight="75.0" prefWidth="250.0" style="-fx-background-color: #00A2D3;" text="Admin Panel"
-                          textFill="WHITE">
-                       <padding>
-                           <Insets left="10.0"/>
+<BorderPane xmlns:fx="http://javafx.com/fxml/1" prefHeight="600.0" prefWidth="900.0"
+            stylesheets="@../styles/MainServerStyles.css" xmlns="http://javafx.com/javafx/11.0.1"
+            fx:controller="eg.gov.iti.jets.controllers.MainServerViewController">
+    <left>
+        <HBox prefWidth="250.0" BorderPane.alignment="CENTER">
+            <children>
+                <VBox alignment="TOP_CENTER" spacing="5.0">
+                    <children>
+                        <Label maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308"
+                               minHeight="-Infinity"
+                               prefHeight="75.0" prefWidth="250.0" style="-fx-background-color: #00A2D3;"
+                               text="Admin Panel"
+                               textFill="WHITE">
+                            <padding>
+                                <Insets left="10.0"/>
                        </padding>
                        <font>
                            <Font name="Ebrima" size="19.0"/>

@@ -7,17 +7,17 @@
 <?import javafx.scene.layout.*?>
 <BorderPane xmlns:fx="http://javafx.com/fxml/1" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity"
             minWidth="-Infinity" prefHeight="409.0" prefWidth="687.0" xmlns="http://javafx.com/javafx/11.0.1"
-            fx:controller="eg.gov.iti.jets.views.RegisterViewController">
-   <left>
-      <Pane prefHeight="400.0" prefWidth="220.0" style="-fx-background-color: #00334E;" BorderPane.alignment="CENTER">
-         <children>
-            <ImageView fitHeight="128.0" fitWidth="136.0" layoutX="46.0" layoutY="130.0" pickOnBounds="true"
-                       preserveRatio="true">
-               <image>
-                  <Image url="@../images/chat-circle-blue-512.png"/>
-               </image>
-            </ImageView>
-         </children>
+            fx:controller="eg.gov.iti.jets.controllers.RegisterViewController">
+    <left>
+        <Pane prefHeight="400.0" prefWidth="220.0" style="-fx-background-color: #00334E;" BorderPane.alignment="CENTER">
+            <children>
+                <ImageView fitHeight="128.0" fitWidth="136.0" layoutX="46.0" layoutY="130.0" pickOnBounds="true"
+                           preserveRatio="true">
+                    <image>
+                        <Image url="@../images/chat-circle-blue-512.png"/>
+                    </image>
+                </ImageView>
+            </children>
       </Pane>
    </left>
    <center>

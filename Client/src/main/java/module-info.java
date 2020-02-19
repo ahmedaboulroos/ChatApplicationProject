@@ -20,6 +20,6 @@ module Client {
     requires org.kordamp.ikonli.fontawesome5;
 
     opens eg.gov.iti.jets;
-    opens eg.gov.iti.jets.views;
+    opens eg.gov.iti.jets.controllers;
     opens eg.gov.iti.jets.models.network.interfaces;
 }

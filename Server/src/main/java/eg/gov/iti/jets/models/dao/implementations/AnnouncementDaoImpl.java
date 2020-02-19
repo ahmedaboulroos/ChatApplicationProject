@@ -183,19 +183,4 @@ public class AnnouncementDaoImpl extends UnicastRemoteObject implements Announce
         return announcements;
     }
 
-
-    /*public static void main(String[]args){
-        DBConnection.getInstance().initConnection();
-        System.out.println(Instant.now());
-        AnnouncementDaoImpl obj= new AnnouncementDaoImpl();
-
-        Announcement announcement;
-        announcement=obj.getAnnouncement(9);
-        announcement.setContent("update announcment");
-
-        obj.updateAnnouncement(announcement);
-        obj.deleteAnnouncement(10);
-
-    }*/
-
 }

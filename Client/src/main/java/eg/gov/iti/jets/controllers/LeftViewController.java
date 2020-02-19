@@ -1,4 +1,4 @@
-package eg.gov.iti.jets.views;
+package eg.gov.iti.jets.controllers;
 
 import eg.gov.iti.jets.models.dao.interfaces.GroupDao;
 import eg.gov.iti.jets.models.dao.interfaces.UserDao;

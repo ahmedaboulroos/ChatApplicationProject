@@ -1,4 +1,4 @@
-package eg.gov.iti.jets.views;
+package eg.gov.iti.jets.controllers;
 
 import eg.gov.iti.jets.models.dto.GroupDto;
 import javafx.fxml.FXML;

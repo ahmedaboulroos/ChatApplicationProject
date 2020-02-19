@@ -1,4 +1,4 @@
-package eg.gov.iti.jets.views;
+package eg.gov.iti.jets.controllers;
 
 import eg.gov.iti.jets.models.entities.User;
 import eg.gov.iti.jets.models.network.RMIConnection;

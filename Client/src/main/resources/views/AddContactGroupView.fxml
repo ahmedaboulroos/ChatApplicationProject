@@ -5,7 +5,8 @@
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.AnchorPane?>
 <AnchorPane xmlns:fx="http://javafx.com/fxml/1" prefHeight="412.0" prefWidth="791.0"
-            xmlns="http://javafx.com/javafx/11.0.1" fx:controller="eg.gov.iti.jets.views.AddContactGroupViewController">
+            xmlns="http://javafx.com/javafx/11.0.1"
+            fx:controller="eg.gov.iti.jets.controllers.AddContactGroupViewController">
     <children>
         <JFXButton fx:id="createGroupBtn" layoutX="301.0" layoutY="44.0" onAction="#handleCreateGroupBtn"
                    text="Create Group"/>

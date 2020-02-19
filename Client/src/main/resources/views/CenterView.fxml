@@ -3,9 +3,9 @@
 <?import javafx.scene.control.TabPane?>
 <?import javafx.scene.layout.BorderPane?>
 <BorderPane xmlns:fx="http://javafx.com/fxml/1" xmlns="http://javafx.com/javafx/11.0.1"
-            fx:controller="eg.gov.iti.jets.views.CenterViewController">
-   <center>
-      <TabPane fx:id="chatsTp" prefHeight="200.0" prefWidth="200.0" tabClosingPolicy="ALL_TABS" tabMinWidth="150.0"
-               BorderPane.alignment="CENTER"/>
-   </center>
+            fx:controller="eg.gov.iti.jets.controllers.CenterViewController">
+    <center>
+        <TabPane fx:id="chatsTp" prefHeight="200.0" prefWidth="200.0" tabClosingPolicy="ALL_TABS" tabMinWidth="150.0"
+                 BorderPane.alignment="CENTER"/>
+    </center>
 </BorderPane>

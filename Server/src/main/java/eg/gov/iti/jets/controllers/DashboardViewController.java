@@ -1,4 +1,4 @@
-package eg.gov.iti.jets.views;
+package eg.gov.iti.jets.controllers;
 
 
 import com.jfoenix.controls.JFXListView;
@@ -21,6 +21,7 @@ import java.util.ResourceBundle;
 
 public class DashboardViewController implements Initializable {
 
+    ObservableList<String> listview = FXCollections.observableArrayList("Statistics Of server", "1", "2");
     @FXML
     private StackPane userGenderChartPane;
     @FXML
@@ -29,10 +30,12 @@ public class DashboardViewController implements Initializable {
     private BarChart usresCountryChart;
     @FXML
     private PieChart usersStatusChart;
-    ObservableList<String> listview = FXCollections.observableArrayList("Statistics Of server", "1", "2");
     @FXML
     private JFXListView<String> list;
     private ObservableList<XYChart.Series<String, Number>> usersCountriestdata = FXCollections.observableArrayList();
+    private ObservableList<PieChart.Data> usersGenderdata = FXCollections.observableArrayList();
+    private ObservableList<PieChart.Data> usersStatusrdata = FXCollections.observableArrayList();
+    private StatisticsImpl statistics;
 
     public void setUsersDAO(StatisticsImpl statistics) {
         this.statistics = statistics;
@@ -41,32 +44,21 @@ public class DashboardViewController implements Initializable {
         drawUsersGenderChart(userGenderChartPane, usersGenderdata);
     }
 
-    private ObservableList<PieChart.Data> usersGenderdata = FXCollections.observableArrayList();
-    private ObservableList<PieChart.Data> usersStatusrdata = FXCollections.observableArrayList();
-    private StatisticsImpl statistics;
-
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
         list.setItems(listview);
         list.setCellFactory(param -> new ListCell<String>() {
-
             public void updateItem(String name, boolean empty) {
                 super.updateItem(name, empty);
                 if (empty) {
-
                     setText(null);
-
                 } else {
                     setText(name);
-
                 }
             }
-
-
         });
         try {
             setUsersDAO(new StatisticsImpl());
-
         } catch (RemoteException e) {
             e.printStackTrace();
         }
@@ -80,7 +72,6 @@ public class DashboardViewController implements Initializable {
         pieChart.setData(observableList);
         stackPane.getChildren().add(pieChart);
 
-
         for (PieChart.Data data : pieChart.getData()) {
             Node slice = data.getNode();
             double percent = (data.getPieValue() / usersNo * 100);
@@ -90,7 +81,6 @@ public class DashboardViewController implements Initializable {
                 tooltipText = data.getName() + " = " + (int) data.getPieValue();
             Tooltip tooltip = new Tooltip(tooltipText);
             Tooltip.install(slice, tooltip);
-
         }
     }
 
@@ -102,7 +92,6 @@ public class DashboardViewController implements Initializable {
             UsersNum += Integer.parseInt(m.getValue().toString());
         }
         drawPieChart(stackPane, usersGenderList, UsersNum, true);
-
     }
 
     private void drawUsersStatusChart(StackPane stackPane, ObservableList<PieChart.Data> usersGenderList) {
@@ -116,7 +105,6 @@ public class DashboardViewController implements Initializable {
             UsersNum += Integer.parseInt(m.getValue().toString());
         }
         drawPieChart(stackPane, usersGenderList, UsersNum, false);
-
     }
 
     private void drawUsersCountryChart(ObservableList<XYChart.Series<String, Number>> usersCountriesList) {
@@ -125,18 +113,14 @@ public class DashboardViewController implements Initializable {
         NumberAxis yAxis = new NumberAxis();
         yAxis.setLabel("(NO.of Users)");
         XYChart.Series countriesSeries = new XYChart.Series();
-
         Map<String, Integer> map = statistics.getUsersNumByCountry();
         for (Map.Entry m : map.entrySet()) {
             countriesSeries.getData().add(new XYChart.Data(m.getKey(), m.getValue()));
         }
-
         usersCountriestdata.add(countriesSeries);
         usresCountryChart.setData(usersCountriestdata);
         usresCountryChart.setTitle("statistics about the users’ country");
         usresCountryChart.setBarGap(50);
         usresCountryChart.setAnimated(true);
-
-
     }
 }

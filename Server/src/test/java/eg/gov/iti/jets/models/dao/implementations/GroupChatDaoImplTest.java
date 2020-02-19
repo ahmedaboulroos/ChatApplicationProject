@@ -22,13 +22,12 @@ class GroupChatDaoImplTest {
     private static ArrayList<String> testFileNames = new ArrayList<>();
     private String testFilesDirectoryPath = "TestResources/JavaConversionTestFiles";
 
-
     @org.junit.jupiter.api.BeforeAll
     static void setUp() throws SQLException, RemoteException {
-        testFileNames.add("resources/GroupChatDaoImplTests");
-        DBConnection.getInstance().initConnection();
-        connection = DBConnection.getInstance().getConnection();
-        groupChatDao = new GroupChatDaoImpl();
+//        testFileNames.add("resources/GroupChatDaoImplTests");
+//        DBConnection.getInstance().initConnection();
+//        connection = DBConnection.getInstance().getConnection();
+//        groupChatDao = new GroupChatDaoImpl();
     }
 
     @org.junit.jupiter.api.AfterAll

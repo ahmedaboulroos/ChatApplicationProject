@@ -1,6 +1,8 @@
 package eg.gov.iti.jets.models.network.implementations;
 
 
+import eg.gov.iti.jets.controllers.ChatAppViewController;
+import eg.gov.iti.jets.controllers.SingleChatViewController;
 import eg.gov.iti.jets.models.dao.interfaces.GroupContactDao;
 import eg.gov.iti.jets.models.dao.interfaces.GroupDao;
 import eg.gov.iti.jets.models.dao.interfaces.UserDao;
@@ -12,8 +14,6 @@ import eg.gov.iti.jets.models.entities.SingleChatMessage;
 import eg.gov.iti.jets.models.entities.User;
 import eg.gov.iti.jets.models.network.RMIConnection;
 import eg.gov.iti.jets.models.network.interfaces.ClientInterface;
-import eg.gov.iti.jets.views.ChatAppViewController;
-import eg.gov.iti.jets.views.SingleChatViewController;
 
 import java.rmi.RemoteException;
 import java.rmi.server.RMIClientSocketFactory;

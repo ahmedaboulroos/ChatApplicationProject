@@ -1,8 +1,8 @@
 package eg.gov.iti.jets;
 
+import eg.gov.iti.jets.controllers.ServerStageCoordinator;
 import eg.gov.iti.jets.models.network.RMIConnection;
 import eg.gov.iti.jets.models.persistence.DBConnection;
-import eg.gov.iti.jets.views.ServerStageCoordinator;
 import javafx.application.Application;
 import javafx.stage.Stage;
 
@@ -26,8 +26,6 @@ public class MainServer extends Application {
         ServerStageCoordinator coordinator = ServerStageCoordinator.getInstance();
         coordinator.setStage(primaryStage);
         coordinator.startMainServerScene();
-
-
     }
 
     @Override

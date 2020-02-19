@@ -1,11 +1,8 @@
 package eg.gov.iti.jets.models.dao.implementations;
 
-import com.sun.scenario.effect.impl.state.LinearConvolveRenderState;
-import eg.gov.iti.jets.models.entities.SingleChat;
 import eg.gov.iti.jets.models.entities.User;
 import eg.gov.iti.jets.models.entities.enums.UserStatus;
 import eg.gov.iti.jets.models.persistence.DBConnection;
-import org.junit.jupiter.api.function.Executable;
 
 import java.rmi.RemoteException;
 import java.sql.Connection;
@@ -14,7 +11,6 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.time.LocalDate;
 import java.util.ArrayList;
-import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.*;
 

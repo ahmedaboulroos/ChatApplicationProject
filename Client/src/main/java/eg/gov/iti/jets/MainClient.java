@@ -1,7 +1,7 @@
 package eg.gov.iti.jets;
 
+import eg.gov.iti.jets.controllers.ClientStageCoordinator;
 import eg.gov.iti.jets.models.network.RMIConnection;
-import eg.gov.iti.jets.views.ClientStageCoordinator;
 import javafx.application.Application;
 import javafx.stage.Stage;
 

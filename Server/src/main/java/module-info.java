@@ -26,8 +26,7 @@ module Server {
     requires org.kordamp.ikonli.fontawesome5;
 
     opens eg.gov.iti.jets;
-    opens eg.gov.iti.jets.views;
-    opens eg.gov.iti.jets.views.models;
+    opens eg.gov.iti.jets.controllers;
     opens eg.gov.iti.jets.models.dao.interfaces;
 
     exports eg.gov.iti.jets.models.dao.interfaces to java.rmi;

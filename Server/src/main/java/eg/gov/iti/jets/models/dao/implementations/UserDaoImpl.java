@@ -27,15 +27,9 @@ import java.util.List;
 public class UserDaoImpl extends UnicastRemoteObject implements UserDao {
 
     private static UserDaoImpl instance;
-//
-//    public static void main(String[] args) throws RemoteException {
-//        DBConnection.getInstance().initConnection();
-//        UserDaoImpl userDao = new UserDaoImpl();
-//        System.out.println(userDao.getUserGroupChats(2));
-//        DBConnection.getInstance().stopConnection();
-//    }
-public UserDaoImpl() throws RemoteException {
-}
+
+    public UserDaoImpl() throws RemoteException {
+    }
 
     public static UserDao getInstance() {
         if (instance == null) {
@@ -560,7 +554,6 @@ public UserDaoImpl() throws RemoteException {
         else
             return null;
     }
-
 
     private List<AnnouncementDelivery> getAnnouncementDeliveriesFromResultSet(ResultSet resultSet) throws SQLException {
         List<AnnouncementDelivery> announcementDeliveries = new ArrayList<>();

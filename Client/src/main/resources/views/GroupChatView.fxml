@@ -5,13 +5,13 @@
 <?import javafx.scene.layout.BorderPane?>
 <?import javafx.scene.web.HTMLEditor?>
 <BorderPane xmlns:fx="http://javafx.com/fxml/1" xmlns="http://javafx.com/javafx/11.0.1"
-            fx:controller="eg.gov.iti.jets.views.GroupChatViewController">
-   <center>
-      <ListView fx:id="groupChatMessagesLv" prefHeight="200.0" prefWidth="200.0" BorderPane.alignment="CENTER"/>
-   </center>
-   <bottom>
-      <HTMLEditor fx:id="groupChatMessageHtml"
-                  htmlText="&lt;html&gt;&lt;head&gt;&lt;/head&gt;&lt;body contenteditable=&quot;true&quot;&gt;&lt;/body&gt;&lt;/html&gt;"
-                  prefHeight="200.0" prefWidth="506.0" BorderPane.alignment="CENTER"/>
-   </bottom>
+            fx:controller="eg.gov.iti.jets.controllers.GroupChatViewController">
+    <center>
+        <ListView fx:id="groupChatMessagesLv" prefHeight="200.0" prefWidth="200.0" BorderPane.alignment="CENTER"/>
+    </center>
+    <bottom>
+        <HTMLEditor fx:id="groupChatMessageHtml"
+                    htmlText="&lt;html&gt;&lt;head&gt;&lt;/head&gt;&lt;body contenteditable=&quot;true&quot;&gt;&lt;/body&gt;&lt;/html&gt;"
+                    prefHeight="200.0" prefWidth="506.0" BorderPane.alignment="CENTER"/>
+    </bottom>
 </BorderPane>

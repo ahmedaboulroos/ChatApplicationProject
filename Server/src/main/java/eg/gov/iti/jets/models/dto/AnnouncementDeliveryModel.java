@@ -1,4 +1,4 @@
-package eg.gov.iti.jets.views.models;
+package eg.gov.iti.jets.models.dto;
 
 import javafx.beans.property.SimpleIntegerProperty;
 import javafx.beans.property.SimpleStringProperty;

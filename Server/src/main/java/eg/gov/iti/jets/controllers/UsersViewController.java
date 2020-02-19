@@ -1,13 +1,12 @@
-package eg.gov.iti.jets.views;
+package eg.gov.iti.jets.controllers;
 
 import com.jfoenix.controls.JFXButton;
 import com.jfoenix.controls.JFXTextField;
-import eg.gov.iti.jets.controllers.UsersController;
 import eg.gov.iti.jets.models.dao.implementations.UserDaoImpl;
 import eg.gov.iti.jets.models.dao.interfaces.UserDao;
+import eg.gov.iti.jets.models.dto.UserViewModel;
 import eg.gov.iti.jets.models.entities.User;
 import eg.gov.iti.jets.models.entities.enums.UserGender;
-import eg.gov.iti.jets.views.models.UserViewModel;
 import javafx.collections.FXCollections;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
@@ -36,7 +35,6 @@ public class UsersViewController implements Initializable {
     private JFXTextField emailTf;
     @FXML
     private JFXTextField countryTf;
-    List<UserViewModel> userViewModelList;
     @FXML
     private TableColumn<UserViewModel, String> phoneNoCol;
     @FXML
@@ -51,12 +49,13 @@ public class UsersViewController implements Initializable {
     private JFXTextField userGenderTf;
     @FXML
     private TableColumn<UserViewModel, String> EmailCol;
+    List<UserViewModel> userViewModelList;
     @FXML
-    private TableView<UserViewModel> userViewTv;
+    private TableView<User> userViewTv;
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
-        UsersController usersController = new UsersController();
+
         registerBtn.setOnAction(eh -> {
             registerUser();
             userViewTv.refresh();
@@ -64,7 +63,7 @@ public class UsersViewController implements Initializable {
 
         try {
 
-            userViewTv.setItems(FXCollections.observableList(usersController.getAllUsers()));
+            userViewTv.setItems(FXCollections.observableList(userDao.getAllUsers()));
             phoneNoCol.setCellValueFactory(new PropertyValueFactory<UserViewModel, String>("phoneNumber"));
             userNameCol.setCellValueFactory(new PropertyValueFactory<UserViewModel, String>("username"));
             passCol.setCellValueFactory(new PropertyValueFactory<UserViewModel, String>("password"));
@@ -122,4 +121,5 @@ public class UsersViewController implements Initializable {
         return jfxTextField.getText().length() > 0 ?
                 jfxTextField.getText() : null;
     }
+
 }

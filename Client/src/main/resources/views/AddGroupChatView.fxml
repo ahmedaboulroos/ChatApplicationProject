@@ -6,7 +6,8 @@
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.layout.AnchorPane?>
 <AnchorPane xmlns:fx="http://javafx.com/fxml/1" prefHeight="400.0" prefWidth="600.0"
-            xmlns="http://javafx.com/javafx/11.0.1" fx:controller="eg.gov.iti.jets.views.AddGroupChatViewController">
+            xmlns="http://javafx.com/javafx/11.0.1"
+            fx:controller="eg.gov.iti.jets.controllers.AddGroupChatViewController">
     <children>
         <JFXButton layoutX="437.0" layoutY="288.0" onAction="#handleCreateGroupChat"
                    style="-fx-background-color: lightblue;" text="Create Group Chat"/>

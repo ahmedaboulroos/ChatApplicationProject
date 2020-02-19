@@ -1,4 +1,4 @@
-package eg.gov.iti.jets.views.models;
+package eg.gov.iti.jets.models.dto;
 
 import eg.gov.iti.jets.models.entities.User;
 import javafx.beans.property.SimpleBooleanProperty;
@@ -6,7 +6,6 @@ import javafx.beans.property.SimpleIntegerProperty;
 import javafx.beans.property.SimpleStringProperty;
 
 public class UserViewModel {
-
 
     private SimpleIntegerProperty userId;
     private SimpleStringProperty phoneNumber;
@@ -139,7 +138,6 @@ public class UserViewModel {
     public SimpleBooleanProperty currentlyLoggedInProperty() {
         return currentlyLoggedIn;
     }
-
 
     @Override
     public String toString() {

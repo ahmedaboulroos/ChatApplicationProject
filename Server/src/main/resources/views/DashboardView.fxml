@@ -12,7 +12,7 @@
 <?import javafx.scene.layout.*?>
 <?import javafx.scene.text.Font?>
 <VBox xmlns:fx="http://javafx.com/fxml/1" fx:id="rightContentPane" alignment="CENTER" prefWidth="900.0"
-      xmlns="http://javafx.com/javafx/11.0.1" fx:controller="eg.gov.iti.jets.views.DashboardViewController">
+      xmlns="http://javafx.com/javafx/11.0.1" fx:controller="eg.gov.iti.jets.controllers.DashboardViewController">
     <children>
         <HBox alignment="TOP_RIGHT" prefHeight="54.0" prefWidth="900.0">
             <children>

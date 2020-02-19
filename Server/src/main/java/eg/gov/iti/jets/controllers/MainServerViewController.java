@@ -1,7 +1,6 @@
-package eg.gov.iti.jets.views;
+package eg.gov.iti.jets.controllers;
 
 import com.jfoenix.controls.JFXButton;
-import eg.gov.iti.jets.controllers.MainServerController;
 import eg.gov.iti.jets.models.network.RMIConnection;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -55,7 +54,6 @@ public class MainServerViewController implements Initializable {
 
 
     private boolean serviceRunning = true;
-    private MainServerController mainServerController;
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
@@ -133,10 +131,6 @@ public class MainServerViewController implements Initializable {
         usersBtn.setDisable(true);
         announcementsBtn.setDisable(true);
         serviceRunning = false;
-    }
-
-    public void setController(MainServerController mainServerController) {
-        this.mainServerController = mainServerController;
     }
 
 }

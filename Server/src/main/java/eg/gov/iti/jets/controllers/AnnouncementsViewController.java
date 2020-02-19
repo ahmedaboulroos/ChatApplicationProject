@@ -1,13 +1,13 @@
-package eg.gov.iti.jets.views;
+package eg.gov.iti.jets.controllers;
 
 import com.jfoenix.controls.JFXButton;
 import com.jfoenix.controls.JFXTextField;
 import eg.gov.iti.jets.models.dao.implementations.AnnouncementDaoImpl;
 import eg.gov.iti.jets.models.dao.interfaces.AnnouncementDao;
+import eg.gov.iti.jets.models.dto.AnnouncementDeliveryModel;
+import eg.gov.iti.jets.models.dto.AnnouncementViewModel;
 import eg.gov.iti.jets.models.entities.Announcement;
 import eg.gov.iti.jets.models.entities.AnnouncementDelivery;
-import eg.gov.iti.jets.views.models.AnnouncementDeliveryModel;
-import eg.gov.iti.jets.views.models.AnnouncementViewModel;
 import javafx.collections.FXCollections;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
