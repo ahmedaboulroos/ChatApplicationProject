@@ -1,8 +1,11 @@
 package eg.gov.iti.jets.models.dao.implementations;
 
+import eg.gov.iti.jets.models.dao.interfaces.SingleChatDao;
 import eg.gov.iti.jets.models.dao.interfaces.SingleChatMessageDao;
+import eg.gov.iti.jets.models.entities.SingleChat;
 import eg.gov.iti.jets.models.entities.SingleChatMessage;
 import eg.gov.iti.jets.models.network.implementations.ServerService;
+import eg.gov.iti.jets.models.network.interfaces.ClientInterface;
 import eg.gov.iti.jets.models.persistence.DBConnection;
 
 import java.rmi.RemoteException;
@@ -42,12 +45,15 @@ public class SingleChatMessageDaoImpl extends UnicastRemoteObject implements Sin
             if (affectedRow > 0) {
                 return true;
             }
-
+            SingleChatDao singleChatDao = SingleChatDaoImpl.getInstance();
+            SingleChat singleChat = singleChatDao.getSingleChat(singleChatMessage.getSingleChatId());
+            ClientInterface client = serverService.getClient(singleChat.getUserTwoId());
+            client.receiveNewSingleChatMessage(singleChatMessage.getSingleChatMessageId());
         } catch (SQLException e) {
             e.printStackTrace();
+        } catch (RemoteException e) {
+            e.printStackTrace();
         }
-// a call recieve function mn elclient receiveNewSingleChatMessage();
-        serverService.recieveSingleChatMessage(singleChatMessage.getUserId(), singleChatMessage.getSingleChatMessageId());
         return false;
     }
 
