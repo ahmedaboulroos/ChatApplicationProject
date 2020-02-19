@@ -1,6 +1,7 @@
 package eg.gov.iti.jets.views;
 
 import eg.gov.iti.jets.controllers.SingleChatMessageController;
+import eg.gov.iti.jets.models.dao.interfaces.SingleChatMessageDao;
 import eg.gov.iti.jets.models.entities.SingleChatMessage;
 import eg.gov.iti.jets.models.entities.User;
 import eg.gov.iti.jets.models.network.RMIConnection;
@@ -40,9 +41,18 @@ public class SingleChatViewController {
 
     @FXML
     void handleSendBtn(ActionEvent event) {
-        String msg = singleChatMessageHtml.getHtmlText();
-        singleChatMessageController.sendSingleChatMessage(this.singleChatId, currentUser.getUserId(), msg);
-        updateSingleChat();
+
+//        singleChatMessageController.sendSingleChatMessage(this.singleChatId, currentUser.getUserId(), msg);
+//       // updateSingleChat();
+        try {
+            String msg = singleChatMessageHtml.getHtmlText();
+            SingleChatMessageDao singleChatDao = RMIConnection.getInstance().getSingleChatMessageDao();
+            SingleChatMessage singleChatMessage = new SingleChatMessage(this.singleChatId, currentUser.getUserId(), msg);
+            singleChatDao.createSingleChatMessage(singleChatMessage);
+        } catch (
+                RemoteException e) {
+            e.printStackTrace();
+        }
     }
 
     private void updateSingleChat() {
@@ -61,5 +71,9 @@ public class SingleChatViewController {
                 + "\n singleChatId: " + singleChatMessage.getSingleChatId()
                 + "\n contentMsg " + singleChatMessage.getContent()
                 + "\n messageTimeStamp " + singleChatMessage.getMessageTimestamp());
+        singleChatMessagesLv.getItems().clear();
+        singleChatMessagesLv.getItems().add(singleChatMessage);
+
+
     }
 }
