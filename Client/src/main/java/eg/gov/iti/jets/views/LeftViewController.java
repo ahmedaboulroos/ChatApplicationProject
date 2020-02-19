@@ -224,8 +224,7 @@ public class LeftViewController implements Initializable {
         /*GroupChatMessageController groupChatMessageController = new GroupChatMessageController();
         List<GroupChatMessage> groupChatMessageList = groupChatMessageController.getAllGroupChatMessages(groupChat.getGroupChatId());
         ///printing message list*/
-        List<GroupChatMessage> groupChatMessageList =
-                null;
+        List<GroupChatMessage> groupChatMessageList = null;
         try {
             groupChatMessageList = RMIConnection.getInstance().getGroupChatDao().getGroupChatMessages(groupChat.getGroupChatId());
         } catch (RemoteException e) {
@@ -238,7 +237,6 @@ public class LeftViewController implements Initializable {
             ClientStageCoordinator.getInstance().openNewGroupChat(groupChat.getGroupChatId());
         }
     }
-
 
     @FXML
     void handleAddContact(ActionEvent event) {
@@ -289,7 +287,7 @@ public class LeftViewController implements Initializable {
         TitledPane titledPane = new TitledPane();
         titledPane.setText(groupDto.getGroupName());
         //TODO: maintain photo
-        groupDto.getUsers().stream().forEach(userDto -> titledPane.getChildrenUnmodifiable().add(new Label(userDto.getUsername())));
+        groupDto.getUsers().forEach(userDto -> titledPane.getChildrenUnmodifiable().add(new Label(userDto.getUsername())));
         groupsAccordion.getPanes().add(titledPane);
     }
 }

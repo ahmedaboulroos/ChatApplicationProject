@@ -37,7 +37,7 @@ public class ClientStageCoordinator {
         FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/views/ChatAppView.fxml"));
         Parent mainChatAppView = fxmlLoader.load();
         ServerInterface serverService = RMIConnection.getInstance().getServerService();
-        ChatAppViewController chatAppViewController = fxmlLoader.getController();
+        chatAppViewController = fxmlLoader.getController();
         ClientInterface clientService = new ClientService(chatAppViewController);
         serverService.login(currentUser.getUserId(), clientService);
 
@@ -62,6 +62,7 @@ public class ClientStageCoordinator {
                 groupController, membershipController, relationshipController, seenByStatusController,
                 singleChatController, singleChatMessageController, userController);*/
         //clientService.displayMsg();
+        clientService.receiveGroup(4);
         this.stage.setScene(new Scene(mainChatAppView));
         this.stage.setTitle("Chat Application");
         this.stage.show();
