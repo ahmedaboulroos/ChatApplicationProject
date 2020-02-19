@@ -33,6 +33,7 @@ public class AnnouncementDaoImpl extends UnicastRemoteObject implements Announce
     @Override
     public boolean createAnnouncement(Announcement announcement) {
         Connection connection = DBConnection.getInstance().getConnection();
+
         boolean result = false;
         String insertSQL = "INSERT INTO ANNOUNCEMENT  \n" +
                 "(ANNOUNCEMENT_ID,CONTENT,ANNOUNCEMENT_TIMESTAMP ) VALUES (" +
@@ -44,6 +45,8 @@ public class AnnouncementDaoImpl extends UnicastRemoteObject implements Announce
             int flag = insert.executeUpdate();
             if (flag != -1)
                 result = true;
+            connection.setAutoCommit(true);
+
         } catch (SQLException e) {
             e.printStackTrace();
         }
@@ -125,6 +128,7 @@ public class AnnouncementDaoImpl extends UnicastRemoteObject implements Announce
             System.out.println("row updated" + rowEffected);
             if (rowEffected != 0)
                 result = true;
+            connection.setAutoCommit(true);
 
         } catch (SQLException e) {
             e.printStackTrace();
@@ -145,6 +149,7 @@ public class AnnouncementDaoImpl extends UnicastRemoteObject implements Announce
             System.out.println("row deleted" + rowEffected);
             if (rowEffected != 0)
                 result = true;
+            connection.setAutoCommit(true);
 
         } catch (SQLException e) {
             e.printStackTrace();

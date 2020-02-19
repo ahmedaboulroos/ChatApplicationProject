@@ -1,5 +1,7 @@
 package eg.gov.iti.jets.views;
 
+import eg.gov.iti.jets.controllers.GroupChatController;
+import eg.gov.iti.jets.controllers.GroupChatMessageController;
 import eg.gov.iti.jets.models.dao.interfaces.GroupDao;
 import eg.gov.iti.jets.models.dao.interfaces.UserDao;
 import eg.gov.iti.jets.models.entities.*;
@@ -15,6 +17,8 @@ import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
@@ -147,6 +151,22 @@ public class LeftViewController implements Initializable {
             System.out.println(singleChats);
             if (singleChats != null) {
                 singleChatsLv.setItems(FXCollections.observableList(singleChats));
+
+                ImageView imageview = new ImageView();
+                singleChatsLv.setCellFactory(param -> new ListCell<SingleChat>() {
+                    public void updateItem(SingleChat single, boolean empty) {
+                        super.updateItem(single, empty);
+
+                        setText(single.toString());
+                        Image imageForTasting = new Image("images/chat-circle-blue-512.png");
+                        imageview.setImage(imageForTasting);
+                        imageview.setFitHeight(20);
+                        imageview.setFitWidth(20);
+
+                        setGraphic(imageview);
+                    }
+
+                });
             } else {
                 System.out.println("No Single chats for this user");
             }
@@ -156,17 +176,36 @@ public class LeftViewController implements Initializable {
     }
 
     private void loadGroupChats() {
-        try {
-            List<GroupChat> groupChats = userDao.getUserGroupChats(ClientStageCoordinator.getInstance().currentUser.getUserId());
-            System.out.println(groupChats);
-            if (groupChats != null) {
-                groupChatsLv.setItems(FXCollections.observableList(groupChats));
+
+        GroupChatController groupChatController = new GroupChatController();
+        List<GroupChat> groupChats = groupChatController.getAllGroupChats();
+
+        //List<GroupChat> groupChats = userDao.getUserGroupChats(ClientStageCoordinator.getInstance().currentUser.getUserId());
+
+        System.out.println(groupChats);
+
+        if (groupChats != null) {
+            groupChatsLv.setItems(FXCollections.observableList(groupChats));
+            System.out.println("55555555555555555");
+            ImageView imageview = new ImageView();
+            groupChatsLv.setCellFactory(param -> new ListCell<GroupChat>() {
+                public void updateItem(GroupChat group, boolean empty) {
+                    super.updateItem(group, empty);
+
+                        setText(group.toString());
+                        Image imageForTasting = new Image("images/chat-circle-blue-512.png");
+                        imageview.setImage(imageForTasting);
+                        imageview.setFitHeight(20);
+                        imageview.setFitWidth(20);
+
+                        setGraphic(imageview);
+                    }
+
+                });
             } else {
                 System.out.println("No Group chats for this user");
             }
-        } catch (RemoteException e) {
-            e.printStackTrace();
-        }
+
     }
 
     @FXML
@@ -181,6 +220,13 @@ public class LeftViewController implements Initializable {
     @FXML
     void handleGroupChatSelection(MouseEvent event) {
         GroupChat groupChat = groupChatsLv.getSelectionModel().getSelectedItem();
+
+        ////groupchatmessages controller to get the messages list from the DB
+        GroupChatMessageController groupChatMessageController = new GroupChatMessageController();
+        List<GroupChatMessage> groupChatMessageList = groupChatMessageController.getAllGroupChatMessages(groupChat.getGroupChatId());
+        ///printing message list
+        System.out.println(groupChatMessageList);
+
         if (groupChat != null) {
             System.out.println(groupChat.getGroupChatId());
             ClientStageCoordinator.getInstance().openNewGroupChat(groupChat.getGroupChatId());

@@ -10,6 +10,9 @@ import eg.gov.iti.jets.models.entities.Group;
 import eg.gov.iti.jets.models.entities.GroupContact;
 import eg.gov.iti.jets.models.entities.User;
 import eg.gov.iti.jets.models.network.RMIConnection;
+import eg.gov.iti.jets.controllers.SingleChatMessageController;
+import eg.gov.iti.jets.models.entities.SingleChatMessage;
+import eg.gov.iti.jets.models.network.RMIConnection;
 import eg.gov.iti.jets.models.network.interfaces.ClientInterface;
 
 import java.rmi.RemoteException;
@@ -20,6 +23,7 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 public class ClientService extends UnicastRemoteObject implements ClientInterface {
+    private SingleChatMessageController singleChatMessageController;
     private UserController userController;
     private SingleChatMessageController singleChatMessageController;
     private SingleChatController singleChatController;
@@ -45,6 +49,11 @@ public class ClientService extends UnicastRemoteObject implements ClientInterfac
         //mainController.displayMsg("HI");
         receiveGroup(1);
     }*/
+
+    public ClientService(SingleChatMessageController singleChatMessageController) throws RemoteException {
+        this.singleChatMessageController = singleChatMessageController;
+        //mainController.displayMsg("HI");
+    }
 
     public ClientService(int port) throws RemoteException {
         super(port);
@@ -92,7 +101,8 @@ public class ClientService extends UnicastRemoteObject implements ClientInterfac
 
     @Override
     public void receiveNewSingleChatMessage(int singleChatMessageId) throws RemoteException {
-
+        SingleChatMessage singleChatMessage = RMIConnection.getInstance().getSingleChatMessageDao().getSingleChatMessage(singleChatMessageId);
+        singleChatMessageController.displayNewSingleChatMessage(singleChatMessage);
     }
 
     @Override

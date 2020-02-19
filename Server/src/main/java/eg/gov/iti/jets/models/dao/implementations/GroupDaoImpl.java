@@ -46,6 +46,7 @@ public class GroupDaoImpl extends UnicastRemoteObject implements GroupDao {
             int flag = insert.executeUpdate();
             if (flag != -1)
                 result = true;
+            connection.setAutoCommit(true);
         } catch (SQLException e) {
             e.printStackTrace();
         }
@@ -150,6 +151,7 @@ public class GroupDaoImpl extends UnicastRemoteObject implements GroupDao {
             System.out.println("row updated" + rowEffected);
             if (rowEffected != 0)
                 result = true;
+            connection.setAutoCommit(true);
 
         } catch (SQLException e) {
             e.printStackTrace();
@@ -170,6 +172,7 @@ public class GroupDaoImpl extends UnicastRemoteObject implements GroupDao {
             System.out.println("row deleted" + rowEffected);
             if (rowEffected != 0)
                 result = true;
+            connection.setAutoCommit(true);
 
         } catch (SQLException e) {
             e.printStackTrace();

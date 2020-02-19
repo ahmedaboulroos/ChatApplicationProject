@@ -45,6 +45,7 @@ public class AnnouncementDeliveryDaoImpl extends UnicastRemoteObject implements 
             int flag = insert.executeUpdate();
             if (flag != -1)
                 result = true;
+            connection.setAutoCommit(true);
         } catch (SQLException e) {
             e.printStackTrace();
         }
@@ -103,6 +104,7 @@ public class AnnouncementDeliveryDaoImpl extends UnicastRemoteObject implements 
             System.out.println("row updated" + rowEffected);
             if (rowEffected != 0)
                 result = true;
+            connection.setAutoCommit(true);
 
         } catch (SQLException e) {
             e.printStackTrace();
@@ -123,6 +125,7 @@ public class AnnouncementDeliveryDaoImpl extends UnicastRemoteObject implements 
             System.out.println("row deleted" + rowEffected);
             if (rowEffected != 0)
                 result = true;
+            connection.setAutoCommit(true);
 
         } catch (SQLException e) {
             e.printStackTrace();

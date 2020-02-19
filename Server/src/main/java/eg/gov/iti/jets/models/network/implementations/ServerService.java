@@ -14,8 +14,20 @@ import java.util.concurrent.ConcurrentHashMap;
 public class ServerService extends UnicastRemoteObject implements ServerInterface {
 
     private static ConcurrentHashMap<Integer, ClientInterface> clients = new ConcurrentHashMap<>();
+    private static ServerService instance;
 
-     public ServerService() throws RemoteException {
+    public static ServerService getInstance() {
+        if (instance == null) {
+            try {
+                instance = new ServerService();
+            } catch (RemoteException e) {
+                e.printStackTrace();
+            }
+        }
+        return instance;
+    }
+
+    public ServerService() throws RemoteException {
     }
 
     public static Enumeration<Integer> getAllOnlineUsers() {
@@ -38,12 +50,22 @@ public class ServerService extends UnicastRemoteObject implements ServerInterfac
         } else {
             System.out.println("error in login");
         }
-       // clients.put(userId, client);
+        // clients.put(userId, client);
     }
 
     @Override
     public void logout(int userId, ClientInterface client) throws RemoteException {
         clients.remove(userId, client);
+    }
+
+    public void recieveSingleChatMessage(int userId, int singleChatMessageId) {
+        try {
+            ClientInterface client = clients.get(userId);
+            client.receiveNewSingleChatMessage(singleChatMessageId);
+        } catch (RemoteException e) {
+            e.printStackTrace();
+        }
+
     }
 
 }

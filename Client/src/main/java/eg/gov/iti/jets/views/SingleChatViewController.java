@@ -1,6 +1,6 @@
 package eg.gov.iti.jets.views;
 
-import eg.gov.iti.jets.models.dao.interfaces.SingleChatMessageDao;
+import eg.gov.iti.jets.controllers.SingleChatMessageController;
 import eg.gov.iti.jets.models.entities.SingleChatMessage;
 import eg.gov.iti.jets.models.entities.User;
 import eg.gov.iti.jets.models.network.RMIConnection;
@@ -15,9 +15,18 @@ import java.util.List;
 
 public class SingleChatViewController {
 
+    private static SingleChatViewController instance;
+
+    public static SingleChatViewController getInstance() {
+        if (instance == null) {
+            instance = new SingleChatViewController();
+        }
+        return instance;
+    }
+
     private User currentUser = ClientStageCoordinator.getInstance().currentUser;
     private int singleChatId;
-
+    private SingleChatMessageController singleChatMessageController = SingleChatMessageController.getInstance();
     @FXML
     private ListView<SingleChatMessage> singleChatMessagesLv;
 
@@ -31,15 +40,9 @@ public class SingleChatViewController {
 
     @FXML
     void handleSendBtn(ActionEvent event) {
-        try {
-            String msg = singleChatMessageHtml.getHtmlText();
-            SingleChatMessageDao singleChatDao = RMIConnection.getInstance().getSingleChatMessageDao();
-            SingleChatMessage singleChatMessage = new SingleChatMessage(this.singleChatId, currentUser.getUserId(), msg);
-            singleChatDao.createSingleChatMessage(singleChatMessage);
-            updateSingleChat();
-        } catch (RemoteException e) {
-            e.printStackTrace();
-        }
+        String msg = singleChatMessageHtml.getHtmlText();
+        singleChatMessageController.sendSingleChatMessage(this.singleChatId, currentUser.getUserId(), msg);
+        updateSingleChat();
     }
 
     private void updateSingleChat() {
@@ -50,5 +53,13 @@ public class SingleChatViewController {
         } catch (RemoteException e) {
             e.printStackTrace();
         }
+    }
+
+    public void displayNewSingleChatMessage(SingleChatMessage singleChatMessage) {
+        System.out.println(" singleChatMessageId : " + singleChatMessage.getSingleChatMessageId()
+                + "\n userId: " + singleChatMessage.getUserId()
+                + "\n singleChatId: " + singleChatMessage.getSingleChatId()
+                + "\n contentMsg " + singleChatMessage.getContent()
+                + "\n messageTimeStamp " + singleChatMessage.getMessageTimestamp());
     }
 }
