@@ -1,5 +1,6 @@
 package eg.gov.iti.jets.models.network.implementations;
 
+
 import eg.gov.iti.jets.models.dao.interfaces.GroupContactDao;
 import eg.gov.iti.jets.models.dao.interfaces.GroupDao;
 import eg.gov.iti.jets.models.dao.interfaces.UserDao;
@@ -12,6 +13,7 @@ import eg.gov.iti.jets.models.entities.User;
 import eg.gov.iti.jets.models.network.RMIConnection;
 import eg.gov.iti.jets.models.network.interfaces.ClientInterface;
 import eg.gov.iti.jets.views.ChatAppViewController;
+import eg.gov.iti.jets.views.SingleChatViewController;
 
 import java.rmi.RemoteException;
 import java.rmi.server.RMIClientSocketFactory;
@@ -22,19 +24,20 @@ import java.util.stream.Collectors;
 
 public class ClientService extends UnicastRemoteObject implements ClientInterface {
     private ChatAppViewController chatAppViewController;
-    /*private SingleChatMessageController singleChatMessageController;
-        private UserController userController;
-        private SingleChatController singleChatController;
-        private SeenByStatusController seenByStatusController;
-        private RelationshipController relationshipController;
-        private MembershipController membershipController;
-        private GroupController groupController;
-        private GroupContactController groupContactController;
-        private GroupChatMessageController groupChatMessageController;
-        private GroupChatController groupChatController;
-        private AnnouncementDeliveryController announcementDeliveryController;
-        private AnnouncementController announcementController;
-    */
+    private SingleChatViewController singleChatViewController;
+    /* private SingleChatMessageController singleChatMessageController;
+        /* private UserController userController;
+         private SingleChatController singleChatController;
+         private SeenByStatusController seenByStatusController;
+         private RelationshipController relationshipController;
+         private MembershipController membershipController;
+         private GroupController groupController;
+         private GroupContactController groupContactController;
+         private GroupChatMessageController groupChatMessageController;
+         private GroupChatController groupChatController;
+         private AnnouncementDeliveryController announcementDeliveryController;
+         private AnnouncementController announcementController;
+     */
     private GroupDao groupDao = RMIConnection.getInstance().getGroupDao();
     private GroupContactDao groupContactDao = RMIConnection.getInstance().getGroupContactDao();
     private UserDao userDao = RMIConnection.getInstance().getUserDao();
@@ -106,6 +109,7 @@ public class ClientService extends UnicastRemoteObject implements ClientInterfac
     public void receiveNewSingleChatMessage(int singleChatMessageId) throws RemoteException {
         SingleChatMessage singleChatMessage = RMIConnection.getInstance().getSingleChatMessageDao().getSingleChatMessage(singleChatMessageId);
         //singleChatMessageController.displayNewSingleChatMessage(singleChatMessage);
+        singleChatViewController.displayNewSingleChatMessage(singleChatMessage);
     }
 
     @Override
