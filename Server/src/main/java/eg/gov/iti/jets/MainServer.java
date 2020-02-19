@@ -26,6 +26,8 @@ public class MainServer extends Application {
         ServerStageCoordinator coordinator = ServerStageCoordinator.getInstance();
         coordinator.setStage(primaryStage);
         coordinator.startMainServerScene();
+
+
     }
 
     @Override
