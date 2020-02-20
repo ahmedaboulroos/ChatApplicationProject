@@ -62,12 +62,16 @@ public class UsersViewController implements Initializable {
         });
 
         try {
+            List<User> allUsers = userDao.getAllUsers();
+            if (allUsers != null) {
+                userViewTv.setItems(FXCollections.observableList(allUsers));
+                phoneNoCol.setCellValueFactory(new PropertyValueFactory<UserViewModel, String>("phoneNumber"));
+                userNameCol.setCellValueFactory(new PropertyValueFactory<UserViewModel, String>("username"));
+                passCol.setCellValueFactory(new PropertyValueFactory<UserViewModel, String>("password"));
+                EmailCol.setCellValueFactory(new PropertyValueFactory<UserViewModel, String>("email"));
 
-            userViewTv.setItems(FXCollections.observableList(userDao.getAllUsers()));
-            phoneNoCol.setCellValueFactory(new PropertyValueFactory<UserViewModel, String>("phoneNumber"));
-            userNameCol.setCellValueFactory(new PropertyValueFactory<UserViewModel, String>("username"));
-            passCol.setCellValueFactory(new PropertyValueFactory<UserViewModel, String>("password"));
-            EmailCol.setCellValueFactory(new PropertyValueFactory<UserViewModel, String>("email"));
+            } else
+                System.out.println("no users found");
 
         } catch (RemoteException e) {
             e.printStackTrace();
