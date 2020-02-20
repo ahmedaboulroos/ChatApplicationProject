@@ -5,6 +5,7 @@ import eg.gov.iti.jets.controllers.ChatAppViewController;
 import eg.gov.iti.jets.controllers.SingleChatViewController;
 import eg.gov.iti.jets.models.dao.interfaces.GroupContactDao;
 import eg.gov.iti.jets.models.dao.interfaces.GroupDao;
+import eg.gov.iti.jets.models.dao.interfaces.SingleChatMessageDao;
 import eg.gov.iti.jets.models.dao.interfaces.UserDao;
 import eg.gov.iti.jets.models.dto.GroupDto;
 import eg.gov.iti.jets.models.dto.UserDto;
@@ -24,7 +25,7 @@ import java.util.stream.Collectors;
 
 public class ClientService extends UnicastRemoteObject implements ClientInterface {
     private ChatAppViewController chatAppViewController;
-    private SingleChatViewController singleChatViewController;
+    private SingleChatViewController singleChatViewController = SingleChatViewController.getInstance();
     /* private SingleChatMessageController singleChatMessageController;
         /* private UserController userController;
          private SingleChatController singleChatController;
@@ -41,7 +42,7 @@ public class ClientService extends UnicastRemoteObject implements ClientInterfac
     private GroupDao groupDao = RMIConnection.getGroupDao();
     private GroupContactDao groupContactDao = RMIConnection.getGroupContactDao();
     private UserDao userDao = RMIConnection.getUserDao();
-
+    private SingleChatMessageDao singleChatMessageDao = RMIConnection.getSingleChatMessageDao();
     public ClientService() throws RemoteException {
     }
 
@@ -107,9 +108,16 @@ public class ClientService extends UnicastRemoteObject implements ClientInterfac
 
     @Override
     public void receiveNewSingleChatMessage(int singleChatMessageId) throws RemoteException {
-        SingleChatMessage singleChatMessage = RMIConnection.getSingleChatMessageDao().getSingleChatMessage(singleChatMessageId);
-        //singleChatMessageController.displayNewSingleChatMessage(singleChatMessage);
-        singleChatViewController.displayNewSingleChatMessage(singleChatMessage);
+        System.out.println(singleChatMessageId + "el id");
+        SingleChatMessage singleChatMessage = singleChatMessageDao.getSingleChatMessage(singleChatMessageId);
+        System.out.println(singleChatMessage + "elobject");
+        if (singleChatMessage != null) {
+            singleChatViewController.displayNewSingleChatMessage(singleChatMessage);
+        } else {
+            System.out.println("ana null" + singleChatMessage);
+        }
+
+
     }
 
     @Override
