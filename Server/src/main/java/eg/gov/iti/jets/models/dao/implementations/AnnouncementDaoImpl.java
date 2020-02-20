@@ -15,6 +15,7 @@ import java.util.List;
 public class AnnouncementDaoImpl extends UnicastRemoteObject implements AnnouncementDao {
 
     private static AnnouncementDao instance;
+    private Connection connection = DBConnection.getConnection();
 
     protected AnnouncementDaoImpl() throws RemoteException {
     }
@@ -32,7 +33,6 @@ public class AnnouncementDaoImpl extends UnicastRemoteObject implements Announce
 
     @Override
     public boolean createAnnouncement(Announcement announcement) {
-        Connection connection = DBConnection.getInstance().getConnection();
 
         boolean result = false;
         String insertSQL = "INSERT INTO ANNOUNCEMENT  \n" +
@@ -57,7 +57,6 @@ public class AnnouncementDaoImpl extends UnicastRemoteObject implements Announce
 
     @Override
     public Announcement getAnnouncement(int announcementId) {
-        Connection connection = DBConnection.getInstance().getConnection();
         int announcementID = 0;
         String content = null;
         Timestamp announcTimestamp = null;
@@ -86,7 +85,6 @@ public class AnnouncementDaoImpl extends UnicastRemoteObject implements Announce
     public List<AnnouncementDelivery> getAnnouncementDeliveries(int announcementId) {
 
         List<AnnouncementDelivery> announcementDeliveryList = new ArrayList<>();
-        Connection connection = DBConnection.getInstance().getConnection();
         String selectSQL = "SELECT *  \n" +
                 "FROM ANNOUNCEMENT_DELIVERY  \n" +
                 "WHERE ANNOUNCEMENT_ID = ? ";
@@ -112,7 +110,6 @@ public class AnnouncementDaoImpl extends UnicastRemoteObject implements Announce
 
     @Override
     public boolean updateAnnouncement(Announcement announcement) {
-        Connection connection = DBConnection.getInstance().getConnection();
         String updateSQL = "UPDATE ANNOUNCEMENT \n" +
                 "SET CONTENT  =  ?  ,  \n" +
                 "ANNOUNCEMENT_TIMESTAMP = ?  \n" +
@@ -139,7 +136,6 @@ public class AnnouncementDaoImpl extends UnicastRemoteObject implements Announce
 
     @Override
     public boolean deleteAnnouncement(int announcementId) {
-        Connection connection = DBConnection.getInstance().getConnection();
         String deleteSQL = "DELETE FROM ANNOUNCEMENT  \n" +
                 "WHERE ANNOUNCEMENT_ID = ? ";
         boolean result = false;
@@ -160,7 +156,6 @@ public class AnnouncementDaoImpl extends UnicastRemoteObject implements Announce
     @Override
     public List<Announcement> getAllAnnouncements() {
         List<Announcement> announcements = new ArrayList<>();
-        Connection connection = DBConnection.getInstance().getConnection();
         int announcementID = 0;
         String content = null;
         Timestamp announcTimestamp = null;

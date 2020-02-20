@@ -14,6 +14,8 @@ import java.util.List;
 
 public class GroupChatMessageDaoImpl extends UnicastRemoteObject implements GroupChatMessageDao {
 
+    Connection connection = DBConnection.getConnection();
+
     private static GroupChatMessageDaoImpl instance;
 
     protected GroupChatMessageDaoImpl() throws RemoteException {
@@ -34,7 +36,6 @@ public class GroupChatMessageDaoImpl extends UnicastRemoteObject implements Grou
     @Override
     public boolean createGroupChatMessage(GroupChatMessage groupChatMessage) {
 
-        Connection connection = DBConnection.getInstance().getConnection();
         boolean flag = false;
         String sql = "INSERT INTO  GROUP_CHAT_MESSAGE (GROUP_CHAT_MESSAGE_ID, USER_ID, CONTENT,MESSAGE_TIMESTAMP) VALUES (SEQ_GROUP_CHAT_MESSAGE_ID.NEXTVAL,?,?,?)";
         try {
@@ -61,7 +62,6 @@ public class GroupChatMessageDaoImpl extends UnicastRemoteObject implements Grou
 
     @Override
     public GroupChatMessage getGroupChatMessage(int groupChatMessageId) {
-        Connection connection = DBConnection.getInstance().getConnection();
 
         GroupChatMessage groupChatMessage;
         int groupChatMessageID = 0;
@@ -99,7 +99,6 @@ public class GroupChatMessageDaoImpl extends UnicastRemoteObject implements Grou
     @Override
     public List<SeenByStatus> getSeenByStatus(int groupChatMessageId) {
         List<SeenByStatus> list = new ArrayList<>();
-        Connection connection = DBConnection.getInstance().getConnection();
         try {
 
             PreparedStatement statement = connection.prepareStatement("select * from GROUP_CHAT_MESSAGE  where GROUP_CHAT_MESSAGE_ID=?");
@@ -122,7 +121,6 @@ public class GroupChatMessageDaoImpl extends UnicastRemoteObject implements Grou
 
     @Override
     public boolean updateGroupChatMessage(GroupChatMessage groupChatMessage) {
-        Connection connection = DBConnection.getInstance().getConnection();
         boolean flag = false;
         try {
             String sql = "UPDATE GROUP_CHAT_MESSAGE SET USER_ID=? ,CONTENT=?, MESSAGE_TIMESTAMP=? where  GROUP_CHAT_MESSAGE_ID=?";
@@ -145,7 +143,6 @@ public class GroupChatMessageDaoImpl extends UnicastRemoteObject implements Grou
 
     @Override
     public boolean deleteGroupChatMessage(int groupChatMessageId) {
-        Connection connection = DBConnection.getInstance().getConnection();
 
         boolean flag = false;
         try {

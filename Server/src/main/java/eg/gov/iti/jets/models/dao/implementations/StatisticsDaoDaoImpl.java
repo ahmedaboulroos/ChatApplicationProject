@@ -1,6 +1,6 @@
 package eg.gov.iti.jets.models.dao.implementations;
 
-import eg.gov.iti.jets.models.dao.interfaces.Statistics;
+import eg.gov.iti.jets.models.dao.interfaces.StatisticsDao;
 import eg.gov.iti.jets.models.persistence.DBConnection;
 
 import java.rmi.RemoteException;
@@ -12,21 +12,26 @@ import java.sql.SQLException;
 import java.util.HashMap;
 import java.util.Map;
 
-public class StatisticsImpl extends UnicastRemoteObject implements Statistics {
-    private static Connection connection;
+public class StatisticsDaoDaoImpl extends UnicastRemoteObject implements StatisticsDao {
 
-    public StatisticsImpl() throws RemoteException {
-        DBConnection.getInstance().initConnection();
-        connection = DBConnection.getInstance().getConnection();
+    private static StatisticsDaoDaoImpl instance;
+
+    private Connection connection = DBConnection.getConnection();
+
+    protected StatisticsDaoDaoImpl() throws RemoteException {
     }
 
-    public static void main(String[] args) throws RemoteException {
-        DBConnection.getInstance().initConnection();
-        connection = DBConnection.getInstance().getConnection();
-        StatisticsImpl rr = new StatisticsImpl();
-        Map<String, Integer> map = rr.getUsersNumByCountry();
-        System.out.println("The collection is: " + map.values());
+    public static StatisticsDaoDaoImpl getInstance() {
+        if (instance == null) {
+            try {
+                instance = new StatisticsDaoDaoImpl();
+            } catch (RemoteException e) {
+                e.printStackTrace();
+            }
+        }
+        return instance;
     }
+
 
     @Override
     public Map<String, Integer> getUsersByGender() {

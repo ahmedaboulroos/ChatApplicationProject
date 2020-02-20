@@ -44,7 +44,7 @@ public class LoginViewController implements Initializable {
     @FXML
     void handleSignInBtn(ActionEvent event) {
         try {
-            UserDao userDao = RMIConnection.getInstance().getUserDao();
+            UserDao userDao = RMIConnection.getUserDao();
             User user = userDao.getUser(phoneNumberTf.getText(), passwordPf.getText());
             if (user != null) {
                 ClientStageCoordinator.getInstance().currentUser = user;

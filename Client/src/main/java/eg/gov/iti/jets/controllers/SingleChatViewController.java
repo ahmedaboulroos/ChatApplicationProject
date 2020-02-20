@@ -42,7 +42,7 @@ public class SingleChatViewController {
 
         try {
             String msg = singleChatMessageHtml.getHtmlText();
-            SingleChatMessageDao singleChatDao = RMIConnection.getInstance().getSingleChatMessageDao();
+            SingleChatMessageDao singleChatDao = RMIConnection.getSingleChatMessageDao();
             SingleChatMessage singleChatMessage = new SingleChatMessage(this.singleChatId, currentUser.getUserId(), msg);
             singleChatDao.createSingleChatMessage(singleChatMessage);
         } catch (
@@ -55,7 +55,7 @@ public class SingleChatViewController {
     private void updateSingleChat() {
         try {
             singleChatMessagesLv.getItems().clear();
-            List<SingleChatMessage> singleChatMessages = RMIConnection.getInstance().getSingleChatDao().getSingleChatMessages(singleChatId);
+            List<SingleChatMessage> singleChatMessages = RMIConnection.getSingleChatDao().getSingleChatMessages(singleChatId);
             singleChatMessagesLv.setItems(FXCollections.observableList(singleChatMessages));
         } catch (RemoteException e) {
             e.printStackTrace();

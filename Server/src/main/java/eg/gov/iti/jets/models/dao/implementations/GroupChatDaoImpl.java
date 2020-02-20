@@ -25,6 +25,7 @@ import java.util.List;
 
 public class GroupChatDaoImpl extends UnicastRemoteObject implements GroupChatDao {
 
+    private Connection connection = DBConnection.getConnection();
     private static GroupChatDaoImpl instance;
 
     protected GroupChatDaoImpl() throws RemoteException {
@@ -43,7 +44,6 @@ public class GroupChatDaoImpl extends UnicastRemoteObject implements GroupChatDa
 
     @Override
     public boolean createGroupChat(GroupChat groupChat) {
-        Connection connection = DBConnection.getInstance().getConnection();
         boolean b = false;
         PreparedStatement stmt = null;
         try {
@@ -74,7 +74,6 @@ public class GroupChatDaoImpl extends UnicastRemoteObject implements GroupChatDa
 
     @Override
     public GroupChat getGroupChat(int groupChatId) {
-        Connection connection = DBConnection.getInstance().getConnection();
         ResultSet rs = null;
         int id = 0;
         String tilte = null;
@@ -126,7 +125,6 @@ public class GroupChatDaoImpl extends UnicastRemoteObject implements GroupChatDa
     @Override
     public List<Membership> getGroupChatMemberships(int groupChatId) {
         String sql = "select membership_id, user_id, group_chat_id, joined_timestamp from membership where group_chat_id=?";
-        Connection connection = DBConnection.getInstance().getConnection();
         List<Membership> membershipList = new ArrayList<>();
         ResultSet rs = null;
         int membership_id = 0;
@@ -168,7 +166,6 @@ public class GroupChatDaoImpl extends UnicastRemoteObject implements GroupChatDa
     @Override
     public List<GroupChatMessage> getGroupChatMessages(int groupChatId) {
         String sql = "select group_chat_message_id, user_id, content, message_timestamp from group_Chat_Message where group_chat_id=?";
-        Connection connection = DBConnection.getInstance().getConnection();
         List<GroupChatMessage> groupChatMessageList = new ArrayList<>();
         ResultSet rs = null;
         int membership_id = 0;
@@ -197,7 +194,6 @@ public class GroupChatDaoImpl extends UnicastRemoteObject implements GroupChatDa
 
     @Override
     public boolean updateGroupChat(GroupChat groupChat) {
-        Connection connection = DBConnection.getInstance().getConnection();
         boolean b = false;
         PreparedStatement stmt = null;
         try {
@@ -233,7 +229,6 @@ public class GroupChatDaoImpl extends UnicastRemoteObject implements GroupChatDa
     @Override
     public boolean deleteGroupChat(int groupChatId) {
 
-        Connection connection = DBConnection.getInstance().getConnection();
         boolean b = false;
         PreparedStatement stmt = null;
         try {

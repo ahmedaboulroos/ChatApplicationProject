@@ -38,9 +38,9 @@ public class ClientService extends UnicastRemoteObject implements ClientInterfac
          private AnnouncementDeliveryController announcementDeliveryController;
          private AnnouncementController announcementController;
      */
-    private GroupDao groupDao = RMIConnection.getInstance().getGroupDao();
-    private GroupContactDao groupContactDao = RMIConnection.getInstance().getGroupContactDao();
-    private UserDao userDao = RMIConnection.getInstance().getUserDao();
+    private GroupDao groupDao = RMIConnection.getGroupDao();
+    private GroupContactDao groupContactDao = RMIConnection.getGroupContactDao();
+    private UserDao userDao = RMIConnection.getUserDao();
 
     public ClientService() throws RemoteException {
     }
@@ -107,7 +107,7 @@ public class ClientService extends UnicastRemoteObject implements ClientInterfac
 
     @Override
     public void receiveNewSingleChatMessage(int singleChatMessageId) throws RemoteException {
-        SingleChatMessage singleChatMessage = RMIConnection.getInstance().getSingleChatMessageDao().getSingleChatMessage(singleChatMessageId);
+        SingleChatMessage singleChatMessage = RMIConnection.getSingleChatMessageDao().getSingleChatMessage(singleChatMessageId);
         //singleChatMessageController.displayNewSingleChatMessage(singleChatMessage);
         singleChatViewController.displayNewSingleChatMessage(singleChatMessage);
     }

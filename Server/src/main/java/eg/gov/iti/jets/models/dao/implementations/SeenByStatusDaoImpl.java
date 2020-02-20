@@ -12,12 +12,12 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 
 public class SeenByStatusDaoImpl extends UnicastRemoteObject implements SeenByStatusDao {
-    private static Connection connection;
+
+    private static SeenByStatusDaoImpl instance;
+    private Connection connection = DBConnection.getConnection();
 
     protected SeenByStatusDaoImpl() throws RemoteException {
     }
-
-    private static SeenByStatusDaoImpl instance;
 
     public static SeenByStatusDao getInstance() {
         if (instance == null) {
@@ -50,7 +50,6 @@ public class SeenByStatusDaoImpl extends UnicastRemoteObject implements SeenBySt
     */
     @Override
     public boolean createSeenByStatus(SeenByStatus seenByStatus) {
-        Connection connection = DBConnection.getInstance().getConnection();
         try {
 
             String sql = "INSERT INTO Seen_By_Status (SEEN_BY_STATUs_ID, GROUP_CHAT_MESSAGE_ID, USER_ID) VALUES (SEQ_SEEN_BY_STATUS_ID.NEXTVAL,?,?)";

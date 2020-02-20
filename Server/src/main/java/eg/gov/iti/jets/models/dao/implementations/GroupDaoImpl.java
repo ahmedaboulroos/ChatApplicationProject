@@ -16,6 +16,7 @@ import java.util.List;
 
 public class GroupDaoImpl extends UnicastRemoteObject implements GroupDao {
 
+    private Connection connection = DBConnection.getConnection();
     private static GroupDaoImpl instance;
 
     protected GroupDaoImpl() throws RemoteException {
@@ -34,7 +35,6 @@ public class GroupDaoImpl extends UnicastRemoteObject implements GroupDao {
 
     @Override
     public boolean createGroup(Group group) {
-        Connection connection = DBConnection.getInstance().getConnection();
         boolean result = false;
         String insertSQL = "INSERT INTO APP_USER_GROUP  \n" +
                 "(GROUP_ID, USER_ID, GROUP_NAME ) VALUES (" +
@@ -56,7 +56,6 @@ public class GroupDaoImpl extends UnicastRemoteObject implements GroupDao {
 
     @Override
     public Group getGroup(int groupId) {
-        Connection connection = DBConnection.getInstance().getConnection();
         int groupID = 0;
         int userID = 0;
         String groupName = null;
@@ -84,7 +83,6 @@ public class GroupDaoImpl extends UnicastRemoteObject implements GroupDao {
     @Override
     public List<Group> getAllUserGroups(int userId) throws RemoteException {
         List<Group> groupList = new ArrayList<>();
-        Connection connection = DBConnection.getInstance().getConnection();
         int groupID = 0;
         int userID = 0;
         String groupName = null;
@@ -111,7 +109,6 @@ public class GroupDaoImpl extends UnicastRemoteObject implements GroupDao {
     @Override
     public List<GroupContact> getGroupContacts(int groupId) {
         List<GroupContact> groupContactList = new ArrayList<>();
-        Connection connection = DBConnection.getInstance().getConnection();
         String selectSQL = "SELECT *  \n" +
                 "FROM GROUP_CONTACT  \n" +
                 "WHERE GROUP_ID = ? ";
@@ -135,7 +132,6 @@ public class GroupDaoImpl extends UnicastRemoteObject implements GroupDao {
 
     @Override
     public boolean updateGroup(Group group) {
-        Connection connection = DBConnection.getInstance().getConnection();
         String updateSQL = "UPDATE APP_USER_GROUP \n" +
                 "SET USER_ID  =  ?  ,  \n" +
                 "GROUP_NAME = ?  \n" +
@@ -162,7 +158,6 @@ public class GroupDaoImpl extends UnicastRemoteObject implements GroupDao {
 
     @Override
     public boolean deleteGroup(int groupId) {
-        Connection connection = DBConnection.getInstance().getConnection();
         String deleteSQL = "DELETE FROM APP_USER_GROUP   \n" +
                 "WHERE GROUP_ID = ? ";
         boolean result = false;

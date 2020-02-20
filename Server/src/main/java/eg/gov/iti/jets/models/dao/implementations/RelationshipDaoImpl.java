@@ -17,6 +17,7 @@ import java.util.List;
 
 public class RelationshipDaoImpl extends UnicastRemoteObject implements RelationshipDao {
 
+    private Connection connection = DBConnection.getConnection();
     private static RelationshipDaoImpl instance;
 
     protected RelationshipDaoImpl() throws RemoteException {
@@ -35,7 +36,6 @@ public class RelationshipDaoImpl extends UnicastRemoteObject implements Relation
 
     @Override
     public boolean createRelationship(Relationship relationship) {
-        Connection connection = DBConnection.getInstance().getConnection();
         int result = 0;
         try {
             PreparedStatement preparedStatement = connection.prepareStatement("select SEQ_RELATIONSHIP_ID.nextval from DUAL");
@@ -63,7 +63,6 @@ public class RelationshipDaoImpl extends UnicastRemoteObject implements Relation
 
     @Override
     public List<User> getRelationshipTwoUsers(int relationshipId) {
-        Connection connection = DBConnection.getInstance().getConnection();
         List<User> users = new ArrayList<>();
         int[] userIDs = new int[2];
         try (PreparedStatement preparedStatement = connection.prepareStatement(
@@ -91,7 +90,6 @@ public class RelationshipDaoImpl extends UnicastRemoteObject implements Relation
 
     @Override
     public Relationship getRelationship(int relationshipId) {
-        Connection connection = DBConnection.getInstance().getConnection();
         Relationship relationship = null;
         try (PreparedStatement preparedStatement = connection.prepareStatement(
                 "select * from RELATIONSHIP where RELATIONSHIP_ID = " + relationshipId);
@@ -107,7 +105,6 @@ public class RelationshipDaoImpl extends UnicastRemoteObject implements Relation
 
     @Override
     public Relationship getRelationshipBetween(int firstUserId, int secondUserId) {
-        Connection connection = DBConnection.getInstance().getConnection();
         Relationship relationship = null;
         try (PreparedStatement preparedStatement = connection.prepareStatement(
                 "select * from RELATIONSHIP where (FIRST_USER_ID = " + firstUserId
@@ -127,7 +124,6 @@ public class RelationshipDaoImpl extends UnicastRemoteObject implements Relation
 
     @Override
     public boolean updateRelationship(Relationship relationship) {
-        Connection connection = DBConnection.getInstance().getConnection();
         int result = 0;
         try {
             PreparedStatement preparedStatement = connection.prepareStatement(
@@ -149,7 +145,6 @@ public class RelationshipDaoImpl extends UnicastRemoteObject implements Relation
 
     @Override
     public boolean deleteRelationship(int relationshipId) {
-        Connection connection = DBConnection.getInstance().getConnection();
         int result = 0;
         try {
             PreparedStatement preparedStatement = connection.prepareStatement(

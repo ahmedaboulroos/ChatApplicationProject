@@ -16,7 +16,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class SingleChatDaoImpl extends UnicastRemoteObject implements SingleChatDao {
-    private static Connection connection = DBConnection.getInstance().getConnection();
+    private Connection connection = DBConnection.getConnection();
 
     private static SingleChatDaoImpl instance;
 

@@ -47,7 +47,7 @@ public class LeftViewController implements Initializable {
     @FXML
     private Accordion groupsAccordion;
 
-    private UserDao userDao = RMIConnection.getInstance().getUserDao();
+    private UserDao userDao = RMIConnection.getUserDao();
 
     private Map<Integer, ObservableList<Node>> accordionLists = new HashMap<>();
 
@@ -67,18 +67,22 @@ public class LeftViewController implements Initializable {
         int userId = user.getUserId();
         try {
             List<Group> userGroups = userDao.getUserGroups(userId);
-            TitledPane allContactsTPane = new TitledPane();
-            allContactsTPane.setText("All Contacts");
-            //accordionLists.put(0, allContactsTPane.getContent());
-            List<Integer> groupIds = new ArrayList<>();
-            for (Group g : userGroups) {
-                TitledPane titledPane = new TitledPane();
-                titledPane.setText(g.getGroupName());
-                List<String> groupUserNames = getGroupUsersNames(g);
-                VBox vBox = new VBox();
-                groupUserNames.forEach(s -> vBox.getChildren().add(new Label(s)));
-                titledPane.setContent(vBox);
-                groupsAccordion.getPanes().add(titledPane);
+            if (userGroups != null) {
+                TitledPane allContactsTPane = new TitledPane();
+                allContactsTPane.setText("All Contacts");
+                //accordionLists.put(0, allContactsTPane.getContent());
+                List<Integer> groupIds = new ArrayList<>();
+                for (Group g : userGroups) {
+                    TitledPane titledPane = new TitledPane();
+                    titledPane.setText(g.getGroupName());
+                    List<String> groupUserNames = getGroupUsersNames(g);
+                    VBox vBox = new VBox();
+                    groupUserNames.forEach(s -> vBox.getChildren().add(new Label(s)));
+                    titledPane.setContent(vBox);
+                    groupsAccordion.getPanes().add(titledPane);
+                }
+            } else {
+                System.out.println("No user groups");
             }
         } catch (RemoteException e) {
             e.printStackTrace();
@@ -86,7 +90,7 @@ public class LeftViewController implements Initializable {
     }
 
     private List<String> getGroupUsersNames(Group g) throws RemoteException {
-        GroupDao groupDao = RMIConnection.getInstance().getGroupDao();
+        GroupDao groupDao = RMIConnection.getGroupDao();
         //get ids of users in group
         List<Integer> groupUsersIds = new ArrayList<>();
         List<GroupContact> groupContacts = groupDao.getGroupContacts(g.getGroupId());
@@ -114,30 +118,33 @@ public class LeftViewController implements Initializable {
         int userId = user.getUserId();
         try {
             List<Relationship> userRelationships = userDao.getUserRelationships(userId);
-            TitledPane allContactsTPane = new TitledPane();
-            allContactsTPane.setText("All Contacts");
-            //accordionLists.put(0, allContactsTPane.getContent());
-            List<Integer> friendIds = new ArrayList<>();
-            for (Relationship r : userRelationships) {
-                if (r.getRelationshipStatus() == RelationshipStatus.ACCEPTED) {
-                    int id = r.getFirstUserId();
-                    if (id != user.getUserId())
-                        friendIds.add(id);
-                    else
-                        friendIds.add(r.getSecondUserId());
+            if (userRelationships != null) {
+                TitledPane allContactsTPane = new TitledPane();
+                allContactsTPane.setText("All Contacts");
+                List<Integer> friendIds = new ArrayList<>();
+                for (Relationship r : userRelationships) {
+                    if (r.getRelationshipStatus() == RelationshipStatus.ACCEPTED) {
+                        int id = r.getFirstUserId();
+                        if (id != user.getUserId())
+                            friendIds.add(id);
+                        else
+                            friendIds.add(r.getSecondUserId());
+                    }
                 }
+                List<User> friends = new ArrayList<>();
+                for (Integer i : friendIds)
+                    friends.add(userDao.getUser(i));
+                List<Label> names = new ArrayList<>();
+                friends.stream()
+                        .map(f -> f.getUsername() == null ? f.getPhoneNumber() : f.getUsername())
+                        .forEach(s -> names.add(new Label(s)));
+                VBox vBox = new VBox();
+                vBox.getChildren().addAll(names);
+                allContactsTPane.setContent(vBox);
+                groupsAccordion.getPanes().add(allContactsTPane);
+            } else {
+                System.out.println("No Relationships");
             }
-            List<User> friends = new ArrayList<>();
-            for (Integer i : friendIds)
-                friends.add(userDao.getUser(i));
-            List<Label> names = new ArrayList<>();
-            friends.stream()
-                    .map(f -> f.getUsername() == null ? f.getPhoneNumber() : f.getUsername())
-                    .forEach(s -> names.add(new Label(s)));
-            VBox vBox = new VBox();
-            vBox.getChildren().addAll(names);
-            allContactsTPane.setContent(vBox);
-            groupsAccordion.getPanes().add(allContactsTPane);
         } catch (RemoteException e) {
             e.printStackTrace();
         }
@@ -226,7 +233,7 @@ public class LeftViewController implements Initializable {
         ///printing message list*/
         List<GroupChatMessage> groupChatMessageList = null;
         try {
-            groupChatMessageList = RMIConnection.getInstance().getGroupChatDao().getGroupChatMessages(groupChat.getGroupChatId());
+            groupChatMessageList = RMIConnection.getGroupChatDao().getGroupChatMessages(groupChat.getGroupChatId());
         } catch (RemoteException e) {
             e.printStackTrace();
         }

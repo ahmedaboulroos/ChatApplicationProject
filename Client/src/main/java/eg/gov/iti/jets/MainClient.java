@@ -13,9 +13,7 @@ public class MainClient extends Application {
 
     @Override
     public void init() throws Exception {
-        System.out.println("Client init...");
-        RMIConnection.getInstance().initConnection();
-        RMIConnection.getInstance().startConnection();
+        RMIConnection.startConnection();
     }
 
     @Override
@@ -28,8 +26,7 @@ public class MainClient extends Application {
 
     @Override
     public void stop() throws Exception {
-        System.out.println("Client stop...");
-        RMIConnection.getInstance().stopConnection();
+        System.exit(0);
     }
 
 }

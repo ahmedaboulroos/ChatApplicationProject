@@ -16,7 +16,7 @@ import java.rmi.RemoteException;
 
 public class AddGroupChatViewController {
 
-    GroupChatDao groupChatDao = RMIConnection.getInstance().getGroupChatDao();
+    GroupChatDao groupChatDao = RMIConnection.getGroupChatDao();
     File file;
     @FXML
     private JFXTextField titleTf;

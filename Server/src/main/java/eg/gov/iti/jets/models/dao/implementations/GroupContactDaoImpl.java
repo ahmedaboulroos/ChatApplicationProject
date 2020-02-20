@@ -13,6 +13,8 @@ import java.sql.SQLException;
 
 public class GroupContactDaoImpl extends UnicastRemoteObject implements GroupContactDao {
 
+    private Connection connection = DBConnection.getConnection();
+
     private static GroupContactDaoImpl instance;
 
     protected GroupContactDaoImpl() throws RemoteException {
@@ -32,7 +34,6 @@ public class GroupContactDaoImpl extends UnicastRemoteObject implements GroupCon
     @Override
     public boolean createGroupContact(GroupContact groupContact) {
 
-        Connection connection = DBConnection.getInstance().getConnection();
         boolean flag = false;
         String sql = "INSERT INTO GROUP_CONTACT (GROUP_CONTACT_ID, USER_ID, GROUP_ID) VALUES (SEQ_GROUP_CONTACT_ID.NEXTVAL,?,?)";
 
@@ -57,7 +58,6 @@ public class GroupContactDaoImpl extends UnicastRemoteObject implements GroupCon
 
     @Override
     public GroupContact getGroupContact(int groupContactId) {
-        Connection connection = DBConnection.getInstance().getConnection();
         GroupContact groupContact = null;
         int groupContactID = 0;
         int userId = 0;
@@ -89,7 +89,6 @@ public class GroupContactDaoImpl extends UnicastRemoteObject implements GroupCon
     @Override
     public boolean updateGroupContact(GroupContact groupContact) {
         boolean flag = false;
-        Connection connection = DBConnection.getInstance().getConnection();
         try {
             String sql = "UPDATE GROUP_CONTACT SET USER_ID=? GROUP_ID=? where GROUP_CONTACT_ID";
 
@@ -112,9 +111,7 @@ public class GroupContactDaoImpl extends UnicastRemoteObject implements GroupCon
     @Override
     public boolean deleteGroupContact(int groupContactId) {
         boolean flag = false;
-        Connection connection = DBConnection.getInstance().getConnection();
         try {
-
             String sql = "Delete from GROUP_CONTACT where GROUP_CONTACT_ID=? ";
             PreparedStatement statement = connection.prepareStatement(sql);
             int affectedRow = statement.executeUpdate();

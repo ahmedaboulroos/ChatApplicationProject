@@ -26,6 +26,8 @@ import java.util.List;
 
 public class UserDaoImpl extends UnicastRemoteObject implements UserDao {
 
+    private Connection connection = DBConnection.getConnection();
+
     private static UserDaoImpl instance;
 
     public UserDaoImpl() throws RemoteException {
@@ -44,7 +46,6 @@ public class UserDaoImpl extends UnicastRemoteObject implements UserDao {
 
     @Override
     public boolean createUser(User user) {
-        Connection connection = DBConnection.getInstance().getConnection();
         int result = 0;
         try {
             PreparedStatement preparedStatement = connection.prepareStatement("select SEQ_USER_ID.nextval from DUAL");
@@ -90,7 +91,6 @@ public class UserDaoImpl extends UnicastRemoteObject implements UserDao {
 
     @Override
     public User getUser(int userId) {
-        Connection connection = DBConnection.getInstance().getConnection();
         User user = null;
         try {
             PreparedStatement preparedStatement = connection.prepareStatement(
@@ -106,7 +106,6 @@ public class UserDaoImpl extends UnicastRemoteObject implements UserDao {
 
     @Override
     public User getUser(String phoneNumber) {
-        Connection connection = DBConnection.getInstance().getConnection();
         User user = null;
         try {
             PreparedStatement preparedStatement = connection.prepareStatement(
@@ -122,7 +121,6 @@ public class UserDaoImpl extends UnicastRemoteObject implements UserDao {
 
     @Override
     public User getUser(String phoneNumber, String password) {
-        Connection connection = DBConnection.getInstance().getConnection();
         User user = null;
         try {
             PreparedStatement preparedStatement = connection.prepareStatement(
@@ -138,7 +136,6 @@ public class UserDaoImpl extends UnicastRemoteObject implements UserDao {
 
     @Override
     public List<User> getAllUsers() {
-        Connection connection = DBConnection.getInstance().getConnection();
         List<User> users = null;
         try {
             PreparedStatement preparedStatement = connection.prepareStatement(
@@ -154,7 +151,6 @@ public class UserDaoImpl extends UnicastRemoteObject implements UserDao {
 
     @Override
     public List<Relationship> getUserRelationships(int userId) {
-        Connection connection = DBConnection.getInstance().getConnection();
         List<Relationship> relationships = null;
         try {
             PreparedStatement preparedStatement = connection.prepareStatement(
@@ -172,7 +168,6 @@ public class UserDaoImpl extends UnicastRemoteObject implements UserDao {
 
     @Override
     public List<SingleChat> getUserSingleChats(int userId) {
-        Connection connection = DBConnection.getInstance().getConnection();
         List<SingleChat> singleChats = null;
         try {
             PreparedStatement preparedStatement = connection.prepareStatement(
@@ -192,7 +187,6 @@ public class UserDaoImpl extends UnicastRemoteObject implements UserDao {
     public List<Membership> getUserGroupChatsMembership(int userId) {
 
         String sql = "select membership_id, user_id, group_chat_id, joined_timestamp from membership where user_id=?";
-        Connection connection = DBConnection.getInstance().getConnection();
         List<Membership> membershipList = new ArrayList<>();
         ResultSet rs = null;
         int membership_id = 0;
@@ -248,7 +242,6 @@ public class UserDaoImpl extends UnicastRemoteObject implements UserDao {
         Blob blob = null;
         BufferedImage imagen;
         PreparedStatement stmt = null;
-        Connection connection = DBConnection.getInstance().getConnection();
         for (int i = 0; i < membershipList.size(); i++) {
             sql = "select group_chat_id, title, description, group_image, creation_timestamp from GROUP_CHAT where group_chat_id=?";
             int groupChatId = membershipList.get(i).getGroupChatId();
@@ -287,7 +280,6 @@ public class UserDaoImpl extends UnicastRemoteObject implements UserDao {
 
     @Override
     public List<AnnouncementDelivery> getUserAnnouncementDeliveries(int userId) {
-        Connection connection = DBConnection.getInstance().getConnection();
         List<AnnouncementDelivery> announcementDeliveries = null;
         try {
             PreparedStatement preparedStatement = connection.prepareStatement(
@@ -304,7 +296,6 @@ public class UserDaoImpl extends UnicastRemoteObject implements UserDao {
 
     @Override
     public List<Group> getUserGroups(int userId) {
-        Connection connection = DBConnection.getInstance().getConnection();
         List<Group> groups = null;
         try {
             PreparedStatement preparedStatement = connection.prepareStatement(
@@ -321,7 +312,6 @@ public class UserDaoImpl extends UnicastRemoteObject implements UserDao {
 
     @Override
     public List<GroupContact> getUserContacts(int userId) throws RemoteException {
-        Connection connection = DBConnection.getInstance().getConnection();
         List<GroupContact> groupContacts = null;
         try {
             PreparedStatement preparedStatement = connection.prepareStatement(
@@ -338,7 +328,6 @@ public class UserDaoImpl extends UnicastRemoteObject implements UserDao {
 
     @Override
     public boolean updateUser(User user) {
-        Connection connection = DBConnection.getInstance().getConnection();
         int result = 0;
         try {
             Date birthDate = user.getBirthDate() == null ?
@@ -406,7 +395,6 @@ public class UserDaoImpl extends UnicastRemoteObject implements UserDao {
 
     @Override
     public boolean deleteUser(int userId) {
-        Connection connection = DBConnection.getInstance().getConnection();
         int result = 0;
         try {
             PreparedStatement preparedStatement = connection.prepareStatement(

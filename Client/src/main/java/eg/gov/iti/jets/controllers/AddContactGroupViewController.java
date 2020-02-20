@@ -25,10 +25,10 @@ import java.util.ResourceBundle;
 public class AddContactGroupViewController implements Initializable {
 
     User user = ClientStageCoordinator.getInstance().currentUser;
-    GroupDao groupDao = RMIConnection.getInstance().getGroupDao();
-    GroupContactDao groupContactDao = RMIConnection.getInstance().getGroupContactDao();
-    UserDao userDao = RMIConnection.getInstance().getUserDao();
-    RelationshipDao relationshipDao = RMIConnection.getInstance().getRelationshipDao();
+    GroupDao groupDao = RMIConnection.getGroupDao();
+    GroupContactDao groupContactDao = RMIConnection.getGroupContactDao();
+    UserDao userDao = RMIConnection.getUserDao();
+    RelationshipDao relationshipDao = RMIConnection.getRelationshipDao();
 
     @FXML
     private JFXButton createGroupBtn;

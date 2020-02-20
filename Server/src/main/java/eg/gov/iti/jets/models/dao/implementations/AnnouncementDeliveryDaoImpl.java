@@ -15,6 +15,7 @@ import java.sql.SQLException;
 public class AnnouncementDeliveryDaoImpl extends UnicastRemoteObject implements AnnouncementDeliveryDao {
 
     private static AnnouncementDeliveryDao instance;
+    private Connection connection = DBConnection.getConnection();
 
     protected AnnouncementDeliveryDaoImpl() throws RemoteException {
     }
@@ -32,7 +33,6 @@ public class AnnouncementDeliveryDaoImpl extends UnicastRemoteObject implements 
 
     @Override
     public boolean createAnnouncementDelivery(AnnouncementDelivery announcementDelivery) {
-        Connection connection = DBConnection.getInstance().getConnection();
         boolean result = false;
         String insertSQL = "INSERT INTO ANNOUNCEMENT_DELIVERY  \n" +
                 "(ANNOUNCEMENT_DELIVERY_ID, ANNOUNCEMENT_USER_ID, ANNOUNCEMENT_ID , ANNOUNCEMENT_DELIVERY_STATUS) VALUES (" +
@@ -56,7 +56,6 @@ public class AnnouncementDeliveryDaoImpl extends UnicastRemoteObject implements 
     @Override
     public AnnouncementDelivery getAnnouncementDelivery(int announcementDeliveryId) {
 
-        Connection connection = DBConnection.getInstance().getConnection();
         int announcDeliveryID = 0;
         int userID = 0;
         int announcID = 0;
@@ -87,7 +86,6 @@ public class AnnouncementDeliveryDaoImpl extends UnicastRemoteObject implements 
     @Override
     public boolean updateAnnouncementDelivery(AnnouncementDelivery announcementDelivery) {
 
-        Connection connection = DBConnection.getInstance().getConnection();
         String updateSQL = "UPDATE ANNOUNCEMENT_DELIVERY \n" +
                 "SET ANNOUNCEMENT_USER_ID  =  ?  ,  \n" +
                 "ANNOUNCEMENT_ID = ?  \n" +
@@ -115,7 +113,6 @@ public class AnnouncementDeliveryDaoImpl extends UnicastRemoteObject implements 
 
     @Override
     public boolean deleteAnnouncementDelivery(int announcementDeliveryId) {
-        Connection connection = DBConnection.getInstance().getConnection();
         String deleteSQL = "DELETE FROM ANNOUNCEMENT_DELIVERY   \n" +
                 "WHERE ANNOUNCEMENT_DELIVERY_ID = ? ";
         boolean result = false;

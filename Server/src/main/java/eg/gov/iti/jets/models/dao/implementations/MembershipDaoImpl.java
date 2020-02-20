@@ -12,7 +12,7 @@ import java.sql.*;
 
 public class MembershipDaoImpl extends UnicastRemoteObject implements MembershipDao {
 
-    private static Connection connection = DBConnection.getInstance().getConnection();
+    private Connection connection = DBConnection.getConnection();
 
     private static MembershipDaoImpl instance;
 

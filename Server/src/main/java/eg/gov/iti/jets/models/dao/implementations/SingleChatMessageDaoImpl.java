@@ -13,10 +13,10 @@ import java.rmi.server.UnicastRemoteObject;
 import java.sql.*;
 
 public class SingleChatMessageDaoImpl extends UnicastRemoteObject implements SingleChatMessageDao {
-    private static Connection connection = DBConnection.getInstance().getConnection();
+    private Connection connection = DBConnection.getConnection();
 
     private static SingleChatMessageDaoImpl instance;
-    private static ServerService serverService = ServerService.getInstance();
+    private ServerService serverService = ServerService.getInstance();
     protected SingleChatMessageDaoImpl() throws RemoteException {
     }
 

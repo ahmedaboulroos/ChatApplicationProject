@@ -24,10 +24,10 @@ public class AddContactViewController {
     @FXML
     void handleAddContactBtn(ActionEvent event) {
         try {
-            User user = RMIConnection.getInstance().getUserDao().getUser(phoneNumberTf.getText());
+            User user = RMIConnection.getUserDao().getUser(phoneNumberTf.getText());
             if (user != null) {
                 Relationship relationship = new Relationship(ClientStageCoordinator.getInstance().currentUser.getUserId(), user.getUserId());
-                RMIConnection.getInstance().getRelationshipDao().createRelationship(relationship);
+                RMIConnection.getRelationshipDao().createRelationship(relationship);
                 phoneNumberTf.clear();
             } else {
                 errorsLbl.setText("user not found");

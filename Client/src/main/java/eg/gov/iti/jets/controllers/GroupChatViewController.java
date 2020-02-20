@@ -19,7 +19,7 @@ public class GroupChatViewController {
 
     public void setGroupChatMessages(int groupChatId) {
         try {
-            List<GroupChatMessage> groupChatMessages = RMIConnection.getInstance().getGroupChatDao().getGroupChatMessages(groupChatId);
+            List<GroupChatMessage> groupChatMessages = RMIConnection.getGroupChatDao().getGroupChatMessages(groupChatId);
             groupChatMessagesLv.setItems(FXCollections.observableList(groupChatMessages));
         } catch (RemoteException e) {
             e.printStackTrace();

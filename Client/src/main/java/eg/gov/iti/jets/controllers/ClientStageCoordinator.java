@@ -36,33 +36,11 @@ public class ClientStageCoordinator {
     public void startMainChatAppScene() throws IOException {
         FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/views/ChatAppView.fxml"));
         Parent mainChatAppView = fxmlLoader.load();
-        ServerInterface serverService = RMIConnection.getInstance().getServerService();
+        ServerInterface serverService = RMIConnection.getServerService();
         chatAppViewController = fxmlLoader.getController();
         ClientInterface clientService = new ClientService(chatAppViewController);
         serverService.login(currentUser.getUserId(), clientService);
 
-        /*AnnouncementController announcementController = new AnnouncementController(chatAppViewController);
-        AnnouncementDeliveryController announcementDeliveryController = new AnnouncementDeliveryController(chatAppViewController);
-        GroupChatController groupChatController = new GroupChatController(chatAppViewController);
-        GroupChatMessageController groupChatMessageController = new GroupChatMessageController(chatAppViewController);
-        GroupContactController groupContactController = new GroupContactController(chatAppViewController);
-        GroupController groupController = new GroupController(chatAppViewController);
-        MembershipController membershipController = new MembershipController(chatAppViewController);
-        RelationshipController relationshipController = new RelationshipController(chatAppViewController);
-        SeenByStatusController seenByStatusController = new SeenByStatusController(chatAppViewController);
-        SingleChatController singleChatController = new SingleChatController(chatAppViewController);
-        SingleChatMessageController singleChatMessageController = new SingleChatMessageController(chatAppViewController);
-        UserController userController = new UserController(chatAppViewController);*/
-        /*ClientService clientService = new ClientService(announcementController,announcementDeliveryController,
-                groupChatController, groupChatMessageController, groupContactController,
-                groupController, membershipController, relationshipController, seenByStatusController,
-                singleChatController, singleChatMessageController, userController);
-        chatAppViewController.setControllers(announcementController,announcementDeliveryController,
-                groupChatController, groupChatMessageController, groupContactController,
-                groupController, membershipController, relationshipController, seenByStatusController,
-                singleChatController, singleChatMessageController, userController);*/
-        //clientService.displayMsg();
-        clientService.receiveGroup(4);
         this.stage.setScene(new Scene(mainChatAppView));
         this.stage.setTitle("Chat Application");
         this.stage.show();

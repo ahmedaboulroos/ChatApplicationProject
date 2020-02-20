@@ -8,20 +8,9 @@ import javafx.stage.Stage;
 import java.io.IOException;
 
 public class ServerStageCoordinator {
-    private static ServerStageCoordinator instance;
     private Stage stage;
 
-    private ServerStageCoordinator() {
-    }
-
-    public static ServerStageCoordinator getInstance() {
-        if (instance == null) {
-            instance = new ServerStageCoordinator();
-        }
-        return instance;
-    }
-
-    public void setStage(Stage stage) {
+    public ServerStageCoordinator(Stage stage) {
         this.stage = stage;
     }
 
@@ -32,6 +21,10 @@ public class ServerStageCoordinator {
         stage.setScene(new Scene(mainServerView));
         stage.setTitle("Chat Application Server - Admin Panel");
         stage.show();
+    }
+
+    public void startErrorScene(String error) {
+        System.out.println(">> ERROR IN : " + error);
     }
 
 //    public void startServerLoginScene(boolean dbConnStarted, boolean rmiConnStarted) {

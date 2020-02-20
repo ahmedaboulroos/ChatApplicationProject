@@ -55,7 +55,7 @@ public class RegisterViewController {
     void handleSignUpBtn(ActionEvent event) {
         try {
             User user = new User(phoneNoTf.getText(), passwordTf.getText());
-            RMIConnection.getInstance().getUserDao().createUser(user);
+            RMIConnection.getUserDao().createUser(user);
         } catch (RemoteException e) {
             e.printStackTrace();
         }

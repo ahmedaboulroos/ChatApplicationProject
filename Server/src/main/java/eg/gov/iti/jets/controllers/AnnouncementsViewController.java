@@ -113,9 +113,11 @@ public class AnnouncementsViewController implements Initializable {
     void handleAnnouncementsMc(MouseEvent event) {
         try {
             AnnouncementViewModel announcementViewModel = announcementsTv.getSelectionModel().getSelectedItem();
-            int id = announcementViewModel.getAnnouncementId();
-            System.out.println(id);
-            announcementsDeliveryTv.setItems(FXCollections.observableList(getAllAnnouncementsDelivery(id)));
+            if (announcementViewModel != null) {
+                int id = announcementViewModel.getAnnouncementId();
+                System.out.println(id);
+                announcementsDeliveryTv.setItems(FXCollections.observableList(getAllAnnouncementsDelivery(id)));
+            }
         } catch (RemoteException e) {
             e.printStackTrace();
         }
@@ -124,6 +126,7 @@ public class AnnouncementsViewController implements Initializable {
     void updateAnnouncementsTable() {
         try {
             System.out.println(announcementDao.getAllAnnouncements());
+            announcementsTv.setItems(FXCollections.observableList(getAllAnnouncements()));
         } catch (RemoteException e) {
             e.printStackTrace();
         }
@@ -132,6 +135,7 @@ public class AnnouncementsViewController implements Initializable {
     void updateAnnouncementsDeliveryTable(int id) {
         try {
             System.out.println(announcementDao.getAnnouncementDeliveries(id));
+
         } catch (RemoteException e) {
             e.printStackTrace();
         }

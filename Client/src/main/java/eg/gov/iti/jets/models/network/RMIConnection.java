@@ -10,121 +10,109 @@ import java.rmi.registry.Registry;
 
 public class RMIConnection {
 
-    private static RMIConnection instance;
-    private AnnouncementDao announcementDao;
-    private AnnouncementDeliveryDao announcementDeliveryDao;
-    private GroupChatDao groupChatDao;
-    private GroupChatMessageDao groupChatMessageDao;
-    private GroupContactDao groupContactDao;
-    private GroupDao groupDao;
-    private MembershipDao membershipDao;
-    private RelationshipDao relationshipDao;
-    private SeenByStatusDao seenByStatusDao;
-    private SingleChatDao singleChatDao;
-    private SingleChatMessageDao singleChatMessageDao;
-    private UserDao userDao;
-    private ServerInterface serverService;
-    private Registry registry;
+    private static AnnouncementDao announcementDao;
+    private static AnnouncementDeliveryDao announcementDeliveryDao;
+    private static GroupChatDao groupChatDao;
+    private static GroupChatMessageDao groupChatMessageDao;
+    private static GroupContactDao groupContactDao;
+    private static GroupDao groupDao;
+    private static MembershipDao membershipDao;
+    private static RelationshipDao relationshipDao;
+    private static SeenByStatusDao seenByStatusDao;
+    private static SingleChatDao singleChatDao;
+    private static SingleChatMessageDao singleChatMessageDao;
+    private static UserDao userDao;
+
+    private static ServerInterface serverService;
+    private static Registry registry;
 
     private RMIConnection() {
     }
 
-    public static synchronized RMIConnection getInstance() {
-        if (instance == null)
-            instance = new RMIConnection();
-        return instance;
+    public static AnnouncementDao getAnnouncementDao() {
+        return announcementDao;
     }
 
-    public AnnouncementDao getAnnouncementDao() {
-        return this.announcementDao;
+    public static AnnouncementDeliveryDao getAnnouncementDeliveryDao() {
+        return announcementDeliveryDao;
     }
 
-    public AnnouncementDeliveryDao getAnnouncementDeliveryDao() {
-        return this.announcementDeliveryDao;
+    public static GroupChatDao getGroupChatDao() {
+        return groupChatDao;
     }
 
-    public GroupChatDao getGroupChatDao() {
-        return this.groupChatDao;
+    public static GroupChatMessageDao getGroupChatMessageDao() {
+        return groupChatMessageDao;
     }
 
-    public GroupChatMessageDao getGroupChatMessageDao() {
-        return this.groupChatMessageDao;
+    public static GroupContactDao getGroupContactDao() {
+        return groupContactDao;
     }
 
-    public GroupContactDao getGroupContactDao() {
-        return this.groupContactDao;
+    public static GroupDao getGroupDao() {
+        return groupDao;
     }
 
-    public GroupDao getGroupDao() {
-        return this.groupDao;
+    public static MembershipDao getMembershipDao() {
+        return membershipDao;
     }
 
-    public MembershipDao getMembershipDao() {
-        return this.membershipDao;
+    public static RelationshipDao getRelationshipDao() {
+        return relationshipDao;
     }
 
-    public RelationshipDao getRelationshipDao() {
-        return this.relationshipDao;
+    public static SeenByStatusDao getSeenByStatusDao() {
+        return seenByStatusDao;
     }
 
-    public SeenByStatusDao getSeenByStatusDao() {
-        return this.seenByStatusDao;
+    public static SingleChatDao getSingleChatDao() {
+        return singleChatDao;
     }
 
-    public SingleChatDao getSingleChatDao() {
-        return this.singleChatDao;
+    public static SingleChatMessageDao getSingleChatMessageDao() {
+        return singleChatMessageDao;
     }
 
-    public SingleChatMessageDao getSingleChatMessageDao() {
-        return this.singleChatMessageDao;
+    public static UserDao getUserDao() {
+        return userDao;
     }
 
-    public UserDao getUserDao() {
-        return this.userDao;
-    }
-
-    public ServerInterface getServerService() {
+    public static ServerInterface getServerService() {
         return serverService;
     }
 
-    public boolean initConnection() {
-        if (registry == null) {
-            try {
-                this.registry = LocateRegistry.getRegistry(1234);
-                return true;
-            } catch (RemoteException e) {
-                e.printStackTrace();
-                return false;
-            }
-        } else {
-            System.out.println(">> RMI-Registry Connection Already Established...");
-            return true;
-        }
-    }
-
-    public void startConnection() {
+    public static boolean startConnection() {
         try {
-            announcementDao = (AnnouncementDao) this.registry.lookup("AnnouncementDao");
-            announcementDeliveryDao = (AnnouncementDeliveryDao) this.registry.lookup("AnnouncementDeliveryDao");
-            groupChatDao = (GroupChatDao) this.registry.lookup("GroupChatDao");
-            groupChatMessageDao = (GroupChatMessageDao) this.registry.lookup("GroupChatMessageDao");
-            groupContactDao = (GroupContactDao) this.registry.lookup("GroupContactDao");
-            groupDao = (GroupDao) this.registry.lookup("GroupDao");
-            membershipDao = (MembershipDao) this.registry.lookup("MembershipDao");
-            relationshipDao = (RelationshipDao) this.registry.lookup("RelationshipDao");
-            seenByStatusDao = (SeenByStatusDao) this.registry.lookup("SeenByStatusDao");
-            singleChatDao = (SingleChatDao) this.registry.lookup("SingleChatDao");
-            singleChatMessageDao = (SingleChatMessageDao) this.registry.lookup("SingleChatMessageDao");
-            userDao = (UserDao) this.registry.lookup("UserDao");
-            serverService = (ServerInterface) this.registry.lookup("ServerService");
-            System.out.println(">> RMI-Registry Services Bounded...");
-        } catch (RemoteException | NotBoundException e) {
+            if (registry == null) {
+                try {
+                    registry = LocateRegistry.getRegistry(1234);
+                    announcementDao = (AnnouncementDao) registry.lookup("AnnouncementDao");
+                    announcementDeliveryDao = (AnnouncementDeliveryDao) registry.lookup("AnnouncementDeliveryDao");
+                    groupChatDao = (GroupChatDao) registry.lookup("GroupChatDao");
+                    groupChatMessageDao = (GroupChatMessageDao) registry.lookup("GroupChatMessageDao");
+                    groupContactDao = (GroupContactDao) registry.lookup("GroupContactDao");
+                    groupDao = (GroupDao) registry.lookup("GroupDao");
+                    membershipDao = (MembershipDao) registry.lookup("MembershipDao");
+                    relationshipDao = (RelationshipDao) registry.lookup("RelationshipDao");
+                    seenByStatusDao = (SeenByStatusDao) registry.lookup("SeenByStatusDao");
+                    singleChatDao = (SingleChatDao) registry.lookup("SingleChatDao");
+                    singleChatMessageDao = (SingleChatMessageDao) registry.lookup("SingleChatMessageDao");
+                    userDao = (UserDao) registry.lookup("UserDao");
+                    serverService = (ServerInterface) registry.lookup("ServerService");
+                    System.out.println(">> RMI-Registry Services Bounded...");
+                    return true;
+                } catch (RemoteException e) {
+                    e.printStackTrace();
+                    return false;
+                }
+            } else {
+                System.out.println(">> RMI-Registry Connection Already Established...");
+                return true;
+            }
+        } catch (NotBoundException e) {
             e.printStackTrace();
         }
-    }
-
-    public void stopConnection() {
-        System.out.println(">> RMI-Registry Connection Already Closed");
+        return false;
     }
 
 }
