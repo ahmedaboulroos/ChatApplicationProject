@@ -1,7 +1,5 @@
 package eg.gov.iti.jets.models.entities;
 
-import javafx.scene.image.Image;
-
 import java.io.Serializable;
 import java.time.LocalDateTime;
 
@@ -10,7 +8,7 @@ public class GroupChat implements Serializable {
     private int groupChatId;
     private String title;
     private String description;
-    private Image groupImage;
+    private String groupImageEncodedString;
     private LocalDateTime creationTimestamp;
 
     public GroupChat(String title, String description) {
@@ -19,27 +17,19 @@ public class GroupChat implements Serializable {
         this.creationTimestamp = LocalDateTime.now();
     }
 
-    public GroupChat(String title, String description, Image groupImage) {
+    public GroupChat(String title, String description, String groupImageEncodedString) {
         this.title = title;
         this.description = description;
-        this.groupImage = groupImage;
-        this.creationTimestamp = LocalDateTime.now();
+        this.groupImageEncodedString = groupImageEncodedString;
     }
 
-    public GroupChat(String title, String description, Image groupImage, LocalDateTime creationTimestamp) {
+    public GroupChat(String title, String description, String groupImageEncodedString, LocalDateTime creationTimestamp) {
         this.title = title;
         this.description = description;
-        this.groupImage = groupImage;
+        this.groupImageEncodedString = groupImageEncodedString;
         this.creationTimestamp = creationTimestamp;
     }
 
-    public GroupChat(int groupChatId, String title, String description, Image groupImage, LocalDateTime creationTimestamp) {
-        this.groupChatId = groupChatId;
-        this.title = title;
-        this.description = description;
-        this.groupImage = groupImage;
-        this.creationTimestamp = creationTimestamp;
-    }
 
     public int getGroupChatId() {
         return groupChatId;
@@ -73,12 +63,12 @@ public class GroupChat implements Serializable {
         this.description = description;
     }
 
-    public Image getGroupImage() {
-        return groupImage;
+    public String getGroupImageEncodedString() {
+        return groupImageEncodedString;
     }
 
-    public void setGroupImage(Image groupImage) {
-        this.groupImage = groupImage;
+    public void setGroupImageEncodedString(String groupImageEncodedString) {
+        this.groupImageEncodedString = groupImageEncodedString;
     }
 
     @Override
@@ -87,7 +77,7 @@ public class GroupChat implements Serializable {
                 "groupChatId=" + groupChatId +
                 ", title='" + title + '\'' +
                 ", description='" + description + '\'' +
-                ", groupImage=" + groupImage +
+                ", groupImageEncodedString='" + groupImageEncodedString.length() + '\'' +
                 ", creationTimestamp=" + creationTimestamp +
                 '}';
     }

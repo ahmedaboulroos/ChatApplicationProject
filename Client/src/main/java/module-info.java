@@ -1,6 +1,7 @@
 module Client {
 
     requires java.rmi;
+    requires org.apache.commons.io;
 
     requires javafx.base;
     requires javafx.controls;
