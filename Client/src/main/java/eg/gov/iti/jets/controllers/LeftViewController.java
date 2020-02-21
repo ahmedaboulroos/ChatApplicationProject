@@ -16,9 +16,13 @@ import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
+import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.VBox;
+import javafx.scene.paint.Color;
+import javafx.scene.paint.ImagePattern;
+import javafx.scene.shape.Circle;
 import javafx.stage.Stage;
 
 import java.io.IOException;
@@ -52,6 +56,7 @@ public class LeftViewController implements Initializable {
     private Map<Integer, ObservableList<Node>> accordionLists = new HashMap<>();
 
     private ClientStageCoordinator clientStageCoordinator;
+    Circle imageCircle = new Circle();
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
@@ -156,22 +161,33 @@ public class LeftViewController implements Initializable {
             System.out.println(singleChats);
             if (singleChats != null) {
                 singleChatsLv.setItems(FXCollections.observableList(singleChats));
+                singleChatsLv.setCellFactory(singleChatsLv -> new ListCell<SingleChat>() {
 
-                ImageView imageview = new ImageView();
-                /*singleChatsLv.setCellFactory(param -> new ListCell<SingleChat>() {
-                    public void updateItem(SingleChat single, boolean empty) {
-                        super.updateItem(single, empty);
 
-                        setText(single.toString());
-                        Image imageForTasting = new Image("images/chat-circle-blue-512.png");
-                        imageview.setImage(imageForTasting);
-                        imageview.setFitHeight(20);
-                        imageview.setFitWidth(20);
+                    @Override
+                    public void updateItem(SingleChat item, boolean empty) {
+                        super.updateItem(item, empty);
+                        System.out.println(groupChatsLv.getFixedCellSize());
+                        System.out.println(groupChatsLv.getItems());
+                        //  for(int i =0;i<groupChatsLv.getItems().size();i++) {
+                        //  setText(groupChatsLv.getItems().get(i).getTitle());
+                        //for alaa you need to return image and name for userid 2 and set it in text
 
-                        setGraphic(imageview);
+                        if (item != null) {
+
+                            setText(singleChatsLv.getItems().get(0).toString());
+                            System.out.println(groupChatsLv.getFixedCellSize());
+                            System.out.println(groupChatsLv.getItems());
+                            Image imageForTasting = new Image("images/chat-circle-blue-512.png");
+
+                            imageCircle.setFill(new ImagePattern(imageForTasting));
+                            imageCircle.setRadius(20);
+                            imageCircle.setStroke(Color.GREEN);
+                            imageCircle.setStrokeWidth(3);
+                            setGraphic(imageCircle);
+                        }
                     }
-
-                });*/
+                });
             } else {
                 System.out.println("No Single chats for this user");
             }
@@ -194,20 +210,28 @@ public class LeftViewController implements Initializable {
         if (groupChats != null) {
             groupChatsLv.setItems(FXCollections.observableList(groupChats));
             System.out.println("55555555555555555");
-            ImageView imageview = new ImageView();
-            /*groupChatsLv.setCellFactory(param -> new ListCell<GroupChat>() {
-                public void updateItem(GroupChat group, boolean empty) {
-                    super.updateItem(group, empty);
+            groupChatsLv.setCellFactory(groupChatsLv -> new ListCell<GroupChat>() {
 
-                        setText(group.toString());
+                @Override
+                public void updateItem(GroupChat item, boolean empty) {
+                    super.updateItem(item, empty);
+
+                    //  for(int i =0;i<groupChatsLv.getItems().size();i++) {
+                    //  setText(groupChatsLv.getItems().get(i).getTitle());
+                    //for elnaggar you need to add image of user and handle the status of user ;
+                    if (item != null) {
+                        setText(groupChatsLv.getItems().get(0).getTitle());
+
                         Image imageForTasting = new Image("images/chat-circle-blue-512.png");
-                        imageview.setImage(imageForTasting);
-                        imageview.setFitHeight(20);
-                        imageview.setFitWidth(20);
 
-                        setGraphic(imageview);
+                        imageCircle.setFill(new ImagePattern(imageForTasting));
+                        imageCircle.setRadius(20);
+                        imageCircle.setStroke(Color.GREEN);
+                        imageCircle.setStrokeWidth(3);
+                        setGraphic(imageCircle);
                     }
-            });*/
+                }
+            });
         } else {
             System.out.println("No Group chats for this user");
         }
