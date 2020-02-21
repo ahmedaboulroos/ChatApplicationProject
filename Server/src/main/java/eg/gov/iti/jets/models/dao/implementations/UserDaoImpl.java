@@ -54,7 +54,7 @@ public class UserDaoImpl extends UnicastRemoteObject implements UserDao {
                     null : Date.valueOf(user.getBirthDate());
             String userGender = user.getUserGender() == null ?
                     null : user.getUserGender().toString();
-            //InputStream inputStream = getInputStreamFromImage(user.getProfileImage());
+            Blob profileImage = ImageUtiles.FromBytesToBlob(user.getProfileImage());
             String userStatus = user.getUserStatus() == null ?
                     null : user.getUserStatus().toString();
             String currentlyLoggedIn = user.isCurrentlyLoggedIn() ? "ONLINE" : "OFFLINE";
@@ -66,7 +66,7 @@ public class UserDaoImpl extends UnicastRemoteObject implements UserDao {
                         "insert into APP_USER (user_id, phone_number, username, " +
                                 "password, email, country, bio, birth_date, user_gender, " +
                                 "user_status, currently_logged_in)" +
-                                " values (?,?,?,?,?,?,?,?,?,?,?)");
+                                " values (?,?,?,?,?,?,?,?,?,?,?,?)");
                 preparedStatement.setInt(1, userId);
                 preparedStatement.setString(2, user.getPhoneNumber());
                 preparedStatement.setString(3, user.getUsername());
@@ -77,9 +77,9 @@ public class UserDaoImpl extends UnicastRemoteObject implements UserDao {
                 preparedStatement.setDate(8, birthDate);
                 preparedStatement.setString(9, userGender);
                 //TODO: handle sending images to database (convert to blob)
-                //preparedStatement.setBlob(10, null);
-                preparedStatement.setString(10, userStatus);
-                preparedStatement.setString(11, currentlyLoggedIn);
+                preparedStatement.setBlob(10, profileImage);
+                preparedStatement.setString(11, userStatus);
+                preparedStatement.setString(12, currentlyLoggedIn);
                 result = preparedStatement.executeUpdate();
             }
             resultSet.close();
@@ -340,9 +340,9 @@ public class UserDaoImpl extends UnicastRemoteObject implements UserDao {
                             " BIRTH_DATE = ?," +
                             " USER_GENDER = ?," +
                             " USER_STATUS = ?," +
-                            " CURRENTLY_LOGGED_IN = ?" +
+                            " CURRENTLY_LOGGED_IN = ?," +
                             //TODO: handle sending images to database (convert to blob)
-                            //", PROFILE_IMAGE = ?" +
+                            ", PROFILE_IMAGE = ?" +
                             " where USER_ID = " + user.getUserId());
             preparedStatement.setString(1, user.getPhoneNumber());
             preparedStatement.setString(2, user.getUsername());
@@ -354,8 +354,7 @@ public class UserDaoImpl extends UnicastRemoteObject implements UserDao {
             preparedStatement.setString(8, userGender);
             preparedStatement.setString(9, userStatus);
             preparedStatement.setString(10, currentlyLoggedIn);
-            /*preparedStatement.setBinaryStream(11, (InputStream) inputStream,
-                    (int)(inputStream.length()));*/
+            preparedStatement.setBlob(11, ImageUtiles.FromBytesToBlob(user.getProfileImage()));
             result = preparedStatement.executeUpdate();
             preparedStatement.close();
         } catch (SQLException e) {
@@ -420,21 +419,21 @@ public class UserDaoImpl extends UnicastRemoteObject implements UserDao {
     }
 
     private User getUserFromRecord(ResultSet resultSet) throws SQLException {
-        LocalDate birthDate = getLocalDateFromDate(resultSet.getDate(8));
-        UserGender userGender = getUserGenderFromString(resultSet.getString(9));
-        //UserGender userGender = UserGender.valueOf(resultSet.getString(9));
-        Image profileImage = getImageFromBlob(resultSet.getBlob(10));
-        UserStatus userStatus = getUserStatusFromString(resultSet.getString(11));
-        boolean currentlyLoggedIn = getCurrentlyLoggedInFromString(resultSet.getString(12));
-        return new User(resultSet.getInt(1),
-                resultSet.getString(2),
-                resultSet.getString(3),
-                resultSet.getString(4),
-                resultSet.getString(5),
-                resultSet.getString(6),
-                resultSet.getString(7),
+        LocalDate birthDate = getLocalDateFromDate(resultSet.getDate("birth_date"));
+        UserGender userGender = getUserGenderFromString(resultSet.getString("user_gender"));
+        byte[] profileImage = ImageUtiles.FromBlobToBytes(resultSet.getBlob("profile_image"));
+        UserStatus userStatus = getUserStatusFromString(resultSet.getString("user_status"));
+        boolean currentlyLoggedIn = getCurrentlyLoggedInFromString(resultSet.getString("currently_logged_in"));
+        return new User(resultSet.getInt("user_id"),
+                resultSet.getString("phone_number"),
+                resultSet.getString("username"),
+                resultSet.getString("password"),
+                resultSet.getString("email"),
+                resultSet.getString("country"),
+                resultSet.getString("bio"),
                 birthDate,
                 userGender,
+                //TODO: handle receiving images from database (convert to image)
                 profileImage,
                 userStatus,
                 currentlyLoggedIn);
@@ -454,21 +453,6 @@ public class UserDaoImpl extends UnicastRemoteObject implements UserDao {
 
     private boolean getCurrentlyLoggedInFromString(String string) {
         return string != null && string.equals("Online");
-    }
-
-    private Image getImageFromBlob(Blob blob) {
-        if (blob != null) {
-            try {
-                InputStream in = blob.getBinaryStream();
-                BufferedImage bufferedImage = ImageIO.read(in);
-                Image image = SwingFXUtils.toFXImage(bufferedImage, null);
-            } catch (SQLException e) {
-                e.printStackTrace();
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
-        }
-        return null;
     }
 
     private List<Relationship> getRelationshipsFromResultSet(ResultSet resultSet) throws SQLException {
