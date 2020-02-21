@@ -1,23 +1,38 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <?import com.jfoenix.controls.JFXButton?>
+<?import javafx.geometry.Insets?>
 <?import javafx.scene.control.ListView?>
-<?import javafx.scene.layout.BorderPane?>
-<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.layout.*?>
 <?import javafx.scene.web.HTMLEditor?>
-<BorderPane xmlns:fx="http://javafx.com/fxml/1" prefWidth="600.0" xmlns="http://javafx.com/javafx/11.0.1"
+<?import org.kordamp.ikonli.javafx.FontIcon?>
+<BorderPane xmlns:fx="http://javafx.com/fxml/1" prefHeight="600.0" prefWidth="600.0"
+            xmlns="http://javafx.com/javafx/11.0.1"
             fx:controller="eg.gov.iti.jets.controllers.SingleChatViewController">
     <center>
-        <ListView fx:id="singleChatMessagesLv" prefHeight="200.0" prefWidth="200.0" BorderPane.alignment="CENTER"/>
+        <ListView fx:id="singleChatMessagesLv" prefHeight="200.0" prefWidth="600.0" styleClass="chat-panel"
+                  stylesheets="@../styles/centerStyle.css" BorderPane.alignment="CENTER"/>
     </center>
     <bottom>
-        <VBox alignment="TOP_RIGHT" spacing="10.0" BorderPane.alignment="CENTER">
+        <VBox alignment="TOP_RIGHT" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity"
+              minWidth="-Infinity" prefHeight="250.0" prefWidth="600.0" spacing="10.0" BorderPane.alignment="CENTER">
             <children>
-                <JFXButton onAction="#handleSendBtn" style="-fx-background-color: lightblue;" text="Send"/>
+                <JFXButton alignment="CENTER" contentDisplay="RIGHT" onAction="#handleSendBtn" prefHeight="20.0"
+                           prefWidth="30.0" styleClass="main-btns" stylesheets="@../styles/centerStyle.css" text="Send"
+                           textAlignment="CENTER">
+                    <graphic>
+                        <FontIcon iconLiteral="zondi-send" iconSize="20" styleClass="icons"
+                                  wrappingWidth="28.000003814697266"/>
+                    </graphic>
+                    <VBox.margin>
+                        <Insets right="5.0" top="5.0"/>
+                    </VBox.margin>
+                </JFXButton>
                 <HTMLEditor fx:id="singleChatMessageHtml"
                             htmlText="&lt;html&gt;&lt;head&gt;&lt;/head&gt;&lt;body contenteditable=&quot;true&quot;&gt;&lt;/body&gt;&lt;/html&gt;"
-                            prefHeight="200.0" prefWidth="506.0"/>
-         </children>
+                            maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity"
+                            prefHeight="200.0" prefWidth="600.0"/>
+            </children>
       </VBox>
    </bottom>
 </BorderPane>

@@ -14,4 +14,8 @@ public class UserDto {
     public String getUsername() {
         return username;
     }
+
+    public Image getProfileImage() {
+        return profileImage;
+    }
 }
