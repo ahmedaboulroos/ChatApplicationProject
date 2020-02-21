@@ -1,6 +1,7 @@
 package eg.gov.iti.jets.controllers;
 
 import eg.gov.iti.jets.models.dto.GroupDto;
+import eg.gov.iti.jets.models.dto.UserDto;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
@@ -31,6 +32,7 @@ public class ChatAppViewController implements Initializable {
 
     LeftViewController leftViewController;
     CenterViewController centerViewController;
+
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
@@ -67,8 +69,24 @@ public class ChatAppViewController implements Initializable {
         leftViewController.addNewGroup(groupDto);
     }
 
+    public void displayRelationship(UserDto user) {
+        leftViewController.addContact(user);
+
+
+    }
+
     public void displayMsg(String hi_hi) {
         System.out.println(hi_hi);
+    }
+
+    public void loggedIn(UserDto user) {
+        leftViewController.addLoggedIn(user);
+    }
+
+    public void loggedOut(UserDto user) {
+
+        leftViewController.removeLoggedOut(user);
+
     }
 
 /*
