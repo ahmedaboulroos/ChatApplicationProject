@@ -1,35 +1,45 @@
 package eg.gov.iti.jets.models.entities;
 
 import java.io.Serializable;
-import java.time.LocalDateTime;
+import java.sql.Timestamp;
 
 public class GroupChat implements Serializable {
     private static final long serialVersionUID = 3529985099267957690L;
     private int groupChatId;
     private String title;
     private String description;
-    private String groupImageEncodedString;
-    private LocalDateTime creationTimestamp;
+    private byte[] groupImageBytes;
+    private Timestamp creationTimestamp;
+
 
     public GroupChat(String title, String description) {
         this.title = title;
         this.description = description;
-        this.creationTimestamp = LocalDateTime.now();
+        this.creationTimestamp = new Timestamp(System.currentTimeMillis());
     }
 
-    public GroupChat(String title, String description, String groupImageEncodedString) {
+    public GroupChat(String title, String description, byte[] groupImageBytes) {
         this.title = title;
         this.description = description;
-        this.groupImageEncodedString = groupImageEncodedString;
+        this.groupImageBytes = groupImageBytes;
+        this.creationTimestamp = new Timestamp(System.currentTimeMillis());
     }
 
-    public GroupChat(String title, String description, String groupImageEncodedString, LocalDateTime creationTimestamp) {
+
+    public GroupChat(String title, String description, byte[] groupImageBytes, Timestamp creationTimestamp) {
         this.title = title;
         this.description = description;
-        this.groupImageEncodedString = groupImageEncodedString;
+        this.groupImageBytes = groupImageBytes;
         this.creationTimestamp = creationTimestamp;
     }
 
+    public GroupChat(int groupChatId, String title, String description, byte[] groupImageBytes, Timestamp creationTimestamp) {
+        this.groupChatId = groupChatId;
+        this.title = title;
+        this.description = description;
+        this.groupImageBytes = groupImageBytes;
+        this.creationTimestamp = creationTimestamp;
+    }
 
     public int getGroupChatId() {
         return groupChatId;
@@ -47,11 +57,11 @@ public class GroupChat implements Serializable {
         this.title = title;
     }
 
-    public LocalDateTime getCreationTimestamp() {
+    public Timestamp getCreationTimestamp() {
         return creationTimestamp;
     }
 
-    public void setCreationTimestamp(LocalDateTime creationTimestamp) {
+    public void setCreationTimestamp(Timestamp creationTimestamp) {
         this.creationTimestamp = creationTimestamp;
     }
 
@@ -63,12 +73,12 @@ public class GroupChat implements Serializable {
         this.description = description;
     }
 
-    public String getGroupImageEncodedString() {
-        return groupImageEncodedString;
+    public byte[] getGroupImageBytes() {
+        return groupImageBytes;
     }
 
-    public void setGroupImageEncodedString(String groupImageEncodedString) {
-        this.groupImageEncodedString = groupImageEncodedString;
+    public void setGroupImageBytes(byte[] groupImageBytes) {
+        this.groupImageBytes = groupImageBytes;
     }
 
     @Override
@@ -77,7 +87,7 @@ public class GroupChat implements Serializable {
                 "groupChatId=" + groupChatId +
                 ", title='" + title + '\'' +
                 ", description='" + description + '\'' +
-                ", groupImageEncodedString='" + groupImageEncodedString.length() + '\'' +
+                ", groupImageEncodedString=" + groupImageBytes.length +
                 ", creationTimestamp=" + creationTimestamp +
                 '}';
     }
