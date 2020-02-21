@@ -3,16 +3,10 @@ package eg.gov.iti.jets.models.network.implementations;
 
 import eg.gov.iti.jets.controllers.ChatAppViewController;
 import eg.gov.iti.jets.controllers.SingleChatViewController;
-import eg.gov.iti.jets.models.dao.interfaces.GroupContactDao;
-import eg.gov.iti.jets.models.dao.interfaces.GroupDao;
-import eg.gov.iti.jets.models.dao.interfaces.SingleChatMessageDao;
-import eg.gov.iti.jets.models.dao.interfaces.UserDao;
+import eg.gov.iti.jets.models.dao.interfaces.*;
 import eg.gov.iti.jets.models.dto.GroupDto;
 import eg.gov.iti.jets.models.dto.UserDto;
-import eg.gov.iti.jets.models.entities.Group;
-import eg.gov.iti.jets.models.entities.GroupContact;
-import eg.gov.iti.jets.models.entities.SingleChatMessage;
-import eg.gov.iti.jets.models.entities.User;
+import eg.gov.iti.jets.models.entities.*;
 import eg.gov.iti.jets.models.network.RMIConnection;
 import eg.gov.iti.jets.models.network.interfaces.ClientInterface;
 
@@ -24,12 +18,15 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 public class ClientService extends UnicastRemoteObject implements ClientInterface {
+    private User currentUser;
     private ChatAppViewController chatAppViewController;
     private SingleChatViewController singleChatViewController = SingleChatViewController.getInstance();
     private GroupDao groupDao = RMIConnection.getGroupDao();
+    private RelationshipDao relationshipDao = RMIConnection.getRelationshipDao();
     private GroupContactDao groupContactDao = RMIConnection.getGroupContactDao();
     private UserDao userDao = RMIConnection.getUserDao();
     private SingleChatMessageDao singleChatMessageDao = RMIConnection.getSingleChatMessageDao();
+
     public ClientService() throws RemoteException {
     }
 
@@ -52,19 +49,27 @@ public class ClientService extends UnicastRemoteObject implements ClientInterfac
         super(port, csf, ssf);
     }
 
-    public ClientService(ChatAppViewController chatAppViewController) throws RemoteException {
+    public ClientService(ChatAppViewController chatAppViewController, User currentUser) throws RemoteException {
         super();
         this.chatAppViewController = chatAppViewController;
+        this.currentUser = currentUser;
     }
 
     @Override
     public void userLoggedIn(int userId) throws RemoteException {
 
+
+        User user = userDao.getUser(userId);
+        UserDto userDto = new UserDto(getDisplayUsername(user), user.getProfileImage());
+        chatAppViewController.loggedIn(userDto);
     }
+
 
     @Override
     public void userLoggedOut(int userId) throws RemoteException {
-
+        User user = userDao.getUser(userId);
+        UserDto userDto = new UserDto(getDisplayUsername(user), user.getProfileImage());
+        chatAppViewController.loggedOut(userDto);
     }
 
     @Override
@@ -101,7 +106,18 @@ public class ClientService extends UnicastRemoteObject implements ClientInterfac
 
     @Override
     public void receiveRelationship(int relationshipId) throws RemoteException {
+        Relationship relationship = relationshipDao.getRelationship(relationshipId);
+        List<User> userList = relationshipDao.getRelationshipTwoUsers(relationshipId);
 
+        User user;
+        if (currentUser.getUserId() == relationship.getFirstUserId()) {
+            user = userList.get(1);
+        } else {
+            user = userList.get(0);
+        }
+
+        UserDto userDto = new UserDto(getDisplayUsername(user), user.getProfileImage());
+        chatAppViewController.displayRelationship(userDto);
     }
 
     @Override
