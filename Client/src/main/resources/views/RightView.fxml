@@ -1,11 +1,12 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-
-<?import javafx.scene.control.Label?>
+<?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.layout.BorderPane?>
 <BorderPane xmlns:fx="http://javafx.com/fxml/1" xmlns="http://javafx.com/javafx/11.0.1"
             fx:controller="eg.gov.iti.jets.controllers.RightViewController">
-    <center>
-        <Label text="right hena" BorderPane.alignment="CENTER"/>
-    </center>
+   <center>
+      <AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity"
+                  prefHeight="600.0" prefWidth="300.0" styleClass="chat-panel" stylesheets="@../styles/centerStyle.css"
+                  BorderPane.alignment="CENTER"/>
+   </center>
 </BorderPane>

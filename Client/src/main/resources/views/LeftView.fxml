@@ -4,6 +4,7 @@
 <?import javafx.geometry.*?>
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
+<?import org.kordamp.ikonli.javafx.FontIcon?>
 <BorderPane xmlns:fx="http://javafx.com/fxml/1" prefHeight="600.0" prefWidth="275.0"
             xmlns="http://javafx.com/javafx/11.0.1" fx:controller="eg.gov.iti.jets.controllers.LeftViewController">
     <center>
@@ -65,6 +66,27 @@
                     <content>
                         <VBox>
                             <children>
+                                <HBox alignment="CENTER_RIGHT">
+                                    <children>
+                                        <JFXButton fx:id="handleNewSingleChat" alignment="CENTER"
+                                                   contentDisplay="CENTER" maxHeight="-Infinity" maxWidth="-Infinity"
+                                                   minHeight="-Infinity" minWidth="-Infinity"
+                                                   onAction="#handleAddGroupChat" prefHeight="30.0" prefWidth="30.0"
+                                                   styleClass="main-btns" stylesheets="@../styles/centerStyle.css"
+                                                   text="Add Group Chat">
+                                            <graphic>
+                                                <FontIcon iconLiteral="zondi-add-outline" iconSize="20"
+                                                          styleClass="icons"/>
+                                            </graphic>
+                                            <HBox.margin>
+                                                <Insets right="5.0"/>
+                                            </HBox.margin>
+                                            <tooltip>
+                                                <Tooltip text="Add New Chat"/>
+                                            </tooltip>
+                                        </JFXButton>
+                                    </children>
+                                </HBox>
                                 <ListView fx:id="singleChatsLv" onMouseClicked="#handleSingleChatSelection"
                                           VBox.vgrow="ALWAYS">
                                     <padding>
