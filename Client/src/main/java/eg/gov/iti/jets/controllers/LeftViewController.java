@@ -3,6 +3,7 @@ package eg.gov.iti.jets.controllers;
 import eg.gov.iti.jets.models.dao.interfaces.GroupDao;
 import eg.gov.iti.jets.models.dao.interfaces.UserDao;
 import eg.gov.iti.jets.models.dto.GroupDto;
+import eg.gov.iti.jets.models.dto.UserDto;
 import eg.gov.iti.jets.models.entities.*;
 import eg.gov.iti.jets.models.entities.enums.RelationshipStatus;
 import eg.gov.iti.jets.models.network.RMIConnection;
@@ -17,7 +18,6 @@ import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.image.Image;
-import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
@@ -118,6 +118,8 @@ public class LeftViewController implements Initializable {
         return groupUserNames;
     }
 
+    List<Integer> friendIds;
+
     private void loadContacts() {
         User user = clientStageCoordinator.currentUser;
         int userId = user.getUserId();
@@ -126,7 +128,8 @@ public class LeftViewController implements Initializable {
             if (userRelationships != null) {
                 TitledPane allContactsTPane = new TitledPane();
                 allContactsTPane.setText("All Contacts");
-                List<Integer> friendIds = new ArrayList<>();
+                //  List<Integer> friendIds = new ArrayList<>();
+                friendIds = new ArrayList<>();
                 for (Relationship r : userRelationships) {
                     if (r.getRelationshipStatus() == RelationshipStatus.ACCEPTED) {
                         int id = r.getFirstUserId();
@@ -321,4 +324,17 @@ public class LeftViewController implements Initializable {
         groupDto.getUsers().forEach(userDto -> titledPane.getChildrenUnmodifiable().add(new Label(userDto.getUsername())));
         groupsAccordion.getPanes().add(titledPane);
     }
+
+    public void addContact(UserDto user) {
+        System.out.println(user);
+    }
+
+    public void addLoggedIn(UserDto user) {
+        System.out.println(user);
+    }
+
+    public void removeLoggedOut(UserDto user) {
+        System.out.println(user);
+    }
 }
+
