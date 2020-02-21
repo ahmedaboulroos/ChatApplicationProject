@@ -38,7 +38,7 @@ public class ClientStageCoordinator {
         Parent mainChatAppView = fxmlLoader.load();
         ServerInterface serverService = RMIConnection.getServerService();
         chatAppViewController = fxmlLoader.getController();
-        ClientInterface clientService = new ClientService(chatAppViewController);
+        ClientInterface clientService = new ClientService(chatAppViewController, currentUser);
         serverService.login(currentUser.getUserId(), clientService);
 
         this.stage.setScene(new Scene(mainChatAppView));
