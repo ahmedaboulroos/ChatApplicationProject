@@ -6,15 +6,10 @@ import eg.gov.iti.jets.models.entities.GroupChat;
 import eg.gov.iti.jets.models.entities.GroupChatMessage;
 import eg.gov.iti.jets.models.entities.Membership;
 import eg.gov.iti.jets.models.entities.User;
+import eg.gov.iti.jets.models.imageutiles.ImageUtiles;
 import eg.gov.iti.jets.models.persistence.DBConnection;
-import javafx.embed.swing.SwingFXUtils;
-import javafx.scene.image.Image;
 
-import javax.imageio.ImageIO;
-import java.awt.image.BufferedImage;
 import java.io.ByteArrayInputStream;
-import java.io.ByteArrayOutputStream;
-import java.io.IOException;
 import java.io.InputStream;
 import java.rmi.RemoteException;
 import java.rmi.server.UnicastRemoteObject;
@@ -44,23 +39,29 @@ public class GroupChatDaoImpl extends UnicastRemoteObject implements GroupChatDa
 
     @Override
     public boolean createGroupChat(GroupChat groupChat) {
+
         boolean b = false;
         PreparedStatement stmt = null;
         try {
+//            BLOB blob = BLOB.createTemporary(connection, false, BLOB.DURATION_SESSION);
+//            blob.setBytes();
             String sql = "INSERT INTO group_chat (group_chat_id, title, description,group_image,creation_timestamp) VALUES (SEQ_GROUP_CHAT_ID.nextval,?,?,?,?)";
             stmt = connection.prepareStatement(sql);
             stmt.setString(1, groupChat.getTitle());
             stmt.setString(2, groupChat.getDescription());
-            ByteArrayOutputStream os = new ByteArrayOutputStream();
-            BufferedImage bImage = SwingFXUtils.fromFXImage(groupChat.getGroupImage(), null);
-            ImageIO.write(bImage, "png", os);
-            InputStream fis = new ByteArrayInputStream(os.toByteArray());
-            stmt.setBlob(3, fis);
-            stmt.setTimestamp(4, Timestamp.valueOf(groupChat.getCreationTimestamp()));
+
+            System.out.println(groupChat.getGroupImageBytes());
+            System.out.println(groupChat.getGroupImageBytes().length);
+            InputStream in = new ByteArrayInputStream(groupChat.getGroupImageBytes());
+            stmt.setBinaryStream(3, in, groupChat.getGroupImageBytes().length);
+
+            // stmt.setBlob(3, ImageUtiles.FromBytesToBlob(groupChat.getGroupImageBytes()));
+            stmt.setTimestamp(4, groupChat.getCreationTimestamp());
+
             if (stmt.executeUpdate() != 0) {
                 b = true;
             }
-        } catch (SQLException | IOException e) {
+        } catch (SQLException e) {
             e.printStackTrace();
         } finally {
             try {
@@ -78,12 +79,8 @@ public class GroupChatDaoImpl extends UnicastRemoteObject implements GroupChatDa
         int id = 0;
         String tilte = null;
         String description = null;
-        Image group_image;
-        LocalDateTime creation_time_stamp;
         Timestamp timestamp = null;
-        InputStream in;
         Blob blob = null;
-        BufferedImage imagen;
         GroupChat groupChat = null;
         PreparedStatement stmt = null;
         try {
@@ -98,17 +95,13 @@ public class GroupChatDaoImpl extends UnicastRemoteObject implements GroupChatDa
                 blob = rs.getBlob("group_image");
                 timestamp = rs.getTimestamp("creation_timestamp");
             }
-            in = blob.getBinaryStream();
-            imagen = ImageIO.read(in);
-            group_image = SwingFXUtils.toFXImage(imagen, null);
-            creation_time_stamp = timestamp.toLocalDateTime();
-            groupChat = new GroupChat(id, tilte, description, group_image, creation_time_stamp);
+            byte[] imageAsBytes = ImageUtiles.fromBlobToBytes(blob);
+
+            groupChat = new GroupChat(id, tilte, description, imageAsBytes, timestamp);
 
         } catch (SQLException e) {
             e.printStackTrace();
 
-        } catch (IOException e) {
-            e.printStackTrace();
         } finally {
 
             try {
@@ -201,19 +194,13 @@ public class GroupChatDaoImpl extends UnicastRemoteObject implements GroupChatDa
             stmt = connection.prepareStatement(sql);
             stmt.setString(1, groupChat.getTitle());
             stmt.setString(2, groupChat.getDescription());
-            ByteArrayOutputStream os = new ByteArrayOutputStream();
-            BufferedImage bImage = SwingFXUtils.fromFXImage(groupChat.getGroupImage(), null);
-            ImageIO.write(bImage, "png", os);
-            InputStream fis = new ByteArrayInputStream(os.toByteArray());
-            stmt.setBlob(3, fis);
-            stmt.setTimestamp(4, Timestamp.valueOf(groupChat.getCreationTimestamp()));
+            stmt.setBlob(3, ImageUtiles.fromBytesToBlob(groupChat.getGroupImageBytes()));
+            stmt.setTimestamp(4, groupChat.getCreationTimestamp());
             stmt.setInt(5, groupChat.getGroupChatId());
             if (stmt.executeUpdate() != 0) {
                 b = true;
             }
         } catch (SQLException e) {
-            e.printStackTrace();
-        } catch (IOException e) {
             e.printStackTrace();
         } finally {
             try {

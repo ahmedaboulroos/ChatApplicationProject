@@ -1,6 +1,7 @@
 module Client {
 
     requires java.rmi;
+    requires org.apache.commons.io;
 
     requires javafx.base;
     requires javafx.controls;
@@ -18,6 +19,8 @@ module Client {
     requires org.kordamp.ikonli.materialdesign;
     requires org.kordamp.ikonli.fontawesome;
     requires org.kordamp.ikonli.fontawesome5;
+    requires java.sql;
+    requires java.sql.rowset;
 
     opens eg.gov.iti.jets;
     opens eg.gov.iti.jets.controllers;
