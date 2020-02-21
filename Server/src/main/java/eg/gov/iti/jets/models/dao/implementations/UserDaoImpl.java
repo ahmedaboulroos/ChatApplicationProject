@@ -236,8 +236,7 @@ public class UserDaoImpl extends UnicastRemoteObject implements UserDao {
         int id = 0;
         String tilte = null;
         String description = null;
-        String group_image;
-        LocalDateTime creation_time_stamp;
+        byte[] group_image;
         Timestamp timestamp = null;
         InputStream in;
         Blob blob = null;
@@ -257,15 +256,11 @@ public class UserDaoImpl extends UnicastRemoteObject implements UserDao {
                     timestamp = rs.getTimestamp("creation_timestamp");
                 }
                 if (blob != null) {
-                    group_image = ImageUtiles.FromBlobToString(blob);
+                    group_image = ImageUtiles.FromBlobToBytes(blob);
                 } else
                     group_image = null;
 
-                if (timestamp != null) {
-                    creation_time_stamp = timestamp.toLocalDateTime();
-                } else
-                    creation_time_stamp = null;
-                groupChatList.add(new GroupChat(id, tilte, description, group_image, creation_time_stamp));
+                groupChatList.add(new GroupChat(id, tilte, description, group_image, timestamp));
             } catch (SQLException e) {
                 e.printStackTrace();
             }
