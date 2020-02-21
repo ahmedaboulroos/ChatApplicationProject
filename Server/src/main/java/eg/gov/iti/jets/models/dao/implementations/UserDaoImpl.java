@@ -54,7 +54,7 @@ public class UserDaoImpl extends UnicastRemoteObject implements UserDao {
                     null : Date.valueOf(user.getBirthDate());
             String userGender = user.getUserGender() == null ?
                     null : user.getUserGender().toString();
-            Blob profileImage = ImageUtiles.FromBytesToBlob(user.getProfileImage());
+            Blob profileImage = ImageUtiles.fromBytesToBlob(user.getProfileImage());
             String userStatus = user.getUserStatus() == null ?
                     null : user.getUserStatus().toString();
             String currentlyLoggedIn = user.isCurrentlyLoggedIn() ? "ONLINE" : "OFFLINE";
@@ -256,7 +256,7 @@ public class UserDaoImpl extends UnicastRemoteObject implements UserDao {
                     timestamp = rs.getTimestamp("creation_timestamp");
                 }
                 if (blob != null) {
-                    group_image = ImageUtiles.FromBlobToBytes(blob);
+                    group_image = ImageUtiles.fromBlobToBytes(blob);
                 } else
                     group_image = null;
 
@@ -354,7 +354,7 @@ public class UserDaoImpl extends UnicastRemoteObject implements UserDao {
             preparedStatement.setString(8, userGender);
             preparedStatement.setString(9, userStatus);
             preparedStatement.setString(10, currentlyLoggedIn);
-            preparedStatement.setBlob(11, ImageUtiles.FromBytesToBlob(user.getProfileImage()));
+            preparedStatement.setBlob(11, ImageUtiles.fromBytesToBlob(user.getProfileImage()));
             result = preparedStatement.executeUpdate();
             preparedStatement.close();
         } catch (SQLException e) {
@@ -421,7 +421,7 @@ public class UserDaoImpl extends UnicastRemoteObject implements UserDao {
     private User getUserFromRecord(ResultSet resultSet) throws SQLException {
         LocalDate birthDate = getLocalDateFromDate(resultSet.getDate("birth_date"));
         UserGender userGender = getUserGenderFromString(resultSet.getString("user_gender"));
-        byte[] profileImage = ImageUtiles.FromBlobToBytes(resultSet.getBlob("profile_image"));
+        byte[] profileImage = ImageUtiles.fromBlobToBytes(resultSet.getBlob("profile_image"));
         UserStatus userStatus = getUserStatusFromString(resultSet.getString("user_status"));
         boolean currentlyLoggedIn = getCurrentlyLoggedInFromString(resultSet.getString("currently_logged_in"));
         return new User(resultSet.getInt("user_id"),

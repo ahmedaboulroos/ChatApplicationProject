@@ -95,7 +95,7 @@ public class GroupChatDaoImpl extends UnicastRemoteObject implements GroupChatDa
                 blob = rs.getBlob("group_image");
                 timestamp = rs.getTimestamp("creation_timestamp");
             }
-            byte[] imageAsBytes = ImageUtiles.FromBlobToBytes(blob);
+            byte[] imageAsBytes = ImageUtiles.fromBlobToBytes(blob);
 
             groupChat = new GroupChat(id, tilte, description, imageAsBytes, timestamp);
 
@@ -194,7 +194,7 @@ public class GroupChatDaoImpl extends UnicastRemoteObject implements GroupChatDa
             stmt = connection.prepareStatement(sql);
             stmt.setString(1, groupChat.getTitle());
             stmt.setString(2, groupChat.getDescription());
-            stmt.setBlob(3, ImageUtiles.FromBytesToBlob(groupChat.getGroupImageBytes()));
+            stmt.setBlob(3, ImageUtiles.fromBytesToBlob(groupChat.getGroupImageBytes()));
             stmt.setTimestamp(4, groupChat.getCreationTimestamp());
             stmt.setInt(5, groupChat.getGroupChatId());
             if (stmt.executeUpdate() != 0) {

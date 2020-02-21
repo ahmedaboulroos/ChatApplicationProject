@@ -20,6 +20,7 @@ module Client {
     requires org.kordamp.ikonli.fontawesome;
     requires org.kordamp.ikonli.fontawesome5;
     requires java.sql;
+    requires java.sql.rowset;
 
     opens eg.gov.iti.jets;
     opens eg.gov.iti.jets.controllers;

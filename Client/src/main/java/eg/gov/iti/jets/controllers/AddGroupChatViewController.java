@@ -33,8 +33,8 @@ public class AddGroupChatViewController {
     @FXML
     void handleCreateGroupChat(ActionEvent event) {
         try {
-            GroupChat groupChat = new GroupChat(titleTf.getText(), descriptionTf.getText(), ImageUtiles.convertImageToBytes(file.getAbsolutePath()));
-            System.out.println(ImageUtiles.convertImageToBytes(file.getAbsolutePath()));
+            GroupChat groupChat = new GroupChat(titleTf.getText(), descriptionTf.getText(), ImageUtiles.fromImageToBytes(file.getAbsolutePath()));
+            System.out.println(ImageUtiles.fromImageToBytes(file.getAbsolutePath()));
             System.out.println("55555555555555555555555");
             System.out.println(groupChat.getCreationTimestamp());
             groupChatDao.createGroupChat(groupChat);
