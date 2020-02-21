@@ -1,0 +1,27 @@
+.parent {
+    -fx-background-color: #e8e8e8;
+}
+
+.chat-panel {
+    -fx-background-color: #e8e8e8;
+}
+
+.main-btns {
+    -fx-background-color: transparent;
+    -fx-background-radius: 0px;
+    -fx-text-fill: transparent;
+}
+
+.icons {
+    -fx-fill: #145374;
+}
+
+.main-btns:hover {
+    -fx-background-color: transparent;
+    -fx-background-radius: 0px;
+    -fx-border-color: #00334E;
+    -fx-border-width: 0px 0px 3px 0px;
+    -fx-border-radius: 0px;
+    -fx-text-fill: transparent;
+
+}
