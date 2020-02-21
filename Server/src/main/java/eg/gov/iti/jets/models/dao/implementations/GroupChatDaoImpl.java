@@ -6,6 +6,8 @@ import eg.gov.iti.jets.models.entities.GroupChat;
 import eg.gov.iti.jets.models.entities.GroupChatMessage;
 import eg.gov.iti.jets.models.entities.Membership;
 import eg.gov.iti.jets.models.entities.User;
+import eg.gov.iti.jets.models.entities.enums.UserGender;
+import eg.gov.iti.jets.models.entities.enums.UserStatus;
 import eg.gov.iti.jets.models.imageutiles.ImageUtiles;
 import eg.gov.iti.jets.models.persistence.DBConnection;
 
@@ -14,6 +16,7 @@ import java.io.InputStream;
 import java.rmi.RemoteException;
 import java.rmi.server.UnicastRemoteObject;
 import java.sql.*;
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
@@ -153,8 +156,25 @@ public class GroupChatDaoImpl extends UnicastRemoteObject implements GroupChatDa
 
     @Override
     public List<User> getGroupChatUsers(int groupChatId) {
-        return null;
-    }//m4 fahma
+        List<Membership> membershipList = getGroupChatMemberships(groupChatId);
+        List<User> userList = new ArrayList<>();
+        String sql = null;
+        ResultSet resultSet = null;
+        PreparedStatement stmt = null;
+        for (int i = 0; i < membershipList.size(); i++) {
+            sql = "USER_ID, PHONE_NUMBER, USERNAME, PASSWORD, EMAIL, COUNTRY, BIO, BIRTH_DATE, USER_GENDER, PROFILE_IMAGE, USER_STATUS, CURRENTLY_LOGGED_IN from APP_USER where USER_ID=?";
+            int userId = membershipList.get(i).getUserId();
+            try (PreparedStatement preparedStatement = stmt = connection.prepareStatement(sql)) {
+                stmt.setInt(1, userId);
+                resultSet = stmt.executeQuery();
+                User user = getUserFromResultSet(resultSet);
+                userList.add(user);
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
+        }
+        return userList;
+    }
 
     @Override
     public List<GroupChatMessage> getGroupChatMessages(int groupChatId) {
@@ -236,6 +256,51 @@ public class GroupChatDaoImpl extends UnicastRemoteObject implements GroupChatDa
         }
 
         return b;
+    }
+
+    private User getUserFromResultSet(ResultSet resultSet) throws SQLException {
+        User user = null;
+        if (resultSet.next()) {
+            user = getUserFromRecord(resultSet);
+        }
+        return user;
+    }
+
+    private User getUserFromRecord(ResultSet resultSet) throws SQLException {
+        LocalDate birthDate = getLocalDateFromDate(resultSet.getDate("birth_date"));
+        UserGender userGender = getUserGenderFromString(resultSet.getString("user_gender"));
+        byte[] profileImage = ImageUtiles.fromBlobToBytes(resultSet.getBlob("profile_image"));
+        UserStatus userStatus = getUserStatusFromString(resultSet.getString("user_status"));
+        boolean currentlyLoggedIn = getCurrentlyLoggedInFromString(resultSet.getString("currently_logged_in"));
+        return new User(resultSet.getInt("user_id"),
+                resultSet.getString("phone_number"),
+                resultSet.getString("username"),
+                resultSet.getString("password"),
+                resultSet.getString("email"),
+                resultSet.getString("country"),
+                resultSet.getString("bio"),
+                birthDate,
+                userGender,
+                //TODO: handle receiving images from database (convert to image)
+                profileImage,
+                userStatus,
+                currentlyLoggedIn);
+    }
+
+    private UserStatus getUserStatusFromString(String string) {
+        return string == null ? null : UserStatus.valueOf(string);
+    }
+
+    private UserGender getUserGenderFromString(String string) {
+        return string == null ? null : UserGender.valueOf(string);
+    }
+
+    private LocalDate getLocalDateFromDate(Date date) {
+        return date == null ? null : date.toLocalDate();
+    }
+
+    private boolean getCurrentlyLoggedInFromString(String string) {
+        return string != null && string.equals("Online");
     }
 
 }
