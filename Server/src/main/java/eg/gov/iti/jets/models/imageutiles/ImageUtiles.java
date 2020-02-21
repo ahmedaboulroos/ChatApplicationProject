@@ -8,9 +8,10 @@ import java.sql.SQLException;
 import java.util.Base64;
 
 public class ImageUtiles {
-    public static Blob FromStringToBlob(String imageEncodedString) {
+
+    public static Blob FromBytesToBlob(byte[] bytesArr) {
+
         Blob blob = null;
-        byte[] bytesArr = imageEncodedString.getBytes();
         try {
             blob = new javax.sql.rowset.serial.SerialBlob(bytesArr);
         } catch (SQLException e) {
@@ -20,7 +21,7 @@ public class ImageUtiles {
 
     }
 
-    public static String FromBlobToString(Blob blob) {
+    public static byte[] FromBlobToBytes(Blob blob) {
         int blobLength;
         byte[] blobAsBytes = new byte[0];
         try {
@@ -29,7 +30,7 @@ public class ImageUtiles {
         } catch (SQLException e) {
             e.printStackTrace();
         }
-        return new String(blobAsBytes);
+        return blobAsBytes;
 
     }
 
