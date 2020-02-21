@@ -1,9 +1,12 @@
 package eg.gov.iti.jets.models.dao.implementations;
 
 import eg.gov.iti.jets.models.dao.interfaces.RelationshipDao;
+import eg.gov.iti.jets.models.dao.interfaces.UserDao;
 import eg.gov.iti.jets.models.entities.Relationship;
 import eg.gov.iti.jets.models.entities.User;
 import eg.gov.iti.jets.models.entities.enums.RelationshipStatus;
+import eg.gov.iti.jets.models.network.implementations.ServerService;
+import eg.gov.iti.jets.models.network.interfaces.ClientInterface;
 import eg.gov.iti.jets.models.persistence.DBConnection;
 
 import java.rmi.RemoteException;
@@ -16,10 +19,9 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class RelationshipDaoImpl extends UnicastRemoteObject implements RelationshipDao {
-
     private Connection connection = DBConnection.getConnection();
     private static RelationshipDaoImpl instance;
-
+    private ServerService serverService = ServerService.getInstance();
     protected RelationshipDaoImpl() throws RemoteException {
     }
 
@@ -52,9 +54,28 @@ public class RelationshipDaoImpl extends UnicastRemoteObject implements Relation
                 preparedStatement.setInt(3, relationship.getSecondUserId());
                 preparedStatement.setString(4, relationship.getRelationshipStatus().toString());
                 result = preparedStatement.executeUpdate();
+
+                /////////////////////////////////////////////////////
+
+                UserDao userDao = UserDaoImpl.getInstance();
+                System.out.println(userDao);
+                ClientInterface firstClient = serverService.getClient(relationship.getFirstUserId());
+                System.out.println("FirstClient" + firstClient);
+                firstClient.receiveRelationship(relationshipId);
+
+
+                ClientInterface secondClient = serverService.getClient(relationship.getSecondUserId());
+                System.out.println("secondClient" + secondClient);
+                secondClient.receiveRelationship(relationshipId);
+                System.out.println("finshed here ");
+
+                /////////////////////////////////////////////////////
+                resultSet.close();
+                preparedStatement.close();
             }
-            resultSet.close();
-            preparedStatement.close();
+
+        } catch (RemoteException e) {
+            e.printStackTrace();
         } catch (SQLException e) {
             e.printStackTrace();
         }
