@@ -6,15 +6,10 @@ import eg.gov.iti.jets.models.entities.GroupChat;
 import eg.gov.iti.jets.models.entities.GroupChatMessage;
 import eg.gov.iti.jets.models.entities.Membership;
 import eg.gov.iti.jets.models.entities.User;
+import eg.gov.iti.jets.models.imageutiles.ImageUtiles;
 import eg.gov.iti.jets.models.persistence.DBConnection;
-import javafx.embed.swing.SwingFXUtils;
-import javafx.scene.image.Image;
 
-import javax.imageio.ImageIO;
 import java.awt.image.BufferedImage;
-import java.io.ByteArrayInputStream;
-import java.io.ByteArrayOutputStream;
-import java.io.IOException;
 import java.io.InputStream;
 import java.rmi.RemoteException;
 import java.rmi.server.UnicastRemoteObject;
@@ -51,16 +46,12 @@ public class GroupChatDaoImpl extends UnicastRemoteObject implements GroupChatDa
             stmt = connection.prepareStatement(sql);
             stmt.setString(1, groupChat.getTitle());
             stmt.setString(2, groupChat.getDescription());
-            ByteArrayOutputStream os = new ByteArrayOutputStream();
-            BufferedImage bImage = SwingFXUtils.fromFXImage(groupChat.getGroupImage(), null);
-            ImageIO.write(bImage, "png", os);
-            InputStream fis = new ByteArrayInputStream(os.toByteArray());
-            stmt.setBlob(3, fis);
+            stmt.setBlob(3, ImageUtiles.FromStringToBlob(groupChat.getGroupImageEncodedString()));
             stmt.setTimestamp(4, Timestamp.valueOf(groupChat.getCreationTimestamp()));
             if (stmt.executeUpdate() != 0) {
                 b = true;
             }
-        } catch (SQLException | IOException e) {
+        } catch (SQLException e) {
             e.printStackTrace();
         } finally {
             try {
@@ -78,7 +69,7 @@ public class GroupChatDaoImpl extends UnicastRemoteObject implements GroupChatDa
         int id = 0;
         String tilte = null;
         String description = null;
-        Image group_image;
+        String groupImageEncodedString = null;
         LocalDateTime creation_time_stamp;
         Timestamp timestamp = null;
         InputStream in;
@@ -98,17 +89,13 @@ public class GroupChatDaoImpl extends UnicastRemoteObject implements GroupChatDa
                 blob = rs.getBlob("group_image");
                 timestamp = rs.getTimestamp("creation_timestamp");
             }
-            in = blob.getBinaryStream();
-            imagen = ImageIO.read(in);
-            group_image = SwingFXUtils.toFXImage(imagen, null);
+            String imageEncodedString = ImageUtiles.FromBlobToString(blob);
             creation_time_stamp = timestamp.toLocalDateTime();
-            groupChat = new GroupChat(id, tilte, description, group_image, creation_time_stamp);
+            groupChat = new GroupChat(id, tilte, description, imageEncodedString, creation_time_stamp);
 
         } catch (SQLException e) {
             e.printStackTrace();
 
-        } catch (IOException e) {
-            e.printStackTrace();
         } finally {
 
             try {
@@ -201,19 +188,13 @@ public class GroupChatDaoImpl extends UnicastRemoteObject implements GroupChatDa
             stmt = connection.prepareStatement(sql);
             stmt.setString(1, groupChat.getTitle());
             stmt.setString(2, groupChat.getDescription());
-            ByteArrayOutputStream os = new ByteArrayOutputStream();
-            BufferedImage bImage = SwingFXUtils.fromFXImage(groupChat.getGroupImage(), null);
-            ImageIO.write(bImage, "png", os);
-            InputStream fis = new ByteArrayInputStream(os.toByteArray());
-            stmt.setBlob(3, fis);
+            stmt.setBlob(3, ImageUtiles.FromStringToBlob(groupChat.getGroupImageEncodedString()));
             stmt.setTimestamp(4, Timestamp.valueOf(groupChat.getCreationTimestamp()));
             stmt.setInt(5, groupChat.getGroupChatId());
             if (stmt.executeUpdate() != 0) {
                 b = true;
             }
         } catch (SQLException e) {
-            e.printStackTrace();
-        } catch (IOException e) {
             e.printStackTrace();
         } finally {
             try {
