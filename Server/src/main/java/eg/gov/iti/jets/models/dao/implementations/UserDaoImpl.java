@@ -6,6 +6,7 @@ import eg.gov.iti.jets.models.entities.enums.AnnouncementDeliveryStatus;
 import eg.gov.iti.jets.models.entities.enums.RelationshipStatus;
 import eg.gov.iti.jets.models.entities.enums.UserGender;
 import eg.gov.iti.jets.models.entities.enums.UserStatus;
+import eg.gov.iti.jets.models.imageutiles.ImageUtiles;
 import eg.gov.iti.jets.models.persistence.DBConnection;
 import javafx.embed.swing.SwingFXUtils;
 import javafx.scene.image.Image;
@@ -235,7 +236,7 @@ public class UserDaoImpl extends UnicastRemoteObject implements UserDao {
         int id = 0;
         String tilte = null;
         String description = null;
-        Image group_image;
+        String group_image;
         LocalDateTime creation_time_stamp;
         Timestamp timestamp = null;
         InputStream in;
@@ -256,9 +257,7 @@ public class UserDaoImpl extends UnicastRemoteObject implements UserDao {
                     timestamp = rs.getTimestamp("creation_timestamp");
                 }
                 if (blob != null) {
-                    in = blob.getBinaryStream();
-                    imagen = ImageIO.read(in);
-                    group_image = SwingFXUtils.toFXImage(imagen, null);
+                    group_image = ImageUtiles.FromBlobToString(blob);
                 } else
                     group_image = null;
 
@@ -269,10 +268,7 @@ public class UserDaoImpl extends UnicastRemoteObject implements UserDao {
                 groupChatList.add(new GroupChat(id, tilte, description, group_image, creation_time_stamp));
             } catch (SQLException e) {
                 e.printStackTrace();
-            } catch (IOException e) {
-                e.printStackTrace();
             }
-
 
         }
         return groupChatList;
