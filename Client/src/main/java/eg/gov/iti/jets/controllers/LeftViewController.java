@@ -17,7 +17,6 @@ import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.image.Image;
-import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
@@ -308,6 +307,21 @@ public class LeftViewController implements Initializable {
             Scene scene = new Scene(addGroupChatView);
             stage.setScene(scene);
             stage.setTitle("Add Group Chat");
+            stage.show();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+    @FXML
+    void handleAddSingleChat(ActionEvent event) {
+        try {
+            FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/views/AddSingleChatView.fxml"));
+            Parent addSingleChatView = fxmlLoader.load();
+            Stage stage = new Stage();
+            Scene scene = new Scene(addSingleChatView);
+            stage.setScene(scene);
+            stage.setTitle("Add Single Chat");
             stage.show();
         } catch (IOException e) {
             e.printStackTrace();
