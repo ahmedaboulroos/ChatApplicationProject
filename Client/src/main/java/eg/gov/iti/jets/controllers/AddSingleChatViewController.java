@@ -27,7 +27,7 @@ public class AddSingleChatViewController implements Initializable {
     private ClientStageCoordinator clientStageCoordinator = ClientStageCoordinator.getInstance();
     private UserDao userDao = RMIConnection.getUserDao();
     @FXML
-    private JFXComboBox<User> usersCompoBox;
+    private JFXComboBox<eg.gov.iti.jets.models.entities.User> usersCompoBox;
 
     @FXML
     void handleContactsCB(ActionEvent event) {
@@ -53,9 +53,9 @@ public class AddSingleChatViewController implements Initializable {
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
         usersCompoBox.setPromptText("Choose Contact");
-        usersCompoBox.setEditable(true);
-        List<User> contacts = loadContacts();
-        ObservableList<User> options = FXCollections.observableList(contacts);
+        usersCompoBox.setEditable(false);
+        List<eg.gov.iti.jets.models.entities.User> contacts = loadContacts();
+        ObservableList<eg.gov.iti.jets.models.entities.User> options = FXCollections.observableList(contacts);
         usersCompoBox.setItems(options);
     }
 
