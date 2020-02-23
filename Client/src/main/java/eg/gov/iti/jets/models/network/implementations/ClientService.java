@@ -3,16 +3,10 @@ package eg.gov.iti.jets.models.network.implementations;
 
 import eg.gov.iti.jets.controllers.ChatAppViewController;
 import eg.gov.iti.jets.controllers.SingleChatViewController;
-import eg.gov.iti.jets.models.dao.interfaces.GroupContactDao;
-import eg.gov.iti.jets.models.dao.interfaces.GroupDao;
-import eg.gov.iti.jets.models.dao.interfaces.SingleChatMessageDao;
-import eg.gov.iti.jets.models.dao.interfaces.UserDao;
+import eg.gov.iti.jets.models.dao.interfaces.*;
 import eg.gov.iti.jets.models.dto.GroupDto;
 import eg.gov.iti.jets.models.dto.UserDto;
-import eg.gov.iti.jets.models.entities.Group;
-import eg.gov.iti.jets.models.entities.GroupContact;
-import eg.gov.iti.jets.models.entities.SingleChatMessage;
-import eg.gov.iti.jets.models.entities.User;
+import eg.gov.iti.jets.models.entities.*;
 import eg.gov.iti.jets.models.network.RMIConnection;
 import eg.gov.iti.jets.models.network.interfaces.ClientInterface;
 
@@ -30,6 +24,7 @@ public class ClientService extends UnicastRemoteObject implements ClientInterfac
     private GroupContactDao groupContactDao = RMIConnection.getGroupContactDao();
     private UserDao userDao = RMIConnection.getUserDao();
     private SingleChatMessageDao singleChatMessageDao = RMIConnection.getSingleChatMessageDao();
+    private SingleChatDao singleChatDao = RMIConnection.getSingleChatDao();
     public ClientService() throws RemoteException {
     }
 
@@ -69,7 +64,13 @@ public class ClientService extends UnicastRemoteObject implements ClientInterfac
 
     @Override
     public void receiveNewSingleChat(int singleChatId) throws RemoteException {
-
+        System.out.println(singleChatId + "el id");
+        SingleChat singleChat = singleChatDao.getSingleChat(singleChatId);
+        if (singleChat != null) {
+            singleChatViewController.displayNewSingleChat(singleChat);
+        } else {
+            System.out.println("ana null" + singleChat);
+        }
     }
 
     @Override
