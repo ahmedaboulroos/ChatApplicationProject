@@ -13,10 +13,7 @@ import javafx.scene.image.Image;
 
 import javax.imageio.ImageIO;
 import java.awt.image.BufferedImage;
-import java.io.ByteArrayInputStream;
-import java.io.ByteArrayOutputStream;
-import java.io.IOException;
-import java.io.InputStream;
+import java.io.*;
 import java.rmi.RemoteException;
 import java.rmi.server.UnicastRemoteObject;
 import java.sql.*;
@@ -27,6 +24,7 @@ import java.util.List;
 
 public class UserDaoImpl extends UnicastRemoteObject implements UserDao {
 
+    private File defaultImage;
     private Connection connection = DBConnection.getConnection();
 
     private static UserDaoImpl instance;
@@ -54,7 +52,7 @@ public class UserDaoImpl extends UnicastRemoteObject implements UserDao {
                     null : Date.valueOf(user.getBirthDate());
             String userGender = user.getUserGender() == null ?
                     null : user.getUserGender().toString();
-            Blob profileImage = ImageUtiles.fromBytesToBlob(user.getProfileImage());
+            byte[] profileImage = user.getProfileImage();
             String userStatus = user.getUserStatus() == null ?
                     null : user.getUserStatus().toString();
             String currentlyLoggedIn = user.isCurrentlyLoggedIn() ? "ONLINE" : "OFFLINE";
@@ -76,8 +74,9 @@ public class UserDaoImpl extends UnicastRemoteObject implements UserDao {
                 preparedStatement.setString(7, user.getBio());
                 preparedStatement.setDate(8, birthDate);
                 preparedStatement.setString(9, userGender);
-                //TODO: handle sending images to database (convert to blob)
-                preparedStatement.setBlob(10, profileImage);
+                InputStream in = new ByteArrayInputStream(profileImage);
+                preparedStatement.setBinaryStream(10, in, profileImage.length);
+                //preparedStatement.setBlob(10, profileImage);
                 preparedStatement.setString(11, userStatus);
                 preparedStatement.setString(12, currentlyLoggedIn);
                 result = preparedStatement.executeUpdate();
@@ -228,7 +227,9 @@ public class UserDaoImpl extends UnicastRemoteObject implements UserDao {
 
     @Override
     public List<GroupChat> getUserGroupChats(int userId) {
+        System.out.println("inside-->> userdoaimpl userId " + userId);
         List<Membership> membershipList = getUserGroupChatsMembership(userId);
+        System.out.println("inside-->> userdoaimpl membershipList " + membershipList.size());
         List<GroupChat> groupChatList = new ArrayList<>();
         // int groupChatId=0;
         String sql = null;
@@ -236,38 +237,45 @@ public class UserDaoImpl extends UnicastRemoteObject implements UserDao {
         int id = 0;
         String tilte = null;
         String description = null;
-        byte[] group_image;
         Timestamp timestamp = null;
-        InputStream in;
-        Blob blob = null;
-        BufferedImage imagen;
+        byte[] imageBytes = null;
         PreparedStatement stmt = null;
-        for (int i = 0; i < membershipList.size(); i++) {
-            sql = "select group_chat_id, title, description, group_image, creation_timestamp from GROUP_CHAT where group_chat_id=?";
-            int groupChatId = membershipList.get(i).getGroupChatId();
-            try (PreparedStatement preparedStatement = stmt = connection.prepareStatement(sql)) {
-                stmt.setInt(1, groupChatId);
-                rs = stmt.executeQuery();
-                if (rs.next()) {
-                    id = rs.getInt("group_chat_id");
-                    tilte = rs.getString("title");
-                    description = rs.getString("description");
-                    blob = rs.getBlob("group_image");
-                    timestamp = rs.getTimestamp("creation_timestamp");
+        if (!membershipList.isEmpty()) {
+            for (int i = 0; i < membershipList.size(); i++) {
+                sql = "select group_chat_id, title, description, group_image, creation_timestamp from GROUP_CHAT where group_chat_id=?";
+                int groupChatId = membershipList.get(i).getGroupChatId();
+                System.out.println("inside --->> userdaoimpl.getUserGroupChats groupChatId " + groupChatId);
+                try (PreparedStatement preparedStatement = stmt = connection.prepareStatement(sql)) {
+                    stmt.setInt(1, groupChatId);
+                    rs = stmt.executeQuery();
+                    if (rs.next()) {
+                        id = rs.getInt("group_chat_id");
+                        System.out.println("inside-->> userdoaimpl group_chat_id" + id);
+                        tilte = rs.getString("title");
+                        System.out.println("inside-->> userdoaimpl group_chat_title" + tilte);
+                        description = rs.getString("description");
+                        System.out.println("inside-->> userdoaimpl group_chat_description" + description);
+                        imageBytes = rs.getBytes("group_image");
+                        System.out.println("inside-->> userdoaimpl imageBytes.length" + imageBytes.length);
+                        //blob = rs.getBlob("group_image");
+                        timestamp = rs.getTimestamp("creation_timestamp");
+                    }
+//                    if (imageBytes.length==0 ) {
+//                        imageBytes = ImageUtiles.fromImageToBytes("C:\\Users\\elnaggar\\IdeaProjects\\ChatApplicationProject\\Server\\src\\main\\resources\\images\\groupChatDefaultImage.png");
+//                    }
+                    groupChatList.add(new GroupChat(id, tilte, description, imageBytes, timestamp));
+                } catch (SQLException e) {
+                    e.printStackTrace();
                 }
-                if (blob != null) {
-                    group_image = ImageUtiles.fromBlobToBytes(blob);
-                } else
-                    group_image = null;
 
-                groupChatList.add(new GroupChat(id, tilte, description, group_image, timestamp));
-            } catch (SQLException e) {
-                e.printStackTrace();
             }
-
+        } else {
+            System.out.println("inside-->> userdoaimpl usermemberShiList is empty ");
         }
+
+        System.out.println("inside-->> userdoaimpl   groupChatList.size()" + groupChatList.size());
         return groupChatList;
-    }//alaa
+    }
 
     @Override
     public List<AnnouncementDelivery> getUserAnnouncementDeliveries(int userId) {

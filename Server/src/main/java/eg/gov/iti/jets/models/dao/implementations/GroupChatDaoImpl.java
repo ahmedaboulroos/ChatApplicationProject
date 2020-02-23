@@ -29,6 +29,53 @@ public class GroupChatDaoImpl extends UnicastRemoteObject implements GroupChatDa
     protected GroupChatDaoImpl() throws RemoteException {
     }
 
+    @Override
+    public int createGroupChat(GroupChat groupChat) {
+
+        int groupChatId = 0;
+        try {
+
+            PreparedStatement preparedStatement = connection.prepareStatement("select SEQ_GROUP_CHAT_ID.nextval from DUAL");
+
+            String groupChatTitle = groupChat.getTitle() == null ? "dummy Title" : groupChat.getTitle();
+            String groupChatDescription = groupChat.getDescription() == null ? "default Groupchat Description" : groupChat.getDescription();
+            InputStream imageInputStream;
+            int imageByteArrayLength;
+            if (groupChat.getGroupImageBytes().length != 0) {
+                imageByteArrayLength = groupChat.getGroupImageBytes().length;
+                imageInputStream = new ByteArrayInputStream(groupChat.getGroupImageBytes());
+
+            } else {
+                byte[] imageByteArray = ImageUtiles.fromImageToBytes("C:\\Users\\elnaggar\\IdeaProjects\\ChatApplicationProject\\Server\\src\\main\\resources\\images\\groupChatDefaultImage.jpg");
+                imageInputStream = new ByteArrayInputStream(imageByteArray);
+                imageByteArrayLength = imageByteArray.length;
+            }
+            ResultSet resultSet = preparedStatement.executeQuery();
+            if (resultSet.next()) {
+                groupChatId = resultSet.getInt(1);
+                groupChat.setGroupChatId(groupChatId);
+                System.out.println("inside group chatdao imple" + groupChatId);
+                System.out.println("inside group chatdao imple" + groupChat.getGroupChatId());
+
+                String sql = "INSERT INTO group_chat (group_chat_id, title, description,group_image,creation_timestamp) VALUES (?,?,?,?,?)";
+                preparedStatement = connection.prepareStatement(sql);
+
+                preparedStatement.setInt(1, groupChatId);
+                preparedStatement.setString(2, groupChatTitle);
+                preparedStatement.setString(3, groupChatDescription);
+                preparedStatement.setBinaryStream(4, imageInputStream, imageByteArrayLength);
+                preparedStatement.setTimestamp(5, groupChat.getCreationTimestamp());
+                preparedStatement.executeUpdate();
+
+                resultSet.close();
+                preparedStatement.close();
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return groupChatId;
+    }
+
     public static GroupChatDao getInstance() {
         if (instance == null) {
             try {
@@ -38,42 +85,6 @@ public class GroupChatDaoImpl extends UnicastRemoteObject implements GroupChatDa
             }
         }
         return instance;
-    }
-
-    @Override
-    public boolean createGroupChat(GroupChat groupChat) {
-
-        boolean b = false;
-        PreparedStatement stmt = null;
-        try {
-//            BLOB blob = BLOB.createTemporary(connection, false, BLOB.DURATION_SESSION);
-//            blob.setBytes();
-            String sql = "INSERT INTO group_chat (group_chat_id, title, description,group_image,creation_timestamp) VALUES (SEQ_GROUP_CHAT_ID.nextval,?,?,?,?)";
-            stmt = connection.prepareStatement(sql);
-            stmt.setString(1, groupChat.getTitle());
-            stmt.setString(2, groupChat.getDescription());
-
-            System.out.println(groupChat.getGroupImageBytes());
-            System.out.println(groupChat.getGroupImageBytes().length);
-            InputStream in = new ByteArrayInputStream(groupChat.getGroupImageBytes());
-            stmt.setBinaryStream(3, in, groupChat.getGroupImageBytes().length);
-
-            // stmt.setBlob(3, ImageUtiles.FromBytesToBlob(groupChat.getGroupImageBytes()));
-            stmt.setTimestamp(4, groupChat.getCreationTimestamp());
-
-            if (stmt.executeUpdate() != 0) {
-                b = true;
-            }
-        } catch (SQLException e) {
-            e.printStackTrace();
-        } finally {
-            try {
-                stmt.close();
-            } catch (SQLException e) {
-                e.printStackTrace();
-            }
-        }
-        return b;
     }
 
     @Override

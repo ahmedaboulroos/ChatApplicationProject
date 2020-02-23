@@ -39,7 +39,7 @@ public class ImageUtiles {
 
     public static Image fromBytesToImage(byte[] bytesArr) {
         Image image = null;
-        if (bytesArr != null) {
+        if (bytesArr != null && bytesArr.length > 0) {
             ByteArrayInputStream bis = new ByteArrayInputStream(bytesArr);
             image = new Image(bis);
         }
