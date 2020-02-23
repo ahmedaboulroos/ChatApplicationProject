@@ -4,6 +4,8 @@ import eg.gov.iti.jets.models.dao.interfaces.SingleChatDao;
 import eg.gov.iti.jets.models.entities.SingleChat;
 import eg.gov.iti.jets.models.entities.SingleChatMessage;
 import eg.gov.iti.jets.models.entities.User;
+import eg.gov.iti.jets.models.network.implementations.ServerService;
+import eg.gov.iti.jets.models.network.interfaces.ClientInterface;
 import eg.gov.iti.jets.models.persistence.DBConnection;
 
 import java.rmi.RemoteException;
@@ -19,7 +21,7 @@ public class SingleChatDaoImpl extends UnicastRemoteObject implements SingleChat
     private Connection connection = DBConnection.getConnection();
 
     private static SingleChatDaoImpl instance;
-
+    private ServerService serverService = ServerService.getInstance();
     protected SingleChatDaoImpl() throws RemoteException {
     }
 
@@ -55,26 +57,50 @@ public class SingleChatDaoImpl extends UnicastRemoteObject implements SingleChat
     @Override
     public boolean createSingleChat(SingleChat singleChat) {
         boolean flag = false;
-
+        PreparedStatement stmt1 = null;
+        PreparedStatement preparedStatement = null;
         try {
             System.out.println(connection);
             connection.setAutoCommit(false);
             String sql = "INSERT INTO SINGLE_CHAT (SINGLE_CHAT_ID,  USER_ONE_ID, USER_TWO_ID) VALUES (SEQ_SINGLE_CHAT_ID.NEXTVAL,?,?)";
 
-            PreparedStatement preparedStatement = connection.prepareStatement(sql);
+            preparedStatement = connection.prepareStatement(sql);
             preparedStatement.setInt(1, singleChat.getUserOneId());
             preparedStatement.setInt(2, singleChat.getUserTwoId());
 
 
             int affectedRow = preparedStatement.executeUpdate();
-            System.out.println(affectedRow);
+            stmt1 = connection.prepareStatement("select SEQ_SINGLE_CHAT_ID.currval from dual");
+            ResultSet resultSet = stmt1.executeQuery();
+            System.out.println(affectedRow + "affectedRow");
             connection.commit();
             if (affectedRow > 0) {
+                int singleChatId = 0;
+                while (resultSet.next()) {
+                    singleChatId = resultSet.getInt(1);
+                }
+                ClientInterface clientTwo = serverService.getClient(singleChat.getUserTwoId());
+                System.out.println("gbt clientTwo");
+                clientTwo.receiveNewSingleChat(singleChatId);
+                System.out.println("estaqbl");
+                ClientInterface clientOne = serverService.getClient(singleChat.getUserOneId());
+                System.out.println("gbt clientOne");
+                clientOne.receiveNewSingleChat(singleChatId);
+                System.out.println("estaqbl");
                 return true;
             }
 
         } catch (SQLException e) {
             e.printStackTrace();
+        } catch (RemoteException e) {
+            e.printStackTrace();
+        } finally {
+            try {
+                preparedStatement.close();
+                stmt1.close();
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
         }
 
 
