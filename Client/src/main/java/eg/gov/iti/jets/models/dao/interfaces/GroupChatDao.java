@@ -11,7 +11,7 @@ import java.util.List;
 
 public interface GroupChatDao extends Remote {
     // Create
-    boolean createGroupChat(GroupChat groupChat) throws RemoteException;
+    int createGroupChat(GroupChat groupChat) throws RemoteException;
 
     // Read
     GroupChat getGroupChat(int groupChatId) throws RemoteException;

@@ -31,24 +31,31 @@ public class MembershipDaoImpl extends UnicastRemoteObject implements Membership
     }
 
     @Override
-    public boolean createMembership(Membership membership) {
+    public int createMembership(Membership membership) {
+        int autoGenMemberShipID = 0;
         try {
-            String sql = "INSERT INTO MEMBERSHIP (MEMBERSHIP_ID,  USER_ID, GROUP_CHAT_ID, JOINED_TIMESTAMP) VALUES (SEQ_MEMBERSHIP_ID.NEXTVAL,?,?,?)";
+            PreparedStatement preparedStatement = connection.prepareStatement("select SEQ_MEMBERSHIP_ID.nextval from DUAL");
 
-            PreparedStatement stmt = connection.prepareStatement(sql);
-            stmt.setInt(1, membership.getUserId());
-            stmt.setInt(2, membership.getGroupChatId());
-            stmt.setTimestamp(3, Timestamp.valueOf(membership.getJoinedTimestamp()));
-
-            int affectedRow = stmt.executeUpdate();
-            if (affectedRow > 0) {
-                return true;
+            ResultSet resultSet = preparedStatement.executeQuery();
+            if (resultSet.next()) {
+                autoGenMemberShipID = resultSet.getInt(1);
+                String sql = "INSERT INTO MEMBERSHIP (MEMBERSHIP_ID,  USER_ID, GROUP_CHAT_ID, JOINED_TIMESTAMP) VALUES (?,?,?,?)";
+                preparedStatement = connection.prepareStatement(sql);
+                preparedStatement.setInt(1, autoGenMemberShipID);
+                preparedStatement.setInt(2, membership.getUserId());
+                preparedStatement.setInt(3, membership.getGroupChatId());
+                preparedStatement.setTimestamp(4, Timestamp.valueOf(membership.getJoinedTimestamp()));
+            }
+            int affectedRow = preparedStatement.executeUpdate();
+            if (affectedRow != -1) {
+                System.out.println("inside --->> memebershipdao membership created");
+                return autoGenMemberShipID;
             }
 
         } catch (SQLException e) {
             e.printStackTrace();
         }
-        return false;
+        return autoGenMemberShipID;
     }
 
     @Override
