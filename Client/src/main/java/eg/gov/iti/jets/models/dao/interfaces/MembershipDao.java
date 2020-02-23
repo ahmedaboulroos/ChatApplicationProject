@@ -9,7 +9,7 @@ import java.rmi.RemoteException;
 
 public interface MembershipDao extends Remote {
     // Create
-    boolean createMembership(Membership membership) throws RemoteException;
+    int createMembership(Membership membership) throws RemoteException;
 
     // Read
     Membership getMembership(int membershipId) throws RemoteException;

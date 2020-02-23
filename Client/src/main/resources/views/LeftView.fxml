@@ -68,10 +68,9 @@
                             <children>
                                 <HBox alignment="CENTER_RIGHT">
                                     <children>
-                                        <JFXButton fx:id="handleNewSingleChat" alignment="CENTER"
-                                                   contentDisplay="CENTER" maxHeight="-Infinity" maxWidth="-Infinity"
-                                                   minHeight="-Infinity" minWidth="-Infinity"
-                                                   onAction="#handleAddGroupChat" prefHeight="30.0" prefWidth="30.0"
+                                        <JFXButton alignment="CENTER" contentDisplay="CENTER" maxHeight="-Infinity"
+                                                   maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity"
+                                                   onAction="#handleAddSingleChat" prefHeight="30.0" prefWidth="30.0"
                                                    styleClass="main-btns" stylesheets="@../styles/centerStyle.css"
                                                    text="Add Group Chat">
                                             <graphic>

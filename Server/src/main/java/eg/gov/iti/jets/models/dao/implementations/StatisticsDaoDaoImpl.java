@@ -60,7 +60,8 @@ public class StatisticsDaoDaoImpl extends UnicastRemoteObject implements Statist
     @Override
     public Map<String, Integer> getUsersByStatus() {
         Map<String, Integer> usersNumByStatusmap = new HashMap<String, Integer>();
-        String sql = "Select Count(USER_ID),USER_STATUS from APP_USER where USER_STATUS in('Available','Offline') group by(USER_STATUS)";
+
+        String sql = "Select Count(USER_ID),USER_STATUS from APP_USER where USER_STATUS in(  'AVAILABLE', 'BUSY','AWAY') group by(USER_STATUS)";
         ResultSet resultSet = null;
         try (PreparedStatement ps = connection.prepareStatement(sql)) {
             resultSet = ps.executeQuery();
@@ -89,7 +90,8 @@ public class StatisticsDaoDaoImpl extends UnicastRemoteObject implements Statist
         try (PreparedStatement ps = connection.prepareStatement(sql)) {
             resultSet = ps.executeQuery();
             while (resultSet.next()) {
-                map.put(resultSet.getString(2), resultSet.getInt(1));
+                if (resultSet.getString(2) != null)
+                    map.put(resultSet.getString(2), resultSet.getInt(1));
             }
 
         } catch (SQLException ex) {

@@ -42,21 +42,32 @@ public class RegisterViewController {
     @FXML
     private JFXButton signInBtn;
 
+
     @FXML
     void handleBackToSignInBtn(ActionEvent event) {
         try {
+
+
             ClientStageCoordinator.getInstance().startLoginScene();
+
         } catch (IOException e) {
             e.printStackTrace();
         }
     }
+
 
     @FXML
     void handleSignUpBtn(ActionEvent event) {
         try {
             User user = new User(phoneNoTf.getText(), passwordTf.getText());
             RMIConnection.getUserDao().createUser(user);
+            ClientStageCoordinator coordinator = ClientStageCoordinator.getInstance();
+            coordinator.currentUser = user;
+            coordinator.startMainChatAppScene();
+
         } catch (RemoteException e) {
+            e.printStackTrace();
+        } catch (IOException e) {
             e.printStackTrace();
         }
     }

@@ -27,6 +27,7 @@ public class ClientService extends UnicastRemoteObject implements ClientInterfac
     private UserDao userDao = RMIConnection.getUserDao();
     private SingleChatMessageDao singleChatMessageDao = RMIConnection.getSingleChatMessageDao();
 
+    private SingleChatDao singleChatDao = RMIConnection.getSingleChatDao();
     public ClientService() throws RemoteException {
     }
 
@@ -74,7 +75,13 @@ public class ClientService extends UnicastRemoteObject implements ClientInterfac
 
     @Override
     public void receiveNewSingleChat(int singleChatId) throws RemoteException {
-
+        System.out.println(singleChatId + "el id");
+        SingleChat singleChat = singleChatDao.getSingleChat(singleChatId);
+        if (singleChat != null) {
+            singleChatViewController.displayNewSingleChat(singleChat);
+        } else {
+            System.out.println("ana null" + singleChat);
+        }
     }
 
     @Override

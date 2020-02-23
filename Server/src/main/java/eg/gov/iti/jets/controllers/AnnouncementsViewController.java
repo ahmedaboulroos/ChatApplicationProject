@@ -99,14 +99,17 @@ public class AnnouncementsViewController implements Initializable {
     @FXML
     void handleSendBtn(ActionEvent event) {
         String content = announcementTf.getText();
-        Announcement announcement = new Announcement(content);
-        try {
-            announcementDao.createAnnouncement(announcement);
-            updateAnnouncementsTable();
-        } catch (RemoteException e) {
-            e.printStackTrace();
+        if (!content.trim().isEmpty()) {
+            Announcement announcement = new Announcement(content);
+            try {
+                announcementDao.createAnnouncement(announcement);
+                updateAnnouncementsTable();
+            } catch (RemoteException e) {
+                e.printStackTrace();
+            }
+            announcementTf.clear();
         }
-        announcementTf.clear();
+
     }
 
     @FXML

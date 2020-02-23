@@ -35,8 +35,10 @@ public class DashboardViewController implements Initializable {
     private ObservableList<PieChart.Data> usersGenderdata = FXCollections.observableArrayList();
     private ObservableList<PieChart.Data> usersStatusrdata = FXCollections.observableArrayList();
     private StatisticsDaoDaoImpl statistics;
+    private int UsersNum = 0;
 
-    public void setUsersDAO(StatisticsDaoDaoImpl statistics) {
+
+    public void drawDashBoard(StatisticsDaoDaoImpl statistics) {
         this.statistics = statistics;
         drawUsersCountryChart(usersCountriestdata);
         drawUsersStatusChart(userstatusChartPane, usersStatusrdata);
@@ -56,7 +58,7 @@ public class DashboardViewController implements Initializable {
                 }
             }
         });
-        setUsersDAO(StatisticsDaoDaoImpl.getInstance());
+        drawDashBoard(StatisticsDaoDaoImpl.getInstance());
     }
 
 
@@ -79,35 +81,37 @@ public class DashboardViewController implements Initializable {
     }
 
     private void drawUsersGenderChart(StackPane stackPane, ObservableList<PieChart.Data> usersGenderList) {
-        int UsersNum = 0;
+
         Map<String, Integer> map = statistics.getUsersByGender();
-        if (map != null) {
-            for (Map.Entry m : map.entrySet()) {
-                usersGenderList.add(new PieChart.Data(m.getKey().toString(), Integer.parseInt(m.getValue().toString())));
-                UsersNum += Integer.parseInt(m.getValue().toString());
-            }
-            drawPieChart(stackPane, usersGenderList, UsersNum, true);
-        } else {
-            System.out.println("Empty users map");
-        }
+
+        map.forEach((key, value) -> {
+                    usersGenderList.add(new PieChart.Data(key, value));
+                    UsersNum += value;
+                }
+
+        );
+        drawPieChart(stackPane, usersGenderList, UsersNum, true);
+
+        System.out.println("Empty users map");
     }
 
-    private void drawUsersStatusChart(StackPane stackPane, ObservableList<PieChart.Data> usersGenderList) {
-        int UsersNum = 0;
-        Map<String, Integer> map = statistics.getUsersByStatus();
-        if (map != null) {
 
-            for (Map.Entry m : map.entrySet()) {
-                if (m.getKey().toString().equals("Offline"))
-                    usersGenderList.add(new PieChart.Data("OFF-Line", Integer.parseInt(m.getValue().toString())));
-                else
-                    usersGenderList.add(new PieChart.Data("ON-Line", Integer.parseInt(m.getValue().toString())));
-                UsersNum += Integer.parseInt(m.getValue().toString());
-            }
-            drawPieChart(stackPane, usersGenderList, UsersNum, false);
-        } else {
-            System.out.println("Empty users map");
-        }
+    private void drawUsersStatusChart(StackPane stackPane, ObservableList<PieChart.Data> usersGenderList) {
+
+        Map<String, Integer> map = statistics.getUsersByStatus();
+
+        map.forEach((key, value) -> {
+
+                    usersGenderList.add(new PieChart.Data(key, value));
+
+                    UsersNum += value;
+                }
+        );
+        drawPieChart(stackPane, usersGenderList, UsersNum, true);
+
+
+        System.out.println("Empty users map");
+
     }
 
     private void drawUsersCountryChart(ObservableList<XYChart.Series<String, Number>> usersCountriesList) {
@@ -115,20 +119,27 @@ public class DashboardViewController implements Initializable {
         xAxis.setLabel("Countries");
         NumberAxis yAxis = new NumberAxis();
         yAxis.setLabel("(NO.of Users)");
-        XYChart.Series countriesSeries = new XYChart.Series();
+
         Map<String, Integer> map = statistics.getUsersNumByCountry();
-        if (map != null) {
-            for (Map.Entry m : map.entrySet()) {
-                countriesSeries.getData().add(new XYChart.Data(m.getKey(), m.getValue()));
-            }
-            usersCountriestdata.add(countriesSeries);
-            usresCountryChart.setData(usersCountriestdata);
-            usresCountryChart.setTitle("statistics about the users’ country");
-            usresCountryChart.setBarGap(50);
-            usresCountryChart.setAnimated(true);
-        } else {
-            System.out.println("Empty users map");
+        if (map != null && !map.equals("[]")) {
+            map.forEach((key, value) -> {
+
+                        XYChart.Series countriesSeries = new XYChart.Series();
+                        XYChart.Data<String, Number> stringNumberData = new XYChart.Data<String, Number>();
+                        stringNumberData.setXValue(key);
+                        stringNumberData.setYValue(value);
+                        countriesSeries.getData().addAll(stringNumberData);
+                        usersCountriesList.add(countriesSeries);
+                    }
+
+            );
         }
 
+
+        usresCountryChart.setData(usersCountriestdata);
+        usresCountryChart.setTitle("statistics about the users’ country");
+        usresCountryChart.setBarGap(50);
+        usresCountryChart.setAnimated(true);
     }
+
 }
