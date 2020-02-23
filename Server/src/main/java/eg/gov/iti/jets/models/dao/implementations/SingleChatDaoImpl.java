@@ -79,6 +79,7 @@ public class SingleChatDaoImpl extends UnicastRemoteObject implements SingleChat
                 while (resultSet.next()) {
                     singleChatId = resultSet.getInt(1);
                 }
+                System.out.println(singleChatId);
                 ClientInterface clientTwo = serverService.getClient(singleChat.getUserTwoId());
                 System.out.println("gbt clientTwo");
                 clientTwo.receiveNewSingleChat(singleChatId);
