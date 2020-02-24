@@ -2,12 +2,12 @@ package eg.gov.iti.jets.models.network.implementations;
 
 
 import eg.gov.iti.jets.controllers.ClientStageCoordinator;
+import eg.gov.iti.jets.controllers.GroupChatViewController;
 import eg.gov.iti.jets.controllers.SingleChatViewController;
 import eg.gov.iti.jets.models.dao.interfaces.SingleChatDao;
 import eg.gov.iti.jets.models.dao.interfaces.SingleChatMessageDao;
 import eg.gov.iti.jets.models.entities.SingleChat;
 import eg.gov.iti.jets.models.entities.SingleChatMessage;
-import eg.gov.iti.jets.models.entities.User;
 import eg.gov.iti.jets.models.network.RMIConnection;
 import eg.gov.iti.jets.models.network.interfaces.ClientInterface;
 
@@ -19,7 +19,7 @@ public class ClientService extends UnicastRemoteObject implements ClientInterfac
     private SingleChatMessageDao singleChatMessageDao = RMIConnection.getSingleChatMessageDao();
     private SingleChatDao singleChatDao = RMIConnection.getSingleChatDao();
     private SingleChatViewController singleChatViewController = SingleChatViewController.getInstance();
-
+    private GroupChatViewController groupChatViewController = GroupChatViewController.getInstance();
     private ClientService() throws RemoteException {
     }
 
@@ -85,6 +85,7 @@ public class ClientService extends UnicastRemoteObject implements ClientInterfac
     @Override
     public void receiveNewGroupChatMessage(int groupChatMessageId) throws RemoteException {
         System.out.println(">> New Group Chat Message :" + groupChatMessageId);
+        groupChatViewController.displayNewGroupChatMessage(groupChatMessageId);
     }
 
     @Override
