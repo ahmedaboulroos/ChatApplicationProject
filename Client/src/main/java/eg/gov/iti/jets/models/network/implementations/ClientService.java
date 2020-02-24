@@ -1,6 +1,7 @@
 package eg.gov.iti.jets.models.network.implementations;
 
 
+import eg.gov.iti.jets.controllers.GroupChatViewController;
 import eg.gov.iti.jets.models.entities.User;
 import eg.gov.iti.jets.models.network.interfaces.ClientInterface;
 
@@ -8,6 +9,7 @@ import java.rmi.RemoteException;
 import java.rmi.server.UnicastRemoteObject;
 
 public class ClientService extends UnicastRemoteObject implements ClientInterface {
+    private GroupChatViewController groupChatViewController = GroupChatViewController.getInstance();
 
     private ClientService() throws RemoteException {
     }
@@ -75,7 +77,9 @@ public class ClientService extends UnicastRemoteObject implements ClientInterfac
 
     @Override
     public void receiveNewGroupChatMessage(int groupChatMessageId) throws RemoteException {
-        System.out.println(">> New Group Chat Message :" + groupChatMessageId);
+
+        groupChatViewController.displayNewGroupChatMessage(groupChatMessageId);
+
     }
 
     @Override
