@@ -77,7 +77,8 @@ public class ClientService extends UnicastRemoteObject implements ClientInterfac
         //  UserDto userDto = new UserDto(getDisplayUsername(user), user.getProfileImage());
         System.out.println(singleChatMessage + "elobject");
         if (singleChatMessage != null) {
-            singleChatViewController.displayNewSingleChatMessage(singleChatMessage);
+            //TODO: MAINTAIN FUNCTION
+            //singleChatViewController.displayNewSingleChatMessage(singleChatMessage);
         } else {
             System.out.println("ana null" + singleChatMessage);
         }
