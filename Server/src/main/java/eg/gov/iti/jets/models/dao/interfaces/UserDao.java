@@ -1,6 +1,7 @@
 package eg.gov.iti.jets.models.dao.interfaces;
 
 import eg.gov.iti.jets.models.entities.*;
+import eg.gov.iti.jets.models.entities.enums.UserStatus;
 
 import java.rmi.Remote;
 import java.rmi.RemoteException;
@@ -9,7 +10,7 @@ import java.util.List;
 public interface UserDao extends Remote {
 
     // Create
-    boolean createUser(User user) throws RemoteException;
+    int createUser(User user) throws RemoteException;
 
     // Read
     User getUser(int userId) throws RemoteException;
@@ -24,20 +25,20 @@ public interface UserDao extends Remote {
 
     List<SingleChat> getUserSingleChats(int userId) throws RemoteException;
 
-    List<Membership> getUserGroupChatsMembership(int userId) throws RemoteException;
+    List<GroupChatMembership> getUserGroupChatsMembership(int userId) throws RemoteException;
 
     List<GroupChat> getUserGroupChats(int userId) throws RemoteException;
 
-    List<AnnouncementDelivery> getUserAnnouncementDeliveries(int userId) throws RemoteException;
+    List<ContactsGroupMembership> getUserContactsGroupMemberships(int userId) throws RemoteException;
 
-    List<Group> getUserGroups(int userId) throws RemoteException;
-
-    List<GroupContact> getUserContacts(int userId) throws RemoteException;
+    List<ContactsGroup> getUserContactsGroups(int userId) throws RemoteException;
 
     // Update
-    boolean updateUser(User user) throws RemoteException;
+    void updateUser(User user) throws RemoteException;
+
+    void updateUserStatus(int userId, UserStatus userStatus) throws RemoteException;
 
     // Delete
-    boolean deleteUser(int userId) throws RemoteException;
+    void deleteUser(int userId) throws RemoteException;
 
 }

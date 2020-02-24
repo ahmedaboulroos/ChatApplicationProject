@@ -5,7 +5,7 @@ import java.time.LocalDateTime;
 
 public class SingleChatMessage implements Serializable {
     private static final long serialVersionUID = 6569665098267657690L;
-    private int singleChatMessageId;
+    private int id;
     private int singleChatId;
     private int userId;
     private String content;
@@ -25,20 +25,20 @@ public class SingleChatMessage implements Serializable {
         this.messageTimestamp = messageTimestamp;
     }
 
-    public SingleChatMessage(int singleChatMessageId, int singleChatId, int userId, String content, LocalDateTime messageTimestamp) {
-        this.singleChatMessageId = singleChatMessageId;
+    public SingleChatMessage(int id, int singleChatId, int userId, String content, LocalDateTime messageTimestamp) {
+        this.id = id;
         this.singleChatId = singleChatId;
         this.userId = userId;
         this.content = content;
         this.messageTimestamp = messageTimestamp;
     }
 
-    public int getSingleChatMessageId() {
-        return singleChatMessageId;
+    public int getId() {
+        return id;
     }
 
-    public void setSingleChatMessageId(int singleChatMessageId) {
-        this.singleChatMessageId = singleChatMessageId;
+    public void setId(int id) {
+        this.id = id;
     }
 
     public int getUserId() {
@@ -68,7 +68,7 @@ public class SingleChatMessage implements Serializable {
     @Override
     public String toString() {
         return "SingleChatMessage{" +
-                "singleChatMessageId=" + singleChatMessageId +
+                "singleChatMessageId=" + id +
                 ", userId=" + userId +
                 ", content='" + content + '\'' +
                 ", messageTimestamp=" + messageTimestamp +

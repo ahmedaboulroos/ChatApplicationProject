@@ -3,15 +3,15 @@ package eg.gov.iti.jets.models.dto;
 import javafx.beans.property.SimpleIntegerProperty;
 import javafx.beans.property.SimpleStringProperty;
 
-public class AnnouncementViewModel {
+public class AnnouncementsTableModel {
     private SimpleIntegerProperty announcementId;
-    private SimpleStringProperty content;
+    private SimpleStringProperty title;
     private SimpleStringProperty announcementTimestamp;
 
 
-    public AnnouncementViewModel(int id, String contentData, String timestamp) {
+    public AnnouncementsTableModel(int id, String contentData, String timestamp) {
         announcementId = new SimpleIntegerProperty(id);
-        content = new SimpleStringProperty(contentData);
+        title = new SimpleStringProperty(contentData);
         announcementTimestamp = new SimpleStringProperty(timestamp);
     }
 
@@ -27,22 +27,22 @@ public class AnnouncementViewModel {
         return announcementId;
     }
 
-    public String getContent() {
-        return content.get();
+    public String getTitle() {
+        return title.get();
     }
 
-    public void setContent(String content) {
-        this.content.set(content);
+    public void setTitle(String title) {
+        this.title.set(title);
     }
 
-    public SimpleStringProperty contentProperty() {
-        return content;
+    public SimpleStringProperty titleProperty() {
+        return title;
     }
 
     @Override
     public String toString() {
 
-        return (announcementId.get() + ", " + content.get());
+        return (announcementId.get() + ", " + title.get());
     }
 
     public String getAnnouncementTimestamp() {

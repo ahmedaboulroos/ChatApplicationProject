@@ -4,9 +4,10 @@ import com.jfoenix.controls.JFXButton;
 import com.jfoenix.controls.JFXTextField;
 import eg.gov.iti.jets.models.dao.implementations.UserDaoImpl;
 import eg.gov.iti.jets.models.dao.interfaces.UserDao;
-import eg.gov.iti.jets.models.dto.UserViewModel;
+import eg.gov.iti.jets.models.dto.UsersTableModel;
 import eg.gov.iti.jets.models.entities.User;
 import eg.gov.iti.jets.models.entities.enums.UserGender;
+import eg.gov.iti.jets.models.persistence.DBConnection;
 import javafx.collections.FXCollections;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
@@ -21,7 +22,7 @@ import java.util.List;
 import java.util.ResourceBundle;
 
 public class UsersViewController implements Initializable {
-    UserDao userDao = UserDaoImpl.getInstance();
+    UserDao userDao = UserDaoImpl.getInstance(DBConnection.getConnection());
 
     @FXML
     JFXButton registerBtn;
@@ -35,12 +36,11 @@ public class UsersViewController implements Initializable {
     private JFXTextField emailTf;
     @FXML
     private JFXTextField countryTf;
+    List<UsersTableModel> usersTableModelList;
     @FXML
-    private TableColumn<UserViewModel, String> phoneNoCol;
+    private TableColumn<UsersTableModel, String> phoneNoCol;
     @FXML
-    private TableColumn<UserViewModel, String> userNameCol;
-    @FXML
-    private TableColumn<UserViewModel, String> passCol;
+    private TableColumn<UsersTableModel, String> userNameCol;
     @FXML
     private JFXTextField bioTf;
     @FXML
@@ -48,8 +48,9 @@ public class UsersViewController implements Initializable {
     @FXML
     private JFXTextField userGenderTf;
     @FXML
-    private TableColumn<UserViewModel, String> EmailCol;
-    List<UserViewModel> userViewModelList;
+    private TableColumn<UsersTableModel, String> passCol;
+    @FXML
+    private TableColumn<UsersTableModel, String> EmailCol;
     @FXML
     private TableView<User> userViewTv;
 
@@ -65,10 +66,10 @@ public class UsersViewController implements Initializable {
             List<User> allUsers = userDao.getAllUsers();
             if (allUsers != null) {
                 userViewTv.setItems(FXCollections.observableList(allUsers));
-                phoneNoCol.setCellValueFactory(new PropertyValueFactory<UserViewModel, String>("phoneNumber"));
-                userNameCol.setCellValueFactory(new PropertyValueFactory<UserViewModel, String>("username"));
-                passCol.setCellValueFactory(new PropertyValueFactory<UserViewModel, String>("password"));
-                EmailCol.setCellValueFactory(new PropertyValueFactory<UserViewModel, String>("email"));
+                phoneNoCol.setCellValueFactory(new PropertyValueFactory<UsersTableModel, String>("phoneNumber"));
+                userNameCol.setCellValueFactory(new PropertyValueFactory<UsersTableModel, String>("username"));
+                passCol.setCellValueFactory(new PropertyValueFactory<UsersTableModel, String>("password"));
+                EmailCol.setCellValueFactory(new PropertyValueFactory<UsersTableModel, String>("email"));
 
             } else
                 System.out.println("no users found");
@@ -80,10 +81,10 @@ public class UsersViewController implements Initializable {
 
     private void registerUser() {
         try {
-            UserDaoImpl userDao = new UserDaoImpl();
+            UserDao userDao = UserDaoImpl.getInstance(DBConnection.getConnection());
             User user = createUserFromView();
             userDao.createUser(user);
-            userViewModelList.add(new UserViewModel(user));
+            usersTableModelList.add(new UsersTableModel(user));
 
         } catch (RemoteException e) {
             e.printStackTrace();

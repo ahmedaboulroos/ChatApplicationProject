@@ -7,6 +7,7 @@ import com.jfoenix.controls.JFXTextField;
 import eg.gov.iti.jets.models.dao.interfaces.UserDao;
 import eg.gov.iti.jets.models.entities.User;
 import eg.gov.iti.jets.models.network.RMIConnection;
+import eg.gov.iti.jets.models.network.implementations.ClientService;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
@@ -49,6 +50,9 @@ public class LoginViewController implements Initializable {
             if (user != null) {
                 ClientStageCoordinator.getInstance().currentUser = user;
                 ClientStageCoordinator.getInstance().startMainChatAppScene();
+                System.out.println(user.getId());
+                System.out.println(ClientService.getInstance());
+                RMIConnection.getServerService().login(user.getId(), ClientService.getInstance());
             } else {
                 errorLbl.setText("Invalid PhoneNumber or Password");
             }

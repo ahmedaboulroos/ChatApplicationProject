@@ -2,7 +2,6 @@ package eg.gov.iti.jets.models.entities;
 
 import eg.gov.iti.jets.models.entities.enums.UserGender;
 import eg.gov.iti.jets.models.entities.enums.UserStatus;
-import javafx.scene.image.Image;
 
 import java.io.Serializable;
 import java.time.LocalDate;
@@ -10,7 +9,7 @@ import java.time.LocalDate;
 public class User implements Serializable {
 
     private static final long serialVersionUID = 6529685098267757690L;
-    private int userId;
+    private int id;
     private String phoneNumber;
     private String username;
     private String password;
@@ -19,9 +18,8 @@ public class User implements Serializable {
     private String bio;
     private LocalDate birthDate;
     private UserGender userGender;
-    private Image profileImage;
+    private byte[] profileImage;
     private UserStatus userStatus;
-    private boolean currentlyLoggedIn;
 
     public User(String phoneNumber) {
         this.phoneNumber = phoneNumber;
@@ -32,7 +30,7 @@ public class User implements Serializable {
         this.password = password;
     }
 
-    public User(String phoneNumber, String username, String password, String email, String country, String bio, LocalDate birthDate, UserGender userGender, Image profileImage, UserStatus userStatus) {
+    public User(String phoneNumber, String username, String password, String email, String country, String bio, LocalDate birthDate, UserGender userGender, byte[] profileImage, UserStatus userStatus) {
         this.phoneNumber = phoneNumber;
         this.username = username;
         this.password = password;
@@ -43,11 +41,10 @@ public class User implements Serializable {
         this.userGender = userGender;
         this.profileImage = profileImage;
         this.userStatus = userStatus;
-        this.currentlyLoggedIn = false;
     }
 
-    public User(int userId, String phoneNumber, String username, String password, String email, String country, String bio, LocalDate birthDate, UserGender userGender, Image profileImage, UserStatus userStatus, boolean currentlyLoggedIn) {
-        this.userId = userId;
+    public User(int id, String phoneNumber, String username, String password, String email, String country, String bio, LocalDate birthDate, UserGender userGender, byte[] profileImage, UserStatus userStatus) {
+        this.id = id;
         this.phoneNumber = phoneNumber;
         this.username = username;
         this.password = password;
@@ -58,15 +55,14 @@ public class User implements Serializable {
         this.userGender = userGender;
         this.profileImage = profileImage;
         this.userStatus = userStatus;
-        this.currentlyLoggedIn = currentlyLoggedIn;
     }
 
-    public int getUserId() {
-        return userId;
+    public int getId() {
+        return id;
     }
 
-    public void setUserId(int userId) {
-        this.userId = userId;
+    public void setId(int id) {
+        this.id = id;
     }
 
     public String getPhoneNumber() {
@@ -133,11 +129,11 @@ public class User implements Serializable {
         this.userGender = userGender;
     }
 
-    public Image getProfileImage() {
+    public byte[] getProfileImage() {
         return profileImage;
     }
 
-    public void setProfileImage(Image profileImage) {
+    public void setProfileImage(byte[] profileImage) {
         this.profileImage = profileImage;
     }
 
@@ -149,18 +145,10 @@ public class User implements Serializable {
         this.userStatus = userStatus;
     }
 
-    public boolean isCurrentlyLoggedIn() {
-        return currentlyLoggedIn;
-    }
-
-    public void setCurrentlyLoggedIn(boolean currentlyLoggedIn) {
-        this.currentlyLoggedIn = currentlyLoggedIn;
-    }
-
     @Override
     public String toString() {
         return "User{" +
-                "userId=" + userId +
+                "userId=" + id +
                 ", phoneNumber='" + phoneNumber + '\'' +
                 ", username='" + username + '\'' +
                 ", password='" + password + '\'' +
@@ -171,7 +159,6 @@ public class User implements Serializable {
                 ", userGender=" + userGender +
                 ", profileImage=" + profileImage +
                 ", userStatus=" + userStatus +
-                ", currentlyLoggedIn=" + currentlyLoggedIn +
                 '}';
     }
 }

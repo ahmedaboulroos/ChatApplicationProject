@@ -1,44 +1,66 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+
 <?import com.jfoenix.controls.*?>
+<?import javafx.geometry.Insets?>
 <?import javafx.scene.control.*?>
-<?import javafx.scene.layout.AnchorPane?>
-<?import javafx.scene.layout.Pane?>
-<AnchorPane xmlns:fx="http://javafx.com/fxml/1" prefHeight="531.0" prefWidth="600.0"
-            xmlns="http://javafx.com/javafx/11.0.1" fx:controller="eg.gov.iti.jets.controllers.UsersViewController">
-    <children>
-        <Pane layoutX="-1.0" layoutY="259.0" prefHeight="272.0" prefWidth="600.0">
+<?import javafx.scene.layout.*?>
+<BorderPane xmlns:fx="http://javafx.com/fxml/1" prefHeight="500.0" xmlns="http://javafx.com/javafx/11.0.1"
+            fx:controller="eg.gov.iti.jets.controllers.UsersViewController">
+    <center>
+        <VBox spacing="15.0">
             <children>
-                <TableView fx:id="userViewTv" prefHeight="272.0" prefWidth="600.0">
+                <HBox spacing="20.0">
+                    <children>
+                        <VBox spacing="15.0" HBox.hgrow="ALWAYS">
+                            <children>
+                                <JFXTextField fx:id="phoneNoTf" prefHeight="25.0" prefWidth="251.0"
+                                              promptText="Phone Number"/>
+                                <JFXTextField fx:id="usernameTf" prefHeight="25.0" prefWidth="251.0"
+                                              promptText="Username"/>
+                                <JFXTextField fx:id="passwordTf" prefHeight="25.0" prefWidth="251.0"
+                                              promptText="Password"/>
+                                <JFXTextField fx:id="emailTf" prefHeight="25.0" prefWidth="251.0" promptText="Email"/>
+                            </children>
+                        </VBox>
+                        <VBox spacing="15.0" HBox.hgrow="ALWAYS">
+                            <children>
+                                <JFXTextField fx:id="birthDateTf" prefHeight="25.0" prefWidth="169.0"
+                                              promptText="Birth Date"/>
+                                <JFXTextField fx:id="userGenderTf" prefHeight="25.0" prefWidth="169.0"
+                                              promptText="Gender"/>
+                                <JFXTextField fx:id="countryTf" prefHeight="25.0" prefWidth="251.0"
+                                              promptText="Country"/>
+                                <JFXTextField fx:id="bioTf" prefHeight="25.0" prefWidth="251.0" promptText="Bio"/>
+                            </children>
+                        </VBox>
+                    </children>
+                    <padding>
+                        <Insets bottom="10.0" left="10.0" right="10.0" top="10.0"/>
+                    </padding>
+                </HBox>
+                <HBox>
+                    <children>
+                        <Region HBox.hgrow="ALWAYS"/>
+                        <JFXButton fx:id="registerBtn" prefWidth="150.0" style="-fx-background-color: lightblue;"
+                                   text="Register"/>
+                    </children>
+                    <padding>
+                        <Insets bottom="5.0" left="5.0" right="5.0" top="5.0"/>
+                    </padding>
+                </HBox>
+                <TableView fx:id="userViewTv" VBox.vgrow="ALWAYS">
                     <columns>
-                        <TableColumn fx:id="phoneNoCol" prefWidth="116.00000303983688" text="Phone No."/>
-                        <TableColumn fx:id="userNameCol" minWidth="6.4000244140625" prefWidth="96.0" text="Username"/>
-                        <TableColumn fx:id="passCol" prefWidth="75.0" text="Password"/>
-                        <TableColumn fx:id="EmailCol" prefWidth="75.0" text="Email"/>
+                        <TableColumn fx:id="phoneNoCol" prefWidth="150.0" text="Phone No."/>
+                        <TableColumn fx:id="userNameCol" minWidth="6.4000244140625" prefWidth="150.0" text="Username"/>
+                        <TableColumn fx:id="passCol" prefWidth="150.0" text="Password"/>
+                        <TableColumn fx:id="EmailCol" prefWidth="200.0" text="Email"/>
                     </columns>
                 </TableView>
             </children>
-        </Pane>
-        <Pane prefHeight="257.0" prefWidth="600.0">
-            <children>
-                <JFXTextField fx:id="phoneNoTf" layoutX="89.0" layoutY="14.0" prefHeight="25.0" prefWidth="251.0"
-                              promptText="phoneNo"/>
-                <JFXTextField fx:id="usernameTf" layoutX="89.0" layoutY="48.0" prefHeight="25.0" prefWidth="251.0"
-                              promptText="userName"/>
-                <JFXTextField fx:id="passwordTf" layoutX="89.0" layoutY="84.0" prefHeight="25.0" prefWidth="251.0"
-                              promptText="Password" text="password"/>
-                <JFXTextField fx:id="emailTf" layoutX="89.0" layoutY="129.0" prefHeight="25.0" prefWidth="251.0"
-                              promptText="email"/>
-                <JFXTextField fx:id="countryTf" layoutX="89.0" layoutY="169.0" prefHeight="25.0" prefWidth="251.0"
-                              promptText="country"/>
-                <JFXTextField fx:id="bioTf" layoutX="89.0" layoutY="210.0" prefHeight="25.0" prefWidth="251.0"
-                              promptText="bio"/>
-                <JFXTextField fx:id="birthDateTf" layoutX="364.0" layoutY="14.0" prefHeight="25.0" prefWidth="169.0"
-                              promptText="birthDate"/>
-                <JFXTextField fx:id="userGenderTf" layoutX="362.0" layoutY="97.0" prefHeight="25.0" prefWidth="169.0"
-                              promptText="userGender"/>
-                <JFXButton fx:id="registerBtn" layoutX="417.0" layoutY="210.0" text="Register"/>
-            </children>
-        </Pane>
-    </children>
-</AnchorPane>
+            <padding>
+                <Insets bottom="10.0"/>
+            </padding>
+        </VBox>
+    </center>
+</BorderPane>

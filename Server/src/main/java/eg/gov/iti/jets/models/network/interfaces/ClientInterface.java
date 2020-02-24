@@ -5,28 +5,39 @@ import java.rmi.RemoteException;
 
 public interface ClientInterface extends Remote {
 
+    // user login & logout
     void userLoggedIn(int userId) throws RemoteException;
 
     void userLoggedOut(int userId) throws RemoteException;
 
+
+    // user status changed
+    void receiveUserStatusChanged(int userId) throws RemoteException;
+
+
+    // single chat notifications
     void receiveNewSingleChat(int singleChatId) throws RemoteException;
 
     void receiveNewSingleChatMessage(int singleChatMessageId) throws RemoteException;
 
-    void receiveNewGroupChat(int groupChatId) throws RemoteException;
+
+    // group chat notifications
+    void receiveNewGroupChatMembership(int groupChatMembershipId) throws RemoteException;
 
     void receiveNewGroupChatMessage(int groupChatMessageId) throws RemoteException;
 
-    void receiveNewSeenByStatus(int seenByStatusId) throws RemoteException;
 
-    void receiveRelationship(int relationshipId) throws RemoteException;
+    // relationship new | updated
+    void receiveNewRelationship(int relationshipId) throws RemoteException;
 
-    void receiveMembership(int membershipId) throws RemoteException;
 
-    void receiveGroup(int groupId) throws RemoteException;
+    // Contacts list changes
+    void receiveNewContactsGroup(int contactsGroupId) throws RemoteException;
 
-    void receiveGroupContact(int groupContactId) throws RemoteException;
+    void receiveNewContactsGroupMembership(int contactsGroupMembershipId) throws RemoteException;
 
-    void receiveAnnouncement(int announcementId) throws RemoteException;
+
+    // server announcements
+    void receiveNewAnnouncement(int announcementId) throws RemoteException;
 
 }

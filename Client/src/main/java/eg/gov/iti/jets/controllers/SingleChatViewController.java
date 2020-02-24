@@ -44,7 +44,7 @@ public class SingleChatViewController {
         try {
             String msg = singleChatMessageHtml.getHtmlText();
             SingleChatMessageDao singleChatDao = RMIConnection.getSingleChatMessageDao();
-            SingleChatMessage singleChatMessage = new SingleChatMessage(this.singleChatId, currentUser.getUserId(), msg);
+            SingleChatMessage singleChatMessage = new SingleChatMessage(this.singleChatId, currentUser.getId(), msg);
             singleChatDao.createSingleChatMessage(singleChatMessage);
         } catch (
                 RemoteException e) {
@@ -64,7 +64,7 @@ public class SingleChatViewController {
     }
 
     public void displayNewSingleChatMessage(SingleChatMessage singleChatMessage, UserDto userDto) {
-        System.out.println(" singleChatMessageId : " + singleChatMessage.getSingleChatMessageId()
+        System.out.println(" singleChatMessageId : " + singleChatMessage.getId()
                 + "\n userId: " + singleChatMessage.getUserId()
                 + "\n singleChatId: " + singleChatMessage.getSingleChatId()
                 + "\n contentMsg " + singleChatMessage.getContent()

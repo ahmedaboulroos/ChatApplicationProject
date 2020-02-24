@@ -1,5 +1,5 @@
 package eg.gov.iti.jets.models.entities.enums;
 
-public enum AnnouncementDeliveryStatus {
+public enum DeliveryStatus {
     DELIVERED, SEEN
 }

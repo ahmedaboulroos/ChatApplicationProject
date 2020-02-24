@@ -10,7 +10,7 @@ import java.util.List;
 public interface RelationshipDao extends Remote {
 
     // Create
-    boolean createRelationship(Relationship relationship) throws RemoteException;
+    int createRelationship(Relationship relationship) throws RemoteException;
 
     // Read
     List<User> getRelationshipTwoUsers(int relationshipId) throws RemoteException;
@@ -20,9 +20,9 @@ public interface RelationshipDao extends Remote {
     Relationship getRelationshipBetween(int firstUserId, int secondUserId) throws RemoteException;
 
     // Update
-    boolean updateRelationship(Relationship relationship) throws RemoteException;
+    void updateRelationship(Relationship relationship) throws RemoteException;
 
     // Delete
-    boolean deleteRelationship(int relationshipId) throws RemoteException;
+    void deleteRelationship(int relationshipId) throws RemoteException;
 
 }

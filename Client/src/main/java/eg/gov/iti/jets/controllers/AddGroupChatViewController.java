@@ -12,6 +12,7 @@ import javafx.stage.FileChooser;
 
 import java.io.File;
 import java.rmi.RemoteException;
+import java.time.LocalDateTime;
 
 public class AddGroupChatViewController {
 
@@ -33,10 +34,10 @@ public class AddGroupChatViewController {
     @FXML
     void handleCreateGroupChat(ActionEvent event) {
         try {
-            GroupChat groupChat = new GroupChat(titleTf.getText(), descriptionTf.getText(), ImageUtiles.fromImageToBytes(file.getAbsolutePath()));
+            GroupChat groupChat = new GroupChat(titleTf.getText(), descriptionTf.getText(), ImageUtiles.fromImageToBytes(file.getAbsolutePath()), LocalDateTime.now());
             System.out.println(ImageUtiles.fromImageToBytes(file.getAbsolutePath()));
             System.out.println("55555555555555555555555");
-            System.out.println(groupChat.getCreationTimestamp());
+            System.out.println(groupChat.getCreationDateTime());
             groupChatDao.createGroupChat(groupChat);
         } catch (RemoteException e) {
             e.printStackTrace();

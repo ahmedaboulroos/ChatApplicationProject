@@ -2,50 +2,67 @@
 
 <?import com.jfoenix.controls.JFXButton?>
 <?import com.jfoenix.controls.JFXTextField?>
+<?import javafx.geometry.Insets?>
 <?import javafx.scene.control.*?>
-<?import javafx.scene.layout.AnchorPane?>
-<?import javafx.scene.layout.BorderPane?>
+<?import javafx.scene.layout.*?>
 <?import javafx.scene.text.Font?>
+<?import javafx.scene.web.HTMLEditor?>
+<?import javafx.scene.web.WebView?>
 <BorderPane xmlns:fx="http://javafx.com/fxml/1" xmlns="http://javafx.com/javafx/11.0.1"
             fx:controller="eg.gov.iti.jets.controllers.AnnouncementsViewController">
     <center>
-        <ScrollPane>
-            <content>
-                <AnchorPane prefHeight="665.0" prefWidth="839.0">
+        <VBox spacing="5.0">
+            <children>
+                <HBox alignment="CENTER_LEFT">
                     <children>
-                        <JFXTextField fx:id="announcementTf" layoutX="74.0" layoutY="48.0" promptText="Announcement">
+                        <JFXTextField fx:id="announcementTf" prefWidth="300.0" promptText="Announcement Title">
                             <font>
-                                <Font size="24.0"/>
+                                <Font size="18.0"/>
                             </font>
                         </JFXTextField>
-                        <JFXButton fx:id="sendAnnouncementBtn" layoutX="492.0" layoutY="60.0" onAction="#handleSendBtn"
-                                   style="-fx-background-color: #2222;" text="Send">
+                        <Region HBox.hgrow="ALWAYS"/>
+                        <JFXButton fx:id="sendAnnouncementBtn" onAction="#handleSendBtn" prefWidth="150.0"
+                                   style="-fx-background-color: lightblue;" text="Send">
                             <font>
                                 <Font size="18.0"/>
                             </font>
                         </JFXButton>
-                        <TableView fx:id="announcementsTv" layoutX="74.0" layoutY="152.0"
-                                   onMouseClicked="#handleAnnouncementsMc" prefHeight="200.0" prefWidth="469.0">
+                    </children>
+                    <VBox.margin>
+                        <Insets bottom="15.0" left="15.0" right="15.0"/>
+                    </VBox.margin>
+                </HBox>
+                <HTMLEditor
+                        htmlText="&lt;html&gt;&lt;head&gt;&lt;/head&gt;&lt;body contenteditable=&quot;true&quot;&gt;&lt;/body&gt;&lt;/html&gt;"
+                        prefHeight="200.0" prefWidth="506.0" VBox.vgrow="ALWAYS"/>
+                <Separator prefWidth="200.0"/>
+                <HBox spacing="10.0" VBox.vgrow="ALWAYS">
+                    <children>
+                        <TableView fx:id="announcementsTv" onMouseClicked="#handleAnnouncementsMc" prefHeight="200.0"
+                                   prefWidth="469.0" HBox.hgrow="ALWAYS">
                             <columns>
-                                <TableColumn fx:id="announcementId" prefWidth="134.4000244140625" text="ID"/>
-                                <TableColumn fx:id="content" prefWidth="170.39996337890625" text="content"/>
-                                <TableColumn fx:id="announcementTimestamp" minWidth="0.0" prefWidth="164.0"
+                                <TableColumn fx:id="announcementId" prefWidth="75.0" text="ID"/>
+                                <TableColumn fx:id="title" prefWidth="300.0" text="Title"/>
+                                <TableColumn fx:id="announcementTimestamp" minWidth="0.0" prefWidth="175.0"
                                              text="Timestamp"/>
                             </columns>
                         </TableView>
-                        <TableView fx:id="announcementsDeliveryTv" layoutX="74.0" layoutY="399.0" prefHeight="200.0"
-                                   prefWidth="469.0">
-                            <columns>
-                                <TableColumn fx:id="announcementDeliveryId" prefWidth="75.0" text="ID"/>
-                                <TableColumn fx:id="userId" prefWidth="75.0" text="userID"/>
-                                <TableColumn fx:id="announcementDelId" prefWidth="126.40003967285156"
-                                             text="annoucementID"/>
-                                <TableColumn fx:id="announcementDeliveryStatus" prefWidth="128.0" text="Status"/>
-                            </columns>
-                        </TableView>
+                        <VBox spacing="10.0" HBox.hgrow="ALWAYS">
+                            <children>
+                                <Label text="Contents" textFill="#6b6b6b">
+                                    <font>
+                                        <Font size="18.0"/>
+                                    </font>
+                                </Label>
+                                <WebView fx:id="contentWv" prefHeight="200.0" prefWidth="200.0"/>
+                            </children>
+                        </VBox>
                     </children>
-                </AnchorPane>
-            </content>
-        </ScrollPane>
+                </HBox>
+            </children>
+        </VBox>
     </center>
+    <padding>
+        <Insets bottom="5.0" left="5.0" right="5.0" top="5.0"/>
+    </padding>
 </BorderPane>

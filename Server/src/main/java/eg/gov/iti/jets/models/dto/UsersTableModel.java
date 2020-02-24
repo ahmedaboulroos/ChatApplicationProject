@@ -5,7 +5,7 @@ import javafx.beans.property.SimpleBooleanProperty;
 import javafx.beans.property.SimpleIntegerProperty;
 import javafx.beans.property.SimpleStringProperty;
 
-public class UserViewModel {
+public class UsersTableModel {
 
     private SimpleIntegerProperty userId;
     private SimpleStringProperty phoneNumber;
@@ -14,13 +14,9 @@ public class UserViewModel {
     private SimpleStringProperty email;
     private SimpleStringProperty country;
     private SimpleStringProperty bio;
-    //    private LocalDate birthDate;
-//    private UserGender userGender;
-//    private Image profileImage;
-//    private UserStatus userStatus;
     private SimpleBooleanProperty currentlyLoggedIn;
 
-    public UserViewModel(int userId, String phoneNumber, String username, String password, String email, String country, String bio, boolean currentlyLoggedIn) {
+    public UsersTableModel(int userId, String phoneNumber, String username, String password, String email, String country, String bio, boolean currentlyLoggedIn) {
         this.userId = new SimpleIntegerProperty(userId);
         this.phoneNumber = new SimpleStringProperty(phoneNumber);
         this.username = new SimpleStringProperty(username);
@@ -31,15 +27,14 @@ public class UserViewModel {
         this.currentlyLoggedIn = new SimpleBooleanProperty(currentlyLoggedIn);
     }
 
-    public UserViewModel(User user) {
-        this.userId = new SimpleIntegerProperty(user.getUserId());
+    public UsersTableModel(User user) {
+        this.userId = new SimpleIntegerProperty(user.getId());
         this.phoneNumber = new SimpleStringProperty(user.getPhoneNumber());
         this.username = new SimpleStringProperty(user.getUsername());
         this.password = new SimpleStringProperty(user.getPassword());
         this.email = new SimpleStringProperty(user.getEmail());
         this.country = new SimpleStringProperty(user.getCountry());
         this.bio = new SimpleStringProperty(user.getBio());
-        this.currentlyLoggedIn = new SimpleBooleanProperty(user.isCurrentlyLoggedIn());
 
     }
 

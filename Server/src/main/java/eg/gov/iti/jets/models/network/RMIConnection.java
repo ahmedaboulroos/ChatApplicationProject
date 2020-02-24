@@ -4,27 +4,28 @@ import eg.gov.iti.jets.models.dao.implementations.*;
 import eg.gov.iti.jets.models.dao.interfaces.*;
 import eg.gov.iti.jets.models.network.implementations.ServerService;
 import eg.gov.iti.jets.models.network.interfaces.ServerInterface;
+import eg.gov.iti.jets.models.persistence.DBConnection;
 
 import java.rmi.NotBoundException;
 import java.rmi.RemoteException;
 import java.rmi.registry.LocateRegistry;
 import java.rmi.registry.Registry;
+import java.sql.Connection;
 
 public class RMIConnection {
 
     private static RMIConnection instance;
-    private AnnouncementDao announcementDao = AnnouncementDaoImpl.getInstance();
-    private AnnouncementDeliveryDao announcementDeliveryDao = AnnouncementDeliveryDaoImpl.getInstance();
-    private GroupChatDao groupChatDao = GroupChatDaoImpl.getInstance();
-    private GroupChatMessageDao groupChatMessageDao = GroupChatMessageDaoImpl.getInstance();
-    private GroupContactDao groupContactDao = GroupContactDaoImpl.getInstance();
-    private GroupDao groupDao = GroupDaoImpl.getInstance();
-    private MembershipDao membershipDao = MembershipDaoImpl.getInstance();
-    private RelationshipDao relationshipDao = RelationshipDaoImpl.getInstance();
-    private SeenByStatusDao seenByStatusDao = SeenByStatusDaoImpl.getInstance();
-    private SingleChatDao singleChatDao = SingleChatDaoImpl.getInstance();
-    private SingleChatMessageDao singleChatMessageDao = SingleChatMessageDaoImpl.getInstance();
-    private UserDao userDao = UserDaoImpl.getInstance();
+    private static Connection connection = DBConnection.getConnection();
+    private AnnouncementDao announcementDao = AnnouncementDaoImpl.getInstance(connection);
+    private GroupChatDao groupChatDao = GroupChatDaoImpl.getInstance(connection);
+    private GroupChatMessageDao groupChatMessageDao = GroupChatMessageDaoImpl.getInstance(connection);
+    private ContactsGroupMembershipDao contactsGroupMembershipDao = ContactsGroupMembershipDaoImpl.getInstance(connection);
+    private ContactsGroupDao contactsGroupDao = ContactsGroupDaoImpl.getInstance(connection);
+    private GroupChatMembershipDao groupChatMembershipDao = GroupChatMembershipDaoImpl.getInstance(connection);
+    private RelationshipDao relationshipDao = RelationshipDaoImpl.getInstance(connection);
+    private SingleChatDao singleChatDao = SingleChatDaoImpl.getInstance(connection);
+    private SingleChatMessageDao singleChatMessageDao = SingleChatMessageDaoImpl.getInstance(connection);
+    private UserDao userDao = UserDaoImpl.getInstance(connection);
     private ServerInterface serverService;
 
     private Registry registry;
@@ -62,14 +63,12 @@ public class RMIConnection {
     public void startConnection() {
         try {
             this.registry.rebind("AnnouncementDao", announcementDao);
-            this.registry.rebind("AnnouncementDeliveryDao", announcementDeliveryDao);
             this.registry.rebind("GroupChatDao", groupChatDao);
             this.registry.rebind("GroupChatMessageDao", groupChatMessageDao);
-            this.registry.rebind("GroupContactDao", groupContactDao);
-            this.registry.rebind("GroupDao", groupDao);
-            this.registry.rebind("MembershipDao", membershipDao);
+            this.registry.rebind("ContactsGroupMembershipDao", contactsGroupMembershipDao);
+            this.registry.rebind("ContactsGroupDao", contactsGroupDao);
+            this.registry.rebind("GroupChatMembershipDao", groupChatMembershipDao);
             this.registry.rebind("RelationshipDao", relationshipDao);
-            this.registry.rebind("SeenByStatusDao", seenByStatusDao);
             this.registry.rebind("SingleChatDao", singleChatDao);
             this.registry.rebind("SingleChatMessageDao", singleChatMessageDao);
             this.registry.rebind("UserDao", userDao);

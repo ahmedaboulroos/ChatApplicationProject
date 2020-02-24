@@ -9,14 +9,14 @@ import java.rmi.RemoteException;
 public interface SingleChatMessageDao extends Remote {
 
     // Create
-    boolean createSingleChatMessage(SingleChatMessage singleChatMessage) throws RemoteException;
+    int createSingleChatMessage(SingleChatMessage singleChatMessage) throws RemoteException;
 
     // Read
     SingleChatMessage getSingleChatMessage(int singleChatMessageId) throws RemoteException;
 
     // Update
-    boolean updateSingleChatMessage(SingleChatMessage singleChatMessage) throws RemoteException;
+    void updateSingleChatMessage(SingleChatMessage singleChatMessage) throws RemoteException;
 
     // Delete
-    boolean deleteSingleChatMessage(int singleChatMessageId) throws RemoteException;
+    void deleteSingleChatMessage(int singleChatMessageId) throws RemoteException;
 }

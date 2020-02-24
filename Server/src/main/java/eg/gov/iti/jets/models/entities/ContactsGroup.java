@@ -2,29 +2,29 @@ package eg.gov.iti.jets.models.entities;
 
 import java.io.Serializable;
 
-public class Group implements Serializable {
+public class ContactsGroup implements Serializable {
     private static final long serialVersionUID = 6539685698278757695L;
-    private int groupId;
+    private int id;
     private int userId;
     private String groupName;
 
-    public Group(int userId, String groupName) {
+    public ContactsGroup(int userId, String groupName) {
         this.userId = userId;
         this.groupName = groupName;
     }
 
-    public Group(int groupId, int userId, String groupName) {
-        this.groupId = groupId;
+    public ContactsGroup(int id, int userId, String groupName) {
+        this.id = id;
         this.userId = userId;
         this.groupName = groupName;
     }
 
-    public int getGroupId() {
-        return groupId;
+    public int getId() {
+        return id;
     }
 
-    public void setGroupId(int groupId) {
-        this.groupId = groupId;
+    public void setId(int id) {
+        this.id = id;
     }
 
     public int getUserId() {
@@ -46,7 +46,7 @@ public class Group implements Serializable {
     @Override
     public String toString() {
         return "Group{" +
-                "groupId=" + groupId +
+                "groupId=" + id +
                 ", userId=" + userId +
                 ", groupName='" + groupName + '\'' +
                 '}';

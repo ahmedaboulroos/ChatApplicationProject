@@ -11,7 +11,7 @@ import java.util.List;
 public interface SingleChatDao extends Remote {
 
     // Create
-    boolean createSingleChat(SingleChat singleChat) throws RemoteException;
+    int createSingleChat(SingleChat singleChat) throws RemoteException;
 
     // Read
     SingleChat getSingleChat(int singleChatId) throws RemoteException;
@@ -21,9 +21,9 @@ public interface SingleChatDao extends Remote {
     List<SingleChatMessage> getSingleChatMessages(int singleChatId) throws RemoteException;
 
     // Update
-    boolean updateSingleChat(SingleChat singleChat) throws RemoteException;
+    void updateSingleChat(SingleChat singleChat) throws RemoteException;
 
     // Delete
-    boolean deleteSingleChat(int singleChatId) throws RemoteException;
+    void deleteSingleChat(int singleChatId) throws RemoteException;
 
 }

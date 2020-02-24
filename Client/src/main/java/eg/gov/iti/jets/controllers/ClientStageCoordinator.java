@@ -1,10 +1,6 @@
 package eg.gov.iti.jets.controllers;
 
 import eg.gov.iti.jets.models.entities.User;
-import eg.gov.iti.jets.models.network.RMIConnection;
-import eg.gov.iti.jets.models.network.implementations.ClientService;
-import eg.gov.iti.jets.models.network.interfaces.ClientInterface;
-import eg.gov.iti.jets.models.network.interfaces.ServerInterface;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
@@ -36,11 +32,6 @@ public class ClientStageCoordinator {
     public void startMainChatAppScene() throws IOException {
         FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/views/ChatAppView.fxml"));
         Parent mainChatAppView = fxmlLoader.load();
-        ServerInterface serverService = RMIConnection.getServerService();
-        chatAppViewController = fxmlLoader.getController();
-        ClientInterface clientService = new ClientService(chatAppViewController);
-        serverService.login(currentUser.getUserId(), clientService);
-
         this.stage.setScene(new Scene(mainChatAppView));
         this.stage.setTitle("Chat Application");
         this.stage.show();

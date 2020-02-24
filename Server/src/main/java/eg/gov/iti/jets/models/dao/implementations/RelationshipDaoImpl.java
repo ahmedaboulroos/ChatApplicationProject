@@ -4,7 +4,7 @@ import eg.gov.iti.jets.models.dao.interfaces.RelationshipDao;
 import eg.gov.iti.jets.models.entities.Relationship;
 import eg.gov.iti.jets.models.entities.User;
 import eg.gov.iti.jets.models.entities.enums.RelationshipStatus;
-import eg.gov.iti.jets.models.persistence.DBConnection;
+import eg.gov.iti.jets.models.network.implementations.ServerService;
 
 import java.rmi.RemoteException;
 import java.rmi.server.UnicastRemoteObject;
@@ -17,16 +17,17 @@ import java.util.List;
 
 public class RelationshipDaoImpl extends UnicastRemoteObject implements RelationshipDao {
 
-    private Connection connection = DBConnection.getConnection();
     private static RelationshipDaoImpl instance;
+    private static Connection dbConnection;
 
     protected RelationshipDaoImpl() throws RemoteException {
     }
 
-    public static RelationshipDao getInstance() {
+    public static RelationshipDao getInstance(Connection connection) {
         if (instance == null) {
             try {
                 instance = new RelationshipDaoImpl();
+                dbConnection = connection;
             } catch (RemoteException e) {
                 e.printStackTrace();
             }
@@ -35,68 +36,54 @@ public class RelationshipDaoImpl extends UnicastRemoteObject implements Relation
     }
 
     @Override
-    public boolean createRelationship(Relationship relationship) {
-        int result = 0;
-        try {
-            PreparedStatement preparedStatement = connection.prepareStatement("select SEQ_RELATIONSHIP_ID.nextval from DUAL");
-            ResultSet resultSet = preparedStatement.executeQuery();
-            if (resultSet.next()) {
-                int relationshipId = resultSet.getInt(1);
-                relationship.setRelationshipId(relationshipId);
-                preparedStatement = connection.prepareStatement(
-                        "insert into RELATIONSHIP (RELATIONSHIP_ID, FIRST_USER_ID," +
-                                " SECOND_USER_ID, RELATIONSHIP_STATUS)" +
-                                " values (?,?,?,?)");
-                preparedStatement.setInt(1, relationshipId);
-                preparedStatement.setInt(2, relationship.getFirstUserId());
-                preparedStatement.setInt(3, relationship.getSecondUserId());
-                preparedStatement.setString(4, relationship.getRelationshipStatus().toString());
-                result = preparedStatement.executeUpdate();
+    public int createRelationship(Relationship relationship) {
+        int id = -1;
+        String[] key = {"ID"};
+        String sql = "insert into RELATIONSHIPS (ID, FIRST_USER_ID, SECOND_USER_ID, STATUS) values (ID_SEQ.NEXTVAL,?,?,?)";
+        try (PreparedStatement ps = dbConnection.prepareStatement(sql, key)) {
+            ps.setInt(1, relationship.getFirstUserId());
+            ps.setInt(2, relationship.getSecondUserId());
+            ps.setString(3, relationship.getStatus().toString());
+            ps.executeUpdate();
+            ResultSet rs = ps.getGeneratedKeys();
+            if (rs.next()) {
+                id = rs.getInt(1);
             }
-            resultSet.close();
-            preparedStatement.close();
-        } catch (SQLException e) {
+            ServerService.getClient(relationship.getFirstUserId()).receiveNewRelationship(id);
+            ServerService.getClient(relationship.getSecondUserId()).receiveNewRelationship(id);
+        } catch (SQLException | RemoteException e) {
             e.printStackTrace();
         }
-        return result > 0;
+        return id;
     }
 
     @Override
     public List<User> getRelationshipTwoUsers(int relationshipId) {
+        String sql = "select FIRST_USER_ID, SECOND_USER_ID from RELATIONSHIPS where ID = ?";
         List<User> users = new ArrayList<>();
-        int[] userIDs = new int[2];
-        try (PreparedStatement preparedStatement = connection.prepareStatement(
-                "select FIRST_USER_ID, SECOND_USER_ID from RELATIONSHIP where RELATIONSHIP_ID = " + relationshipId);
-             ResultSet resultSet = preparedStatement.executeQuery()
-        ) {
-            if (resultSet.next()) {
-                userIDs[0] = resultSet.getInt("FIRST_USER_ID");
-                userIDs[1] = resultSet.getInt("SECOND_USER_ID");
+        try (PreparedStatement ps = dbConnection.prepareStatement(sql, ResultSet.TYPE_SCROLL_INSENSITIVE, ResultSet.CONCUR_READ_ONLY)) {
+            ps.setInt(1, relationshipId);
+            ResultSet rs = ps.executeQuery();
+            if (rs.first()) {
+                users.add(UserDaoImpl.getInstance(dbConnection).getUser(rs.getInt(1)));
+                users.add(UserDaoImpl.getInstance(dbConnection).getUser(rs.getInt(2)));
             }
-        } catch (SQLException e) {
+        } catch (SQLException | RemoteException e) {
             e.printStackTrace();
         }
-        try {
-            UserDaoImpl userDao = new UserDaoImpl();
-            users.add(userDao.getUser(userIDs[0]));
-            users.add(userDao.getUser(userIDs[1]));
-        } catch (RemoteException e) {
-            e.printStackTrace();
-        }
-        if (users.isEmpty())
-            users = null;
         return users;
     }
 
     @Override
     public Relationship getRelationship(int relationshipId) {
         Relationship relationship = null;
-        try (PreparedStatement preparedStatement = connection.prepareStatement(
-                "select * from RELATIONSHIP where RELATIONSHIP_ID = " + relationshipId);
-             ResultSet resultSet = preparedStatement.executeQuery()
-        ) {
-            if (resultSet.next())
-                relationship = getRelationshipFromResultSet(resultSet);
+        String sql = "select ID, FIRST_USER_ID, SECOND_USER_ID, STATUS from RELATIONSHIPS where ID = ?";
+        try (PreparedStatement ps = dbConnection.prepareStatement(sql, ResultSet.TYPE_SCROLL_INSENSITIVE, ResultSet.CONCUR_READ_ONLY)) {
+            ps.setInt(1, relationshipId);
+            ResultSet rs = ps.executeQuery();
+            if (rs.first()) {
+                relationship = getRelationshipFromResultSet(rs);
+            }
         } catch (SQLException e) {
             e.printStackTrace();
         }
@@ -106,15 +93,15 @@ public class RelationshipDaoImpl extends UnicastRemoteObject implements Relation
     @Override
     public Relationship getRelationshipBetween(int firstUserId, int secondUserId) {
         Relationship relationship = null;
-        try (PreparedStatement preparedStatement = connection.prepareStatement(
-                "select * from RELATIONSHIP where (FIRST_USER_ID = " + firstUserId
-                        + " and SECOND_USER_ID = " + secondUserId + ")"
-                        + " or (SECOND_USER_ID = " + firstUserId
-                        + " and FIRST_USER_ID = " + secondUserId + ")");
-             ResultSet resultSet = preparedStatement.executeQuery()
-        ) {
-            if (resultSet.next()) {
-                relationship = getRelationshipFromResultSet(resultSet);
+        String sql = "select * from RELATIONSHIPS where (FIRST_USER_ID = ? and SECOND_USER_ID = ?) or (SECOND_USER_ID = ? and FIRST_USER_ID = ?)";
+        try (PreparedStatement ps = dbConnection.prepareStatement(sql, ResultSet.TYPE_SCROLL_INSENSITIVE, ResultSet.CONCUR_READ_ONLY)) {
+            ps.setInt(1, firstUserId);
+            ps.setInt(2, secondUserId);
+            ps.setInt(3, firstUserId);
+            ps.setInt(4, secondUserId);
+            ResultSet rs = ps.executeQuery();
+            if (rs.first()) {
+                relationship = getRelationshipFromResultSet(rs);
             }
         } catch (SQLException e) {
             e.printStackTrace();
@@ -123,48 +110,38 @@ public class RelationshipDaoImpl extends UnicastRemoteObject implements Relation
     }
 
     @Override
-    public boolean updateRelationship(Relationship relationship) {
-        int result = 0;
-        try {
-            PreparedStatement preparedStatement = connection.prepareStatement(
-                    "update RELATIONSHIP set" +
-                            " FIRST_USER_ID = ?," +
-                            " SECOND_USER_ID = ?," +
-                            " RELATIONSHIP_STATUS = ?," +
-                            " where RELATIONSHIP_ID = " + relationship.getRelationshipId());
+    public void updateRelationship(Relationship relationship) {
+        String sql = "update RELATIONSHIPS set FIRST_USER_ID = ?, SECOND_USER_ID = ?, STATUS = ? where ID = ?";
+        try (PreparedStatement preparedStatement = dbConnection.prepareStatement(sql)) {
             preparedStatement.setInt(1, relationship.getFirstUserId());
             preparedStatement.setInt(2, relationship.getSecondUserId());
-            preparedStatement.setString(3, relationship.getRelationshipStatus().toString());
-            result = preparedStatement.executeUpdate();
-            preparedStatement.close();
-        } catch (SQLException e) {
+            preparedStatement.setString(3, relationship.getStatus().toString());
+            preparedStatement.setInt(4, relationship.getFirstUserId());
+            preparedStatement.executeUpdate();
+            ServerService.getClient(relationship.getFirstUserId()).receiveNewRelationship(relationship.getId());
+            ServerService.getClient(relationship.getSecondUserId()).receiveNewRelationship(relationship.getId());
+        } catch (SQLException | RemoteException e) {
             e.printStackTrace();
         }
-        return result > 0;
     }
 
     @Override
-    public boolean deleteRelationship(int relationshipId) {
-        int result = 0;
-        try {
-            PreparedStatement preparedStatement = connection.prepareStatement(
-                    "delete from RELATIONSHIP where RELATIONSHIP_ID = " + relationshipId);
-            result = preparedStatement.executeUpdate();
-            preparedStatement.close();
+    public void deleteRelationship(int relationshipId) {
+        String sql = "delete from RELATIONSHIPS where ID = ?";
+        try (PreparedStatement preparedStatement = dbConnection.prepareStatement(sql)) {
+            preparedStatement.setInt(1, relationshipId);
+            preparedStatement.executeUpdate();
         } catch (SQLException e) {
             e.printStackTrace();
         }
-        return result > 0;
     }
 
     private Relationship getRelationshipFromResultSet(ResultSet resultSet) throws SQLException {
-        RelationshipStatus relationshipStatus =
-                RelationshipStatus.valueOf(resultSet.getString("RELATIONSHIP_STATUS"));
         return new Relationship(
-                resultSet.getInt("RELATIONSHIP_ID"),
+                resultSet.getInt("ID"),
                 resultSet.getInt("FIRST_USER_ID"),
                 resultSet.getInt("SECOND_USER_ID"),
-                relationshipStatus
+                RelationshipStatus.valueOf(resultSet.getString("STATUS"))
         );
     }
 

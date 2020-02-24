@@ -4,7 +4,7 @@ import eg.gov.iti.jets.models.dao.interfaces.SingleChatDao;
 import eg.gov.iti.jets.models.entities.SingleChat;
 import eg.gov.iti.jets.models.entities.SingleChatMessage;
 import eg.gov.iti.jets.models.entities.User;
-import eg.gov.iti.jets.models.persistence.DBConnection;
+import eg.gov.iti.jets.models.network.implementations.ServerService;
 
 import java.rmi.RemoteException;
 import java.rmi.server.UnicastRemoteObject;
@@ -16,17 +16,18 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class SingleChatDaoImpl extends UnicastRemoteObject implements SingleChatDao {
-    private Connection connection = DBConnection.getConnection();
 
     private static SingleChatDaoImpl instance;
+    private static Connection dbConnection;
 
     protected SingleChatDaoImpl() throws RemoteException {
     }
 
-    public static SingleChatDao getInstance() {
+    public static SingleChatDao getInstance(Connection connection) {
         if (instance == null) {
             try {
                 instance = new SingleChatDaoImpl();
+                dbConnection = connection;
             } catch (RemoteException e) {
                 e.printStackTrace();
             }
@@ -34,97 +35,69 @@ public class SingleChatDaoImpl extends UnicastRemoteObject implements SingleChat
         return instance;
     }
 
-//    public static void main(String[] args) {
-//        DBConnection.getInstance().initConnection();
-//        connection = DBConnection.getInstance().getConnection();
-//        SingleChatDaoImpl obj = new SingleChatDaoImpl();
-//        //SingleChat singleChat = new SingleChat(1, 123, 124);
-//       // SingleChat.createSingleChat(singleChat);
-//       // SingleChat.deleteSingleChat(3);
-////        SingleChat ss= obj.getSingleChat(1);
-////        System.out.println(ss.getUserOneId());
-////        SingleChat ob = new SingleChat(1, 123, 125);
-////        boolean falg = obj .updateSingleChat(ob);
-////        System.out.println(falg);
-//        List<SingleChat> singlechats = new ArrayList<>();
-//        singlechats=obj.getSingleChatMessages(1);
-//
-//        System.out.println("First element of the ArrayList: "+singlechats.get(0));
-//    }
-
     @Override
-    public boolean createSingleChat(SingleChat singleChat) {
-        boolean flag = false;
-
-        try {
-            System.out.println(connection);
-            connection.setAutoCommit(false);
-            String sql = "INSERT INTO SINGLE_CHAT (SINGLE_CHAT_ID,  USER_ONE_ID, USER_TWO_ID) VALUES (SEQ_SINGLE_CHAT_ID.NEXTVAL,?,?)";
-
-            PreparedStatement preparedStatement = connection.prepareStatement(sql);
-            preparedStatement.setInt(1, singleChat.getUserOneId());
-            preparedStatement.setInt(2, singleChat.getUserTwoId());
-
-
-            int affectedRow = preparedStatement.executeUpdate();
-            System.out.println(affectedRow);
-            connection.commit();
-            if (affectedRow > 0) {
-                return true;
+    public int createSingleChat(SingleChat singleChat) {
+        int id = -1;
+        String[] key = {"ID"};
+        String sql = "INSERT INTO SINGLE_CHATS (ID,  USER_ONE_ID, USER_TWO_ID) VALUES (ID_SEQ.NEXTVAL,?,?)";
+        try (PreparedStatement ps = dbConnection.prepareStatement(sql, key)) {
+            ps.setInt(1, singleChat.getUserOneId());
+            ps.setInt(2, singleChat.getUserTwoId());
+            ps.executeUpdate();
+            ResultSet rs = ps.getGeneratedKeys();
+            if (rs.next()) {
+                id = rs.getInt(1);
             }
-
-        } catch (SQLException e) {
+            ServerService.getClient(singleChat.getUserOneId()).receiveNewSingleChat(id);
+            ServerService.getClient(singleChat.getUserTwoId()).receiveNewSingleChat(id);
+        } catch (SQLException | RemoteException e) {
             e.printStackTrace();
         }
-
-
-        return false;
+        return id;
     }
 
     @Override
     public SingleChat getSingleChat(int singleChatId) {
-
-        SingleChat singleChatRef = null;
-        try {
-            PreparedStatement statement;
-            String sql = "select * from SINGLE_CHAT where SINGLE_CHAT_ID= ? ";
-            statement = connection.prepareStatement(sql);
-            statement.setInt(1, singleChatId);
-            ResultSet resultset = statement.executeQuery();
-
-            System.out.println(resultset);
-            while (resultset.next()) {
-
-                singleChatRef = new SingleChat(resultset.getInt("SINGLE_CHAT_ID"), resultset.getInt("USER_ONE_ID"), resultset.getInt("USER_TWO_ID"));
-
+        SingleChat singleChat = null;
+        String sql = "select ID, USER_ONE_ID, USER_TWO_ID from SINGLE_CHATS where ID= ? ";
+        try (PreparedStatement ps = dbConnection.prepareStatement(sql, ResultSet.TYPE_SCROLL_INSENSITIVE, ResultSet.CONCUR_READ_ONLY)) {
+            ps.setInt(1, singleChatId);
+            ResultSet rs = ps.executeQuery();
+            if (rs.first()) {
+                singleChat = new SingleChat(rs.getInt(1), rs.getInt(2), rs.getInt(3));
             }
-
         } catch (SQLException sqe) {
             sqe.printStackTrace();
         }
-        return singleChatRef;
-
-
+        return singleChat;
     }
 
     @Override
     public List<User> getSingleChatTwoUsers(int singleChatId) {
-
-        return null;
-
-
+        List<User> users = new ArrayList<>();
+        String sql = "select USER_ONE_ID, USER_TWO_ID from SINGLE_CHATS where ID= ?";
+        try (PreparedStatement ps = dbConnection.prepareStatement(sql, ResultSet.TYPE_SCROLL_INSENSITIVE, ResultSet.CONCUR_READ_ONLY)) {
+            ps.setInt(1, singleChatId);
+            ResultSet rs = ps.executeQuery();
+            if (rs.first()) {
+                users.add(UserDaoImpl.getInstance(dbConnection).getUser(rs.getInt(1)));
+                users.add(UserDaoImpl.getInstance(dbConnection).getUser(rs.getInt(2)));
+            }
+        } catch (SQLException | RemoteException e) {
+            e.printStackTrace();
+        }
+        return users;
     }
 
     @Override
     public List<SingleChatMessage> getSingleChatMessages(int singleChatId) {
-        String sql = "select * from SINGLE_CHAT_MESSAGE where SINGLE_CHAT_ID = ?";
+        String sql = "select ID, USER_ID, CONTENT, MESSAGE_DATE_TIME, SINGLE_CHAT_ID from SINGLE_CHAT_MESSAGES where SINGLE_CHAT_ID = ?";
         List<SingleChatMessage> singleChatMessages = new ArrayList<>();
-        try {
-            PreparedStatement preparedStatement = connection.prepareStatement(sql);
-            preparedStatement.setInt(1, singleChatId);
-            ResultSet rs = preparedStatement.executeQuery();
+        try (PreparedStatement ps = dbConnection.prepareStatement(sql)) {
+            ps.setInt(1, singleChatId);
+            ResultSet rs = ps.executeQuery();
             while (rs.next()) {
-                singleChatMessages.add(new SingleChatMessage(rs.getInt(1), rs.getInt(2), rs.getString(3), rs.getTimestamp(4).toLocalDateTime()));
+                singleChatMessages.add(new SingleChatMessage(rs.getInt(1), rs.getInt(5), rs.getInt(2), rs.getString(3), rs.getTimestamp(4).toLocalDateTime()));
             }
         } catch (SQLException e) {
             e.printStackTrace();
@@ -133,52 +106,27 @@ public class SingleChatDaoImpl extends UnicastRemoteObject implements SingleChat
     }
 
     @Override
-    public boolean updateSingleChat(SingleChat singleChat) {
-        String sql = "UPDATE  SINGLE_CHAT SET USER_ONE_ID= ?  , USER_TWO_ID= ?" +
-                " where SINGLE_CHAT_ID= ? ";
-
-
-        try {
-            PreparedStatement preparedStatement = connection.prepareStatement(sql);
-            preparedStatement.setInt(1, singleChat.getUserOneId());
-            preparedStatement.setInt(2, singleChat.getUserTwoId());
-
-            preparedStatement.setInt(3, singleChat.getSingleChatId());
-            int rowAffected = preparedStatement.executeUpdate();
-
-            if (rowAffected != 0) {
-
-                return true;
-            }
-
-
+    public void updateSingleChat(SingleChat singleChat) {
+        String sql = "UPDATE SINGLE_CHATS SET USER_ONE_ID = ? , USER_TWO_ID = ? where ID= ? ";
+        try (PreparedStatement ps = dbConnection.prepareStatement(sql)) {
+            ps.setInt(1, singleChat.getUserOneId());
+            ps.setInt(2, singleChat.getUserTwoId());
+            ps.setInt(3, singleChat.getId());
+            ps.executeUpdate();
         } catch (SQLException e) {
             e.printStackTrace();
         }
-        return false;
     }
 
     @Override
-    public boolean deleteSingleChat(int singleChatId) {
-        try {
-            String sql = "delete from SINGLE_CHAT where SINGLE_CHAT_ID= ?";
-
-            PreparedStatement stmt = connection.prepareStatement(sql);
-
+    public void deleteSingleChat(int singleChatId) {
+        String sql = "delete from SINGLE_CHATS where ID= ?";
+        try (PreparedStatement stmt = dbConnection.prepareStatement(sql)) {
             stmt.setInt(1, singleChatId);
-
-
-            int affectedRow = stmt.executeUpdate();
-            if (affectedRow != 0) {
-                return true;
-            }
-
-
+            stmt.executeUpdate();
         } catch (SQLException sqe) {
             sqe.printStackTrace();
         }
-        return false;
-
     }
 
 

@@ -5,19 +5,38 @@ import java.time.LocalDateTime;
 
 public class Announcement implements Serializable {
     private static final long serialVersionUID = 6529685498269757693L;
-    private int announcementId;
+    private int id;
+    private String title;
     private String content;
-    private LocalDateTime announcementTimestamp;
+    private LocalDateTime sendDateTime;
 
-    public Announcement(String content) {
+    public Announcement(String title, String content, LocalDateTime sendDateTime) {
+        this.title = title;
         this.content = content;
-        this.announcementTimestamp = LocalDateTime.now();
+        this.sendDateTime = sendDateTime;
     }
 
-    public Announcement(int announcementId, String content, LocalDateTime announcementTimestamp) {
-        this.announcementId = announcementId;
+    public Announcement(int id, String title, String content, LocalDateTime sendDateTime) {
+        this.id = id;
+        this.title = title;
         this.content = content;
-        this.announcementTimestamp = announcementTimestamp;
+        this.sendDateTime = sendDateTime;
+    }
+
+    public int getId() {
+        return id;
+    }
+
+    public void setId(int id) {
+        this.id = id;
+    }
+
+    public String getTitle() {
+        return title;
+    }
+
+    public void setTitle(String title) {
+        this.title = title;
     }
 
     public String getContent() {
@@ -28,28 +47,21 @@ public class Announcement implements Serializable {
         this.content = content;
     }
 
-    public LocalDateTime getAnnouncementTimestamp() {
-        return announcementTimestamp;
+    public LocalDateTime getSendDateTime() {
+        return sendDateTime;
     }
 
-    public void setAnnouncementTimestamp(LocalDateTime announcementTimestamp) {
-        this.announcementTimestamp = announcementTimestamp;
-    }
-
-    public int getAnnouncementId() {
-        return announcementId;
-    }
-
-    public void setAnnouncementId(int announcementId) {
-        this.announcementId = announcementId;
+    public void setSendDateTime(LocalDateTime sendDateTime) {
+        this.sendDateTime = sendDateTime;
     }
 
     @Override
     public String toString() {
         return "Announcement{" +
-                "announcementId=" + announcementId +
+                "id=" + id +
+                ", title='" + title + '\'' +
                 ", content='" + content + '\'' +
-                ", announcementTimestamp=" + announcementTimestamp +
+                ", sendDateTime=" + sendDateTime +
                 '}';
     }
 }

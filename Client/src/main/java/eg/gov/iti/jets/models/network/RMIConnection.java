@@ -11,14 +11,12 @@ import java.rmi.registry.Registry;
 public class RMIConnection {
 
     private static AnnouncementDao announcementDao;
-    private static AnnouncementDeliveryDao announcementDeliveryDao;
     private static GroupChatDao groupChatDao;
     private static GroupChatMessageDao groupChatMessageDao;
-    private static GroupContactDao groupContactDao;
-    private static GroupDao groupDao;
-    private static MembershipDao membershipDao;
+    private static ContactsGroupMembershipDao contactsGroupMembershipDao;
+    private static ContactsGroupDao contactsGroupDao;
+    private static GroupChatMembershipDao groupChatMembershipDao;
     private static RelationshipDao relationshipDao;
-    private static SeenByStatusDao seenByStatusDao;
     private static SingleChatDao singleChatDao;
     private static SingleChatMessageDao singleChatMessageDao;
     private static UserDao userDao;
@@ -33,10 +31,6 @@ public class RMIConnection {
         return announcementDao;
     }
 
-    public static AnnouncementDeliveryDao getAnnouncementDeliveryDao() {
-        return announcementDeliveryDao;
-    }
-
     public static GroupChatDao getGroupChatDao() {
         return groupChatDao;
     }
@@ -45,24 +39,20 @@ public class RMIConnection {
         return groupChatMessageDao;
     }
 
-    public static GroupContactDao getGroupContactDao() {
-        return groupContactDao;
+    public static ContactsGroupMembershipDao getContactsGroupMembershipDao() {
+        return contactsGroupMembershipDao;
     }
 
-    public static GroupDao getGroupDao() {
-        return groupDao;
+    public static ContactsGroupDao getContactsGroupDao() {
+        return contactsGroupDao;
     }
 
-    public static MembershipDao getMembershipDao() {
-        return membershipDao;
+    public static GroupChatMembershipDao getGroupChatMembershipDao() {
+        return groupChatMembershipDao;
     }
 
     public static RelationshipDao getRelationshipDao() {
         return relationshipDao;
-    }
-
-    public static SeenByStatusDao getSeenByStatusDao() {
-        return seenByStatusDao;
     }
 
     public static SingleChatDao getSingleChatDao() {
@@ -87,14 +77,12 @@ public class RMIConnection {
                 try {
                     registry = LocateRegistry.getRegistry(1234);
                     announcementDao = (AnnouncementDao) registry.lookup("AnnouncementDao");
-                    announcementDeliveryDao = (AnnouncementDeliveryDao) registry.lookup("AnnouncementDeliveryDao");
                     groupChatDao = (GroupChatDao) registry.lookup("GroupChatDao");
                     groupChatMessageDao = (GroupChatMessageDao) registry.lookup("GroupChatMessageDao");
-                    groupContactDao = (GroupContactDao) registry.lookup("GroupContactDao");
-                    groupDao = (GroupDao) registry.lookup("GroupDao");
-                    membershipDao = (MembershipDao) registry.lookup("MembershipDao");
+                    contactsGroupMembershipDao = (ContactsGroupMembershipDao) registry.lookup("ContactsGroupMembershipDao");
+                    contactsGroupDao = (ContactsGroupDao) registry.lookup("ContactsGroupDao");
+                    groupChatMembershipDao = (GroupChatMembershipDao) registry.lookup("GroupChatMembershipDao");
                     relationshipDao = (RelationshipDao) registry.lookup("RelationshipDao");
-                    seenByStatusDao = (SeenByStatusDao) registry.lookup("SeenByStatusDao");
                     singleChatDao = (SingleChatDao) registry.lookup("SingleChatDao");
                     singleChatMessageDao = (SingleChatMessageDao) registry.lookup("SingleChatMessageDao");
                     userDao = (UserDao) registry.lookup("UserDao");

@@ -1,6 +1,5 @@
 package eg.gov.iti.jets.controllers;
 
-import eg.gov.iti.jets.models.dao.interfaces.GroupDao;
 import eg.gov.iti.jets.models.dao.interfaces.UserDao;
 import eg.gov.iti.jets.models.dto.GroupDto;
 import eg.gov.iti.jets.models.entities.*;
@@ -17,7 +16,6 @@ import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.image.Image;
-import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
@@ -69,15 +67,15 @@ public class LeftViewController implements Initializable {
 
     private void loadGroups() {
         User user = clientStageCoordinator.currentUser;
-        int userId = user.getUserId();
+        int userId = user.getId();
         try {
-            List<Group> userGroups = userDao.getUserGroups(userId);
+            List<ContactsGroup> userGroups = userDao.getUserContactsGroups(userId);
             if (userGroups != null) {
                 TitledPane allContactsTPane = new TitledPane();
                 allContactsTPane.setText("All Contacts");
                 //accordionLists.put(0, allContactsTPane.getContent());
                 List<Integer> groupIds = new ArrayList<>();
-                for (Group g : userGroups) {
+                for (ContactsGroup g : userGroups) {
                     TitledPane titledPane = new TitledPane();
                     titledPane.setText(g.getGroupName());
                     List<String> groupUserNames = getGroupUsersNames(g);
@@ -94,33 +92,34 @@ public class LeftViewController implements Initializable {
         }
     }
 
-    private List<String> getGroupUsersNames(Group g) throws RemoteException {
-        GroupDao groupDao = RMIConnection.getGroupDao();
-        //get ids of users in group
-        List<Integer> groupUsersIds = new ArrayList<>();
-        List<GroupContact> groupContacts = groupDao.getGroupContacts(g.getGroupId());
-        groupContacts.stream()
-                .map(GroupContact::getUserId)
-                .forEach(groupUsersIds::add);
-
-        List<String> groupUserNames = new ArrayList<>();
-        if (groupUsersIds.isEmpty())
-            groupUsersIds = null;
-        else {
-            for (Integer id : groupUsersIds) {
-                User user = null;
-                user = userDao.getUser(id);
-                groupUserNames.add(user.getUsername() == null ?
-                        user.getPhoneNumber() : user.getUsername());
-            }
-        }
-
-        return groupUserNames;
+    private List<String> getGroupUsersNames(ContactsGroup contactsGroup) throws RemoteException {
+////        ContactsGroupDao contactsGroupDao = RMIConnection.getContactsGroupDao();
+////        //get ids of users in group
+////        List<Integer> groupUsersIds = new ArrayList<>();
+////        List<ContactsGroup> contactsGroups = contactsGroupDao.getGroupContacts(contactsGroup.getId());
+////        contactsGroups.stream()
+////                .map(ContactsGroup::getUserId)
+////                .forEach(groupUsersIds::add);
+////
+////        List<String> groupUserNames = new ArrayList<>();
+////        if (groupUsersIds.isEmpty())
+////            groupUsersIds = null;
+////        else {
+////            for (Integer id : groupUsersIds) {
+////                User user = null;
+////                user = userDao.getUser(id);
+////                groupUserNames.add(user.getUsername() == null ?
+////                        user.getPhoneNumber() : user.getUsername());
+////            }
+////        }
+//
+//        return groupUserNames;
+        return null;
     }
 
     private void loadContacts() {
         User user = clientStageCoordinator.currentUser;
-        int userId = user.getUserId();
+        int userId = user.getId();
         try {
             List<Relationship> userRelationships = userDao.getUserRelationships(userId);
             if (userRelationships != null) {
@@ -128,9 +127,9 @@ public class LeftViewController implements Initializable {
                 allContactsTPane.setText("All Contacts");
                 List<Integer> friendIds = new ArrayList<>();
                 for (Relationship r : userRelationships) {
-                    if (r.getRelationshipStatus() == RelationshipStatus.ACCEPTED) {
+                    if (r.getStatus() == RelationshipStatus.ACCEPTED) {
                         int id = r.getFirstUserId();
-                        if (id != user.getUserId())
+                        if (id != user.getId())
                             friendIds.add(id);
                         else
                             friendIds.add(r.getSecondUserId());
@@ -157,7 +156,7 @@ public class LeftViewController implements Initializable {
 
     private void loadSingleChats() {
         try {
-            List<SingleChat> singleChats = userDao.getUserSingleChats(ClientStageCoordinator.getInstance().currentUser.getUserId());
+            List<SingleChat> singleChats = userDao.getUserSingleChats(ClientStageCoordinator.getInstance().currentUser.getId());
             System.out.println(singleChats);
             if (singleChats != null) {
                 singleChatsLv.setItems(FXCollections.observableList(singleChats));
@@ -200,7 +199,7 @@ public class LeftViewController implements Initializable {
 
         List<GroupChat> groupChats = null;
         try {
-            groupChats = userDao.getUserGroupChats(ClientStageCoordinator.getInstance().currentUser.getUserId());
+            groupChats = userDao.getUserGroupChats(ClientStageCoordinator.getInstance().currentUser.getId());
         } catch (RemoteException e) {
             e.printStackTrace();
         }
@@ -242,8 +241,8 @@ public class LeftViewController implements Initializable {
     void handleSingleChatSelection(MouseEvent event) {
         SingleChat singleChat = singleChatsLv.getSelectionModel().getSelectedItem();
         if (singleChat != null) {
-            System.out.println(singleChat.getSingleChatId());
-            ClientStageCoordinator.getInstance().openNewSingleChat(singleChat.getSingleChatId());
+            System.out.println(singleChat.getId());
+            ClientStageCoordinator.getInstance().openNewSingleChat(singleChat.getId());
         }
     }
 
@@ -257,15 +256,15 @@ public class LeftViewController implements Initializable {
         ///printing message list*/
         List<GroupChatMessage> groupChatMessageList = null;
         try {
-            groupChatMessageList = RMIConnection.getGroupChatDao().getGroupChatMessages(groupChat.getGroupChatId());
+            groupChatMessageList = RMIConnection.getGroupChatDao().getGroupChatMessages(groupChat.getId());
         } catch (RemoteException e) {
             e.printStackTrace();
         }
         System.out.println(groupChatMessageList);
 
         if (groupChat != null) {
-            System.out.println(groupChat.getGroupChatId());
-            ClientStageCoordinator.getInstance().openNewGroupChat(groupChat.getGroupChatId());
+            System.out.println(groupChat.getId());
+            ClientStageCoordinator.getInstance().openNewGroupChat(groupChat.getId());
         }
     }
 

@@ -6,30 +6,30 @@ import java.io.Serializable;
 
 public class Relationship implements Serializable {
     private static final long serialVersionUID = 6329385398367757693L;
-    private int relationshipId;
+    private int id;
     private int firstUserId;
     private int secondUserId;
-    private RelationshipStatus relationshipStatus;
+    private RelationshipStatus status;
 
     public Relationship(int firstUserId, int secondUserId) {
         this.firstUserId = firstUserId;
         this.secondUserId = secondUserId;
-        this.relationshipStatus = RelationshipStatus.PENDING;
+        this.status = RelationshipStatus.PENDING;
     }
 
-    public Relationship(int relationshipId, int firstUserId, int secondUserId, RelationshipStatus relationshipStatus) {
-        this.relationshipId = relationshipId;
+    public Relationship(int id, int firstUserId, int secondUserId, RelationshipStatus status) {
+        this.id = id;
         this.firstUserId = firstUserId;
         this.secondUserId = secondUserId;
-        this.relationshipStatus = relationshipStatus;
+        this.status = status;
     }
 
-    public int getRelationshipId() {
-        return relationshipId;
+    public int getId() {
+        return id;
     }
 
-    public void setRelationshipId(int relationshipId) {
-        this.relationshipId = relationshipId;
+    public void setId(int id) {
+        this.id = id;
     }
 
     public int getFirstUserId() {
@@ -48,21 +48,21 @@ public class Relationship implements Serializable {
         this.secondUserId = secondUserId;
     }
 
-    public RelationshipStatus getRelationshipStatus() {
-        return relationshipStatus;
+    public RelationshipStatus getStatus() {
+        return status;
     }
 
-    public void setRelationshipStatus(RelationshipStatus relationshipStatus) {
-        this.relationshipStatus = relationshipStatus;
+    public void setStatus(RelationshipStatus status) {
+        this.status = status;
     }
 
     @Override
     public String toString() {
         return "Relationship{" +
-                "relationshipId=" + relationshipId +
+                "relationshipId=" + id +
                 ", firstUserId=" + firstUserId +
                 ", secondUserId=" + secondUserId +
-                ", relationshipStatus=" + relationshipStatus +
+                ", relationshipStatus=" + status +
                 '}';
     }
 }

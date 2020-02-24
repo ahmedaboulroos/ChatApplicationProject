@@ -4,7 +4,7 @@ import java.io.Serializable;
 
 public class SingleChat implements Serializable {
     private static final long serialVersionUID = 6519685198267157190L;
-    private int singleChatId;
+    private int id;
     private int userOneId;
     private int userTwoId;
 
@@ -13,18 +13,18 @@ public class SingleChat implements Serializable {
         this.userTwoId = userTwoId;
     }
 
-    public SingleChat(int singleChatId, int userOneId, int userTwoId) {
-        this.singleChatId = singleChatId;
+    public SingleChat(int id, int userOneId, int userTwoId) {
+        this.id = id;
         this.userOneId = userOneId;
         this.userTwoId = userTwoId;
     }
 
-    public int getSingleChatId() {
-        return singleChatId;
+    public int getId() {
+        return id;
     }
 
-    public void setSingleChatId(int singleChatId) {
-        this.singleChatId = singleChatId;
+    public void setId(int id) {
+        this.id = id;
     }
 
     public int getUserOneId() {
@@ -46,7 +46,7 @@ public class SingleChat implements Serializable {
     @Override
     public String toString() {
         return "SingleChat{" +
-                "singleChatId=" + singleChatId +
+                "singleChatId=" + id +
                 ", userOneId=" + userOneId +
                 ", userTwoId=" + userTwoId +
                 '}';

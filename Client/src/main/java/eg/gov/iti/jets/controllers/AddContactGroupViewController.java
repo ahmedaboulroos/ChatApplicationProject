@@ -2,12 +2,12 @@ package eg.gov.iti.jets.controllers;
 
 import com.jfoenix.controls.JFXButton;
 import com.jfoenix.controls.JFXTextField;
-import eg.gov.iti.jets.models.dao.interfaces.GroupContactDao;
-import eg.gov.iti.jets.models.dao.interfaces.GroupDao;
+import eg.gov.iti.jets.models.dao.interfaces.ContactsGroupDao;
+import eg.gov.iti.jets.models.dao.interfaces.ContactsGroupMembershipDao;
 import eg.gov.iti.jets.models.dao.interfaces.RelationshipDao;
 import eg.gov.iti.jets.models.dao.interfaces.UserDao;
-import eg.gov.iti.jets.models.entities.Group;
-import eg.gov.iti.jets.models.entities.GroupContact;
+import eg.gov.iti.jets.models.entities.ContactsGroup;
+import eg.gov.iti.jets.models.entities.ContactsGroupMembership;
 import eg.gov.iti.jets.models.entities.User;
 import eg.gov.iti.jets.models.network.RMIConnection;
 import javafx.collections.FXCollections;
@@ -19,39 +19,43 @@ import javafx.scene.input.MouseEvent;
 
 import java.net.URL;
 import java.rmi.RemoteException;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.ResourceBundle;
 
 public class AddContactGroupViewController implements Initializable {
 
     User user = ClientStageCoordinator.getInstance().currentUser;
-    GroupDao groupDao = RMIConnection.getGroupDao();
-    GroupContactDao groupContactDao = RMIConnection.getGroupContactDao();
+    ContactsGroupDao contactsGroupDao = RMIConnection.getContactsGroupDao();
+    ContactsGroupMembershipDao contactsGroupMembershipDao = RMIConnection.getContactsGroupMembershipDao();
     UserDao userDao = RMIConnection.getUserDao();
     RelationshipDao relationshipDao = RMIConnection.getRelationshipDao();
 
     @FXML
     private JFXButton createGroupBtn;
-
     @FXML
     private JFXTextField groupNameTf;
     @FXML
-    private ListView<Group> availableGroupsLv;
+    private ListView<ContactsGroup> availableGroupsLv;
     @FXML
-    private ListView<GroupContact> availableContactsLv;
+    private ListView<User> availableContactsLv;
     @FXML
-    private ListView<GroupContact> availableGroupContactsLv;
+    private ListView<ContactsGroupMembership> availableGroupContactsLv;
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
         try {
-            List<Group> groups = userDao.getUserGroups(user.getUserId());
+            List<ContactsGroup> groups = userDao.getUserContactsGroups(user.getId());
             if (groups != null) {
                 availableGroupsLv.setItems(FXCollections.observableList(groups));
             }
 
-            List<GroupContact> contacts = userDao.getUserContacts(user.getUserId());
-            if (contacts != null) {
+            List<ContactsGroupMembership> memberships = userDao.getUserContactsGroupMemberships(user.getId());
+            List<User> contacts = new ArrayList<>();
+            for (ContactsGroupMembership membership : memberships) {
+                contacts.add(userDao.getUser(membership.getUserId()));
+            }
+            if (memberships != null) {
                 availableContactsLv.setItems(FXCollections.observableList(contacts));
             }
         } catch (RemoteException e) {
@@ -62,8 +66,8 @@ public class AddContactGroupViewController implements Initializable {
     @FXML
     void handleCreateGroupBtn(ActionEvent event) {
         try {
-            Group group = new Group(user.getUserId(), groupNameTf.getText());
-            groupDao.createGroup(group);
+            ContactsGroup group = new ContactsGroup(user.getId(), groupNameTf.getText());
+            contactsGroupDao.createContactsGroup(group);
         } catch (RemoteException e) {
             e.printStackTrace();
         }
@@ -76,17 +80,17 @@ public class AddContactGroupViewController implements Initializable {
 
     @FXML
     void handleSelectionMc(MouseEvent event) {
-        Group group = availableGroupsLv.getSelectionModel().getSelectedItem();
-        if (group != null) {
-            try {
-                List<GroupContact> groupContacts = groupDao.getGroupContacts(group.getGroupId());
-                if (groupContacts != null) {
-                    availableGroupContactsLv.setItems(FXCollections.observableList(groupContacts));
-                }
-            } catch (RemoteException e) {
-                e.printStackTrace();
-            }
-        }
+//        ContactsGroup group = availableGroupsLv.getSelectionModel().getSelectedItem();
+//        if (group != null) {
+//            try {
+//                List<GroupContact> groupContacts = contactsGroupDao.getGroupContacts(group.getGroupId());
+//                if (groupContacts != null) {
+//                    availableGroupContactsLv.setItems(FXCollections.observableList(groupContacts));
+//                }
+//            } catch (RemoteException e) {
+//                e.printStackTrace();
+//            }
+//        }
     }
 
 

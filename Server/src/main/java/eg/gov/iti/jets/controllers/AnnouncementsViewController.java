@@ -4,10 +4,9 @@ import com.jfoenix.controls.JFXButton;
 import com.jfoenix.controls.JFXTextField;
 import eg.gov.iti.jets.models.dao.implementations.AnnouncementDaoImpl;
 import eg.gov.iti.jets.models.dao.interfaces.AnnouncementDao;
-import eg.gov.iti.jets.models.dto.AnnouncementDeliveryModel;
-import eg.gov.iti.jets.models.dto.AnnouncementViewModel;
+import eg.gov.iti.jets.models.dto.AnnouncementsTableModel;
 import eg.gov.iti.jets.models.entities.Announcement;
-import eg.gov.iti.jets.models.entities.AnnouncementDelivery;
+import eg.gov.iti.jets.models.persistence.DBConnection;
 import javafx.collections.FXCollections;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -16,81 +15,49 @@ import javafx.scene.control.SelectionMode;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.cell.PropertyValueFactory;
-import javafx.scene.input.MouseEvent;
 
 import java.net.URL;
 import java.rmi.RemoteException;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.ResourceBundle;
 
 public class AnnouncementsViewController implements Initializable {
 
-    AnnouncementDao announcementDao = AnnouncementDaoImpl.getInstance();
+    AnnouncementDao announcementDao = AnnouncementDaoImpl.getInstance(DBConnection.getConnection());
+
     @FXML
     private JFXTextField announcementTf;
-
     @FXML
     private JFXButton sendAnnouncementBtn;
+    @FXML
+    private TableView<AnnouncementsTableModel> announcementsTv;
+    @FXML
+    private TableColumn<AnnouncementsTableModel, Integer> announcementId;
+    @FXML
+    private TableColumn<AnnouncementsTableModel, String> title;
+    @FXML
+    private TableColumn<AnnouncementsTableModel, String> announcementTimestamp;
 
-    @FXML
-    private TableView<AnnouncementViewModel> announcementsTv;
-    @FXML
-    private TableColumn<AnnouncementViewModel, Integer> announcementId;
-
-    @FXML
-    private TableColumn<AnnouncementViewModel, String> content;
-
-    @FXML
-    private TableColumn<AnnouncementViewModel, String> announcementTimestamp;
-
-    @FXML
-    private TableView<AnnouncementDeliveryModel> announcementsDeliveryTv;
-    @FXML
-    private TableColumn<AnnouncementDeliveryModel, Integer> announcementDeliveryId;
-
-    @FXML
-    private TableColumn<AnnouncementDeliveryModel, Integer> userId;
-
-    @FXML
-    private TableColumn<AnnouncementDeliveryModel, Integer> announcementDelId;
-
-    @FXML
-    private TableColumn<AnnouncementDeliveryModel, String> announcementDeliveryStatus;
-
-    public List<AnnouncementViewModel> getAllAnnouncements() throws RemoteException {
-        List<AnnouncementViewModel> announcementList = new ArrayList<>();
+    public List<AnnouncementsTableModel> getAllAnnouncements() throws RemoteException {
+        List<AnnouncementsTableModel> announcementList = new ArrayList<>();
         List<Announcement> announcements = announcementDao.getAllAnnouncements();
         for (int i = 0; i < announcements.size(); i++) {
-            announcementList.add(new AnnouncementViewModel(announcements.get(i).getAnnouncementId(), announcements.get(i).getContent(), announcements.get(i).getAnnouncementTimestamp().toString()));
-            System.out.println(announcements.get(i).getAnnouncementId() + " " + announcements.get(i).getContent() + " " + announcements.get(i).getAnnouncementTimestamp().toString());
+            announcementList.add(new AnnouncementsTableModel(announcements.get(i).getId(), announcements.get(i).getContent(), announcements.get(i).getSendDateTime().toString()));
+            System.out.println(announcements.get(i).getId() + " " + announcements.get(i).getContent() + " " + announcements.get(i).getSendDateTime().toString());
         }
         return announcementList;
     }
-
-    public List<AnnouncementDeliveryModel> getAllAnnouncementsDelivery(int announcementDeliveryId) throws RemoteException {
-        List<AnnouncementDeliveryModel> announcementList = new ArrayList<>();
-        List<AnnouncementDelivery> announcementsDelivery = announcementDao.getAnnouncementDeliveries(announcementDeliveryId);
-        for (int i = 0; i < announcementsDelivery.size(); i++) {
-            announcementList.add(new AnnouncementDeliveryModel(announcementsDelivery.get(i).getAnnouncementDeliveryId(), announcementsDelivery.get(i).getUserId(), announcementsDelivery.get(i).getAnnouncementId(), announcementsDelivery.get(i).getAnnouncementDeliveryStatus().name()));
-            System.out.println("" + announcementsDelivery.get(i).getAnnouncementDeliveryId() + announcementsDelivery.get(i).getUserId() + announcementsDelivery.get(i).getAnnouncementId() + announcementsDelivery.get(i).getAnnouncementDeliveryStatus() + " ");
-        }
-        return announcementList;
-    }
-
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
         try {
             announcementsTv.getSelectionModel().setSelectionMode(SelectionMode.SINGLE);
             announcementsTv.setItems(FXCollections.observableList(getAllAnnouncements()));
-            announcementId.setCellValueFactory(new PropertyValueFactory<AnnouncementViewModel, Integer>("announcementId"));
-            content.setCellValueFactory(new PropertyValueFactory<AnnouncementViewModel, String>("content"));
-            announcementTimestamp.setCellValueFactory(new PropertyValueFactory<AnnouncementViewModel, String>("announcementTimestamp"));
-            announcementDeliveryId.setCellValueFactory(new PropertyValueFactory<AnnouncementDeliveryModel, Integer>("announcementDeliveryId"));
-            userId.setCellValueFactory(new PropertyValueFactory<AnnouncementDeliveryModel, Integer>("userId"));
-            announcementDelId.setCellValueFactory(new PropertyValueFactory<AnnouncementDeliveryModel, Integer>("announcementDelId"));
-            announcementDeliveryStatus.setCellValueFactory(new PropertyValueFactory<AnnouncementDeliveryModel, String>("announcementDeliveryStatus"));
+            announcementId.setCellValueFactory(new PropertyValueFactory<AnnouncementsTableModel, Integer>("announcementId"));
+            title.setCellValueFactory(new PropertyValueFactory<AnnouncementsTableModel, String>("content"));
+            announcementTimestamp.setCellValueFactory(new PropertyValueFactory<AnnouncementsTableModel, String>("announcementTimestamp"));
         } catch (RemoteException e) {
             e.printStackTrace();
         }
@@ -99,7 +66,7 @@ public class AnnouncementsViewController implements Initializable {
     @FXML
     void handleSendBtn(ActionEvent event) {
         String content = announcementTf.getText();
-        Announcement announcement = new Announcement(content);
+        Announcement announcement = new Announcement("title", content, LocalDateTime.now());
         try {
             announcementDao.createAnnouncement(announcement);
             updateAnnouncementsTable();
@@ -109,33 +76,10 @@ public class AnnouncementsViewController implements Initializable {
         announcementTf.clear();
     }
 
-    @FXML
-    void handleAnnouncementsMc(MouseEvent event) {
-        try {
-            AnnouncementViewModel announcementViewModel = announcementsTv.getSelectionModel().getSelectedItem();
-            if (announcementViewModel != null) {
-                int id = announcementViewModel.getAnnouncementId();
-                System.out.println(id);
-                announcementsDeliveryTv.setItems(FXCollections.observableList(getAllAnnouncementsDelivery(id)));
-            }
-        } catch (RemoteException e) {
-            e.printStackTrace();
-        }
-    }
-
     void updateAnnouncementsTable() {
         try {
             System.out.println(announcementDao.getAllAnnouncements());
             announcementsTv.setItems(FXCollections.observableList(getAllAnnouncements()));
-        } catch (RemoteException e) {
-            e.printStackTrace();
-        }
-    }
-
-    void updateAnnouncementsDeliveryTable(int id) {
-        try {
-            System.out.println(announcementDao.getAnnouncementDeliveries(id));
-
         } catch (RemoteException e) {
             e.printStackTrace();
         }

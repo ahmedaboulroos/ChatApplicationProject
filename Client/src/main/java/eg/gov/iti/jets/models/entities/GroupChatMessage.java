@@ -5,33 +5,33 @@ import java.time.LocalDateTime;
 
 public class GroupChatMessage implements Serializable {
     private static final long serialVersionUID = 6829688898267758698L;
-    private int groupChatMessageId;
+    private int id;
     private int userId;
     private int groupChatId;
     private String content;
-    private LocalDateTime messageTimestamp;
+    private LocalDateTime messageDateTime;
 
     public GroupChatMessage(int userId, int groupChatId, String content) {
         this.userId = userId;
         this.groupChatId = groupChatId;
         this.content = content;
-        this.messageTimestamp = LocalDateTime.now();
+        this.messageDateTime = LocalDateTime.now();
     }
 
-    public GroupChatMessage(int groupChatMessageId, int userId, int groupChatId, String content, LocalDateTime messageTimestamp) {
-        this.groupChatMessageId = groupChatMessageId;
+    public GroupChatMessage(int id, int userId, int groupChatId, String content, LocalDateTime messageDateTime) {
+        this.id = id;
         this.userId = userId;
         this.groupChatId = groupChatId;
         this.content = content;
-        this.messageTimestamp = messageTimestamp;
+        this.messageDateTime = messageDateTime;
     }
 
-    public int getGroupChatMessageId() {
-        return groupChatMessageId;
+    public int getId() {
+        return id;
     }
 
-    public void setGroupChatMessageId(int groupChatMessageId) {
-        this.groupChatMessageId = groupChatMessageId;
+    public void setId(int id) {
+        this.id = id;
     }
 
     public int getUserId() {
@@ -58,22 +58,22 @@ public class GroupChatMessage implements Serializable {
         this.content = content;
     }
 
-    public LocalDateTime getMessageTimestamp() {
-        return messageTimestamp;
+    public LocalDateTime getMessageDateTime() {
+        return messageDateTime;
     }
 
-    public void setMessageTimestamp(LocalDateTime messageTimestamp) {
-        this.messageTimestamp = messageTimestamp;
+    public void setMessageDateTime(LocalDateTime messageDateTime) {
+        this.messageDateTime = messageDateTime;
     }
 
     @Override
     public String toString() {
         return "GroupChatMessage{" +
-                "groupChatMessageId=" + groupChatMessageId +
+                "groupChatMessageId=" + id +
                 ", userId=" + userId +
                 ", groupChatId=" + groupChatId +
                 ", content='" + content + '\'' +
-                ", messageTimestamp=" + messageTimestamp +
+                ", messageTimestamp=" + messageDateTime +
                 '}';
     }
 }

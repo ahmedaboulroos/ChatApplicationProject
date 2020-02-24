@@ -26,7 +26,7 @@ public class AddContactViewController {
         try {
             User user = RMIConnection.getUserDao().getUser(phoneNumberTf.getText());
             if (user != null) {
-                Relationship relationship = new Relationship(ClientStageCoordinator.getInstance().currentUser.getUserId(), user.getUserId());
+                Relationship relationship = new Relationship(ClientStageCoordinator.getInstance().currentUser.getId(), user.getId());
                 RMIConnection.getRelationshipDao().createRelationship(relationship);
                 phoneNumberTf.clear();
             } else {

@@ -1,30 +1,29 @@
 package eg.gov.iti.jets.models.dao.implementations;
 
-import eg.gov.iti.jets.models.dao.interfaces.SingleChatDao;
 import eg.gov.iti.jets.models.dao.interfaces.SingleChatMessageDao;
-import eg.gov.iti.jets.models.entities.SingleChat;
 import eg.gov.iti.jets.models.entities.SingleChatMessage;
 import eg.gov.iti.jets.models.network.implementations.ServerService;
 import eg.gov.iti.jets.models.network.interfaces.ClientInterface;
-import eg.gov.iti.jets.models.persistence.DBConnection;
 
-import java.io.IOException;
 import java.rmi.RemoteException;
 import java.rmi.server.UnicastRemoteObject;
 import java.sql.*;
 
 public class SingleChatMessageDaoImpl extends UnicastRemoteObject implements SingleChatMessageDao {
-    private Connection connection = DBConnection.getConnection();
 
     private static SingleChatMessageDaoImpl instance;
+    private static Connection dbConnection;
+
     private ServerService serverService = ServerService.getInstance();
+
     protected SingleChatMessageDaoImpl() throws RemoteException {
     }
 
-    public static SingleChatMessageDao getInstance() {
+    public static SingleChatMessageDao getInstance(Connection connection) {
         if (instance == null) {
             try {
                 instance = new SingleChatMessageDaoImpl();
+                dbConnection = connection;
             } catch (RemoteException e) {
                 e.printStackTrace();
             }
@@ -33,132 +32,74 @@ public class SingleChatMessageDaoImpl extends UnicastRemoteObject implements Sin
     }
 
     @Override
-    public boolean createSingleChatMessage(SingleChatMessage singleChatMessage) {
-        PreparedStatement stmt = null;
-        PreparedStatement stmt1 = null;
-        try {
-            String sql = "INSERT INTO SINGLE_CHAT_MESSAGE (SINGLE_CHAT_MESSAGE_ID, SINGLE_CHAT_ID,  USER_ID, CONTENT, MESSAGE_TIMESTAMP) VALUES (SEQ_SINGLE_CHAT_MESSAGE_ID.NEXTVAL,?,?,?,?)";
-            stmt = connection.prepareStatement(sql);
-            stmt.setInt(1, singleChatMessage.getSingleChatId());
-            stmt.setInt(2, singleChatMessage.getUserId());
-            stmt.setString(3, singleChatMessage.getContent());
-            stmt.setTimestamp(4, Timestamp.valueOf(singleChatMessage.getMessageTimestamp()));
-            int affectedRow = stmt.executeUpdate();
-            stmt1 = connection.prepareStatement("select SEQ_SINGLE_CHAT_MESSAGE_ID.currval from dual");
-            ResultSet resultSet = stmt1.executeQuery();
-            if (affectedRow != 0) {
-                int singleChatMessageId = 0;
-                while (resultSet.next()) {
-                    singleChatMessageId = resultSet.getInt(1);
-                }
-                System.out.println(singleChatMessageId + " mn resultSet");
-                SingleChatDao singleChatDao = SingleChatDaoImpl.getInstance();
-                System.out.println(singleChatDao);
-                SingleChat singleChat = singleChatDao.getSingleChat(singleChatMessage.getSingleChatId());
-                System.out.println(singleChat);
-                System.out.println(singleChat.getUserTwoId() + " ana usertwo");
-                ClientInterface clientTwo = serverService.getClient(singleChat.getUserTwoId());
-                System.out.println("gbt clientTwo");
-                clientTwo.receiveNewSingleChatMessage(singleChatMessageId);
-                System.out.println("estaqbl");
-                ClientInterface clientOne = serverService.getClient(singleChat.getUserOneId());
-                System.out.println("gbt clientOne");
-                clientOne.receiveNewSingleChatMessage(singleChatMessageId);
-                System.out.println("estaqbl");
-                return true;
+    public int createSingleChatMessage(SingleChatMessage singleChatMessage) {
+        int id = -1;
+        String[] key = {"ID"};
+        String sql = "INSERT INTO SINGLE_CHAT_MESSAGES (ID, USER_ID, CONTENT, MESSAGE_DATE_TIME, SINGLE_CHAT_ID) VALUES (ID_SEQ.NEXTVAL,?,?,?,?)";
+        try (PreparedStatement ps = dbConnection.prepareStatement(sql, key)) {
+            ps.setInt(1, singleChatMessage.getUserId());
+            ps.setString(2, singleChatMessage.getContent());
+            ps.setTimestamp(3, Timestamp.valueOf(singleChatMessage.getMessageDateTime()));
+            ps.setInt(4, singleChatMessage.getSingleChatId());
+            ps.executeUpdate();
+            ResultSet rs = ps.getGeneratedKeys();
+            if (rs.next()) {
+                id = rs.getInt(1);
             }
-
-        } catch (SQLException | IOException e) {
+            ClientInterface clientOne = ServerService.getClient(SingleChatDaoImpl.getInstance(dbConnection).getSingleChat(singleChatMessage.getSingleChatId()).getUserOneId());
+            if (clientOne != null) {
+                clientOne.receiveNewSingleChatMessage(id);
+            }
+            ClientInterface clientTwo = ServerService.getClient(SingleChatDaoImpl.getInstance(dbConnection).getSingleChat(singleChatMessage.getSingleChatId()).getUserTwoId());
+            if (clientTwo != null) {
+                clientTwo.receiveNewSingleChatMessage(id);
+            }
+        } catch (SQLException | RemoteException e) {
             e.printStackTrace();
-        } finally {
-            try {
-                stmt.close();
-                stmt1.close();
-            } catch (SQLException e) {
-                e.printStackTrace();
-            }
         }
-        return false;
+        return id;
     }
+
     @Override
     public SingleChatMessage getSingleChatMessage(int singleChatMessageId) {
-
-        SingleChatMessage singleChatMessageRef = null;
-        PreparedStatement statement = null;
-        ResultSet resultset = null;
-        try {
-
-
-            String sql = "select SINGLE_CHAT_MESSAGE_ID, SINGLE_CHAT_ID,  USER_ID, CONTENT, MESSAGE_TIMESTAMP from SINGLE_CHAT_MESSAGE where SINGLE_CHAT_MESSAGE_ID = ? ";
-            statement = connection.prepareStatement(sql);
-            statement.setInt(1, singleChatMessageId);
-            resultset = statement.executeQuery();
-
-            System.out.println(resultset + "ana fe getMessage");
-            if (resultset.next()) {
-                System.out.println(resultset + "ana fe if");
-                //  System.out.println("inside" + singleChatMessageRef);
-                System.out.println(resultset.getInt("SINGLE_CHAT_MESSAGE_ID") + " :singleChatMessageID");
-                Timestamp timestamp = resultset.getTimestamp("MESSAGE_TIMESTAMP");
-                //  int singleChatMessageId, int singleChatId, int userId, String content, LocalDateTime messageTimestamp
-                singleChatMessageRef = new SingleChatMessage(resultset.getInt("SINGLE_CHAT_MESSAGE_ID"), resultset.getInt("SINGLE_CHAT_ID"), resultset.getInt("USER_ID"), resultset.getString("CONTENT"), timestamp.toLocalDateTime());
-                System.out.println("inside" + singleChatMessageRef);
-
+        SingleChatMessage singleChatMessage = null;
+        String sql = "select ID, USER_ID, CONTENT, MESSAGE_DATE_TIME, SINGLE_CHAT_ID from SINGLE_CHAT_MESSAGES where SINGLE_CHAT_MESSAGE_ID = ? ";
+        try (PreparedStatement ps = dbConnection.prepareStatement(sql, ResultSet.TYPE_SCROLL_INSENSITIVE, ResultSet.CONCUR_READ_ONLY)) {
+            ps.setInt(1, singleChatMessageId);
+            ResultSet rs = ps.executeQuery();
+            if (rs.first()) {
+                singleChatMessage = new SingleChatMessage(rs.getInt(1), rs.getInt(5), rs.getInt(2), rs.getString(3), rs.getTimestamp(4).toLocalDateTime());
             }
-
         } catch (SQLException sqe) {
             sqe.printStackTrace();
         }
-        return singleChatMessageRef;
+        return singleChatMessage;
     }
 
     @Override
-    public boolean updateSingleChatMessage(SingleChatMessage singleChatMessage) {
-        String sql = "UPDATE  SINGLE_CHAT_MESSAGE SET CONTENT= ? " +
-                " where SINGLE_CHAT_MESSAGE_ID=? and USER_ID = ? ";
-
-
-        try {
-            PreparedStatement preparedStatement = connection.prepareStatement(sql);
-            preparedStatement.setString(1, singleChatMessage.getContent());
-            preparedStatement.setInt(2, singleChatMessage.getSingleChatMessageId());
-
-            preparedStatement.setInt(3, singleChatMessage.getUserId());
-            int rowAffected = preparedStatement.executeUpdate();
-
-            if (rowAffected != 0) {
-                System.out.println("true");
-                return true;
-            }
-
-
+    public void updateSingleChatMessage(SingleChatMessage singleChatMessage) {
+        String sql = "UPDATE  SINGLE_CHAT_MESSAGES SET USER_ID = ?, CONTENT= ?, MESSAGE_DATE_TIME=?, SINGLE_CHAT_ID=? where ID=?";
+        try (PreparedStatement preparedStatement = dbConnection.prepareStatement(sql)) {
+            preparedStatement.setInt(1, singleChatMessage.getUserId());
+            preparedStatement.setString(2, singleChatMessage.getContent());
+            preparedStatement.setTimestamp(3, Timestamp.valueOf(singleChatMessage.getMessageDateTime()));
+            preparedStatement.setInt(4, singleChatMessage.getSingleChatId());
+            preparedStatement.setInt(5, singleChatMessage.getId());
+            preparedStatement.executeUpdate();
         } catch (SQLException e) {
             e.printStackTrace();
         }
-        return false;
     }
 
     @Override
-    public boolean deleteSingleChatMessage(int singleChatMessageId) {
-        try {
-
-            String sql = "delete from SINGLE_CHAT_MESSAGE where SINGLE_CHAT_MESSAGE_ID = ?";
-
-            PreparedStatement stmt = connection.prepareStatement(sql);
-
+    public void deleteSingleChatMessage(int singleChatMessageId) {
+        String sql = "delete from SINGLE_CHAT_MESSAGES where ID = ?";
+        try (PreparedStatement stmt = dbConnection.prepareStatement(sql)) {
             stmt.setInt(1, singleChatMessageId);
-
-            System.out.println(singleChatMessageId);
-            int affectedRow = stmt.executeUpdate();
-            if (affectedRow != 0) {
-                return true;
-            }
-
-
+            stmt.executeUpdate();
         } catch (SQLException sqe) {
             sqe.printStackTrace();
         }
-        return false;
     }
 
 }
