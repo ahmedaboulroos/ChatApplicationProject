@@ -1,6 +1,7 @@
 package eg.gov.iti.jets.models.network.implementations;
 
 
+import eg.gov.iti.jets.controllers.ClientStageCoordinator;
 import eg.gov.iti.jets.controllers.SingleChatViewController;
 import eg.gov.iti.jets.models.dao.interfaces.SingleChatDao;
 import eg.gov.iti.jets.models.dao.interfaces.SingleChatMessageDao;
@@ -37,15 +38,12 @@ public class ClientService extends UnicastRemoteObject implements ClientInterfac
 
     @Override
     public void userLoggedIn(int userId) throws RemoteException {
-        System.out.println(">> User Logged In :" + userId);
-//        User user = userDao.getUser(userId);
-//        UserDto userDto = new UserDto(getDisplayUsername(user), user.getProfileImage());
-//        chatAppViewController.loggedIn(userDto);
+        ClientStageCoordinator.getInstance().displayUserLoginNotification(userId);
     }
 
     @Override
     public void userLoggedOut(int userId) throws RemoteException {
-        System.out.println(">> User Logged Out :" + userId);
+        ClientStageCoordinator.getInstance().displayUserLogoutNotification(userId);
     }
 
     @Override
@@ -77,7 +75,8 @@ public class ClientService extends UnicastRemoteObject implements ClientInterfac
         //  UserDto userDto = new UserDto(getDisplayUsername(user), user.getProfileImage());
         System.out.println(singleChatMessage + "elobject");
         if (singleChatMessage != null) {
-            singleChatViewController.displayNewSingleChatMessage(singleChatMessage);
+            //TODO: MAINTAIN FUNCTION
+            //singleChatViewController.displayNewSingleChatMessage(singleChatMessage);
         } else {
             System.out.println("ana null" + singleChatMessage);
         }
@@ -127,12 +126,7 @@ public class ClientService extends UnicastRemoteObject implements ClientInterfac
 
     @Override
     public void receiveNewAnnouncement(int announcementId) throws RemoteException {
-        System.out.println(">> New Announcement :" + announcementId);
-
-    }
-
-    private String getDisplayUsername(User user) {
-        return user.getUsername() == null ? user.getPhoneNumber() : user.getUsername();
+        ClientStageCoordinator.getInstance().displayServerAnnouncement(announcementId);
     }
 
 }

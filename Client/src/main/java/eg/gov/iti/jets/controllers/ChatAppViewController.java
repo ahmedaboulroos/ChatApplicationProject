@@ -11,11 +11,19 @@ import java.net.URL;
 import java.util.ResourceBundle;
 
 public class ChatAppViewController implements Initializable {
+    private static ChatAppViewController instance;
+    private static ChatAppViewController chatAppViewController;
+
+    public static ChatAppViewController getInstance() {
+        return chatAppViewController;
+    }
+
 
     @FXML
     private BorderPane chatAppBp;
     LeftViewController leftViewController;
     CenterViewController centerViewController;
+    //=CenterViewController.getInstance();
 
 
     @Override
@@ -47,6 +55,10 @@ public class ChatAppViewController implements Initializable {
 
     public void openGroupChat(int groupChatId) {
         centerViewController.addGroupChat(groupChatId);
+    }
+
+    public void setController(ChatAppViewController chatAppViewController) {
+        this.chatAppViewController = chatAppViewController;
     }
 
     //TODO:REMOVE DTO FROM IMPLEMENTATION

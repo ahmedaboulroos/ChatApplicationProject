@@ -16,20 +16,18 @@
                 <VBox alignment="TOP_CENTER" spacing="5.0">
                     <children>
                         <Label maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308"
-                               minHeight="-Infinity"
-                               prefHeight="75.0" prefWidth="250.0" style="-fx-background-color: #00A2D3;"
-                               text="Admin Panel"
-                               textFill="WHITE">
+                               minHeight="-Infinity" prefHeight="75.0" prefWidth="250.0"
+                               style="-fx-background-color: #00A2D3;" text="Admin Panel" textFill="WHITE">
                             <padding>
                                 <Insets left="10.0"/>
-                       </padding>
-                       <font>
-                           <Font name="Ebrima" size="19.0"/>
-                       </font>
-                       <VBox.margin>
-                           <Insets right="1.0"/>
-                       </VBox.margin>
-                   </Label>
+                            </padding>
+                            <font>
+                                <Font name="Ebrima" size="19.0"/>
+                            </font>
+                            <VBox.margin>
+                                <Insets right="1.0"/>
+                            </VBox.margin>
+                        </Label>
                   <VBox spacing="10.0">
                      <children>
                         <JFXButton fx:id="dashboardBtn" alignment="TOP_LEFT" onAction="#handleDashboardBtnClick" prefWidth="250.0" ripplerFill="#2f98e4" styleClass="menuBtn" text="   Dashboard" textFill="#145374">
@@ -68,19 +66,21 @@
                      </children>
                   </VBox>
                   <Region VBox.vgrow="ALWAYS" />
-                  <JFXButton fx:id="serverStatusBtn" cancelButton="true" contentDisplay="RIGHT" defaultButton="true" graphicTextGap="0.0" onAction="#handleServiceBtnClick" prefWidth="200.0" ripplerFill="BLACK" styleClass="serverStatusBtn" text="Service Running          " textFill="WHITE">
-                     <font>
-                        <Font name="Microsoft New Tai Lue" size="15.0" />
-                     </font>
-                      <VBox.margin>
-                          <Insets bottom="15.0" left="15.0" right="15.0" top="15.0"/>
-                      </VBox.margin>
-                      <padding>
-                          <Insets bottom="10.0" left="10.0" right="10.0" top="10.0"/>
-                      </padding>
-                      <graphic>
-                          <Circle fx:id="serverStatusCircle" fill="LIGHTGREEN" radius="7.0" stroke="BLACK"
-                                  strokeType="INSIDE"/>
+                        <JFXButton fx:id="serverStatusBtn" contentDisplay="RIGHT" graphicTextGap="0.0"
+                                   onAction="#handleServiceBtnClick" prefWidth="200.0" ripplerFill="BLACK"
+                                   styleClass="serverStatusBtn" text="Service Running          " textFill="WHITE">
+                            <font>
+                                <Font name="Microsoft New Tai Lue" size="15.0"/>
+                            </font>
+                            <VBox.margin>
+                                <Insets bottom="15.0" left="15.0" right="15.0" top="15.0"/>
+                            </VBox.margin>
+                            <padding>
+                                <Insets bottom="10.0" left="10.0" right="10.0" top="10.0"/>
+                            </padding>
+                            <graphic>
+                                <Circle fx:id="serverStatusCircle" fill="LIGHTGREEN" radius="7.0" stroke="BLACK"
+                                        strokeType="INSIDE"/>
                       </graphic>
                   </JFXButton>
                </children>
