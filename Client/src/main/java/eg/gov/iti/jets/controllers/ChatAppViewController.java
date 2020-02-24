@@ -1,7 +1,5 @@
 package eg.gov.iti.jets.controllers;
 
-import eg.gov.iti.jets.models.dto.GroupDto;
-import eg.gov.iti.jets.models.dto.UserDto;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
@@ -16,20 +14,6 @@ public class ChatAppViewController implements Initializable {
 
     @FXML
     private BorderPane chatAppBp;
-
-    /*private UserController userController;
-    private SingleChatMessageController singleChatMessageController;
-    private SingleChatController singleChatController;
-    private SeenByStatusController seenByStatusController;
-    private RelationshipController relationshipController;
-    private MembershipController membershipController;
-    private GroupController groupController;
-    private GroupContactController groupContactController;
-    private GroupChatMessageController groupChatMessageController;
-    private GroupChatController groupChatController;
-    private AnnouncementDeliveryController announcementDeliveryController;
-    private AnnouncementController announcementController;*/
-
     LeftViewController leftViewController;
     CenterViewController centerViewController;
 
@@ -65,14 +49,13 @@ public class ChatAppViewController implements Initializable {
         centerViewController.addGroupChat(groupChatId);
     }
 
-    public void displayNewGroup(GroupDto groupDto) {
+    //TODO:REMOVE DTO FROM IMPLEMENTATION
+    /*public void displayNewGroup(GroupDto groupDto) {
         leftViewController.addNewGroup(groupDto);
     }
 
     public void displayRelationship(UserDto user) {
         leftViewController.addContact(user);
-
-
     }
 
     public void displayMsg(String hi_hi) {
@@ -84,25 +67,7 @@ public class ChatAppViewController implements Initializable {
     }
 
     public void loggedOut(UserDto user) {
-
         leftViewController.removeLoggedOut(user);
-
-    }
-
-/*
-    public void setControllers(AnnouncementController announcementController, AnnouncementDeliveryController announcementDeliveryController, GroupChatController groupChatController, GroupChatMessageController groupChatMessageController, GroupContactController groupContactController, GroupController groupController, MembershipController membershipController, RelationshipController relationshipController, SeenByStatusController seenByStatusController, SingleChatController singleChatController, SingleChatMessageController singleChatMessageController, UserController userController) {
-        this.announcementController = announcementController;
-        this.announcementDeliveryController = announcementDeliveryController;
-        this.groupChatController = groupChatController;
-        this.groupChatMessageController = groupChatMessageController;
-        this.groupContactController = groupContactController;
-        this.groupController = groupController;
-        this.membershipController = membershipController;
-        this.relationshipController = relationshipController;
-        this.seenByStatusController = seenByStatusController;
-        this.singleChatController = singleChatController;
-        this.singleChatMessageController = singleChatMessageController;
-        this.userController = userController;
     }
 */
 }

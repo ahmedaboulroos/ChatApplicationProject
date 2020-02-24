@@ -1,8 +1,6 @@
 package eg.gov.iti.jets.controllers;
 
 import eg.gov.iti.jets.models.dao.interfaces.UserDao;
-import eg.gov.iti.jets.models.dto.GroupDto;
-import eg.gov.iti.jets.models.dto.UserDto;
 import eg.gov.iti.jets.models.entities.*;
 import eg.gov.iti.jets.models.entities.enums.RelationshipStatus;
 import eg.gov.iti.jets.models.imageutiles.ImageUtiles;
@@ -325,7 +323,8 @@ public class LeftViewController implements Initializable {
         }
     }
 
-    public void addNewGroup(GroupDto groupDto) {
+    //TODO:REMOVE DTO FROM IMPLEMENTATION
+    /*public void addNewGroup(GroupDto groupDto) {
         TitledPane titledPane = new TitledPane();
         titledPane.setText(groupDto.getGroupName());
         //TODO: maintain photo
@@ -343,6 +342,6 @@ public class LeftViewController implements Initializable {
 
     public void removeLoggedOut(UserDto user) {
         System.out.println(user);
-    }
+    }*/
 }
 
