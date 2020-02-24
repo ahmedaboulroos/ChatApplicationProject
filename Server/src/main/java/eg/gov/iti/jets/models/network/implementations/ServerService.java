@@ -35,7 +35,6 @@ public class ServerService extends UnicastRemoteObject implements ServerInterfac
     public ServerService() throws RemoteException {
     }
 
-
     public static Enumeration<Integer> getAllOnlineUsers() {
         return clients.keys();
     }
@@ -43,7 +42,6 @@ public class ServerService extends UnicastRemoteObject implements ServerInterfac
     public static Collection<ClientInterface> getAllOnlineClients() {
         return clients.values();
     }
-
 
     public static ClientInterface getClient(int userId) {
         return clients.get(userId);
@@ -92,12 +90,12 @@ public class ServerService extends UnicastRemoteObject implements ServerInterfac
                 if (r.getFirstUserId() == userId) {
                     ClientInterface clientInterface = getClient(r.getSecondUserId());
                     if (clientInterface != null) {
-                        clientInterface.userLoggedIn(userId);
+                        clientInterface.userLoggedOut(userId);
                     }
                 } else {
                     ClientInterface clientInterface = getClient(r.getFirstUserId());
                     if (clientInterface != null) {
-                        clientInterface.userLoggedIn(userId);
+                        clientInterface.userLoggedOut(userId);
                     }
                 }
             }

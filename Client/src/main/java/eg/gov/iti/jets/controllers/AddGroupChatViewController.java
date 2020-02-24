@@ -2,9 +2,9 @@ package eg.gov.iti.jets.controllers;
 
 import com.jfoenix.controls.JFXTextField;
 import eg.gov.iti.jets.models.dao.interfaces.GroupChatDao;
-import eg.gov.iti.jets.models.dao.interfaces.MembershipDao;
+import eg.gov.iti.jets.models.dao.interfaces.GroupChatMembershipDao;
 import eg.gov.iti.jets.models.entities.GroupChat;
-import eg.gov.iti.jets.models.entities.Membership;
+import eg.gov.iti.jets.models.entities.GroupChatMembership;
 import eg.gov.iti.jets.models.imageutiles.ImageUtiles;
 import eg.gov.iti.jets.models.network.RMIConnection;
 import javafx.event.ActionEvent;
@@ -14,11 +14,12 @@ import javafx.stage.FileChooser;
 
 import java.io.File;
 import java.rmi.RemoteException;
+import java.time.LocalDateTime;
 
 public class AddGroupChatViewController {
 
     GroupChatDao groupChatDao = RMIConnection.getGroupChatDao();
-    MembershipDao membershipDao = RMIConnection.getMembershipDao();
+    GroupChatMembershipDao groupChatMembershipDao = RMIConnection.getGroupChatMembershipDao();
     File file;
     @FXML
     private JFXTextField titleTf;
@@ -36,15 +37,14 @@ public class AddGroupChatViewController {
     @FXML
     void handleCreateGroupChat(ActionEvent event) {
         try {
-            GroupChat groupChat = new GroupChat(titleTf.getText(), descriptionTf.getText(), ImageUtiles.fromImageToBytes(file.getAbsolutePath()));
+            GroupChat groupChat = new GroupChat(titleTf.getText(), descriptionTf.getText(), ImageUtiles.fromImageToBytes(file.getAbsolutePath()), LocalDateTime.now());
             int autoGenGroupChatID = groupChatDao.createGroupChat(groupChat);
             System.out.println("inside ====>> handleCreateGroupChat  isGroupChatCreated" + autoGenGroupChatID);
-            System.out.println("inside -->> AddGroupChatViewController Current user id" + ClientStageCoordinator.getInstance().currentUser.getUserId());
-            Membership membership = new Membership(ClientStageCoordinator.getInstance().currentUser.getUserId(), autoGenGroupChatID);
+            System.out.println("inside -->> AddGroupChatViewController Current user id" + ClientStageCoordinator.getInstance().currentUser.getId());
+            GroupChatMembership membership = new GroupChatMembership(ClientStageCoordinator.getInstance().currentUser.getId(), autoGenGroupChatID);
             System.out.println(ImageUtiles.fromImageToBytes(file.getAbsolutePath()));
-            int autoGenMembershipID = membershipDao.createMembership(membership);
-            System.out.println("inside ===> add group chatView controller membershipDao.getUser" + membershipDao.getUser(autoGenMembershipID));
-
+            int autoGenMembershipID = groupChatMembershipDao.createGroupChatMembership(membership);
+            System.out.println("inside ===> add group chatView controller membershipDao.getUser" + groupChatMembershipDao.getUser(autoGenMembershipID));
         } catch (RemoteException e) {
             e.printStackTrace();
         }

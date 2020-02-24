@@ -32,7 +32,6 @@ import java.util.*;
 
 public class LeftViewController implements Initializable {
 
-
     @FXML
     private Tab contactsTab;
 
@@ -94,28 +93,29 @@ public class LeftViewController implements Initializable {
         }
     }
 
-    private List<String> getGroupUsersNames(Group g) throws RemoteException {
-        GroupDao groupDao = RMIConnection.getGroupDao();
-        //get ids of users in group
-        List<Integer> groupUsersIds = new ArrayList<>();
-        List<GroupContact> groupContacts = groupDao.getGroupContacts(g.getGroupId());
-        groupContacts.stream()
-                .map(GroupContact::getUserId)
-                .forEach(groupUsersIds::add);
-
-        List<String> groupUserNames = new ArrayList<>();
-        if (groupUsersIds.isEmpty())
-            groupUsersIds = null;
-        else {
-            for (Integer id : groupUsersIds) {
-                User user = null;
-                user = userDao.getUser(id);
-                groupUserNames.add(user.getUsername() == null ?
-                        user.getPhoneNumber() : user.getUsername());
-            }
-        }
-
-        return groupUserNames;
+    private List<String> getGroupUsersNames(ContactsGroup g) throws RemoteException {
+//        ContactsGroupDao groupDao = RMIConnection.getContactsGroupDao();
+//        //get ids of users in group
+//        List<Integer> groupUsersIds = new ArrayList<>();
+//        List<GroupContact> groupContacts = groupDao.getGroupContacts(g.getGroupId());
+//        groupContacts.stream()
+//                .map(GroupContact::getUserId)
+//                .forEach(groupUsersIds::add);
+//
+//        List<String> groupUserNames = new ArrayList<>();
+//        if (groupUsersIds.isEmpty())
+//            groupUsersIds = null;
+//        else {
+//            for (Integer id : groupUsersIds) {
+//                User user = null;
+//                user = userDao.getUser(id);
+//                groupUserNames.add(user.getUsername() == null ?
+//                        user.getPhoneNumber() : user.getUsername());
+//            }
+//        }
+//
+//        return groupUserNames;
+        return null;
     }
 
     List<Integer> friendIds;

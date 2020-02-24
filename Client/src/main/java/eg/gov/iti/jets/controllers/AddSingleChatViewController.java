@@ -34,7 +34,7 @@ public class AddSingleChatViewController implements Initializable {
         System.out.println(usersCompoBox.getSelectionModel().getSelectedItem());
         User selectedItem = usersCompoBox.getSelectionModel().getSelectedItem();
         System.out.println(selectedItem);
-        userTwoId = selectedItem.getUserId();
+        userTwoId = selectedItem.getId();
 
         System.out.println(userTwoId);
     }
@@ -42,7 +42,7 @@ public class AddSingleChatViewController implements Initializable {
     @FXML
     void handleCreateButton(ActionEvent event) {
         try {
-            SingleChat singleChat = new SingleChat(this.currentUser.getUserId(), userTwoId);
+            SingleChat singleChat = new SingleChat(this.currentUser.getId(), userTwoId);
             System.out.println(singleChat + "my singleChat");
             singleChatDao.createSingleChat(singleChat);
         } catch (RemoteException e) {
@@ -62,15 +62,15 @@ public class AddSingleChatViewController implements Initializable {
     private List<User> loadContacts() {
         User user = clientStageCoordinator.currentUser;
         List<User> friends = null;
-        int userId = user.getUserId();
+        int userId = user.getId();
         try {
             List<Relationship> userRelationships = userDao.getUserRelationships(userId);
             if (userRelationships != null) {
                 List<Integer> friendIds = new ArrayList<>();
                 for (Relationship r : userRelationships) {
-                    if (r.getRelationshipStatus() == RelationshipStatus.ACCEPTED) {
+                    if (r.getStatus() == RelationshipStatus.ACCEPTED) {
                         int id = r.getFirstUserId();
-                        if (id != user.getUserId())
+                        if (id != user.getId())
                             friendIds.add(id);
                         else
                             friendIds.add(r.getSecondUserId());

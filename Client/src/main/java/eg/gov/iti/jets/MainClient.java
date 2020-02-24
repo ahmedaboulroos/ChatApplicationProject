@@ -4,6 +4,7 @@ import eg.gov.iti.jets.controllers.ClientStageCoordinator;
 import eg.gov.iti.jets.models.dao.interfaces.UserDao;
 import eg.gov.iti.jets.models.entities.User;
 import eg.gov.iti.jets.models.network.RMIConnection;
+import eg.gov.iti.jets.models.network.implementations.ClientService;
 import javafx.application.Application;
 import javafx.stage.Stage;
 import org.w3c.dom.Document;
@@ -100,6 +101,7 @@ public class MainClient extends Application {
 
     @Override
     public void stop() throws Exception {
+        RMIConnection.getServerService().logout(ClientStageCoordinator.getInstance().currentUser.getId(), ClientService.getInstance());
         System.exit(0);
     }
 

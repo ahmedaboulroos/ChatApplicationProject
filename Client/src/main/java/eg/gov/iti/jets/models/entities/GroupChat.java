@@ -11,6 +11,16 @@ public class GroupChat implements Serializable {
     private byte[] groupImageBytes;
     private LocalDateTime creationDateTime;
 
+    public GroupChat(String title) {
+        this.title = title;
+        this.creationDateTime = LocalDateTime.now();
+    }
+
+    public GroupChat(String title, LocalDateTime creationDateTime) {
+        this.title = title;
+        this.creationDateTime = creationDateTime;
+    }
+
     public GroupChat(String title, String description, byte[] groupImageBytes, LocalDateTime creationDateTime) {
         this.title = title;
         this.description = description;

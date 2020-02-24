@@ -69,12 +69,12 @@ public class SingleChatViewController {
                 + "\n userId: " + singleChatMessage.getUserId()
                 + "\n singleChatId: " + singleChatMessage.getSingleChatId()
                 + "\n contentMsg " + singleChatMessage.getContent()
-                + "\n messageTimeStamp " + singleChatMessage.getMessageTimestamp());
+                + "\n messageTimeStamp " + singleChatMessage.getMessageDateTime());
         System.out.println("username : " + userDto.getUsername() + "profileImage : " + userDto.getProfileImage());
     }
 
     public void displayNewSingleChat(SingleChat singleChat) {
-        System.out.println(" singleChatId : " + singleChat.getSingleChatId()
+        System.out.println(" singleChatId : " + singleChat.getId()
                 + "\n userOneId: " + singleChat.getUserOneId()
                 + "\n userOneId: " + singleChat.getUserTwoId());
 

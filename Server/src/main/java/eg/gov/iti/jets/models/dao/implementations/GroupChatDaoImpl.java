@@ -6,12 +6,10 @@ import eg.gov.iti.jets.models.dao.interfaces.GroupChatDao;
 import eg.gov.iti.jets.models.entities.GroupChat;
 import eg.gov.iti.jets.models.entities.GroupChatMembership;
 import eg.gov.iti.jets.models.entities.GroupChatMessage;
-import eg.gov.iti.jets.models.entities.Membership;
 import eg.gov.iti.jets.models.entities.User;
 import eg.gov.iti.jets.models.entities.enums.UserGender;
 import eg.gov.iti.jets.models.entities.enums.UserStatus;
 import eg.gov.iti.jets.models.imageutiles.ImageUtiles;
-import eg.gov.iti.jets.models.persistence.DBConnection;
 
 import java.io.ByteArrayInputStream;
 import java.io.InputStream;

@@ -1,10 +1,6 @@
 package eg.gov.iti.jets.controllers;
 
 import eg.gov.iti.jets.models.entities.User;
-import eg.gov.iti.jets.models.network.RMIConnection;
-import eg.gov.iti.jets.models.network.implementations.ClientService;
-import eg.gov.iti.jets.models.network.interfaces.ClientInterface;
-import eg.gov.iti.jets.models.network.interfaces.ServerInterface;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;

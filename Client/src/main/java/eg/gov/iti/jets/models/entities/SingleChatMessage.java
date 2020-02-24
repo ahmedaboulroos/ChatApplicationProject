@@ -9,28 +9,28 @@ public class SingleChatMessage implements Serializable {
     private int singleChatId;
     private int userId;
     private String content;
-    private LocalDateTime messageTimestamp;
+    private LocalDateTime messageDateTime;
 
     public SingleChatMessage(int singleChatId, int userId, String content) {
         this.singleChatId = singleChatId;
         this.userId = userId;
         this.content = content;
-        this.messageTimestamp = LocalDateTime.now();
+        this.messageDateTime = LocalDateTime.now();
     }
 
-    public SingleChatMessage(int singleChatId, int userId, String content, LocalDateTime messageTimestamp) {
+    public SingleChatMessage(int singleChatId, int userId, String content, LocalDateTime messageDateTime) {
         this.singleChatId = singleChatId;
         this.userId = userId;
         this.content = content;
-        this.messageTimestamp = messageTimestamp;
+        this.messageDateTime = messageDateTime;
     }
 
-    public SingleChatMessage(int id, int singleChatId, int userId, String content, LocalDateTime messageTimestamp) {
+    public SingleChatMessage(int id, int singleChatId, int userId, String content, LocalDateTime messageDateTime) {
         this.id = id;
         this.singleChatId = singleChatId;
         this.userId = userId;
         this.content = content;
-        this.messageTimestamp = messageTimestamp;
+        this.messageDateTime = messageDateTime;
     }
 
     public int getId() {
@@ -57,12 +57,12 @@ public class SingleChatMessage implements Serializable {
         this.content = content;
     }
 
-    public LocalDateTime getMessageTimestamp() {
-        return messageTimestamp;
+    public LocalDateTime getMessageDateTime() {
+        return messageDateTime;
     }
 
-    public void setMessageTimestamp(LocalDateTime messageTimestamp) {
-        this.messageTimestamp = messageTimestamp;
+    public void setMessageDateTime(LocalDateTime messageDateTime) {
+        this.messageDateTime = messageDateTime;
     }
 
     @Override
@@ -71,7 +71,7 @@ public class SingleChatMessage implements Serializable {
                 "singleChatMessageId=" + id +
                 ", userId=" + userId +
                 ", content='" + content + '\'' +
-                ", messageTimestamp=" + messageTimestamp +
+                ", messageTimestamp=" + messageDateTime +
                 '}';
     }
 
