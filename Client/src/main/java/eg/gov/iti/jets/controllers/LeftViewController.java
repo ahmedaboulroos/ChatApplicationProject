@@ -79,7 +79,9 @@ public class LeftViewController implements Initializable {
                     titledPane.setText(g.getGroupName());
                     List<String> groupUserNames = getGroupUsersNames(g);
                     VBox vBox = new VBox();
-                    groupUserNames.forEach(s -> vBox.getChildren().add(new Label(s)));
+                    if (groupUserNames != null) {
+                        groupUserNames.forEach(s -> vBox.getChildren().add(new Label(s)));
+                    }
                     titledPane.setContent(vBox);
                     groupsAccordion.getPanes().add(titledPane);
                 }

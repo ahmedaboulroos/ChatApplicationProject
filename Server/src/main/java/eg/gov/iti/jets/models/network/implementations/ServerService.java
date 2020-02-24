@@ -61,16 +61,18 @@ public class ServerService extends UnicastRemoteObject implements ServerInterfac
         if (user != null) {
             clients.put(user.getId(), client);
             List<Relationship> userRelationships = userDao.getUserRelationships(userId);
-            for (Relationship r : userRelationships) {
-                if (r.getFirstUserId() == userId) {
-                    ClientInterface clientInterface = getClient(r.getSecondUserId());
-                    if (clientInterface != null) {
-                        clientInterface.userLoggedIn(userId);
-                    }
-                } else {
-                    ClientInterface clientInterface = getClient(r.getFirstUserId());
-                    if (clientInterface != null) {
-                        clientInterface.userLoggedIn(userId);
+            if (userRelationships != null) {
+                for (Relationship r : userRelationships) {
+                    if (r.getFirstUserId() == userId) {
+                        ClientInterface clientInterface = getClient(r.getSecondUserId());
+                        if (clientInterface != null) {
+                            clientInterface.userLoggedIn(userId);
+                        }
+                    } else {
+                        ClientInterface clientInterface = getClient(r.getFirstUserId());
+                        if (clientInterface != null) {
+                            clientInterface.userLoggedIn(userId);
+                        }
                     }
                 }
             }
