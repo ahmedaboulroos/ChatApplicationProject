@@ -29,6 +29,10 @@ public class ClientStageCoordinator {
         this.stage = stage;
     }
 
+    public Stage getStage() {
+        return this.stage;
+    }
+
     public void startMainChatAppScene() throws IOException {
         FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/views/ChatAppView.fxml"));
         Parent mainChatAppView = fxmlLoader.load();
