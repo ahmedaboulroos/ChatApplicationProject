@@ -1,6 +1,8 @@
 package eg.gov.iti.jets.models.dao.implementations;
 
 import eg.gov.iti.jets.models.dao.interfaces.RelationshipDao;
+import eg.gov.iti.jets.models.dao.interfaces.UserDao;
+
 import eg.gov.iti.jets.models.entities.Relationship;
 import eg.gov.iti.jets.models.entities.User;
 import eg.gov.iti.jets.models.entities.enums.RelationshipStatus;

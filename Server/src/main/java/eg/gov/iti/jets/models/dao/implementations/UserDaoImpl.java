@@ -12,10 +12,7 @@ import javafx.scene.image.Image;
 
 import javax.imageio.ImageIO;
 import java.awt.image.BufferedImage;
-import java.io.ByteArrayInputStream;
-import java.io.ByteArrayOutputStream;
-import java.io.IOException;
-import java.io.InputStream;
+import java.io.*;
 import java.rmi.RemoteException;
 import java.rmi.server.UnicastRemoteObject;
 import java.sql.*;
@@ -25,6 +22,9 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class UserDaoImpl extends UnicastRemoteObject implements UserDao {
+
+    private File defaultImage;
+    private Connection connection = DBConnection.getConnection();
 
     private static UserDaoImpl instance;
     private static Connection dbConnection;
@@ -45,6 +45,42 @@ public class UserDaoImpl extends UnicastRemoteObject implements UserDao {
     }
 
     @Override
+    public boolean createUser(User user) {
+        int result = 0;
+        try {
+            PreparedStatement preparedStatement = connection.prepareStatement("select SEQ_USER_ID.nextval from DUAL");
+            Date birthDate = user.getBirthDate() == null ?
+                    null : Date.valueOf(user.getBirthDate());
+            String userGender = user.getUserGender() == null ?
+                    null : user.getUserGender().toString();
+            byte[] profileImage = user.getProfileImage();
+            String userStatus = user.getUserStatus() == null ?
+                    null : user.getUserStatus().toString();
+            String currentlyLoggedIn = user.isCurrentlyLoggedIn() ? "ONLINE" : "OFFLINE";
+            ResultSet resultSet = preparedStatement.executeQuery();
+            if (resultSet.next()) {
+                int userId = resultSet.getInt(1);
+                user.setUserId(userId);
+                preparedStatement = connection.prepareStatement(
+                        "insert into APP_USER (user_id, phone_number, username, " +
+                                "password, email, country, bio, birth_date, user_gender, " +
+                                "user_status, currently_logged_in)" +
+                                " values (?,?,?,?,?,?,?,?,?,?,?,?)");
+                preparedStatement.setInt(1, userId);
+                preparedStatement.setString(2, user.getPhoneNumber());
+                preparedStatement.setString(3, user.getUsername());
+                preparedStatement.setString(4, user.getPassword());
+                preparedStatement.setString(5, user.getEmail());
+                preparedStatement.setString(6, user.getCountry());
+                preparedStatement.setString(7, user.getBio());
+                preparedStatement.setDate(8, birthDate);
+                preparedStatement.setString(9, userGender);
+                InputStream in = new ByteArrayInputStream(profileImage);
+                preparedStatement.setBinaryStream(10, in, profileImage.length);
+                //preparedStatement.setBlob(10, profileImage);
+                preparedStatement.setString(11, userStatus);
+                preparedStatement.setString(12, currentlyLoggedIn);
+                result = preparedStatement.executeUpdate();
     public int createUser(User user) {
         Date birthDate = user.getBirthDate() == null ? null : Date.valueOf(user.getBirthDate());
         String userGender = user.getUserGender() == null ? null : user.getUserGender().toString();
@@ -227,71 +263,118 @@ public class UserDaoImpl extends UnicastRemoteObject implements UserDao {
         Blob blob = null;
         BufferedImage imagen;
         PreparedStatement stmt = null;
-        for (int i = 0; i < groupChatMembershipList.size(); i++) {
-            sql = "select id, title, description, group_image, creation_date_time from GROUP_CHATS where id=?";
-            int groupChatId = groupChatMembershipList.get(i).getGroupChatId();
-            try (PreparedStatement preparedStatement = stmt = dbConnection.prepareStatement(sql)) {
-                stmt.setInt(1, groupChatId);
-                rs = stmt.executeQuery();
-                if (rs.next()) {
-                    id = rs.getInt("group_chat_id");
-                    tilte = rs.getString("title");
-                    description = rs.getString("description");
-                    blob = rs.getBlob("group_image");
-                    timestamp = rs.getTimestamp("creation_date_time");
+        if (!membershipList.isEmpty()) {
+            for (int i = 0; i < membershipList.size(); i++) {
+                sql = "select group_chat_id, title, description, group_image, creation_timestamp from GROUP_CHAT where group_chat_id=?";
+                int groupChatId = membershipList.get(i).getGroupChatId();
+                System.out.println("inside --->> userdaoimpl.getUserGroupChats groupChatId " + groupChatId);
+                try (PreparedStatement preparedStatement = stmt = connection.prepareStatement(sql)) {
+                    stmt.setInt(1, groupChatId);
+                    rs = stmt.executeQuery();
+                    if (rs.next()) {
+                        id = rs.getInt("group_chat_id");
+                        System.out.println("inside-->> userdoaimpl group_chat_id" + id);
+                        tilte = rs.getString("title");
+                        System.out.println("inside-->> userdoaimpl group_chat_title" + tilte);
+                        description = rs.getString("description");
+                        System.out.println("inside-->> userdoaimpl group_chat_description" + description);
+                        imageBytes = rs.getBytes("group_image");
+                        System.out.println("inside-->> userdoaimpl imageBytes.length" + imageBytes.length);
+                        //blob = rs.getBlob("group_image");
+                        timestamp = rs.getTimestamp("creation_timestamp");
+                    }
+//                    if (imageBytes.length==0 ) {
+//                        imageBytes = ImageUtiles.fromImageToBytes("C:\\Users\\elnaggar\\IdeaProjects\\ChatApplicationProject\\Server\\src\\main\\resources\\images\\groupChatDefaultImage.png");
+//                    }
+                    groupChatList.add(new GroupChat(id, tilte, description, imageBytes, timestamp));
+                } catch (SQLException e) {
+                    e.printStackTrace();
                 }
-                if (blob != null) {
-                    group_image = ImageUtiles.fromBlobToBytes(blob);
-                } else
-                    group_image = null;
 
-                groupChatList.add(new GroupChat(id, tilte, description, group_image, timestamp.toLocalDateTime()));
-            } catch (SQLException e) {
-                e.printStackTrace();
             }
-
+        } else {
+            System.out.println("inside-->> userdoaimpl usermemberShiList is empty ");
         }
+
+        System.out.println("inside-->> userdoaimpl   groupChatList.size()" + groupChatList.size());
         return groupChatList;
     }//alaa
 
     @Override
-    public List<ContactsGroup> getUserContactsGroups(int userId) {
-        List<ContactsGroup> contactsGroups = null;
+    public List<AnnouncementDelivery> getUserAnnouncementDeliveries(int userId) {
+        List<AnnouncementDelivery> announcementDeliveries = null;
         try {
-            PreparedStatement preparedStatement = dbConnection.prepareStatement(
-                    "select * from CONTACTS_GROUPS where USER_ID = " + userId);
+            PreparedStatement preparedStatement = connection.prepareStatement(
+                    "select * from ANNOUNCEMENT_DELIVERY where USER_ID = " + userId);
             ResultSet resultSet = preparedStatement.executeQuery();
-            contactsGroups = getGroupsFromResultSet(resultSet);
+            announcementDeliveries = getAnnouncementDeliveriesFromResultSet(resultSet);
             resultSet.close();
             preparedStatement.close();
         } catch (SQLException e) {
             e.printStackTrace();
         }
-        return contactsGroups;
+        return announcementDeliveries;
     }
 
     @Override
-    public List<ContactsGroupMembership> getUserContactsGroupMemberships(int userId) throws RemoteException {
-        List<ContactsGroupMembership> contactsGroupMemberships = null;
+    public List<Group> getUserGroups(int userId) {
+        List<Group> groups = null;
         try {
-            PreparedStatement preparedStatement = dbConnection.prepareStatement(
-                    "select * from CONTACTS_GROUP_MEMBERSHIPS where USER_ID = " + userId);
+            PreparedStatement preparedStatement = connection.prepareStatement(
+                    "select * from APP_USER_GROUP where USER_ID = " + userId);
             ResultSet resultSet = preparedStatement.executeQuery();
-            contactsGroupMemberships = getGroupContactsFromResultSet(resultSet);
+            groups = getGroupsFromResultSet(resultSet);
             resultSet.close();
             preparedStatement.close();
         } catch (SQLException e) {
             e.printStackTrace();
         }
-        return contactsGroupMemberships;
+        return groups;
     }
 
     @Override
-    public void updateUser(User user) {
-        Date birthDate = user.getBirthDate() == null ? null : Date.valueOf(user.getBirthDate());
-        String userGender = user.getUserGender() == null ? null : user.getUserGender().toString();
-        String sql = "update USERS set PHONE_NUMBER = ?, USERNAME = ?, PASSWORD = ?, EMAIL = ?, COUNTRY = ?, BIO = ?, BIRTH_DATE = ?, USER_GENDER = ?, USER_STATUS = ?, PROFILE_IMAGE = ? where ID = ?";
-        try (PreparedStatement preparedStatement = dbConnection.prepareStatement(sql)) {
+    public List<GroupContact> getUserContacts(int userId) throws RemoteException {
+        List<GroupContact> groupContacts = null;
+        try {
+            PreparedStatement preparedStatement = connection.prepareStatement(
+                    "select * from GROUP_CONTACT where USER_ID = " + userId);
+            ResultSet resultSet = preparedStatement.executeQuery();
+            groupContacts = getGroupContactsFromResultSet(resultSet);
+            resultSet.close();
+            preparedStatement.close();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return groupContacts;
+    }
+
+    @Override
+    public boolean updateUser(User user) {
+        int result = 0;
+        try {
+            Date birthDate = user.getBirthDate() == null ?
+                    null : Date.valueOf(user.getBirthDate());
+            String userGender = user.getUserGender() == null ?
+                    null : user.getUserGender().toString();
+            //InputStream inputStream = getInputStreamFromImage(user.getProfileImage());
+            String userStatus = user.getUserStatus() == null ?
+                    null : user.getUserStatus().toString();
+            String currentlyLoggedIn = user.isCurrentlyLoggedIn() ? "ONLINE" : "OFFLINE";
+            PreparedStatement preparedStatement = connection.prepareStatement(
+                    "update APP_USER set" +
+                            " PHONE_NUMBER = ?," +
+                            " USERNAME = ?," +
+                            " PASSWORD = ?," +
+                            " EMAIL = ?," +
+                            " COUNTRY = ?," +
+                            " BIO = ?," +
+                            " BIRTH_DATE = ?," +
+                            " USER_GENDER = ?," +
+                            " USER_STATUS = ?," +
+                            " CURRENTLY_LOGGED_IN = ?," +
+                            //TODO: handle sending images to database (convert to blob)
+                            ", PROFILE_IMAGE = ?" +
+                            " where USER_ID = " + user.getUserId());
             preparedStatement.setString(1, user.getPhoneNumber());
             preparedStatement.setString(2, user.getUsername());
             preparedStatement.setString(3, user.getPassword());
@@ -300,32 +383,15 @@ public class UserDaoImpl extends UnicastRemoteObject implements UserDao {
             preparedStatement.setString(6, user.getBio());
             preparedStatement.setDate(7, birthDate);
             preparedStatement.setString(8, userGender);
-            preparedStatement.setString(9, user.getUserStatus().toString());
-            preparedStatement.setBlob(10, ImageUtiles.fromBytesToBlob(user.getProfileImage()));
-            preparedStatement.executeUpdate();
+            preparedStatement.setString(9, userStatus);
+            preparedStatement.setString(10, currentlyLoggedIn);
+            preparedStatement.setBlob(11, ImageUtiles.fromBytesToBlob(user.getProfileImage()));
+            result = preparedStatement.executeUpdate();
+            preparedStatement.close();
         } catch (SQLException e) {
             e.printStackTrace();
         }
-    }
-
-    @Override
-    public void updateUserStatus(int userId, UserStatus userStatus) throws RemoteException {
-        String sql = "UPDATE USERS SET USER_STATUS = ? WHERE ID = ?";
-        try (PreparedStatement ps = dbConnection.prepareStatement(sql)) {
-            ps.setString(1, userStatus.toString());
-            ps.setInt(2, userId);
-            ps.executeUpdate();
-            List<Relationship> userRelationships = getUserRelationships(userId);
-            for (Relationship r : userRelationships) {
-                if (r.getFirstUserId() == userId) {
-                    ServerService.getClient(r.getSecondUserId()).receiveUserStatusChanged(userId);
-                } else {
-                    ServerService.getClient(r.getFirstUserId()).receiveUserStatusChanged(userId);
-                }
-            }
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
+        return result == 1;
     }
 
     private InputStream getInputStreamFromImage(Image profileImage) {
@@ -472,6 +538,5 @@ public class UserDaoImpl extends UnicastRemoteObject implements UserDao {
         else
             return null;
     }
-
 
 }

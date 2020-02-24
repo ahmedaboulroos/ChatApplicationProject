@@ -79,7 +79,8 @@ public class StatisticsDaoDaoImpl implements StatisticsDao {
         try (PreparedStatement ps = connection.prepareStatement(sql)) {
             resultSet = ps.executeQuery();
             while (resultSet.next()) {
-                map.put(resultSet.getString(2), resultSet.getInt(1));
+                if (resultSet.getString(2) != null)
+                    map.put(resultSet.getString(2), resultSet.getInt(1));
             }
 
         } catch (SQLException ex) {

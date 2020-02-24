@@ -157,7 +157,7 @@ public class User implements Serializable {
                 ", bio='" + bio + '\'' +
                 ", birthDate=" + birthDate +
                 ", userGender=" + userGender +
-                ", profileImage=" + profileImage +
+                ", profileImage=" + profileImage.length +
                 ", userStatus=" + userStatus +
                 '}';
     }
