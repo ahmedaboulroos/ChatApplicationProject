@@ -101,7 +101,8 @@ public class MainClient extends Application {
 
     @Override
     public void stop() throws Exception {
-        RMIConnection.getServerService().logout(ClientStageCoordinator.getInstance().currentUser.getId(), ClientService.getInstance());
+        if (ClientStageCoordinator.getInstance().currentUser != null)
+            RMIConnection.getServerService().logout(ClientStageCoordinator.getInstance().currentUser.getId(), ClientService.getInstance());
         System.exit(0);
     }
 
