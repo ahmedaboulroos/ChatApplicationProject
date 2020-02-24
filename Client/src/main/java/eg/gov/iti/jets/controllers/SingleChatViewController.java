@@ -62,15 +62,14 @@ public class SingleChatViewController {
             e.printStackTrace();
         }
     }
-    //TODO:REMOVE DTO FROM IMPLEMENTATION
-    /*public void displayNewSingleChatMessage(SingleChatMessage singleChatMessage, UserDto userDto) {
+
+    public void displayNewSingleChatMessage(SingleChatMessage singleChatMessage) {
         System.out.println(" singleChatMessageId : " + singleChatMessage.getId()
                 + "\n userId: " + singleChatMessage.getUserId()
                 + "\n singleChatId: " + singleChatMessage.getSingleChatId()
                 + "\n contentMsg " + singleChatMessage.getContent()
                 + "\n messageTimeStamp " + singleChatMessage.getMessageDateTime());
-        System.out.println("username : " + userDto.getUsername() + "profileImage : " + userDto.getProfileImage());
-    }*/
+    }
 
     public void displayNewSingleChat(SingleChat singleChat) {
         System.out.println(" singleChatId : " + singleChat.getId()
