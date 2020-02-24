@@ -5,13 +5,13 @@ import javafx.beans.property.SimpleStringProperty;
 
 public class AnnouncementsTableModel {
     private SimpleIntegerProperty announcementId;
-    private SimpleStringProperty title;
+    private SimpleStringProperty announcementTitle;
     private SimpleStringProperty announcementTimestamp;
 
 
     public AnnouncementsTableModel(int id, String contentData, String timestamp) {
         announcementId = new SimpleIntegerProperty(id);
-        title = new SimpleStringProperty(contentData);
+        announcementTitle = new SimpleStringProperty(contentData);
         announcementTimestamp = new SimpleStringProperty(timestamp);
     }
 
@@ -27,22 +27,22 @@ public class AnnouncementsTableModel {
         return announcementId;
     }
 
-    public String getTitle() {
-        return title.get();
+    public String getAnnouncementTitle() {
+        return announcementTitle.get();
     }
 
-    public void setTitle(String title) {
-        this.title.set(title);
+    public void setAnnouncementTitle(String announcementTitle) {
+        this.announcementTitle.set(announcementTitle);
     }
 
-    public SimpleStringProperty titleProperty() {
-        return title;
+    public SimpleStringProperty announcementTitleProperty() {
+        return announcementTitle;
     }
 
     @Override
     public String toString() {
 
-        return (announcementId.get() + ", " + title.get());
+        return (announcementId.get() + ", " + announcementTitle.get());
     }
 
     public String getAnnouncementTimestamp() {

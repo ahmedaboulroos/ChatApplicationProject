@@ -16,6 +16,8 @@ import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.input.MouseEvent;
+import javafx.scene.web.HTMLEditor;
+import javafx.scene.web.WebView;
 
 import java.net.URL;
 import java.rmi.RemoteException;
@@ -29,7 +31,11 @@ public class AnnouncementsViewController implements Initializable {
     AnnouncementDao announcementDao = AnnouncementDaoImpl.getInstance(DBConnection.getConnection());
 
     @FXML
-    private JFXTextField announcementTf;
+    private HTMLEditor announcementContentHtml;
+    @FXML
+    private WebView contentWv;
+    @FXML
+    private JFXTextField announcementTitleTf;
     @FXML
     private JFXButton sendAnnouncementBtn;
     @FXML
@@ -37,7 +43,7 @@ public class AnnouncementsViewController implements Initializable {
     @FXML
     private TableColumn<AnnouncementsTableModel, Integer> announcementId;
     @FXML
-    private TableColumn<AnnouncementsTableModel, String> title;
+    private TableColumn<AnnouncementsTableModel, String> announcementTitle;
     @FXML
     private TableColumn<AnnouncementsTableModel, String> announcementTimestamp;
 
@@ -45,8 +51,7 @@ public class AnnouncementsViewController implements Initializable {
         List<AnnouncementsTableModel> announcementList = new ArrayList<>();
         List<Announcement> announcements = announcementDao.getAllAnnouncements();
         for (int i = 0; i < announcements.size(); i++) {
-            announcementList.add(new AnnouncementsTableModel(announcements.get(i).getId(), announcements.get(i).getContent(), announcements.get(i).getSendDateTime().toString()));
-            System.out.println(announcements.get(i).getId() + " " + announcements.get(i).getContent() + " " + announcements.get(i).getSendDateTime().toString());
+            announcementList.add(new AnnouncementsTableModel(announcements.get(i).getId(), announcements.get(i).getTitle(), announcements.get(i).getSendDateTime().toLocalDate().toString()));
         }
         return announcementList;
     }
@@ -56,8 +61,9 @@ public class AnnouncementsViewController implements Initializable {
         try {
             announcementsTv.getSelectionModel().setSelectionMode(SelectionMode.SINGLE);
             announcementsTv.setItems(FXCollections.observableList(getAllAnnouncements()));
+
             announcementId.setCellValueFactory(new PropertyValueFactory<AnnouncementsTableModel, Integer>("announcementId"));
-            title.setCellValueFactory(new PropertyValueFactory<AnnouncementsTableModel, String>("content"));
+            announcementTitle.setCellValueFactory(new PropertyValueFactory<AnnouncementsTableModel, String>("announcementTitle"));
             announcementTimestamp.setCellValueFactory(new PropertyValueFactory<AnnouncementsTableModel, String>("announcementTimestamp"));
         } catch (RemoteException e) {
             e.printStackTrace();
@@ -66,15 +72,16 @@ public class AnnouncementsViewController implements Initializable {
 
     @FXML
     void handleSendBtn(ActionEvent event) {
-        String content = announcementTf.getText();
-        Announcement announcement = new Announcement("title", content, LocalDateTime.now());
+        String title = announcementTitleTf.getText();
+        String content = announcementContentHtml.getHtmlText();
+        Announcement announcement = new Announcement(title, content, LocalDateTime.now());
         try {
             announcementDao.createAnnouncement(announcement);
             updateAnnouncementsTable();
         } catch (RemoteException e) {
             e.printStackTrace();
         }
-        announcementTf.clear();
+        announcementTitleTf.clear();
     }
 
     void updateAnnouncementsTable() {
@@ -83,6 +90,18 @@ public class AnnouncementsViewController implements Initializable {
             announcementsTv.setItems(FXCollections.observableList(getAllAnnouncements()));
         } catch (RemoteException e) {
             e.printStackTrace();
+        }
+    }
+
+    @FXML
+    void handleAnnouncementSelection(MouseEvent event) {
+        AnnouncementsTableModel selectedItem = announcementsTv.getSelectionModel().getSelectedItem();
+        if (selectedItem != null) {
+            try {
+                contentWv.getEngine().loadContent(announcementDao.getAnnouncement(selectedItem.getAnnouncementId()).getContent());
+            } catch (RemoteException e) {
+                e.printStackTrace();
+            }
         }
     }
 
