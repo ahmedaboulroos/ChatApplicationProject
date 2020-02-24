@@ -87,7 +87,9 @@ public class StatisticsDaoDaoImpl implements StatisticsDao {
             ex.printStackTrace();
         } finally {
             try {
-                resultSet.close();
+                if (resultSet != null) {
+                    resultSet.close();
+                }
             } catch (SQLException e) {
                 e.printStackTrace();
             }

@@ -17,7 +17,7 @@ public class ClientStageCoordinator {
     private static ClientStageCoordinator instance;
     public User currentUser;
     private Stage stage;
-    private ChatAppViewController chatAppViewController;
+    private ChatAppViewController chatAppViewController = ChatAppViewController.getInstance();
 
     private ClientStageCoordinator() {
     }
@@ -40,6 +40,8 @@ public class ClientStageCoordinator {
     public void startMainChatAppScene() throws IOException {
         FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/views/ChatAppView.fxml"));
         Parent mainChatAppView = fxmlLoader.load();
+        chatAppViewController = fxmlLoader.getController();
+        chatAppViewController.setController(chatAppViewController);
         this.stage.setScene(new Scene(mainChatAppView));
         this.stage.setTitle("Chat Application");
         this.stage.show();

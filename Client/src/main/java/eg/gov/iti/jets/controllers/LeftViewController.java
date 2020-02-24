@@ -1,8 +1,6 @@
 package eg.gov.iti.jets.controllers;
 
 import eg.gov.iti.jets.models.dao.interfaces.UserDao;
-import eg.gov.iti.jets.models.dto.GroupDto;
-import eg.gov.iti.jets.models.dto.UserDto;
 import eg.gov.iti.jets.models.entities.*;
 import eg.gov.iti.jets.models.entities.enums.RelationshipStatus;
 import eg.gov.iti.jets.models.imageutiles.ImageUtiles;
@@ -81,7 +79,9 @@ public class LeftViewController implements Initializable {
                     titledPane.setText(g.getGroupName());
                     List<String> groupUserNames = getGroupUsersNames(g);
                     VBox vBox = new VBox();
-                    groupUserNames.forEach(s -> vBox.getChildren().add(new Label(s)));
+                    if (groupUserNames != null) {
+                        groupUserNames.forEach(s -> vBox.getChildren().add(new Label(s)));
+                    }
                     titledPane.setContent(vBox);
                     groupsAccordion.getPanes().add(titledPane);
                 }
@@ -325,7 +325,8 @@ public class LeftViewController implements Initializable {
         }
     }
 
-    public void addNewGroup(GroupDto groupDto) {
+    //TODO:REMOVE DTO FROM IMPLEMENTATION
+    /*public void addNewGroup(GroupDto groupDto) {
         TitledPane titledPane = new TitledPane();
         titledPane.setText(groupDto.getGroupName());
         //TODO: maintain photo
@@ -343,6 +344,6 @@ public class LeftViewController implements Initializable {
 
     public void removeLoggedOut(UserDto user) {
         System.out.println(user);
-    }
+    }*/
 }
 

@@ -1,7 +1,6 @@
 package eg.gov.iti.jets.controllers;
 
 import eg.gov.iti.jets.models.dao.interfaces.SingleChatMessageDao;
-import eg.gov.iti.jets.models.dto.UserDto;
 import eg.gov.iti.jets.models.entities.SingleChat;
 import eg.gov.iti.jets.models.entities.SingleChatMessage;
 import eg.gov.iti.jets.models.entities.User;
@@ -64,13 +63,12 @@ public class SingleChatViewController {
         }
     }
 
-    public void displayNewSingleChatMessage(SingleChatMessage singleChatMessage, UserDto userDto) {
+    public void displayNewSingleChatMessage(SingleChatMessage singleChatMessage) {
         System.out.println(" singleChatMessageId : " + singleChatMessage.getId()
                 + "\n userId: " + singleChatMessage.getUserId()
                 + "\n singleChatId: " + singleChatMessage.getSingleChatId()
                 + "\n contentMsg " + singleChatMessage.getContent()
                 + "\n messageTimeStamp " + singleChatMessage.getMessageDateTime());
-        System.out.println("username : " + userDto.getUsername() + "profileImage : " + userDto.getProfileImage());
     }
 
     public void displayNewSingleChat(SingleChat singleChat) {

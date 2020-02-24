@@ -2,12 +2,23 @@ package eg.gov.iti.jets.models.network.implementations;
 
 
 import eg.gov.iti.jets.controllers.ClientStageCoordinator;
+import eg.gov.iti.jets.controllers.SingleChatViewController;
+import eg.gov.iti.jets.models.dao.interfaces.SingleChatDao;
+import eg.gov.iti.jets.models.dao.interfaces.SingleChatMessageDao;
+import eg.gov.iti.jets.models.entities.SingleChat;
+import eg.gov.iti.jets.models.entities.SingleChatMessage;
+import eg.gov.iti.jets.models.entities.User;
+import eg.gov.iti.jets.models.network.RMIConnection;
 import eg.gov.iti.jets.models.network.interfaces.ClientInterface;
 
 import java.rmi.RemoteException;
 import java.rmi.server.UnicastRemoteObject;
 
 public class ClientService extends UnicastRemoteObject implements ClientInterface {
+
+    private SingleChatMessageDao singleChatMessageDao = RMIConnection.getSingleChatMessageDao();
+    private SingleChatDao singleChatDao = RMIConnection.getSingleChatDao();
+    private SingleChatViewController singleChatViewController = SingleChatViewController.getInstance();
 
     private ClientService() throws RemoteException {
     }
@@ -46,28 +57,29 @@ public class ClientService extends UnicastRemoteObject implements ClientInterfac
     @Override
     public void receiveNewSingleChat(int singleChatId) throws RemoteException {
         System.out.println(">> New Single Chat :" + singleChatId);
-//        System.out.println(singleChatId + "el id");
-//        SingleChat singleChat = singleChatDao.getSingleChat(singleChatId);
-//        if (singleChat != null) {
-//            singleChatViewController.displayNewSingleChat(singleChat);
-//        } else {
-//            System.out.println("ana null" + singleChat);
-//        }
+        System.out.println(singleChatId + "el id");
+        SingleChat singleChat = singleChatDao.getSingleChat(singleChatId);
+        if (singleChat != null) {
+            singleChatViewController.displayNewSingleChat(singleChat);
+        } else {
+            System.out.println("ana null" + singleChat);
+        }
     }
 
     @Override
     public void receiveNewSingleChatMessage(int singleChatMessageId) throws RemoteException {
         System.out.println(">> New Single Chat Message :" + singleChatMessageId);
-//        System.out.println(singleChatMessageId + "el id");
-//        SingleChatMessage singleChatMessage = singleChatMessageDao.getSingleChatMessage(singleChatMessageId);
-//        User user = userDao.getUser(singleChatMessage.getUserId());
-//        UserDto userDto = new UserDto(getDisplayUsername(user), user.getProfileImage());
-//        System.out.println(singleChatMessage + "elobject");
-//        if (singleChatMessage != null) {
-//            singleChatViewController.displayNewSingleChatMessage(singleChatMessage, userDto);
-//        } else {
-//            System.out.println("ana null" + singleChatMessage);
-//        }
+        System.out.println(singleChatMessageId + "el id");
+        SingleChatMessage singleChatMessage = singleChatMessageDao.getSingleChatMessage(singleChatMessageId);
+        //User user = userDao.getUser(singleChatMessage.getUserId());
+        //  UserDto userDto = new UserDto(getDisplayUsername(user), user.getProfileImage());
+        System.out.println(singleChatMessage + "elobject");
+        if (singleChatMessage != null) {
+            //TODO: MAINTAIN FUNCTION
+            //singleChatViewController.displayNewSingleChatMessage(singleChatMessage);
+        } else {
+            System.out.println("ana null" + singleChatMessage);
+        }
     }
 
     @Override
