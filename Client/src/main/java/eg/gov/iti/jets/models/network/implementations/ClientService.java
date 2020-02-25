@@ -78,6 +78,8 @@ public class ClientService extends UnicastRemoteObject implements ClientInterfac
     @Override
     public void receiveNewRelationship(int relationshipId) throws RemoteException {
         System.out.println(">> New Relationship :" + relationshipId);
+        LeftViewController leftViewController = new LeftViewController();
+       leftViewController.getRelationship(relationshipId);
     }
 
     @Override
