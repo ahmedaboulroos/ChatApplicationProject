@@ -51,11 +51,12 @@ public class AddContactGroupViewController implements Initializable {
             }
 
             List<ContactsGroupMembership> memberships = userDao.getUserContactsGroupMemberships(user.getId());
-            List<User> contacts = new ArrayList<>();
-            for (ContactsGroupMembership membership : memberships) {
-                contacts.add(userDao.getUser(membership.getUserId()));
-            }
+
             if (memberships != null) {
+                List<User> contacts = new ArrayList<>();
+                for (ContactsGroupMembership membership : memberships) {
+                    contacts.add(userDao.getUser(membership.getUserId()));
+                }
                 availableContactsLv.setItems(FXCollections.observableList(contacts));
             }
         } catch (RemoteException e) {
