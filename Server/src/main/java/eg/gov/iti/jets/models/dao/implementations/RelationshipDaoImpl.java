@@ -52,11 +52,11 @@ public class RelationshipDaoImpl extends UnicastRemoteObject implements Relation
             }
             ClientInterface clientOne = ServerService.getClient(relationship.getFirstUserId());
             if (clientOne != null) {
-                clientOne.receiveNewRelationship(relationship.getId());
+                clientOne.receiveNewRelationship(id);
             }
             ClientInterface clientTwo = ServerService.getClient(relationship.getSecondUserId());
             if (clientTwo != null) {
-                clientTwo.receiveNewRelationship(relationship.getId());
+                clientTwo.receiveNewRelationship(id);
             }
         } catch (SQLException | RemoteException e) {
             e.printStackTrace();
