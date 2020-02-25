@@ -1,12 +1,11 @@
 package eg.gov.iti.jets.models.dao.implementations;
 
 import eg.gov.iti.jets.models.dao.interfaces.RelationshipDao;
-import eg.gov.iti.jets.models.dao.interfaces.UserDao;
-
 import eg.gov.iti.jets.models.entities.Relationship;
 import eg.gov.iti.jets.models.entities.User;
 import eg.gov.iti.jets.models.entities.enums.RelationshipStatus;
 import eg.gov.iti.jets.models.network.implementations.ServerService;
+import eg.gov.iti.jets.models.network.interfaces.ClientInterface;
 
 import java.rmi.RemoteException;
 import java.rmi.server.UnicastRemoteObject;
@@ -51,8 +50,14 @@ public class RelationshipDaoImpl extends UnicastRemoteObject implements Relation
             if (rs.next()) {
                 id = rs.getInt(1);
             }
-            ServerService.getClient(relationship.getFirstUserId()).receiveNewRelationship(id);
-            ServerService.getClient(relationship.getSecondUserId()).receiveNewRelationship(id);
+            ClientInterface clientOne = ServerService.getClient(relationship.getFirstUserId());
+            if (clientOne != null) {
+                clientOne.receiveNewRelationship(relationship.getId());
+            }
+            ClientInterface clientTwo = ServerService.getClient(relationship.getSecondUserId());
+            if (clientTwo != null) {
+                clientTwo.receiveNewRelationship(relationship.getId());
+            }
         } catch (SQLException | RemoteException e) {
             e.printStackTrace();
         }
@@ -120,8 +125,14 @@ public class RelationshipDaoImpl extends UnicastRemoteObject implements Relation
             preparedStatement.setString(3, relationship.getStatus().toString());
             preparedStatement.setInt(4, relationship.getFirstUserId());
             preparedStatement.executeUpdate();
-            ServerService.getClient(relationship.getFirstUserId()).receiveNewRelationship(relationship.getId());
-            ServerService.getClient(relationship.getSecondUserId()).receiveNewRelationship(relationship.getId());
+            ClientInterface clientOne = ServerService.getClient(relationship.getFirstUserId());
+            if (clientOne != null) {
+                clientOne.receiveNewRelationship(relationship.getId());
+            }
+            ClientInterface clientTwo = ServerService.getClient(relationship.getSecondUserId());
+            if (clientTwo != null) {
+                clientTwo.receiveNewRelationship(relationship.getId());
+            }
         } catch (SQLException | RemoteException e) {
             e.printStackTrace();
         }
