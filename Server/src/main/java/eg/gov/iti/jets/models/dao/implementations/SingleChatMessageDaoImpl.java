@@ -63,7 +63,7 @@ public class SingleChatMessageDaoImpl extends UnicastRemoteObject implements Sin
     @Override
     public SingleChatMessage getSingleChatMessage(int singleChatMessageId) {
         SingleChatMessage singleChatMessage = null;
-        String sql = "select ID, USER_ID, CONTENT, MESSAGE_DATE_TIME, SINGLE_CHAT_ID from SINGLE_CHAT_MESSAGES where SINGLE_CHAT_MESSAGE_ID = ? ";
+        String sql = "select ID, USER_ID, CONTENT, MESSAGE_DATE_TIME, SINGLE_CHAT_ID from SINGLE_CHAT_MESSAGES where ID = ? ";
         try (PreparedStatement ps = dbConnection.prepareStatement(sql, ResultSet.TYPE_SCROLL_INSENSITIVE, ResultSet.CONCUR_READ_ONLY)) {
             ps.setInt(1, singleChatMessageId);
             ResultSet rs = ps.executeQuery();
