@@ -23,6 +23,7 @@ public class ChatAppViewController implements Initializable {
     private BorderPane chatAppBp;
     LeftViewController leftViewController;
     CenterViewController centerViewController;
+    RightViewController rightViewController;
     //=CenterViewController.getInstance();
 
 
@@ -42,6 +43,8 @@ public class ChatAppViewController implements Initializable {
 
             FXMLLoader rightViewFxmlLoader = new FXMLLoader(getClass().getResource("/views/RightView.fxml"));
             Parent rightView = rightViewFxmlLoader.load();
+            rightViewController = rightViewFxmlLoader.getController();
+            rightViewController.setController(rightViewController);
             chatAppBp.setRight(rightView);
 
         } catch (IOException e) {
