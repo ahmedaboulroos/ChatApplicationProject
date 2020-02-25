@@ -11,6 +11,7 @@ import eg.gov.iti.jets.models.entities.ContactsGroupMembership;
 import eg.gov.iti.jets.models.entities.Relationship;
 import eg.gov.iti.jets.models.entities.User;
 import eg.gov.iti.jets.models.network.RMIConnection;
+import javafx.application.Platform;
 import javafx.collections.FXCollections;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -31,6 +32,16 @@ import java.util.List;
 import java.util.ResourceBundle;
 
 public class AddContactGroupViewController implements Initializable {
+
+    private static AddContactGroupViewController instance;
+
+    public static AddContactGroupViewController getInstance() {
+        return instance;
+    }
+
+    public static void setController(AddContactGroupViewController addContactGroupViewController) {
+        AddContactGroupViewController.instance = addContactGroupViewController;
+    }
 
     User user = ClientStageCoordinator.getInstance().currentUser;
     ContactsGroupDao contactsGroupDao = RMIConnection.getContactsGroupDao();
@@ -176,6 +187,15 @@ public class AddContactGroupViewController implements Initializable {
             } catch (RemoteException e) {
                 e.printStackTrace();
             }
+        }
+    }
+
+    public void addGroup(int groupId) {
+        try {
+            ContactsGroup group = contactsGroupDao.getContactsGroup(groupId);
+            Platform.runLater(() -> availableGroupsLv.getItems().add(group));
+        } catch (RemoteException e) {
+            e.printStackTrace();
         }
     }
 }

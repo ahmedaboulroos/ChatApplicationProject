@@ -83,6 +83,8 @@ public class ClientService extends UnicastRemoteObject implements ClientInterfac
     @Override
     public void receiveNewContactsGroup(int groupId) throws RemoteException {
         System.out.println(">> New Contacts Group :" + groupId);
+        leftViewController.addGroup(groupId);
+        leftViewController.getAddContactGroupViewController().addGroup(groupId);
 //        Group group = groupDao.getGroup(groupId);
 //        List<GroupContact> groupContactList = groupDao.getGroupContacts(groupId);
 //        List<UserDto> groupUsers = groupContactList.stream()

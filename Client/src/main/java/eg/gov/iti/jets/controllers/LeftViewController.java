@@ -12,6 +12,7 @@ import eg.gov.iti.jets.models.entities.enums.RelationshipStatus;
 import eg.gov.iti.jets.models.entities.enums.UserStatus;
 import eg.gov.iti.jets.models.imageutiles.ImageUtiles;
 import eg.gov.iti.jets.models.network.RMIConnection;
+import javafx.application.Platform;
 import javafx.collections.FXCollections;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -46,6 +47,7 @@ import java.util.ResourceBundle;
 public class LeftViewController implements Initializable {
     private static LeftViewController leftViewController;
 
+    private AddContactGroupViewController addContactGroupViewController;
     @FXML
     private Tab contactsTab;
 
@@ -88,6 +90,9 @@ public class LeftViewController implements Initializable {
         LeftViewController.leftViewController = leftViewController;
     }
 
+    public AddContactGroupViewController getAddContactGroupViewController() {
+        return addContactGroupViewController;
+    }
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
@@ -167,44 +172,8 @@ public class LeftViewController implements Initializable {
             List<ContactsGroup> userGroups = userDao.getUserContactsGroups(userId);
             if (userGroups != null) {
                 for (ContactsGroup g : userGroups) {
-                    //Set group cell factory
-                    JFXListView<ContactsGroupMembership> contactsGroupLv = new JFXListView<>();
-                    contactsGroupLv.setCellFactory(listViewListCellCallback -> new JFXListCell<>() {
-                        @Override
-                        protected void updateItem(ContactsGroupMembership membership, boolean empty) {
-                            super.updateItem(membership, empty);
-                            if (membership != null) {
-                                User user = null;
-                                try {
-                                    user = userDao.getUser(membership.getUserId());
-                                } catch (RemoteException e) {
-                                    e.printStackTrace();
-                                }
-                                if (user != null) {
-                                    Image image = null;
-                                    if (user.getProfileImage() != null) {
-                                        image = new Image(new ByteArrayInputStream(user.getProfileImage()));
-                                    } else {
-                                        //image = new Image(getClass().getClassLoader().getResource("images/chat-circle-blue-512.png").toString());
-                                    }
-                                    ImageView imageView = new ImageView(image);
-                                    imageView.setFitHeight(50);
-                                    imageView.setFitWidth(50);
-
-                                    HBox box = new HBox();
-                                    box.getChildren().addAll(imageView, new Label(getUserDisplayName(user)));
-                                    setGraphic(box);
-                                } else {
-                                    setGraphic(null);
-                                }
-                                setText(null);
-                            }
-                        }
-                    });
-                    TitledPane groupTpane = new TitledPane();
-                    groupTpane.setText(g.getGroupName());
-                    groupTpane.setContent(contactsGroupLv);
-                    groupsAccordion.getPanes().add(groupTpane);
+                    ListView<ContactsGroupMembership> contactsGroupLv =
+                            createContactGroupLv(g);
 
                     List<ContactsGroupMembership> memberships =
                             contactsGroupDao.getContactsGroupMemberships(g.getId());
@@ -220,6 +189,48 @@ public class LeftViewController implements Initializable {
         } catch (RemoteException e) {
             e.printStackTrace();
         }
+    }
+
+    private ListView<ContactsGroupMembership> createContactGroupLv(ContactsGroup g) {
+        //Set group cell factory
+        JFXListView<ContactsGroupMembership> contactsGroupLv = new JFXListView<>();
+        contactsGroupLv.setCellFactory(listViewListCellCallback -> new JFXListCell<>() {
+            @Override
+            protected void updateItem(ContactsGroupMembership membership, boolean empty) {
+                super.updateItem(membership, empty);
+                if (membership != null) {
+                    User user = null;
+                    try {
+                        user = userDao.getUser(membership.getUserId());
+                    } catch (RemoteException e) {
+                        e.printStackTrace();
+                    }
+                    if (user != null) {
+                        Image image = null;
+                        if (user.getProfileImage() != null) {
+                            image = new Image(new ByteArrayInputStream(user.getProfileImage()));
+                        } else {
+                            //image = new Image(getClass().getClassLoader().getResource("images/chat-circle-blue-512.png").toString());
+                        }
+                        ImageView imageView = new ImageView(image);
+                        imageView.setFitHeight(50);
+                        imageView.setFitWidth(50);
+
+                        HBox box = new HBox();
+                        box.getChildren().addAll(imageView, new Label(getUserDisplayName(user)));
+                        setGraphic(box);
+                    } else {
+                        setGraphic(null);
+                    }
+                    setText(null);
+                }
+            }
+        });
+        TitledPane groupTpane = new TitledPane();
+        groupTpane.setText(g.getGroupName());
+        groupTpane.setContent(contactsGroupLv);
+        Platform.runLater(() -> groupsAccordion.getPanes().add(groupTpane));
+        return contactsGroupLv;
     }
 
     private String getUserDisplayName(User user) {
@@ -398,6 +409,8 @@ public class LeftViewController implements Initializable {
         try {
             FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/views/AddContactGroupView.fxml"));
             Parent addContactGroupView = fxmlLoader.load();
+            addContactGroupViewController = fxmlLoader.getController();
+            AddContactGroupViewController.setController(addContactGroupViewController);
             Stage stage = new Stage();
             Scene scene = new Scene(addContactGroupView);
             stage.setScene(scene);
@@ -440,27 +453,6 @@ public class LeftViewController implements Initializable {
         }
     }
 
-    //TODO:REMOVE DTO FROM IMPLEMENTATION
-    /*public void addNewGroup(GroupDto groupDto) {
-        TitledPane titledPane = new TitledPane();
-        titledPane.setText(groupDto.getGroupName());
-        //TODO: maintain photo
-        groupDto.getUsers().forEach(userDto -> titledPane.getChildrenUnmodifiable().add(new Label(userDto.getUsername())));
-        groupsAccordion.getPanes().add(titledPane);
-    }
-
-    public void addContact(UserDto user) {
-        System.out.println(user);
-    }
-
-    public void addLoggedIn(UserDto user) {
-        System.out.println(user);
-    }
-
-    public void removeLoggedOut(UserDto user) {
-        System.out.println(user);
-    }*/
-
     @FXML
     void handleUserProfileBtnClick(ActionEvent event) {
         try {
@@ -494,6 +486,14 @@ public class LeftViewController implements Initializable {
                 default:
                     System.out.println("WT!?");
             }
+        } catch (RemoteException e) {
+            e.printStackTrace();
+        }
+    }
+
+    public void addGroup(int groupId) {
+        try {
+            createContactGroupLv(contactsGroupDao.getContactsGroup(groupId));
         } catch (RemoteException e) {
             e.printStackTrace();
         }
