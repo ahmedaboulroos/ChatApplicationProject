@@ -2,11 +2,15 @@ package eg.gov.iti.jets.controllers;
 
 import com.jfoenix.controls.JFXButton;
 import javafx.fxml.FXML;
+import javafx.fxml.Initializable;
 import javafx.scene.control.Label;
 import javafx.scene.shape.Circle;
 import org.kordamp.ikonli.javafx.FontIcon;
 
-public class ContactInfoViewController {
+import java.net.URL;
+import java.util.ResourceBundle;
+
+public class ContactInfoViewController implements Initializable {
 
 
         @FXML
@@ -25,4 +29,8 @@ public class ContactInfoViewController {
         private JFXButton blockBtn;
 
 
+        @Override
+        public void initialize(URL url, ResourceBundle resourceBundle) {
+                System.out.println("el Contact Info view loaded");
+        }
 }
