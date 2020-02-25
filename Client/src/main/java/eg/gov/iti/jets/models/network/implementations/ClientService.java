@@ -1,12 +1,13 @@
 package eg.gov.iti.jets.models.network.implementations;
 
 
+import eg.gov.iti.jets.controllers.ClientStageCoordinator;
+import eg.gov.iti.jets.controllers.GroupChatViewController;
 import eg.gov.iti.jets.controllers.SingleChatViewController;
 import eg.gov.iti.jets.models.dao.interfaces.SingleChatDao;
 import eg.gov.iti.jets.models.dao.interfaces.SingleChatMessageDao;
 import eg.gov.iti.jets.models.entities.SingleChat;
 import eg.gov.iti.jets.models.entities.SingleChatMessage;
-import eg.gov.iti.jets.models.entities.User;
 import eg.gov.iti.jets.models.network.RMIConnection;
 import eg.gov.iti.jets.models.network.interfaces.ClientInterface;
 
@@ -18,7 +19,7 @@ public class ClientService extends UnicastRemoteObject implements ClientInterfac
     private SingleChatMessageDao singleChatMessageDao = RMIConnection.getSingleChatMessageDao();
     private SingleChatDao singleChatDao = RMIConnection.getSingleChatDao();
     private SingleChatViewController singleChatViewController = SingleChatViewController.getInstance();
-
+    private GroupChatViewController groupChatViewController = GroupChatViewController.getInstance();
     private ClientService() throws RemoteException {
     }
 
@@ -37,15 +38,12 @@ public class ClientService extends UnicastRemoteObject implements ClientInterfac
 
     @Override
     public void userLoggedIn(int userId) throws RemoteException {
-        System.out.println(">> User Logged In :" + userId);
-//        User user = userDao.getUser(userId);
-//        UserDto userDto = new UserDto(getDisplayUsername(user), user.getProfileImage());
-//        chatAppViewController.loggedIn(userDto);
+        ClientStageCoordinator.getInstance().displayUserLoginNotification(userId);
     }
 
     @Override
     public void userLoggedOut(int userId) throws RemoteException {
-        System.out.println(">> User Logged Out :" + userId);
+        ClientStageCoordinator.getInstance().displayUserLogoutNotification(userId);
     }
 
     @Override
@@ -87,6 +85,7 @@ public class ClientService extends UnicastRemoteObject implements ClientInterfac
     @Override
     public void receiveNewGroupChatMessage(int groupChatMessageId) throws RemoteException {
         System.out.println(">> New Group Chat Message :" + groupChatMessageId);
+        groupChatViewController.displayNewGroupChatMessage(groupChatMessageId);
     }
 
     @Override
@@ -128,12 +127,7 @@ public class ClientService extends UnicastRemoteObject implements ClientInterfac
 
     @Override
     public void receiveNewAnnouncement(int announcementId) throws RemoteException {
-        System.out.println(">> New Announcement :" + announcementId);
-
-    }
-
-    private String getDisplayUsername(User user) {
-        return user.getUsername() == null ? user.getPhoneNumber() : user.getUsername();
+        ClientStageCoordinator.getInstance().displayServerAnnouncement(announcementId);
     }
 
 }

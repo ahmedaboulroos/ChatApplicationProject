@@ -64,8 +64,6 @@ public class LoginViewController implements Initializable {
             if (user != null) {
                 ClientStageCoordinator.getInstance().currentUser = user;
                 ClientStageCoordinator.getInstance().startMainChatAppScene();
-                System.out.println(user.getId());
-                System.out.println(ClientService.getInstance());
                 RMIConnection.getServerService().login(user.getId(), ClientService.getInstance());
                 if (rememberMeCb.isSelected()) {
                     rememberMeCbHandelAction();
