@@ -26,7 +26,9 @@ import javax.xml.transform.dom.DOMSource;
 import javax.xml.transform.stream.StreamResult;
 import java.io.File;
 import java.io.IOException;
+import java.net.InetAddress;
 import java.net.URL;
+import java.net.UnknownHostException;
 import java.util.ResourceBundle;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -34,26 +36,39 @@ import java.util.logging.Logger;
 public class LoginViewController implements Initializable {
 
     @FXML
+    JFXButton checkServerAddressBtn;
+    @FXML
     private JFXTextField phoneNumberTf;
-
+    @FXML
+    private JFXTextField serverAddressTf;
     @FXML
     private JFXPasswordField passwordPf;
-
     @FXML
     private JFXCheckBox rememberMeCb;
-
     @FXML
     private JFXButton signInBtn;
-
     @FXML
     private JFXButton signUpBtn;
-
     @FXML
     private Label errorLbl;
+    private boolean connectionEstablished = false;
+
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
-
+        try {
+            InetAddress inetAddress = InetAddress.getLocalHost();
+            serverAddressTf.setText(inetAddress.getHostAddress());
+            serverAddressTf.setDisable(false);
+            checkServerAddressBtn.setDisable(false);
+            phoneNumberTf.setDisable(true);
+            passwordPf.setDisable(true);
+            rememberMeCb.setDisable(true);
+            signInBtn.setDisable(true);
+            signUpBtn.setDisable(true);
+        } catch (UnknownHostException e) {
+            e.printStackTrace();
+        }
     }
 
     @FXML
@@ -69,7 +84,7 @@ public class LoginViewController implements Initializable {
                     rememberMeCbHandelAction();
                 }
             } else {
-                errorLbl.setText("Invalid PhoneNumber or Password");
+                errorLbl.setText("Invalid Credentials");
             }
         } catch (IOException e) {
             e.printStackTrace();
@@ -122,5 +137,20 @@ public class LoginViewController implements Initializable {
 
     }
 
+    @FXML
+    void handleCheckServerConnection(ActionEvent event) {
+        connectionEstablished = RMIConnection.startConnection(serverAddressTf.getText());
+        if (connectionEstablished) {
+            serverAddressTf.setDisable(true);
+            checkServerAddressBtn.setDisable(true);
+            phoneNumberTf.setDisable(false);
+            passwordPf.setDisable(false);
+            rememberMeCb.setDisable(false);
+            signInBtn.setDisable(false);
+            signUpBtn.setDisable(false);
+        } else {
+            errorLbl.setText("Server Connection Error");
+        }
+    }
 }
 

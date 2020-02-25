@@ -24,6 +24,12 @@ public class RMIConnection {
     private static ServerInterface serverService;
     private static Registry registry;
 
+    private static boolean connectionEstablished = false;
+
+    public static boolean isConnectionEstablished() {
+        return connectionEstablished;
+    }
+
     private RMIConnection() {
     }
 
@@ -71,36 +77,35 @@ public class RMIConnection {
         return serverService;
     }
 
-    public static boolean startConnection() {
-        try {
-            if (registry == null) {
-                try {
-                    registry = LocateRegistry.getRegistry(1234);
-                    announcementDao = (AnnouncementDao) registry.lookup("AnnouncementDao");
-                    groupChatDao = (GroupChatDao) registry.lookup("GroupChatDao");
-                    groupChatMessageDao = (GroupChatMessageDao) registry.lookup("GroupChatMessageDao");
-                    contactsGroupMembershipDao = (ContactsGroupMembershipDao) registry.lookup("ContactsGroupMembershipDao");
-                    contactsGroupDao = (ContactsGroupDao) registry.lookup("ContactsGroupDao");
-                    groupChatMembershipDao = (GroupChatMembershipDao) registry.lookup("GroupChatMembershipDao");
-                    relationshipDao = (RelationshipDao) registry.lookup("RelationshipDao");
-                    singleChatDao = (SingleChatDao) registry.lookup("SingleChatDao");
-                    singleChatMessageDao = (SingleChatMessageDao) registry.lookup("SingleChatMessageDao");
-                    userDao = (UserDao) registry.lookup("UserDao");
-                    serverService = (ServerInterface) registry.lookup("ServerService");
-                    System.out.println(">> RMI-Registry Services Bounded...");
-                    return true;
-                } catch (RemoteException e) {
-                    e.printStackTrace();
-                    return false;
-                }
-            } else {
-                System.out.println(">> RMI-Registry Connection Already Established...");
+    public static boolean startConnection(String host) {
+        if (!connectionEstablished) {
+            try {
+                registry = LocateRegistry.getRegistry(host, 1234);
+                announcementDao = (AnnouncementDao) registry.lookup("AnnouncementDao");
+                groupChatDao = (GroupChatDao) registry.lookup("GroupChatDao");
+                groupChatMessageDao = (GroupChatMessageDao) registry.lookup("GroupChatMessageDao");
+                contactsGroupMembershipDao = (ContactsGroupMembershipDao) registry.lookup("ContactsGroupMembershipDao");
+                contactsGroupDao = (ContactsGroupDao) registry.lookup("ContactsGroupDao");
+                groupChatMembershipDao = (GroupChatMembershipDao) registry.lookup("GroupChatMembershipDao");
+                relationshipDao = (RelationshipDao) registry.lookup("RelationshipDao");
+                singleChatDao = (SingleChatDao) registry.lookup("SingleChatDao");
+                singleChatMessageDao = (SingleChatMessageDao) registry.lookup("SingleChatMessageDao");
+                userDao = (UserDao) registry.lookup("UserDao");
+                serverService = (ServerInterface) registry.lookup("ServerService");
+                System.out.println(">> RMI-Registry Services Bounded...");
+                connectionEstablished = true;
                 return true;
+            } catch (RemoteException | NotBoundException e) {
+                connectionEstablished = false;
+                System.out.println(">> RMI-Registry Couldn't Establish a Connection...");
+                return false;
             }
-        } catch (NotBoundException e) {
-            e.printStackTrace();
+        } else {
+            connectionEstablished = false;
+            System.out.println(">> RMI-Registry Connection Already Established...");
+            return true;
         }
-        return false;
+
     }
 
 }
