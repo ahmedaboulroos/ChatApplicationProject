@@ -94,6 +94,18 @@ public class LeftViewController implements Initializable {
         return addContactGroupViewController;
     }
 
+    public void updateSingleChat(int singleChatMessageId) {
+        try {
+            SingleChatMessage singleChatMessage = RMIConnection.getSingleChatMessageDao().getSingleChatMessage(singleChatMessageId);
+            int singleChatId = singleChatMessage.getSingleChatId();
+            SingleChat singleChat = RMIConnection.getSingleChatDao().getSingleChat(singleChatId);
+            //singleChatsLv.getCellFactory().call(singleChat);
+            singleChatsLv.getSelectionModel().select(0);
+        } catch (RemoteException e) {
+            e.printStackTrace();
+        }
+    }
+
     @Override
     public void initialize(URL location, ResourceBundle resources) {
         clientStageCoordinator = ClientStageCoordinator.getInstance();
@@ -248,7 +260,7 @@ public class LeftViewController implements Initializable {
         } catch (RemoteException e) {
             e.printStackTrace();
         }
-        loadSingleChats();
+        // loadSingleChats();
     }
     private void loadSingleChats() {
         try {

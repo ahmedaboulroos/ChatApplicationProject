@@ -88,7 +88,8 @@ public class AddSingleChatViewController implements Initializable {
                 super.updateItem(item, empty);
 
                 if (item != null) {
-                    User user = usersCompoBox.getItems().get(0);
+                    // User user = usersCompoBox.getItems().get(0);
+                    User user = item;
                     HBox hBox = new HBox();
                     hBox.setStyle("-fx-background-color: transparent  ;" +
                             "-fx-padding: 1;" + "-fx-border-style: solid inside;"
