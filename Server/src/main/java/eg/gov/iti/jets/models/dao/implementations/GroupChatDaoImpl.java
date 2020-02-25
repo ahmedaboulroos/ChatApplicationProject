@@ -53,6 +53,7 @@ public class GroupChatDaoImpl extends UnicastRemoteObject implements GroupChatDa
             ps.setBinaryStream(3, in, groupChat.getGroupImageBytes().length);
             ps.setTimestamp(4, Timestamp.valueOf(groupChat.getCreationDateTime()));
             ps.executeUpdate();
+            dbConnection.setAutoCommit(true);
             ResultSet rs = ps.getGeneratedKeys();
             if (rs.next()) {
                 id = rs.getInt(1);
@@ -60,6 +61,7 @@ public class GroupChatDaoImpl extends UnicastRemoteObject implements GroupChatDa
         } catch (SQLException e) {
             e.printStackTrace();
         }
+        System.out.println("inside groupchatdaoimpl created group chat id " + id);
         return id;
     }
 
@@ -82,7 +84,7 @@ public class GroupChatDaoImpl extends UnicastRemoteObject implements GroupChatDa
 
     @Override
     public List<GroupChatMembership> getGroupChatMemberships(int groupChatId) {
-        String sql = "select membership_id, user_id, group_chat_id, joined_timestamp from membership where group_chat_id=?";
+        String sql = "select id, user_id, group_chat_id, joined_date_time from group_chat_memberships where group_chat_id=?";
         List<GroupChatMembership> groupChatMembershipList = new ArrayList<>();
         ResultSet rs = null;
         int membership_id = 0;
@@ -96,10 +98,10 @@ public class GroupChatDaoImpl extends UnicastRemoteObject implements GroupChatDa
             stmt.setInt(1, groupChatId);
             rs = stmt.executeQuery();
             while (rs.next()) {
-                membership_id = rs.getInt("membership_id");
+                membership_id = rs.getInt("id");
                 group_chat_id = rs.getInt("group_chat_id");
                 user_id = rs.getInt("user_id");
-                timestamp = rs.getTimestamp("joined_timestamp");
+                timestamp = rs.getTimestamp("joined_date_time");
                 joined_timestamp = timestamp.toLocalDateTime();
                 groupChatMembershipList.add(new GroupChatMembership(membership_id, user_id, group_chat_id, joined_timestamp));
             }
