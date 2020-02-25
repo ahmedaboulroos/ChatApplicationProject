@@ -1,5 +1,6 @@
 package eg.gov.iti.jets.controllers;
 
+import eg.gov.iti.jets.models.dao.interfaces.SingleChatDao;
 import eg.gov.iti.jets.models.dao.interfaces.UserDao;
 import eg.gov.iti.jets.models.entities.*;
 import eg.gov.iti.jets.models.entities.enums.RelationshipStatus;
@@ -36,6 +37,8 @@ import java.rmi.RemoteException;
 import java.util.*;
 
 public class LeftViewController implements Initializable {
+    private static LeftViewController leftViewController;
+    private SingleChatDao singleChatDao = RMIConnection.getSingleChatDao();
 
     @FXML
     private Tab contactsTab;
@@ -61,6 +64,14 @@ public class LeftViewController implements Initializable {
 
     private ClientStageCoordinator clientStageCoordinator;
     AddSingleChatViewController addSingleChatViewController;
+
+    public static LeftViewController getInstance() {
+        return leftViewController;
+    }
+
+    public void setController(LeftViewController leftViewController) {
+        this.leftViewController = leftViewController;
+    }
 
 
     @Override
@@ -166,6 +177,19 @@ public class LeftViewController implements Initializable {
         }
     }
 
+    public void displayNewSingleChat(int singleChatId) {
+
+        try {
+            SingleChat singleChat = singleChatDao.getSingleChat(singleChatId);
+
+            if (singleChat != null) {
+                singleChatsLv.getItems().add(singleChat);
+            }
+        } catch (RemoteException e) {
+            e.printStackTrace();
+        }
+        loadSingleChats();
+    }
     private void loadSingleChats() {
         try {
             List<SingleChat> singleChats = userDao.getUserSingleChats(ClientStageCoordinator.getInstance().currentUser.getId());
