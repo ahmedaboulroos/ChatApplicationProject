@@ -370,23 +370,26 @@ public class LeftViewController implements Initializable {
     @FXML
     void handleGroupChatSelection(MouseEvent event) {
         GroupChat groupChat = groupChatsLv.getSelectionModel().getSelectedItem();
+        System.out.println("inside left view controller handleGroupChatSelection" + groupChat);
+        List<GroupChatMessage> groupChatMessageList = null;
+        if (groupChat != null) {
+            try {
+                groupChatMessageList = RMIConnection.getGroupChatDao().getGroupChatMessages(groupChat.getId());
+            } catch (RemoteException e) {
+                e.printStackTrace();
+            }
+            System.out.println(groupChatMessageList);
+            ClientStageCoordinator.getInstance().openNewGroupChat(groupChat.getId());
+
+        } else {
+            System.out.println("inside leftViewController.handleGroupChatSelection selected item returns NULL");
+        }
+
         //System.out.println("inside leftViewController groupChat.getGroupChatId() "+groupChat.getGroupChatId());
         ////groupchatmessages controller to get the messages list from the DB
         /*GroupChatMessageController groupChatMessageController = new GroupChatMessageController();
         List<GroupChatMessage> groupChatMessageList = groupChatMessageController.getAllGroupChatMessages(groupChat.getGroupChatId());
         ///printing message list*/
-        List<GroupChatMessage> groupChatMessageList = null;
-        try {
-            groupChatMessageList = RMIConnection.getGroupChatDao().getGroupChatMessages(groupChat.getId());
-        } catch (RemoteException e) {
-            e.printStackTrace();
-        }
-        System.out.println(groupChatMessageList);
-
-        if (groupChat != null) {
-            System.out.println(groupChat.getId());
-            ClientStageCoordinator.getInstance().openNewGroupChat(groupChat.getId());
-        }
     }
 
     @FXML

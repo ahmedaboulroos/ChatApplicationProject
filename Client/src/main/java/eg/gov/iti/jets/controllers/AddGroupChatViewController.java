@@ -43,7 +43,10 @@ public class AddGroupChatViewController {
             System.out.println("inside -->> AddGroupChatViewController Current user id" + ClientStageCoordinator.getInstance().currentUser.getId());
             GroupChatMembership membership = new GroupChatMembership(ClientStageCoordinator.getInstance().currentUser.getId(), autoGenGroupChatID);
             System.out.println(ImageUtiles.fromImageToBytes(file.getAbsolutePath()));
+            System.out.println("========================");
+            System.out.println(membership);
             int autoGenMembershipID = groupChatMembershipDao.createGroupChatMembership(membership);
+            System.out.println("========================" + autoGenMembershipID);
             System.out.println("inside ===> add group chatView controller membershipDao.getUser" + groupChatMembershipDao.getUser(autoGenMembershipID));
         } catch (RemoteException e) {
             e.printStackTrace();

@@ -235,7 +235,7 @@ public class UserDaoImpl extends UnicastRemoteObject implements UserDao {
                 stmt.setInt(1, groupChatId);
                 rs = stmt.executeQuery();
                 if (rs.next()) {
-                    id = rs.getInt("group_chat_id");
+                    id = rs.getInt("id");
                     tilte = rs.getString("title");
                     description = rs.getString("description");
                     blob = rs.getBlob("group_image");
