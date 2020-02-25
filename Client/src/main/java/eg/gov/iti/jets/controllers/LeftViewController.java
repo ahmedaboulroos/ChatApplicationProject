@@ -1,32 +1,36 @@
 package eg.gov.iti.jets.controllers;
 
+import com.jfoenix.controls.JFXListCell;
 import eg.gov.iti.jets.models.dao.interfaces.UserDao;
 import eg.gov.iti.jets.models.entities.*;
 import eg.gov.iti.jets.models.entities.enums.RelationshipStatus;
 import eg.gov.iti.jets.models.imageutiles.ImageUtiles;
 import eg.gov.iti.jets.models.network.RMIConnection;
 import javafx.collections.FXCollections;
-import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
-import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
+import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
 import javafx.scene.paint.ImagePattern;
 import javafx.scene.shape.Circle;
 import javafx.stage.Stage;
 
+import java.io.ByteArrayInputStream;
 import java.io.IOException;
 import java.net.URL;
 import java.rmi.RemoteException;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.ResourceBundle;
 
 public class LeftViewController implements Initializable {
 
@@ -50,9 +54,9 @@ public class LeftViewController implements Initializable {
 
     private UserDao userDao = RMIConnection.getUserDao();
 
-    private Map<Integer, ObservableList<Node>> accordionLists = new HashMap<>();
-
     private ClientStageCoordinator clientStageCoordinator;
+
+    private ListView<User> allContactsLv;
 
 
     @Override
@@ -70,9 +74,6 @@ public class LeftViewController implements Initializable {
         try {
             List<ContactsGroup> userGroups = userDao.getUserContactsGroups(userId);
             if (userGroups != null) {
-                TitledPane allContactsTPane = new TitledPane();
-                allContactsTPane.setText("All Contacts");
-                //accordionLists.put(0, allContactsTPane.getContent());
                 List<Integer> groupIds = new ArrayList<>();
                 for (ContactsGroup g : userGroups) {
                     TitledPane titledPane = new TitledPane();
@@ -118,18 +119,46 @@ public class LeftViewController implements Initializable {
         return null;
     }
 
-    List<Integer> friendIds;
 
     private void loadContacts() {
         User user = clientStageCoordinator.currentUser;
-        int userId = user.getId();
+        allContactsLv = new ListView<>();
+        allContactsLv.setCellFactory(listViewListCellCallback -> new JFXListCell<>() {
+            @Override
+            protected void updateItem(User user, boolean empty) {
+                super.updateItem(user, empty);
+                if (user != null) {
+                    Image image;
+                    if (user.getProfileImage() != null) {
+                        image = new Image(new ByteArrayInputStream(user.getProfileImage()));
+                    } else {
+                        image = new Image(getClass().getClassLoader().getResource("images/chat-circle-blue-512.png").toString());
+                    }
+                    ImageView imageView = new ImageView(image);
+                    imageView.setFitHeight(50);
+                    imageView.setFitWidth(50);
+
+                    HBox box = new HBox();
+                    box.getChildren().addAll(imageView, new Label(user.getPhoneNumber()));
+                    setGraphic(box);
+                } else {
+                    setGraphic(null);
+                }
+                setText(null);
+            }
+        });
+
         try {
-            List<Relationship> userRelationships = userDao.getUserRelationships(userId);
+            List<Relationship> userRelationships = userDao.getUserRelationships(user.getId());
+            TitledPane allContactsTPane = new TitledPane();
+            allContactsTPane.setText("All Contacts");
+            allContactsTPane.setContent(allContactsLv);
+            groupsAccordion.getPanes().add(allContactsTPane);
+
+
             if (userRelationships != null) {
-                TitledPane allContactsTPane = new TitledPane();
-                allContactsTPane.setText("All Contacts");
-                //  List<Integer> friendIds = new ArrayList<>();
-                friendIds = new ArrayList<>();
+                //GET ALL USER FRIENDS IDS
+                List<Integer> friendIds = new ArrayList<>();
                 for (Relationship r : userRelationships) {
                     if (r.getStatus() == RelationshipStatus.ACCEPTED) {
                         int id = r.getFirstUserId();
@@ -139,7 +168,8 @@ public class LeftViewController implements Initializable {
                             friendIds.add(r.getSecondUserId());
                     }
                 }
-                List<User> friends = new ArrayList<>();
+                //GET ALL USER FRIENDS USER OBJECTS
+                /*List<User> friends = new ArrayList<>();
                 for (Integer i : friendIds)
                     friends.add(userDao.getUser(i));
                 List<Label> names = new ArrayList<>();
@@ -148,8 +178,9 @@ public class LeftViewController implements Initializable {
                         .forEach(s -> names.add(new Label(s)));
                 VBox vBox = new VBox();
                 vBox.getChildren().addAll(names);
-                allContactsTPane.setContent(vBox);
-                groupsAccordion.getPanes().add(allContactsTPane);
+                allContactsTPane.setContent(vBox);*/
+                for (Integer i : friendIds)
+                    allContactsLv.getItems().add(userDao.getUser(i));
             } else {
                 System.out.println("No Relationships");
             }
