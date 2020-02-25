@@ -1,8 +1,6 @@
 package eg.gov.iti.jets;
 
 import eg.gov.iti.jets.controllers.ClientStageCoordinator;
-import eg.gov.iti.jets.models.dao.interfaces.UserDao;
-import eg.gov.iti.jets.models.entities.User;
 import eg.gov.iti.jets.models.network.RMIConnection;
 import eg.gov.iti.jets.models.network.implementations.ClientService;
 import javafx.application.Application;
@@ -25,17 +23,7 @@ public class MainClient extends Application {
     }
 
     @Override
-    public void init() throws Exception {
-        RMIConnection.startConnection();
-    }
-
-    @Override
     public void start(Stage primaryStage) throws Exception {
-        System.out.println("Client start...");
-//        ClientStageCoordinator coordinator = ClientStageCoordinator.getInstance();
-//        coordinator.setStage(primaryStage);
-//        coordinator.startLoginScene();
-        //
         final String xmlFilePath = "loginFile.xml";
         File file = new File(xmlFilePath);
         if (file.exists()) {
@@ -66,22 +54,22 @@ public class MainClient extends Application {
 
                 }
 
-                UserDao userDao = RMIConnection.getUserDao();
-                User user = userDao.getUser(phone, password);
-                System.out.println(user.getPhoneNumber());
-                if (user != null) {
-
-                    ClientStageCoordinator coordinator = ClientStageCoordinator.getInstance();
-                    coordinator.currentUser = user;
-                    coordinator.setStage(primaryStage);
-                    coordinator.startMainChatAppScene();
-
-                } else {
-
-                    ClientStageCoordinator coordinator = ClientStageCoordinator.getInstance();
-                    coordinator.setStage(primaryStage);
-                    coordinator.startLoginScene();
-                }
+//                UserDao userDao = RMIConnection.getUserDao();
+//                User user = userDao.getUser(phone, password);
+//                System.out.println(user.getPhoneNumber());
+//                if (user != null) {
+//
+//                    ClientStageCoordinator coordinator = ClientStageCoordinator.getInstance();
+//                    coordinator.currentUser = user;
+//                    coordinator.setStage(primaryStage);
+//                    coordinator.startMainChatAppScene();
+//
+//                } else {
+//
+//                    ClientStageCoordinator coordinator = ClientStageCoordinator.getInstance();
+//                    coordinator.setStage(primaryStage);
+//                    coordinator.startLoginScene();
+//                }
             } catch (ParserConfigurationException e) {
                 e.printStackTrace();
             } catch (SAXException e) {
@@ -89,20 +77,18 @@ public class MainClient extends Application {
                 e.printStackTrace();
             }
 
-        } else {
-
-            ClientStageCoordinator coordinator = ClientStageCoordinator.getInstance();
-            coordinator.setStage(primaryStage);
-            coordinator.startLoginScene();
-
         }
-    }
 
+        ClientStageCoordinator coordinator = ClientStageCoordinator.getInstance();
+        coordinator.setStage(primaryStage);
+        coordinator.startLoginScene();
+    }
 
     @Override
     public void stop() throws Exception {
-        if (ClientStageCoordinator.getInstance().currentUser != null)
+        if (RMIConnection.isConnectionEstablished()) {
             RMIConnection.getServerService().logout(ClientStageCoordinator.getInstance().currentUser.getId(), ClientService.getInstance());
+        }
         System.exit(0);
     }
 

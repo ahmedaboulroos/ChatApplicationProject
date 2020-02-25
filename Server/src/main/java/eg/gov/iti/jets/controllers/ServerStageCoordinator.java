@@ -18,6 +18,7 @@ public class ServerStageCoordinator {
         FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/views/MainServerView.fxml"));
         Parent mainServerView = fxmlLoader.load();
         MainServerViewController mainServerViewController = fxmlLoader.getController();
+        stage.setMaximized(true);
         stage.setScene(new Scene(mainServerView));
         stage.setTitle("Chat Application Server - Admin Panel");
         stage.show();

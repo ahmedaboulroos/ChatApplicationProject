@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import com.jfoenix.controls.JFXButton?>
+<?import com.jfoenix.controls.*?>
 <?import javafx.geometry.*?>
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
@@ -99,4 +99,20 @@
             </tabs>
         </TabPane>
     </center>
+    <top>
+        <HBox BorderPane.alignment="CENTER">
+            <children>
+                <JFXButton fx:id="userProfileBtn" onAction="#handleUserProfileBtnClick" text="Profile"/>
+                <Region HBox.hgrow="ALWAYS"/>
+                <JFXComboBox fx:id="userStatusCb" onAction="#handleChangedStatus" prefWidth="120.0"
+                             promptText="Status"/>
+            </children>
+            <BorderPane.margin>
+                <Insets/>
+            </BorderPane.margin>
+            <padding>
+                <Insets bottom="5.0" left="5.0" right="5.0" top="5.0"/>
+            </padding>
+        </HBox>
+    </top>
 </BorderPane>

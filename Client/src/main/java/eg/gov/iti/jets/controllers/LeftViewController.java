@@ -1,9 +1,13 @@
 package eg.gov.iti.jets.controllers;
 
 import com.jfoenix.controls.JFXListCell;
+import com.jfoenix.controls.JFXButton;
+import com.jfoenix.controls.JFXComboBox;
+import eg.gov.iti.jets.models.dao.interfaces.SingleChatDao;
 import eg.gov.iti.jets.models.dao.interfaces.UserDao;
 import eg.gov.iti.jets.models.entities.*;
 import eg.gov.iti.jets.models.entities.enums.RelationshipStatus;
+import eg.gov.iti.jets.models.entities.enums.UserStatus;
 import eg.gov.iti.jets.models.imageutiles.ImageUtiles;
 import eg.gov.iti.jets.models.network.RMIConnection;
 import javafx.collections.FXCollections;
@@ -11,6 +15,8 @@ import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
+import javafx.geometry.Pos;
+import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
@@ -18,10 +24,16 @@ import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.HBox;
+import javafx.scene.layout.HBox;
+import javafx.scene.layout.Region;
+import javafx.scene.layout.StackPane;
 import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
 import javafx.scene.paint.ImagePattern;
 import javafx.scene.shape.Circle;
+import javafx.scene.text.Font;
+import javafx.scene.text.FontWeight;
+import javafx.scene.text.Text;
 import javafx.stage.Stage;
 
 import java.io.ByteArrayInputStream;
@@ -33,6 +45,8 @@ import java.util.List;
 import java.util.ResourceBundle;
 
 public class LeftViewController implements Initializable {
+    private static LeftViewController leftViewController;
+    private SingleChatDao singleChatDao = RMIConnection.getSingleChatDao();
 
     @FXML
     private Tab contactsTab;
@@ -52,9 +66,24 @@ public class LeftViewController implements Initializable {
     @FXML
     private Accordion groupsAccordion;
 
+    @FXML
+    private JFXButton userProfileBtn;
+
+    @FXML
+    private JFXComboBox<UserStatus> userStatusCb;
+
     private UserDao userDao = RMIConnection.getUserDao();
 
     private ClientStageCoordinator clientStageCoordinator;
+    AddSingleChatViewController addSingleChatViewController;
+
+    public static LeftViewController getInstance() {
+        return leftViewController;
+    }
+
+    public void setController(LeftViewController leftViewController) {
+        this.leftViewController = leftViewController;
+    }
 
     private ListView<User> allContactsLv;
 
@@ -189,6 +218,19 @@ public class LeftViewController implements Initializable {
         }
     }
 
+    public void displayNewSingleChat(int singleChatId) {
+
+        try {
+            SingleChat singleChat = singleChatDao.getSingleChat(singleChatId);
+
+            if (singleChat != null) {
+                singleChatsLv.getItems().add(singleChat);
+            }
+        } catch (RemoteException e) {
+            e.printStackTrace();
+        }
+        loadSingleChats();
+    }
     private void loadSingleChats() {
         try {
             List<SingleChat> singleChats = userDao.getUserSingleChats(ClientStageCoordinator.getInstance().currentUser.getId());
@@ -201,27 +243,57 @@ public class LeftViewController implements Initializable {
                     @Override
                     public void updateItem(SingleChat item, boolean empty) {
                         super.updateItem(item, empty);
-                        System.out.println(groupChatsLv.getFixedCellSize());
-                        System.out.println(groupChatsLv.getItems());
-                        //  for(int i =0;i<groupChatsLv.getItems().size();i++) {
-                        //  setText(groupChatsLv.getItems().get(i).getTitle());
-                        //for alaa you need to return image and name for userid 2 and set it in text
 
                         if (item != null) {
 
-                            setText(singleChatsLv.getItems().get(0).toString());
-                            System.out.println(groupChatsLv.getFixedCellSize());
-                            System.out.println(groupChatsLv.getItems());
-                            Image imageForTasting = new Image("images/chat-circle-blue-512.png");
-                            Circle imageCircle = new Circle();
-                            imageCircle.setFill(new ImagePattern(imageForTasting));
-                            imageCircle.setRadius(20);
-                            imageCircle.setStroke(Color.GREEN);
-                            imageCircle.setStrokeWidth(3);
-                            setGraphic(imageCircle);
+                            try {
+                                int idTwo = singleChats.get(0).getUserTwoId();
+                                User user = userDao.getUser(idTwo);
+                                System.out.println(user.getUsername());
+                                HBox hBox = new HBox();
+                                hBox.setStyle("-fx-background-color: transparent  ;" +
+                                        "-fx-padding: 1;" + "-fx-border-style: solid inside;"
+                                        + "-fx-border-width: 3;" + "-fx-border-insets: 1;"
+                                        + "-fx-border-radius: 2;" + "-fx-border-color: white;");
+                                Circle imageCircle = new Circle();
+                                Image imageForTasting = new Image("images/chat-circle-blue-512.png");
+                                imageCircle.setFill(new ImagePattern(imageForTasting));
+                                imageCircle.setRadius(20);
+                                imageCircle.setStroke(Color.NAVY);
+                                imageCircle.setStrokeWidth(1);
+                                StackPane stackPane = new StackPane();
+                                Region selectedBar = new Region();
+                                selectedBar.setMinWidth(Region.USE_PREF_SIZE);
+                                selectedBar.setMaxHeight(Region.USE_PREF_SIZE);
+                                selectedBar.setMaxWidth(Double.MAX_VALUE);
+                                StackPane.setAlignment(selectedBar, Pos.BOTTOM_CENTER);
+                                stackPane.getChildren().addAll(imageCircle, selectedBar);
+                                String userInfo;
+                                if (user.getUsername() == null) {
+                                    userInfo = user.getPhoneNumber();
+                                } else {
+                                    userInfo = user.getUsername();
+                                }
+                                Text text = new Text(userInfo);
+                                text.setFont(Font.font("Arial Rounded MT Bold", FontWeight.BOLD, 20));//FontWeight.BOLD
+                                text.setFill(Color.NAVY);
+                                Label label = new Label();
+                                label.setMinWidth(20);
+                                hBox.getChildren().addAll(stackPane, label, text);
+                                hBox.setAlignment(Pos.CENTER_LEFT);
+                                setPrefWidth(200);
+                                setPrefHeight(60);
+                                hBox.setMaxWidth(200);
+                                hBox.setMinWidth(200);
+                                setGraphic(hBox);
+                            } catch (RemoteException e) {
+                                e.printStackTrace();
+                            }
                         }
                     }
                 });
+
+
             } else {
                 System.out.println("No Single chats for this user");
             }
@@ -268,10 +340,12 @@ public class LeftViewController implements Initializable {
     @FXML
     void handleSingleChatSelection(MouseEvent event) {
         SingleChat singleChat = singleChatsLv.getSelectionModel().getSelectedItem();
+
         if (singleChat != null) {
             System.out.println(singleChat.getId());
             ClientStageCoordinator.getInstance().openNewSingleChat(singleChat.getId());
         }
+
     }
 
     @FXML
@@ -346,6 +420,8 @@ public class LeftViewController implements Initializable {
         try {
             FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/views/AddSingleChatView.fxml"));
             Parent addSingleChatView = fxmlLoader.load();
+            addSingleChatViewController = fxmlLoader.getController();
+            addSingleChatViewController.setController(addSingleChatViewController);
             Stage stage = new Stage();
             Scene scene = new Scene(addSingleChatView);
             stage.setScene(scene);
@@ -376,5 +452,40 @@ public class LeftViewController implements Initializable {
     public void removeLoggedOut(UserDto user) {
         System.out.println(user);
     }*/
+
+    @FXML
+    void handleUserProfileBtnClick(ActionEvent event) {
+        try {
+            FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/views/UserProfileView.fxml"));
+            Parent addGroupChatView = fxmlLoader.load();
+            Stage stage = new Stage();
+            stage.setScene(new Scene(addGroupChatView));
+            stage.setTitle("Edit Profile");
+            stage.show();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+    @FXML
+    void handleChangedStatus(ActionEvent event) {
+        try {
+            switch (userStatusCb.getSelectionModel().getSelectedItem()) {
+                case AVAILABLE:
+                    RMIConnection.getUserDao().updateUserStatus(ClientStageCoordinator.getInstance().currentUser.getId(), UserStatus.AVAILABLE);
+                    break;
+                case BUSY:
+                    RMIConnection.getUserDao().updateUserStatus(ClientStageCoordinator.getInstance().currentUser.getId(), UserStatus.BUSY);
+                    break;
+                case AWAY:
+                    RMIConnection.getUserDao().updateUserStatus(ClientStageCoordinator.getInstance().currentUser.getId(), UserStatus.AWAY);
+                    break;
+                default:
+                    System.out.println("WT!?");
+            }
+        } catch (RemoteException e) {
+            e.printStackTrace();
+        }
+    }
 }
 

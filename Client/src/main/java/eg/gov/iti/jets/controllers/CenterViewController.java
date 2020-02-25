@@ -10,14 +10,23 @@ import java.io.IOException;
 
 public class CenterViewController {
 
+    private static CenterViewController instance;
     @FXML
-    private TabPane chatsTp;
+    private TabPane chatsTp;//chatsTp
+
+    public static CenterViewController getInstance() {
+        if (instance == null) {
+            instance = new CenterViewController();
+        }
+        return instance;
+    }
 
     public void addSingleChat(int singleChatId) {
         try {
             FXMLLoader centerViewFxmlLoader = new FXMLLoader(getClass().getResource("/views/SingleChatView.fxml"));
             Parent singleChatView = centerViewFxmlLoader.load();
             SingleChatViewController singleChatViewController = centerViewFxmlLoader.getController();
+            singleChatViewController.setController(singleChatViewController);
             singleChatViewController.setSingleChatMessages(singleChatId);
             Tab tab = new Tab(Integer.toString(singleChatId));
             tab.setClosable(true);
