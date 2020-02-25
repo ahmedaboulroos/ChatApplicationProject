@@ -1,6 +1,7 @@
 package eg.gov.iti.jets.controllers;
 
 import com.jfoenix.controls.JFXButton;
+import com.jfoenix.controls.JFXTextField;
 import eg.gov.iti.jets.models.network.RMIConnection;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -14,6 +15,7 @@ import javafx.scene.paint.Color;
 import javafx.scene.shape.Circle;
 
 import java.io.IOException;
+import java.net.InetAddress;
 import java.net.URL;
 import java.util.ResourceBundle;
 
@@ -52,12 +54,16 @@ public class MainServerViewController implements Initializable {
     @FXML
     private Circle serverStatusCircle;
 
+    @FXML
+    private JFXTextField serverAddressTf;
 
     private boolean serviceRunning = true;
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
         try {
+            InetAddress inetAddress = InetAddress.getLocalHost();
+            serverAddressTf.setText(inetAddress.getHostAddress());
             Parent welcomeScene = FXMLLoader.load(getClass().getResource("/views/WelcomeView.fxml"));
             welcomeTab.setContent(welcomeScene);
             startService();
