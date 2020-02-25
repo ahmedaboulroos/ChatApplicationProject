@@ -6,6 +6,7 @@ import javafx.fxml.FXMLLoader;
 import javafx.geometry.Pos;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
+import javafx.stage.Modality;
 import javafx.stage.Stage;
 import javafx.util.Duration;
 import org.controlsfx.control.Notifications;
@@ -135,6 +136,24 @@ public class ClientStageCoordinator {
                     .position(Pos.BOTTOM_RIGHT)
                     .hideAfter(Duration.seconds(30));
             announcement.showWarning();
+        });
+    }
+
+    public void displayServerDisconnectedError() {
+        System.out.println("Server Disconnected");
+        Platform.runLater(() -> {
+            try {
+                FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/views/ServerDisconnectedView.fxml"));
+                Parent serverDisconnectedView = fxmlLoader.load();
+                Stage stage = new Stage();
+                stage.initModality(Modality.APPLICATION_MODAL);
+                stage.setScene(new Scene(serverDisconnectedView));
+                stage.setTitle("Server Disconnected");
+                stage.showAndWait();
+                System.exit(0);
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
         });
     }
 }

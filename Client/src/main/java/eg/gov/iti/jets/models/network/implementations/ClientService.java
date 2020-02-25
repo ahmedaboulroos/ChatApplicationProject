@@ -42,6 +42,11 @@ public class ClientService extends UnicastRemoteObject implements ClientInterfac
     }
 
     @Override
+    public void serverDisconnected() throws RemoteException {
+        ClientStageCoordinator.getInstance().displayServerDisconnectedError();
+    }
+
+    @Override
     public void receiveUserStatusChanged(int userId) throws RemoteException {
         ClientStageCoordinator.getInstance().displayUserStatusChange(userId);
     }

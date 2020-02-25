@@ -3,6 +3,7 @@ package eg.gov.iti.jets.models.network;
 import eg.gov.iti.jets.models.dao.implementations.*;
 import eg.gov.iti.jets.models.dao.interfaces.*;
 import eg.gov.iti.jets.models.network.implementations.ServerService;
+import eg.gov.iti.jets.models.network.interfaces.ClientInterface;
 import eg.gov.iti.jets.models.network.interfaces.ServerInterface;
 import eg.gov.iti.jets.models.persistence.DBConnection;
 
@@ -85,7 +86,10 @@ public class RMIConnection {
             try {
                 for (String service : this.registry.list()) {
                     this.registry.unbind(service);
-                    System.out.println(">> RMI-Registry Service" + service + " Unbounded...");
+                    System.out.println(">> RMI-Registry Service " + service + " Unbounded...");
+                }
+                for (ClientInterface client : ServerService.getAllOnlineClients()) {
+                    client.serverDisconnected();
                 }
             } catch (RemoteException | NotBoundException e) {
                 e.printStackTrace();
