@@ -11,16 +11,23 @@ import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
+import javafx.geometry.Pos;
 import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.image.Image;
 import javafx.scene.input.MouseEvent;
+import javafx.scene.layout.HBox;
+import javafx.scene.layout.Region;
+import javafx.scene.layout.StackPane;
 import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
 import javafx.scene.paint.ImagePattern;
 import javafx.scene.shape.Circle;
+import javafx.scene.text.Font;
+import javafx.scene.text.FontWeight;
+import javafx.scene.text.Text;
 import javafx.stage.Stage;
 
 import java.io.IOException;
@@ -53,6 +60,7 @@ public class LeftViewController implements Initializable {
     private Map<Integer, ObservableList<Node>> accordionLists = new HashMap<>();
 
     private ClientStageCoordinator clientStageCoordinator;
+    AddSingleChatViewController addSingleChatViewController;
 
 
     @Override
@@ -165,32 +173,62 @@ public class LeftViewController implements Initializable {
             if (singleChats != null) {
                 singleChatsLv.setItems(FXCollections.observableList(singleChats));
                 singleChatsLv.setCellFactory(singleChatsLv -> new ListCell<SingleChat>() {
-
+                    // super.updateItem(item, empty);
 
                     @Override
                     public void updateItem(SingleChat item, boolean empty) {
                         super.updateItem(item, empty);
-                        System.out.println(groupChatsLv.getFixedCellSize());
-                        System.out.println(groupChatsLv.getItems());
-                        //  for(int i =0;i<groupChatsLv.getItems().size();i++) {
-                        //  setText(groupChatsLv.getItems().get(i).getTitle());
-                        //for alaa you need to return image and name for userid 2 and set it in text
 
                         if (item != null) {
 
-                            setText(singleChatsLv.getItems().get(0).toString());
-                            System.out.println(groupChatsLv.getFixedCellSize());
-                            System.out.println(groupChatsLv.getItems());
-                            Image imageForTasting = new Image("images/chat-circle-blue-512.png");
-                            Circle imageCircle = new Circle();
-                            imageCircle.setFill(new ImagePattern(imageForTasting));
-                            imageCircle.setRadius(20);
-                            imageCircle.setStroke(Color.GREEN);
-                            imageCircle.setStrokeWidth(3);
-                            setGraphic(imageCircle);
+                            try {
+                                int idTwo = singleChats.get(0).getUserTwoId();
+                                User user = userDao.getUser(idTwo);
+                                System.out.println(user.getUsername());
+                                HBox hBox = new HBox();
+                                hBox.setStyle("-fx-background-color: transparent  ;" +
+                                        "-fx-padding: 1;" + "-fx-border-style: solid inside;"
+                                        + "-fx-border-width: 3;" + "-fx-border-insets: 1;"
+                                        + "-fx-border-radius: 2;" + "-fx-border-color: white;");
+                                Circle imageCircle = new Circle();
+                                Image imageForTasting = new Image("images/chat-circle-blue-512.png");
+                                imageCircle.setFill(new ImagePattern(imageForTasting));
+                                imageCircle.setRadius(20);
+                                imageCircle.setStroke(Color.NAVY);
+                                imageCircle.setStrokeWidth(1);
+                                StackPane stackPane = new StackPane();
+                                Region selectedBar = new Region();
+                                selectedBar.setMinWidth(Region.USE_PREF_SIZE);
+                                selectedBar.setMaxHeight(Region.USE_PREF_SIZE);
+                                selectedBar.setMaxWidth(Double.MAX_VALUE);
+                                StackPane.setAlignment(selectedBar, Pos.BOTTOM_CENTER);
+                                stackPane.getChildren().addAll(imageCircle, selectedBar);
+                                String userInfo;
+                                if (user.getUsername() == null) {
+                                    userInfo = user.getPhoneNumber();
+                                } else {
+                                    userInfo = user.getUsername();
+                                }
+                                Text text = new Text(userInfo);
+                                text.setFont(Font.font("Arial Rounded MT Bold", FontWeight.BOLD, 20));//FontWeight.BOLD
+                                text.setFill(Color.NAVY);
+                                Label label = new Label();
+                                label.setMinWidth(20);
+                                hBox.getChildren().addAll(stackPane, label, text);
+                                hBox.setAlignment(Pos.CENTER_LEFT);
+                                setPrefWidth(200);
+                                setPrefHeight(60);
+                                hBox.setMaxWidth(200);
+                                hBox.setMinWidth(200);
+                                setGraphic(hBox);
+                            } catch (RemoteException e) {
+                                e.printStackTrace();
+                            }
                         }
                     }
                 });
+
+
             } else {
                 System.out.println("No Single chats for this user");
             }
@@ -237,10 +275,12 @@ public class LeftViewController implements Initializable {
     @FXML
     void handleSingleChatSelection(MouseEvent event) {
         SingleChat singleChat = singleChatsLv.getSelectionModel().getSelectedItem();
+
         if (singleChat != null) {
             System.out.println(singleChat.getId());
             ClientStageCoordinator.getInstance().openNewSingleChat(singleChat.getId());
         }
+
     }
 
     @FXML
@@ -309,12 +349,13 @@ public class LeftViewController implements Initializable {
             e.printStackTrace();
         }
     }
-
     @FXML
     void handleAddSingleChat(ActionEvent event) {
         try {
             FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/views/AddSingleChatView.fxml"));
             Parent addSingleChatView = fxmlLoader.load();
+            addSingleChatViewController = fxmlLoader.getController();
+            addSingleChatViewController.setController(addSingleChatViewController);
             Stage stage = new Stage();
             Scene scene = new Scene(addSingleChatView);
             stage.setScene(scene);
