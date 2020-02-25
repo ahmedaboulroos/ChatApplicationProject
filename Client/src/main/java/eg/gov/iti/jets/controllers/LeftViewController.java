@@ -168,7 +168,6 @@ public class LeftViewController implements Initializable {
             if (userGroups != null) {
                 for (ContactsGroup g : userGroups) {
                     //Set group cell factory
-                    List<ContactsGroupMembership> mmmm = contactsGroupDao.getContactsGroupMemberships(g.getId());
                     JFXListView<ContactsGroupMembership> contactsGroupLv = new JFXListView<>();
                     contactsGroupLv.setCellFactory(listViewListCellCallback -> new JFXListCell<>() {
                         @Override
