@@ -77,7 +77,7 @@ public class ContactsGroupMembershipDaoImpl extends UnicastRemoteObject implemen
 
     @Override
     public void updateGroupContactMembership(ContactsGroupMembership contactsGroupMembership) {
-        String sql = "UPDATE CONTACTS_GROUP_MEMBERSHIPS SET USER_ID=? CONTACTS_GROUP_ID=? where ID=?";
+        String sql = "UPDATE CONTACTS_GROUP_MEMBERSHIPS SET USER_ID=?, CONTACTS_GROUP_ID=? where ID=?";
         try (PreparedStatement ps = dbConnection.prepareStatement(sql)) {
             ps.setInt(1, contactsGroupMembership.getUserId());
             ps.setInt(2, contactsGroupMembership.getContactsGroupId());

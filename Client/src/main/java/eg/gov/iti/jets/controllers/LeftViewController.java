@@ -3,6 +3,8 @@ package eg.gov.iti.jets.controllers;
 import com.jfoenix.controls.JFXButton;
 import com.jfoenix.controls.JFXComboBox;
 import com.jfoenix.controls.JFXListCell;
+import com.jfoenix.controls.JFXListView;
+import eg.gov.iti.jets.models.dao.interfaces.ContactsGroupDao;
 import eg.gov.iti.jets.models.dao.interfaces.SingleChatDao;
 import eg.gov.iti.jets.models.dao.interfaces.UserDao;
 import eg.gov.iti.jets.models.entities.*;
@@ -25,7 +27,6 @@ import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.Region;
 import javafx.scene.layout.StackPane;
-import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
 import javafx.scene.paint.ImagePattern;
 import javafx.scene.shape.Circle;
@@ -44,7 +45,6 @@ import java.util.ResourceBundle;
 
 public class LeftViewController implements Initializable {
     private static LeftViewController leftViewController;
-    private SingleChatDao singleChatDao = RMIConnection.getSingleChatDao();
 
     @FXML
     private Tab contactsTab;
@@ -71,19 +71,22 @@ public class LeftViewController implements Initializable {
     private JFXComboBox<UserStatus> userStatusCb;
 
     private UserDao userDao = RMIConnection.getUserDao();
+    private SingleChatDao singleChatDao = RMIConnection.getSingleChatDao();
+    private ContactsGroupDao contactsGroupDao = RMIConnection.getContactsGroupDao();
 
     private ClientStageCoordinator clientStageCoordinator;
+
     AddSingleChatViewController addSingleChatViewController;
 
     public static LeftViewController getInstance() {
         return leftViewController;
     }
 
-    public void setController(LeftViewController leftViewController) {
-        this.leftViewController = leftViewController;
-    }
+    private JFXListView<User> allContactsLv;
 
-    private ListView<User> allContactsLv;
+    public void setController(LeftViewController leftViewController) {
+        LeftViewController.leftViewController = leftViewController;
+    }
 
 
     @Override
@@ -100,78 +103,26 @@ public class LeftViewController implements Initializable {
         userStatusCb.getItems().addAll(UserStatus.AVAILABLE, UserStatus.BUSY, UserStatus.AWAY);
     }
 
-    private void loadGroups() {
-        User user = clientStageCoordinator.currentUser;
-        int userId = user.getId();
-        try {
-            List<ContactsGroup> userGroups = userDao.getUserContactsGroups(userId);
-            if (userGroups != null) {
-                List<Integer> groupIds = new ArrayList<>();
-                for (ContactsGroup g : userGroups) {
-                    TitledPane titledPane = new TitledPane();
-                    titledPane.setText(g.getGroupName());
-                    List<String> groupUserNames = getGroupUsersNames(g);
-                    VBox vBox = new VBox();
-                    if (groupUserNames != null) {
-                        groupUserNames.forEach(s -> vBox.getChildren().add(new Label(s)));
-                    }
-                    titledPane.setContent(vBox);
-                    groupsAccordion.getPanes().add(titledPane);
-                }
-            } else {
-                System.out.println("No user groups");
-            }
-        } catch (RemoteException e) {
-            e.printStackTrace();
-        }
-    }
-
-    private List<String> getGroupUsersNames(ContactsGroup g) throws RemoteException {
-//        ContactsGroupDao groupDao = RMIConnection.getContactsGroupDao();
-//        //get ids of users in group
-//        List<Integer> groupUsersIds = new ArrayList<>();
-//        List<GroupContact> groupContacts = groupDao.getGroupContacts(g.getGroupId());
-//        groupContacts.stream()
-//                .map(GroupContact::getUserId)
-//                .forEach(groupUsersIds::add);
-//
-//        List<String> groupUserNames = new ArrayList<>();
-//        if (groupUsersIds.isEmpty())
-//            groupUsersIds = null;
-//        else {
-//            for (Integer id : groupUsersIds) {
-//                User user = null;
-//                user = userDao.getUser(id);
-//                groupUserNames.add(user.getUsername() == null ?
-//                        user.getPhoneNumber() : user.getUsername());
-//            }
-//        }
-//
-//        return groupUserNames;
-        return null;
-    }
-
-
     private void loadContacts() {
         User user = clientStageCoordinator.currentUser;
-        allContactsLv = new ListView<>();
+        allContactsLv = new JFXListView<>();
         allContactsLv.setCellFactory(listViewListCellCallback -> new JFXListCell<>() {
             @Override
             protected void updateItem(User user, boolean empty) {
                 super.updateItem(user, empty);
                 if (user != null) {
-                    Image image;
+                    Image image = null;
                     if (user.getProfileImage() != null) {
                         image = new Image(new ByteArrayInputStream(user.getProfileImage()));
                     } else {
-                        image = new Image(getClass().getClassLoader().getResource("images/chat-circle-blue-512.png").toString());
+                        //image = new Image(getClass().getClassLoader().getResource("images/chat-circle-blue-512.png").toExternalForm());
                     }
                     ImageView imageView = new ImageView(image);
                     imageView.setFitHeight(50);
                     imageView.setFitWidth(50);
 
                     HBox box = new HBox();
-                    box.getChildren().addAll(imageView, new Label(user.getPhoneNumber()));
+                    box.getChildren().addAll(imageView, new Label(getUserDisplayName(user)));
                     setGraphic(box);
                 } else {
                     setGraphic(null);
@@ -187,7 +138,6 @@ public class LeftViewController implements Initializable {
             allContactsTPane.setContent(allContactsLv);
             groupsAccordion.getPanes().add(allContactsTPane);
 
-
             if (userRelationships != null) {
                 //GET ALL USER FRIENDS IDS
                 List<Integer> friendIds = new ArrayList<>();
@@ -200,17 +150,6 @@ public class LeftViewController implements Initializable {
                             friendIds.add(r.getSecondUserId());
                     }
                 }
-                //GET ALL USER FRIENDS USER OBJECTS
-                /*List<User> friends = new ArrayList<>();
-                for (Integer i : friendIds)
-                    friends.add(userDao.getUser(i));
-                List<Label> names = new ArrayList<>();
-                friends.stream()
-                        .map(f -> f.getUsername() == null ? f.getPhoneNumber() : f.getUsername())
-                        .forEach(s -> names.add(new Label(s)));
-                VBox vBox = new VBox();
-                vBox.getChildren().addAll(names);
-                allContactsTPane.setContent(vBox);*/
                 for (Integer i : friendIds)
                     allContactsLv.getItems().add(userDao.getUser(i));
             } else {
@@ -219,6 +158,73 @@ public class LeftViewController implements Initializable {
         } catch (RemoteException e) {
             e.printStackTrace();
         }
+    }
+
+    private void loadGroups() {
+        User user = clientStageCoordinator.currentUser;
+        int userId = user.getId();
+        try {
+            List<ContactsGroup> userGroups = userDao.getUserContactsGroups(userId);
+            if (userGroups != null) {
+                for (ContactsGroup g : userGroups) {
+                    //Set group cell factory
+                    List<ContactsGroupMembership> mmmm = contactsGroupDao.getContactsGroupMemberships(g.getId());
+                    JFXListView<ContactsGroupMembership> contactsGroupLv = new JFXListView<>();
+                    contactsGroupLv.setCellFactory(listViewListCellCallback -> new JFXListCell<>() {
+                        @Override
+                        protected void updateItem(ContactsGroupMembership membership, boolean empty) {
+                            super.updateItem(membership, empty);
+                            if (membership != null) {
+                                User user = null;
+                                try {
+                                    user = userDao.getUser(membership.getUserId());
+                                } catch (RemoteException e) {
+                                    e.printStackTrace();
+                                }
+                                if (user != null) {
+                                    Image image = null;
+                                    if (user.getProfileImage() != null) {
+                                        image = new Image(new ByteArrayInputStream(user.getProfileImage()));
+                                    } else {
+                                        //image = new Image(getClass().getClassLoader().getResource("images/chat-circle-blue-512.png").toString());
+                                    }
+                                    ImageView imageView = new ImageView(image);
+                                    imageView.setFitHeight(50);
+                                    imageView.setFitWidth(50);
+
+                                    HBox box = new HBox();
+                                    box.getChildren().addAll(imageView, new Label(getUserDisplayName(user)));
+                                    setGraphic(box);
+                                } else {
+                                    setGraphic(null);
+                                }
+                                setText(null);
+                            }
+                        }
+                    });
+                    TitledPane groupTpane = new TitledPane();
+                    groupTpane.setText(g.getGroupName());
+                    groupTpane.setContent(contactsGroupLv);
+                    groupsAccordion.getPanes().add(groupTpane);
+
+                    List<ContactsGroupMembership> memberships =
+                            contactsGroupDao.getContactsGroupMemberships(g.getId());
+                    if (memberships != null) {
+                        for (ContactsGroupMembership m : memberships)
+                            contactsGroupLv.getItems().add(m);
+                    }
+
+                }
+            } else {
+                System.out.println("No user groups");
+            }
+        } catch (RemoteException e) {
+            e.printStackTrace();
+        }
+    }
+
+    private String getUserDisplayName(User user) {
+        return user.getUsername() == null ? user.getPhoneNumber() : user.getUsername();
     }
 
     public void displayNewSingleChat(int singleChatId) {
