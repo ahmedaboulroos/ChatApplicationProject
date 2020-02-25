@@ -78,8 +78,8 @@ public class AddSingleChatViewController implements Initializable {
     public void initialize(URL url, ResourceBundle resourceBundle) {
         usersCompoBox.setPromptText("Choose Contact");
         usersCompoBox.setEditable(false);
-        List<eg.gov.iti.jets.models.entities.User> contacts = loadContacts();
-        ObservableList<eg.gov.iti.jets.models.entities.User> options = FXCollections.observableList(contacts);
+        List<User> contacts = loadContacts();
+        ObservableList<User> options = FXCollections.observableList(contacts);
         usersCompoBox.setItems(options);
         usersCompoBox.setCellFactory(usersCompoBox -> new ListCell<eg.gov.iti.jets.models.entities.User>() {
             // super.updateItem(item, empty);
