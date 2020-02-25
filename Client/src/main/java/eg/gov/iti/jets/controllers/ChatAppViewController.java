@@ -32,6 +32,7 @@ public class ChatAppViewController implements Initializable {
             FXMLLoader leftViewFxmlLoader = new FXMLLoader(getClass().getResource("/views/LeftView.fxml"));
             Parent leftView = leftViewFxmlLoader.load();
             leftViewController = leftViewFxmlLoader.getController();
+            leftViewController.setController(leftViewController);
             chatAppBp.setLeft(leftView);
 
             FXMLLoader centerViewFxmlLoader = new FXMLLoader(getClass().getResource("/views/CenterView.fxml"));
