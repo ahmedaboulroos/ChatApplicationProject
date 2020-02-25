@@ -256,7 +256,7 @@ public class LeftViewController implements Initializable {
                         if (item != null) {
 
                             try {
-                                int idTwo = singleChats.get(0).getUserTwoId();
+                                    int idTwo = item.getUserTwoId();
                                 User user = userDao.getUser(idTwo);
                                 System.out.println(user.getUsername());
                                 HBox hBox = new HBox();
