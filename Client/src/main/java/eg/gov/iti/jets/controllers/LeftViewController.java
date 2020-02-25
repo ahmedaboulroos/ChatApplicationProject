@@ -1,9 +1,12 @@
 package eg.gov.iti.jets.controllers;
 
+import com.jfoenix.controls.JFXButton;
+import com.jfoenix.controls.JFXComboBox;
 import eg.gov.iti.jets.models.dao.interfaces.SingleChatDao;
 import eg.gov.iti.jets.models.dao.interfaces.UserDao;
 import eg.gov.iti.jets.models.entities.*;
 import eg.gov.iti.jets.models.entities.enums.RelationshipStatus;
+import eg.gov.iti.jets.models.entities.enums.UserStatus;
 import eg.gov.iti.jets.models.imageutiles.ImageUtiles;
 import eg.gov.iti.jets.models.network.RMIConnection;
 import javafx.collections.FXCollections;
@@ -57,6 +60,12 @@ public class LeftViewController implements Initializable {
 
     @FXML
     private Accordion groupsAccordion;
+
+    @FXML
+    private JFXButton userProfileBtn;
+
+    @FXML
+    private JFXComboBox<UserStatus> userStatusCb;
 
     private UserDao userDao = RMIConnection.getUserDao();
 
@@ -197,7 +206,7 @@ public class LeftViewController implements Initializable {
             if (singleChats != null) {
                 singleChatsLv.setItems(FXCollections.observableList(singleChats));
                 singleChatsLv.setCellFactory(singleChatsLv -> new ListCell<SingleChat>() {
-                    // super.updateItem(item, empty);
+
 
                     @Override
                     public void updateItem(SingleChat item, boolean empty) {
@@ -373,6 +382,7 @@ public class LeftViewController implements Initializable {
             e.printStackTrace();
         }
     }
+
     @FXML
     void handleAddSingleChat(ActionEvent event) {
         try {
@@ -410,5 +420,40 @@ public class LeftViewController implements Initializable {
     public void removeLoggedOut(UserDto user) {
         System.out.println(user);
     }*/
+
+    @FXML
+    void handleUserProfileBtnClick(ActionEvent event) {
+        try {
+            FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/views/UserProfileView.fxml"));
+            Parent addGroupChatView = fxmlLoader.load();
+            Stage stage = new Stage();
+            stage.setScene(new Scene(addGroupChatView));
+            stage.setTitle("Edit Profile");
+            stage.show();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+    @FXML
+    void handleChangedStatus(ActionEvent event) {
+        try {
+            switch (userStatusCb.getSelectionModel().getSelectedItem()) {
+                case AVAILABLE:
+                    RMIConnection.getUserDao().updateUserStatus(ClientStageCoordinator.getInstance().currentUser.getId(), UserStatus.AVAILABLE);
+                    break;
+                case BUSY:
+                    RMIConnection.getUserDao().updateUserStatus(ClientStageCoordinator.getInstance().currentUser.getId(), UserStatus.BUSY);
+                    break;
+                case AWAY:
+                    RMIConnection.getUserDao().updateUserStatus(ClientStageCoordinator.getInstance().currentUser.getId(), UserStatus.AWAY);
+                    break;
+                default:
+                    System.out.println("WT!?");
+            }
+        } catch (RemoteException e) {
+            e.printStackTrace();
+        }
+    }
 }
 
