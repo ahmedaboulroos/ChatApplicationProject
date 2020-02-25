@@ -24,5 +24,6 @@ module Client {
 
     opens eg.gov.iti.jets;
     opens eg.gov.iti.jets.controllers;
+    opens eg.gov.iti.jets.controllers.dto;
     opens eg.gov.iti.jets.models.network.interfaces;
 }
