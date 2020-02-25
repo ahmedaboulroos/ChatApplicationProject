@@ -1,8 +1,8 @@
 package eg.gov.iti.jets.controllers;
 
-import com.jfoenix.controls.JFXListCell;
 import com.jfoenix.controls.JFXButton;
 import com.jfoenix.controls.JFXComboBox;
+import com.jfoenix.controls.JFXListCell;
 import eg.gov.iti.jets.models.dao.interfaces.SingleChatDao;
 import eg.gov.iti.jets.models.dao.interfaces.UserDao;
 import eg.gov.iti.jets.models.entities.*;
@@ -16,14 +16,12 @@ import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 import javafx.geometry.Pos;
-import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
-import javafx.scene.layout.HBox;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.Region;
 import javafx.scene.layout.StackPane;
@@ -95,6 +93,11 @@ public class LeftViewController implements Initializable {
         loadGroups();
         loadSingleChats();
         loadGroupChats();
+        loadUserStatus();
+    }
+
+    private void loadUserStatus() {
+        userStatusCb.getItems().addAll(UserStatus.AVAILABLE, UserStatus.BUSY, UserStatus.AWAY);
     }
 
     private void loadGroups() {
@@ -473,12 +476,15 @@ public class LeftViewController implements Initializable {
             switch (userStatusCb.getSelectionModel().getSelectedItem()) {
                 case AVAILABLE:
                     RMIConnection.getUserDao().updateUserStatus(ClientStageCoordinator.getInstance().currentUser.getId(), UserStatus.AVAILABLE);
+                    userStatusCb.setStyle("-fx-background-color: lightgreen");
                     break;
                 case BUSY:
                     RMIConnection.getUserDao().updateUserStatus(ClientStageCoordinator.getInstance().currentUser.getId(), UserStatus.BUSY);
+                    userStatusCb.setStyle("-fx-background-color: pink");
                     break;
                 case AWAY:
                     RMIConnection.getUserDao().updateUserStatus(ClientStageCoordinator.getInstance().currentUser.getId(), UserStatus.AWAY);
+                    userStatusCb.setStyle("-fx-background-color: lightyellow");
                     break;
                 default:
                     System.out.println("WT!?");

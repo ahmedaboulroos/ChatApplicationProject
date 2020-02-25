@@ -43,10 +43,7 @@ public class ClientService extends UnicastRemoteObject implements ClientInterfac
 
     @Override
     public void receiveUserStatusChanged(int userId) throws RemoteException {
-        System.out.println(">> User Status Changed :" + userId);
-//        User user = userDao.getUser(userId);
-//        UserDto userDto = new UserDto(getDisplayUsername(user), user.getProfileImage());
-//        chatAppViewController.loggedOut(userDto);
+        ClientStageCoordinator.getInstance().displayUserStatusChange(userId);
     }
 
     @Override

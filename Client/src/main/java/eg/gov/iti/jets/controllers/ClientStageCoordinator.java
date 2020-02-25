@@ -124,4 +124,17 @@ public class ClientStageCoordinator {
     public void openNewGroupChat(int groupChatId) {
         chatAppViewController.openGroupChat(groupChatId);
     }
+
+    public void displayUserStatusChange(int userId) {
+        System.out.println(">> User Status Changed :" + userId);
+        Platform.runLater(() -> {
+            Notifications announcement = Notifications.create()
+                    .owner(this.stage)
+                    .title("User Status")
+                    .text(userId + " Status changed")
+                    .position(Pos.BOTTOM_RIGHT)
+                    .hideAfter(Duration.seconds(30));
+            announcement.showWarning();
+        });
+    }
 }
