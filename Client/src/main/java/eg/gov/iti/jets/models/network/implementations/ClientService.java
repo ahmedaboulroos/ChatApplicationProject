@@ -15,6 +15,7 @@ public class ClientService extends UnicastRemoteObject implements ClientInterfac
     private SingleChatViewController singleChatViewController = SingleChatViewController.getInstance();
     private GroupChatViewController groupChatViewController = GroupChatViewController.getInstance();
     private LeftViewController leftViewController = LeftViewController.getInstance();
+
     private ClientService() throws RemoteException {
     }
 
@@ -83,30 +84,16 @@ public class ClientService extends UnicastRemoteObject implements ClientInterfac
     @Override
     public void receiveNewContactsGroup(int groupId) throws RemoteException {
         System.out.println(">> New Contacts Group :" + groupId);
-        leftViewController.addGroup(groupId);
-        leftViewController.getAddContactGroupViewController().addGroup(groupId);
-//        Group group = groupDao.getGroup(groupId);
-//        List<GroupContact> groupContactList = groupDao.getGroupContacts(groupId);
-//        List<UserDto> groupUsers = groupContactList.stream()
-//                .map(GroupContact::getUserId)
-//                .map(userId -> {
-//                    User user = null;
-//                    try {
-//                        user = userDao.getUser(userId);
-//                    } catch (RemoteException e) {
-//                        e.printStackTrace();
-//                    }
-//                    return user;
-//                })
-//                .map(user -> new UserDto(getDisplayUsername(user), user.getProfileImage()))
-//                .collect(Collectors.toList());
-//        chatAppViewController.displayNewGroup(new GroupDto(group.getGroupName(), groupUsers));
+        leftViewController.displayContactsGroup(groupId);
+        leftViewController.getAddContactGroupViewController().displayContactsGroup(groupId);
     }
 
     @Override
     public void receiveNewContactsGroupMembership(int contactsGroupMembershipId) throws RemoteException {
         System.out.println(">> New Contacts Group Membership :" + contactsGroupMembershipId);
-
+        leftViewController.displayContactsGroupMembership(contactsGroupMembershipId);
+        leftViewController.getAddContactGroupViewController()
+                .displayContactsGroupMembership(contactsGroupMembershipId);
     }
 
     @Override

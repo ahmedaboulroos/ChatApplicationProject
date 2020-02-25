@@ -172,7 +172,17 @@ public class AddContactGroupViewController implements Initializable {
 
     @FXML
     void handleAddContactToGroup(ActionEvent event) {
-
+        User selectedUser = availableContactsLv.getSelectionModel().getSelectedItem();
+        ContactsGroup contactsGroup = availableGroupsLv.getSelectionModel().getSelectedItem();
+        if (selectedUser != null && contactsGroup != null) {
+            ContactsGroupMembership membership =
+                    new ContactsGroupMembership(selectedUser.getId(), contactsGroup.getId());
+            try {
+                contactsGroupMembershipDao.createGroupContactMembership(membership);
+            } catch (RemoteException e) {
+                e.printStackTrace();
+            }
+        }
     }
 
     @FXML
@@ -190,10 +200,20 @@ public class AddContactGroupViewController implements Initializable {
         }
     }
 
-    public void addGroup(int groupId) {
+    public void displayContactsGroup(int groupId) {
         try {
             ContactsGroup group = contactsGroupDao.getContactsGroup(groupId);
             Platform.runLater(() -> availableGroupsLv.getItems().add(group));
+        } catch (RemoteException e) {
+            e.printStackTrace();
+        }
+    }
+
+    public void displayContactsGroupMembership(int contactsGroupMembershipId) {
+        try {
+            ContactsGroupMembership membership =
+                    contactsGroupMembershipDao.getContactsGroupMembership(contactsGroupMembershipId);
+            availableGroupContactsLv.getItems().add(membership);
         } catch (RemoteException e) {
             e.printStackTrace();
         }
