@@ -82,7 +82,6 @@ public class GroupChatDaoImpl extends UnicastRemoteObject implements GroupChatDa
 
     @Override
     public List<GroupChatMembership> getGroupChatMemberships(int groupChatId) {
-        String sql = "select membership_id, user_id, group_chat_id, joined_timestamp from membership where group_chat_id=?";
         List<GroupChatMembership> groupChatMembershipList = new ArrayList<>();
         ResultSet rs = null;
         int membership_id = 0;
@@ -92,14 +91,15 @@ public class GroupChatDaoImpl extends UnicastRemoteObject implements GroupChatDa
         Timestamp timestamp = null;
         PreparedStatement stmt = null;
         try {
+            String sql = "select GROUP_CHAT_MEMBERSHIPS.id, GROUP_CHAT_MEMBERSHIPS.user_id, GROUP_CHAT_MEMBERSHIPS.group_chat_id, GROUP_CHAT_MEMBERSHIPS.JOINED_DATE_TIME from GROUP_CHAT_MEMBERSHIPS where GROUP_CHAT_MEMBERSHIPS.group_chat_id=?";
             stmt = dbConnection.prepareStatement(sql);
             stmt.setInt(1, groupChatId);
             rs = stmt.executeQuery();
             while (rs.next()) {
-                membership_id = rs.getInt("membership_id");
+                membership_id = rs.getInt("id");
                 group_chat_id = rs.getInt("group_chat_id");
                 user_id = rs.getInt("user_id");
-                timestamp = rs.getTimestamp("joined_timestamp");
+                timestamp = rs.getTimestamp("joined_date_time");
                 joined_timestamp = timestamp.toLocalDateTime();
                 groupChatMembershipList.add(new GroupChatMembership(membership_id, user_id, group_chat_id, joined_timestamp));
             }
