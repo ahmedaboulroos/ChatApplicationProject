@@ -28,6 +28,21 @@ public class ContactInfoViewController implements Initializable {
     private Label UserName;
 
     @FXML
+    private Label userStatusLb;
+
+    @FXML
+    private Label userGenderLb;
+
+    @FXML
+    private Label emailLb;
+
+    @FXML
+    private Label bioLb;
+
+    @FXML
+    private Label countryLb;
+
+    @FXML
     private FontIcon files;
 
     @FXML
@@ -85,6 +100,11 @@ public class ContactInfoViewController implements Initializable {
             } else {
                 UserName.setText(userTwo.getPhoneNumber());
             }
+            userGenderLb.setText(userTwo.getUserGender().toString());
+            userStatusLb.setText(userTwo.getUserStatus().toString());
+            emailLb.setText(userTwo.getEmail());
+            countryLb.setText(userTwo.getCountry());
+            bioLb.setText(userTwo.getBio());
 
         } catch (RemoteException e) {
             e.printStackTrace();
