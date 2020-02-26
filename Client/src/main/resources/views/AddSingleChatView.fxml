@@ -12,7 +12,10 @@
     <children>
         <JFXListView fx:id="userContactsLv" layoutX="8.0" layoutY="63.0" prefHeight="274.0" prefWidth="384.0"
                      styleClass="list-cell" stylesheets="@../styles/style1.css"/>
-        <Label layoutX="24.0" layoutY="28.0" prefHeight="18.0" prefWidth="266.0" text="Choose your Contact"
+        <Label fx:id="errorLabel" alignment="CENTER" contentDisplay="CENTER" layoutX="220.0" layoutY="30.0"
+               maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="18.0"
+               prefWidth="158.0" textAlignment="CENTER" textFill="#f81b1b"/>
+        <Label layoutX="24.0" layoutY="28.0" prefHeight="22.0" prefWidth="174.0" text="Choose your Contact"
                textFill="#2578ca">
             <font>
                 <Font name="Bell MT" size="18.0"/>
