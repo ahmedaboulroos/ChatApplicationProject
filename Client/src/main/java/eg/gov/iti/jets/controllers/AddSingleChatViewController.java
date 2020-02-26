@@ -1,6 +1,6 @@
 package eg.gov.iti.jets.controllers;
 
-import com.jfoenix.controls.JFXComboBox;
+import com.jfoenix.controls.JFXListView;
 import eg.gov.iti.jets.models.dao.interfaces.SingleChatDao;
 import eg.gov.iti.jets.models.dao.interfaces.UserDao;
 import eg.gov.iti.jets.models.entities.Relationship;
@@ -35,37 +35,43 @@ import java.util.ResourceBundle;
 
 public class AddSingleChatViewController implements Initializable {
 
+
     private static AddSingleChatViewController addSingleChatViewController;
 
     public static AddSingleChatViewController getInstance() {
         return addSingleChatViewController;
     }
 
-    public void setController(AddSingleChatViewController addSingleChatViewController) {
-        this.addSingleChatViewController = addSingleChatViewController;
-    }
+    //    @FXML
+//    private JFXComboBox<eg.gov.iti.jets.models.entities.User> usersCompoBox;
+    @FXML
+    private JFXListView<eg.gov.iti.jets.models.entities.User> userContactsLv;
 
     SingleChatDao singleChatDao = RMIConnection.getSingleChatDao();
     private User currentUser = ClientStageCoordinator.getInstance().currentUser;
     private int userTwoId;
     private ClientStageCoordinator clientStageCoordinator = ClientStageCoordinator.getInstance();
     private UserDao userDao = RMIConnection.getUserDao();
-    @FXML
-    private JFXComboBox<eg.gov.iti.jets.models.entities.User> usersCompoBox;
 
-    @FXML
-    void handleContactsCB(ActionEvent event) {
-        System.out.println(usersCompoBox.getSelectionModel().getSelectedItem());
-        User selectedItem = usersCompoBox.getSelectionModel().getSelectedItem();
-        System.out.println(selectedItem);
-        userTwoId = selectedItem.getId();
-
-        System.out.println(userTwoId);
+    public void setController(AddSingleChatViewController addSingleChatViewController) {
+        AddSingleChatViewController.addSingleChatViewController = addSingleChatViewController;
     }
+//    @FXML
+//    void handleContactsCB(ActionEvent event) {
+//        System.out.println(usersCompoBox.getSelectionModel().getSelectedItem());
+//        User selectedItem = usersCompoBox.getSelectionModel().getSelectedItem();
+//        System.out.println(selectedItem);
+//        userTwoId = selectedItem.getId();
+//
+//        System.out.println(userTwoId);
+//    }
 
     @FXML
     void handleCreateButton(ActionEvent event) {
         try {
+            User selectedItem = userContactsLv.getSelectionModel().getSelectedItem();
+            System.out.println(selectedItem);
+            userTwoId = selectedItem.getId();
             SingleChat singleChat = new SingleChat(this.currentUser.getId(), userTwoId);
             System.out.println(singleChat + "my singleChat");
             singleChatDao.createSingleChat(singleChat);
@@ -76,12 +82,12 @@ public class AddSingleChatViewController implements Initializable {
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
-        usersCompoBox.setPromptText("Choose Contact");
-        usersCompoBox.setEditable(false);
+//        usersCompoBox.setPromptText("Choose Contact");
+//        usersCompoBox.setEditable(false);
         List<User> contacts = loadContacts();
         ObservableList<User> options = FXCollections.observableList(contacts);
-        usersCompoBox.setItems(options);
-        usersCompoBox.setCellFactory(usersCompoBox -> new ListCell<eg.gov.iti.jets.models.entities.User>() {
+        userContactsLv.setItems(options);
+        userContactsLv.setCellFactory(userContactsLv -> new ListCell<eg.gov.iti.jets.models.entities.User>() {
             // super.updateItem(item, empty);
             @Override
             public void updateItem(eg.gov.iti.jets.models.entities.User item, boolean empty) {
@@ -128,6 +134,8 @@ public class AddSingleChatViewController implements Initializable {
                     hBox.setMaxWidth(200);
                     hBox.setMinWidth(200);
                     setGraphic(hBox);
+                } else {
+                    setGraphic(null);
                 }
             }
         });
