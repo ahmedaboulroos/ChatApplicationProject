@@ -46,6 +46,7 @@ import java.util.*;
 public class LeftViewController implements Initializable {
     private static LeftViewController leftViewController;
     private Map<Integer, ListCell<SingleChat>> singleChatListCellMap = new HashMap<>();
+    private Map<Integer, ListCell<GroupChat>> groupChatListCellMap = new HashMap<>();
     private AddContactGroupViewController addContactGroupViewController;
     @FXML
     private Tab contactsTab;
@@ -111,6 +112,23 @@ public class LeftViewController implements Initializable {
             } else {
                 ListCell<SingleChat> singleChatListCell = singleChatListCellMap.get(singleChatId);
                 singleChatListCell.setStyle("-fx-background-color: lightgreen");
+            }
+
+        } catch (RemoteException e) {
+            e.printStackTrace();
+        }
+    }
+
+    public void updateGroupChat(int groupChatMessageId) {
+        try {
+            GroupChatMessage groupChatMessage = RMIConnection.getGroupChatMessageDao().getGroupChatMessage(groupChatMessageId);
+            int groupChatId = groupChatMessage.getGroupChatId();
+            int selectedGroupChatId = groupChatsLv.getSelectionModel().getSelectedItem().getId();
+            if (selectedGroupChatId == groupChatId) {
+                GroupChatViewController.getInstance().addGroupChatMessage(groupChatMessage);
+            } else {
+                ListCell<GroupChat> groupChatListCell = groupChatListCellMap.get(groupChatId);
+                groupChatListCell.setStyle("-fx-background-color: lightgreen");
             }
 
         } catch (RemoteException e) {
