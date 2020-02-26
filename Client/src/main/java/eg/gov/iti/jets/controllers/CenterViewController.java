@@ -7,6 +7,7 @@ import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.control.Tab;
 import javafx.scene.control.TabPane;
+import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.Pane;
 
 import java.io.IOException;
@@ -17,6 +18,7 @@ public class CenterViewController {
     @FXML
     private TabPane chatsTp;//chatsTp
     ContactInfoViewController contactInfoViewController;
+    GroupInfoViewController groupInfoViewController;
     SingleChatViewController singleChatViewController = SingleChatViewController.getInstance();
     public static CenterViewController getInstance() {
         if (instance == null) {
@@ -82,16 +84,62 @@ public class CenterViewController {
         return pane;
     }
 
+    private int groupChatId;
+
+    public Pane loadGroupContactView() {
+        Pane paneGroup = null;
+        try {
+            FXMLLoader groupInfoViewFxmlLoader = new FXMLLoader(getClass().getResource("/views/GroupInfoView.fxml"));
+            Parent contactInfoView = groupInfoViewFxmlLoader.load();
+            groupInfoViewController = groupInfoViewFxmlLoader.getController();
+            groupInfoViewController.setController(groupInfoViewController);
+            System.out.println("load group contactView");
+            groupInfoViewController.setGroupChatId(groupChatId);
+            paneGroup = new Pane(contactInfoView);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        return paneGroup;
+    }
+
     public void addGroupChat(int groupChatId) {
+        this.groupChatId = groupChatId;
         try {
             FXMLLoader centerViewFxmlLoader = new FXMLLoader(getClass().getResource("/views/GroupChatView.fxml"));
             Parent groupChatView = centerViewFxmlLoader.load();
             GroupChatViewController groupChatViewController = centerViewFxmlLoader.getController();
+            groupChatViewController.setController(groupChatViewController);
             groupChatViewController.setGroupChatMessages(groupChatId);
+            Pane groupPane = loadGroupContactView();
+            groupInfoViewController.setGroupInfo(groupChatId);
             Tab tab = new Tab(Integer.toString(groupChatId));
-            tab.setClosable(true);
+            tab.setOnClosed(new EventHandler<Event>() {
+                @Override
+                public void handle(Event event) {
+                    RightViewController.getInstance().rightViewBp.setCenter(null);
+                }
+            });
+            tab.setOnSelectionChanged(event -> {
+                if (tab.isSelected()) {
+                    RightViewController.getInstance().rightViewBp.setCenter(groupPane);
+                }
+                if (!tab.isSelected()) {
+                    RightViewController.getInstance().rightViewBp.setCenter(null);
+
+                }
+
+            });
+
             tab.setContent(groupChatView);
-            chatsTp.getTabs().add(tab);
+            chatsTp.getTabs().add(0, tab);
+            chatsTp.setTabClosingPolicy(TabPane.TabClosingPolicy.ALL_TABS);
+            chatsTp.setOnMouseClicked(new EventHandler<MouseEvent>() {
+                @Override
+                public void handle(MouseEvent mouseEvent) {
+                    RightViewController.getInstance().rightViewBp.setCenter(groupPane);
+
+                }
+            });
         } catch (IOException e) {
             e.printStackTrace();
         }

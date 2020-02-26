@@ -16,15 +16,17 @@ import java.util.List;
 public class GroupChatViewController {
     private GroupChatMessageDao groupChatMessageDao = RMIConnection.getGroupChatMessageDao();
     private UserDao userDao = RMIConnection.getUserDao();
-
+    private static GroupChatViewController groupChatViewController;
     private static GroupChatViewController instance;
 
     public static GroupChatViewController getInstance() {
-        if (instance == null) {
-            instance = new GroupChatViewController();
-        }
-        return instance;
+        return groupChatViewController;
     }
+
+    public void setController(GroupChatViewController groupChatViewController) {
+        this.groupChatViewController = groupChatViewController;
+    }
+
     @FXML
     private ListView<GroupChatMessage> groupChatMessagesLv;
 
@@ -41,8 +43,6 @@ public class GroupChatViewController {
     }
 
     public void displayNewGroupChatMessage(int groupChatMessageId) throws RemoteException {
-        ////////////////////
-
         GroupChatMessage groupChatMessage = null;
             groupChatMessage = groupChatMessageDao.getGroupChatMessage(groupChatMessageId);
 

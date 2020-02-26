@@ -23,9 +23,14 @@ public class RMIConnection {
 
     private static ServerInterface serverService;
     private static Registry registry;
-
+    private static RMIConnection instance;
     private static boolean connectionEstablished = false;
 
+    public static RMIConnection getInstance() {
+        if(instance==null)
+            instance = new RMIConnection();
+        return instance;
+    }
     public static boolean isConnectionEstablished() {
         return connectionEstablished;
     }
