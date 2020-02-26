@@ -72,9 +72,14 @@ public class ClientService extends UnicastRemoteObject implements ClientInterfac
         groupChatViewController.displayNewGroupChatMessage(groupChatMessageId);
     }
 
+
     @Override
     public void receiveNewGroupChatMembership(int groupChatMembershipId) throws RemoteException {
-        System.out.println(">> New Group Chat Membership :" + groupChatMembershipId);
+        System.out.println("client srevice >> recieve New Group Chat Membership :" + groupChatMembershipId);
+        if (groupChatMembershipId > 0) {
+            leftViewController.displayNewGroupChat();
+        }
+
     }
 
     @Override

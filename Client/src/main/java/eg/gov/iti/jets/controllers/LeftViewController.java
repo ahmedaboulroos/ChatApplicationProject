@@ -270,6 +270,7 @@ public class LeftViewController implements Initializable {
         }
 
     }
+
     private void loadSingleChats() {
         try {
             singleChatsLv.getItems().clear();
@@ -343,75 +344,65 @@ public class LeftViewController implements Initializable {
         }
     }
 
-    private void loadGroupChats() {
-        List<GroupChat> groupChats = null;
-        try {
-            groupChats = userDao.getUserGroupChats(ClientStageCoordinator.getInstance().currentUser.getId());
-        } catch (RemoteException e) {
-            e.printStackTrace();
-        }
-        if (groupChats != null) {
-            System.out.println("inside leftView controller -->> preparing list view cells ....");
-            groupChatsLv.setItems(FXCollections.observableList(groupChats));
 
-            groupChatsLv.setCellFactory(groupChatsLv -> new ListCell<GroupChat>() {
-                @Override
-                public void updateItem(GroupChat item, boolean empty) {
-                    // super.updateItem(item, empty);
-                    if (item != null) {
-                        setText(item.getTitle());
-                        System.out.println("inside left view cell fact groupChat.getTitle() " + item.getTitle());
-                        Image imageForTasting = ImageUtiles.fromBytesToImage(item.getGroupImageBytes());
-                        if (imageForTasting != null) {
-                            Circle imageCircle = new Circle();
-                            imageCircle.setFill(new ImagePattern(imageForTasting));
-                            imageCircle.setRadius(20);
-                            imageCircle.setStroke(Color.GREEN);
-                            imageCircle.setStrokeWidth(3);
-                            setGraphic(imageCircle);
+    public void displayNewGroupChat() {
+        Platform.runLater(() -> {
+            loadGroupChats();
+        });
+    }
+
+    private void loadGroupChats() {
+        try {
+            List<GroupChat> groupChats = userDao.getUserGroupChats(ClientStageCoordinator.getInstance().currentUser.getId());
+            if (groupChats != null) {
+                System.out.println("inside leftView controller -->> preparing list view cells ....");
+                groupChatsLv.setItems(FXCollections.observableList(groupChats));
+                groupChatsLv.getItems().forEach(item -> item.toString());
+                groupChatsLv.setCellFactory(groupChatsLv -> new ListCell<GroupChat>() {
+                    @Override
+                    public void updateItem(GroupChat item, boolean empty) {
+                        super.updateItem(item, empty);
+                        if (item != null) {
+                            setText(item.getTitle());
+                            System.out.println("inside left view cell fact groupChat.getTitle() " + item.getTitle());
+                            Image imageForTasting = ImageUtiles.fromBytesToImage(item.getGroupImageBytes());
+                            if (imageForTasting != null) {
+                                Circle imageCircle = new Circle();
+                                imageCircle.setFill(new ImagePattern(imageForTasting));
+                                imageCircle.setRadius(20);
+                                imageCircle.setStroke(Color.GREEN);
+                                imageCircle.setStrokeWidth(3);
+                                setGraphic(imageCircle);
+                            }
+                        } else {
+                            setGraphic(null);
                         }
                     }
-                }
-            });
-        } else {
-            System.out.println("No Group chats for this user");
+                });
+            } else {
+                System.out.println("No Group chats for this user");
+            }
+        } catch (RemoteException e) {
+            e.printStackTrace();
         }
     }
 
     @FXML
     void handleSingleChatSelection(MouseEvent event) {
         SingleChat singleChat = singleChatsLv.getSelectionModel().getSelectedItem();
-
         if (singleChat != null) {
-            System.out.println(singleChat.getId());
             ClientStageCoordinator.getInstance().openNewSingleChat(singleChat.getId());
         }
-
     }
 
     @FXML
     void handleGroupChatSelection(MouseEvent event) {
         GroupChat groupChat = groupChatsLv.getSelectionModel().getSelectedItem();
-        System.out.println("inside left view controller handleGroupChatSelection" + groupChat);
-        List<GroupChatMessage> groupChatMessageList = null;
         if (groupChat != null) {
-            try {
-                groupChatMessageList = RMIConnection.getGroupChatDao().getGroupChatMessages(groupChat.getId());
-            } catch (RemoteException e) {
-                e.printStackTrace();
-            }
-            System.out.println(groupChatMessageList);
+            System.out.println("inside handleGroupChatSelection " + groupChat.toString());
             ClientStageCoordinator.getInstance().openNewGroupChat(groupChat.getId());
 
-        } else {
-            System.out.println("inside leftViewController.handleGroupChatSelection selected item returns NULL");
         }
-
-        //System.out.println("inside leftViewController groupChat.getGroupChatId() "+groupChat.getGroupChatId());
-        ////groupchatmessages controller to get the messages list from the DB
-        /*GroupChatMessageController groupChatMessageController = new GroupChatMessageController();
-        List<GroupChatMessage> groupChatMessageList = groupChatMessageController.getAllGroupChatMessages(groupChat.getGroupChatId());
-        ///printing message list*/
     }
 
     @FXML

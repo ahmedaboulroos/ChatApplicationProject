@@ -142,13 +142,14 @@ public class GroupChatDaoImpl extends UnicastRemoteObject implements GroupChatDa
 
     @Override
     public List<GroupChatMessage> getGroupChatMessages(int groupChatId) {
-        String sql = "select group_chat_message_id, user_id, content, message_timestamp from group_Chat_Message where group_chat_id=?";
+        String sql = "select id, user_id, content, message_date_time from group_Chat_Messages where group_chat_id=?";
         List<GroupChatMessage> groupChatMessageList = new ArrayList<>();
         ResultSet rs = null;
-        int membership_id = 0;
-        int group_chat_id = 0;
-        int user_id = 0;
-        LocalDateTime joined_timestamp;
+        int messageId;
+        int group_chat_id;
+        int user_id;
+        String messageContent;
+        LocalDateTime Messsage_timestamp;
         Timestamp timestamp = null;
         PreparedStatement stmt = null;
         try {
@@ -156,12 +157,14 @@ public class GroupChatDaoImpl extends UnicastRemoteObject implements GroupChatDa
             stmt.setInt(1, groupChatId);
             rs = stmt.executeQuery();
             while (rs.next()) {
-                membership_id = rs.getInt("membership_id");
-                group_chat_id = rs.getInt("group_chat_id");
-                user_id = rs.getInt("user_id");
-                timestamp = rs.getTimestamp("joined_timestamp");
-                joined_timestamp = timestamp.toLocalDateTime();
-                //groupChatMessageList.add(new Membership(membership_id, user_id, group_chat_id, joined_timestamp));
+                messageId = rs.getInt(1);
+                user_id = rs.getInt(2);
+                group_chat_id = rs.getInt(3);
+                messageContent = rs.getString(4);
+                timestamp = rs.getTimestamp(5);
+                Messsage_timestamp = timestamp.toLocalDateTime();
+                groupChatMessageList.add(new GroupChatMessage(messageId, user_id, group_chat_id, messageContent, Messsage_timestamp));
+
             }
         } catch (SQLException e) {
             e.printStackTrace();
