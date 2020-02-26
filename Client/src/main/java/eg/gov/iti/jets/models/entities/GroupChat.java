@@ -2,6 +2,7 @@ package eg.gov.iti.jets.models.entities;
 
 import java.io.Serializable;
 import java.time.LocalDateTime;
+import java.util.Arrays;
 
 public class GroupChat implements Serializable {
     private static final long serialVersionUID = 3529985099267957690L;
@@ -74,5 +75,16 @@ public class GroupChat implements Serializable {
 
     public void setCreationDateTime(LocalDateTime creationDateTime) {
         this.creationDateTime = creationDateTime;
+    }
+
+    @Override
+    public String toString() {
+        return "GroupChat{" +
+                "id=" + id +
+                ", title='" + title + '\'' +
+                ", description='" + description + '\'' +
+                ", groupImageBytes=" + Arrays.toString(groupImageBytes) +
+                ", creationDateTime=" + creationDateTime +
+                '}';
     }
 }
