@@ -4,10 +4,7 @@ import com.jfoenix.controls.JFXButton;
 import com.jfoenix.controls.JFXComboBox;
 import com.jfoenix.controls.JFXListCell;
 import com.jfoenix.controls.JFXListView;
-import eg.gov.iti.jets.models.dao.interfaces.ContactsGroupDao;
-import eg.gov.iti.jets.models.dao.interfaces.ContactsGroupMembershipDao;
-import eg.gov.iti.jets.models.dao.interfaces.SingleChatDao;
-import eg.gov.iti.jets.models.dao.interfaces.UserDao;
+import eg.gov.iti.jets.models.dao.interfaces.*;
 import eg.gov.iti.jets.models.entities.*;
 import eg.gov.iti.jets.models.entities.enums.RelationshipStatus;
 import eg.gov.iti.jets.models.entities.enums.UserStatus;
@@ -15,6 +12,7 @@ import eg.gov.iti.jets.models.imageutiles.ImageUtiles;
 import eg.gov.iti.jets.models.network.RMIConnection;
 import javafx.application.Platform;
 import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -36,6 +34,8 @@ import javafx.scene.text.Font;
 import javafx.scene.text.FontWeight;
 import javafx.scene.text.Text;
 import javafx.stage.Stage;
+import javafx.util.Duration;
+import org.controlsfx.control.Notifications;
 
 import java.io.ByteArrayInputStream;
 import java.io.IOException;
@@ -78,6 +78,7 @@ public class LeftViewController implements Initializable {
     private ClientStageCoordinator clientStageCoordinator;
 
     AddSingleChatViewController addSingleChatViewController;
+    Map<Integer, JFXListCell<User>> mAllContactsListCells = new HashMap<>();
     Map<Integer, JFXListView<ContactsGroupMembership>> mContactGroupsListViews =
             new HashMap<>();
 
@@ -86,6 +87,7 @@ public class LeftViewController implements Initializable {
     }
 
     private JFXListView<User> allContactsLv;
+    private RelationshipDao relationshipDao = RMIConnection.getRelationshipDao();
 
     public void setController(LeftViewController leftViewController) {
         LeftViewController.leftViewController = leftViewController;
@@ -133,6 +135,7 @@ public class LeftViewController implements Initializable {
     private void loadContacts() {
         User user = clientStageCoordinator.currentUser;
         allContactsLv = new JFXListView<>();
+
         allContactsLv.setCellFactory(listViewListCellCallback -> new JFXListCell<>() {
             @Override
             protected void updateItem(User user, boolean empty) {
@@ -151,6 +154,8 @@ public class LeftViewController implements Initializable {
                     HBox box = new HBox();
                     box.getChildren().addAll(imageView, new Label(getUserDisplayName(user)));
                     setGraphic(box);
+                    mAllContactsListCells.put(user.getId(), this);
+
                 } else {
                     setGraphic(null);
                 }
@@ -537,5 +542,90 @@ public class LeftViewController implements Initializable {
             if()
         });*/
     }
+
+    //
+    public void getRelationship(int relationshipId) throws RemoteException {
+        RelationshipDao relationshipDao = RMIConnection.getInstance().getRelationshipDao();
+        Relationship relationship = relationshipDao.getRelationship(relationshipId);
+        System.out.println(relationship.getFirstUserId());
+        if (relationship.getStatus() == RelationshipStatus.ACCEPTED) {
+            int id = relationship.getFirstUserId();
+
+            UserDao userDao = RMIConnection.getInstance().getUserDao();
+
+            User user = userDao.getUser(id);
+            //User user = clientStageCoordinator.currentUser;
+            ObservableList<User> userObservableList = FXCollections.observableArrayList();
+            if (id != user.getId()) {
+                System.out.println("kkk" + id);
+
+                userObservableList.add(user);
+                allContactsLv.setItems(userObservableList);
+            } else {
+
+                userObservableList.add(user);
+                allContactsLv.setItems(userObservableList);
+                System.out.println("SecondUserId" + relationship.getSecondUserId());
+
+            }
+
+        } else if (relationship.getStatus() == RelationshipStatus.PENDING) {
+            int id = relationship.getFirstUserId();
+
+            UserDao userDao = RMIConnection.getInstance().getUserDao();
+
+            User user = userDao.getUser(id);
+            Stage stage = ClientStageCoordinator.getInstance().getStage();
+            if (id != user.getId()) {
+                Platform.runLater(() -> {
+                    Notifications announcement = Notifications.create()
+                            .owner(stage)
+                            .title("User notification")
+                            .text(user.getPhoneNumber() + " notification")
+                            .position(Pos.BOTTOM_LEFT)
+                            .hideAfter(Duration.seconds(30));
+                    announcement.showInformation();
+                });
+
+            } else {
+                ///relationship.getSecondUserId();
+                Platform.runLater(() -> {
+                    Notifications announcement = Notifications.create()
+                            .owner(stage)
+                            .title("secondUser notification")
+                            .text(relationship.getSecondUserId() + " secondUsernotification")
+                            .position(Pos.BOTTOM_LEFT)
+                            .hideAfter(Duration.seconds(30));
+                    announcement.showInformation();
+                });
+            }
+        }
+    }
+    
+    public void displayRelationship(int relationshipId) {
+        try {
+            Relationship relationship = relationshipDao.getRelationship(relationshipId);
+            int userId;
+            if (relationship.getStatus() == RelationshipStatus.ACCEPTED) {
+                if (relationship.getFirstUserId() == ClientStageCoordinator.getInstance().currentUser.getId())
+                    userId = relationship.getSecondUserId();
+                else
+                    userId = relationship.getFirstUserId();
+                User user = userDao.getUser(userId);
+                allContactsLv.getItems().add(user);
+            } else if (relationship.getStatus() == RelationshipStatus.BLOCKED) {
+                if (relationship.getFirstUserId() == ClientStageCoordinator.getInstance().currentUser.getId())
+                    userId = relationship.getSecondUserId();
+                else
+                    userId = relationship.getFirstUserId();
+                //JFXListCell<User> userCell = mAllContactsListCells.get(userId);
+                allContactsLv.getItems().removeAll(userDao.getUser(userId));
+            }
+        } catch (RemoteException e) {
+            e.printStackTrace();
+        }
+    }
+
+
 }
 
