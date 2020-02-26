@@ -10,103 +10,98 @@
 <?import javafx.scene.text.Font?>
 <?import org.kordamp.ikonli.javafx.FontIcon?>
 <AnchorPane xmlns:fx="http://javafx.com/fxml/1" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity"
-            minWidth="-Infinity" prefHeight="600.0" prefWidth="400.0" xmlns="http://javafx.com/javafx/11.0.1"
+            minWidth="-Infinity" prefHeight="900.0" prefWidth="400.0" xmlns="http://javafx.com/javafx/11.0.1"
             fx:controller="eg.gov.iti.jets.controllers.ContactInfoViewController">
     <children>
-        <ScrollPane hbarPolicy="NEVER" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity"
-                    minWidth="-Infinity" prefHeight="600.0" prefWidth="400.0" vbarPolicy="ALWAYS">
-            <content>
-                <AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity"
-                            prefHeight="600.0" prefWidth="400.0" stylesheets="@../styles/style1.css">
+        <AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity"
+                    prefHeight="900.0" prefWidth="400.0" stylesheets="@../styles/style1.css">
+            <children>
+                <Pane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity"
+                      prefHeight="258.0" prefWidth="400.0" styleClass="pane">
                     <children>
-                        <Pane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity"
-                              prefHeight="258.0" prefWidth="400.0" styleClass="pane">
-                            <children>
-                                <Circle fx:id="imageCircle" fill="WHITE" layoutX="200.0" layoutY="113.0" radius="74.0"
-                                        stroke="BLACK" strokeType="INSIDE" strokeWidth="0.0"/>
-                                <ImageView fitHeight="105.0" fitWidth="114.0" layoutX="157.0" layoutY="61.0"
-                                           pickOnBounds="true" preserveRatio="true">
-                                    <image>
-                                        <Image url="@../images/userInfo.png"/>
-                                    </image>
-                                </ImageView>
-                                <Label fx:id="UserName" layoutX="13.0" layoutY="196.0" maxHeight="-Infinity"
-                                       maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="30.0"
-                                       prefWidth="295.0" text="Reem Monir" textFill="#595555">
-                                    <font>
-                                        <Font size="18.0"/>
-                                    </font>
-                                </Label>
-                                <JFXButton layoutX="343.0" layoutY="196.0" maxHeight="-Infinity" maxWidth="-Infinity"
-                                           minHeight="-Infinity" minWidth="-Infinity" prefHeight="30.0" prefWidth="30.0"
-                                           textFill="#ffffff00"/>
-                            </children>
-                        </Pane>
-                        <Pane layoutY="268.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity"
-                              minWidth="-Infinity" prefHeight="148.0" prefWidth="400.0" styleClass="pane">
-                            <children>
-                                <Label layoutX="13.0" layoutY="11.0" maxHeight="-Infinity" maxWidth="-Infinity"
-                                       minHeight="-Infinity" minWidth="-Infinity" prefHeight="30.0" prefWidth="295.0"
-                                       text="Media, Links and Docs" textFill="#00334e">
-                                    <font>
-                                        <Font size="18.0"/>
-                                    </font>
-                                </Label>
-                                <JFXButton layoutX="342.0" layoutY="11.0" maxHeight="-Infinity" maxWidth="-Infinity"
-                                           minHeight="-Infinity" minWidth="-Infinity" prefHeight="30.0" prefWidth="30.0"
-                                           textFill="#ffffff00">
-                                    <graphic>
-                                        <FontIcon fx:id="files" iconLiteral="zondi-cheveron-right" iconSize="18"
-                                                  styleClass="icons"/>
-                                    </graphic>
-                                </JFXButton>
-                                <ListView layoutY="44.0" orientation="HORIZONTAL" prefHeight="101.0" prefWidth="389.0"
-                                          styleClass="pane"/>
-                            </children>
-                        </Pane>
-                        <Pane layoutY="426.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity"
-                              minWidth="-Infinity" prefHeight="61.0" prefWidth="400.0" styleClass="pane">
-                            <children>
-                                <JFXButton fx:id="deleteChat" maxHeight="-Infinity" maxWidth="-Infinity"
-                                           minHeight="-Infinity" minWidth="-Infinity" prefHeight="62.0"
-                                           prefWidth="400.0" styleClass="Btnbox" textFill="#ffffff00"/>
-                                <Label layoutX="52.0" layoutY="16.0" maxHeight="-Infinity" maxWidth="-Infinity"
-                                       minHeight="-Infinity" minWidth="-Infinity" prefHeight="30.0" prefWidth="295.0"
-                                       text="Delete Chat" textFill="#c71123">
-                                    <font>
-                                        <Font size="18.0"/>
-                                    </font>
-                                </Label>
-                                <FontIcon iconColor="#c71123" iconLiteral="zondi-trash" iconSize="20" layoutX="21.0"
-                                          layoutY="42.0"/>
-                            </children>
-                            <opaqueInsets>
-                                <Insets/>
-                            </opaqueInsets>
-                        </Pane>
-                        <Pane layoutY="499.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity"
-                              minWidth="-Infinity" prefHeight="62.0" prefWidth="400.0" styleClass="pane">
-                            <children>
-                                <JFXButton fx:id="blockBtn" maxHeight="-Infinity" maxWidth="-Infinity"
-                                           minHeight="-Infinity" minWidth="-Infinity" prefHeight="62.0"
-                                           prefWidth="400.0" styleClass="Btnbox" textFill="#ffffff00"/>
-                                <Label layoutX="53.0" layoutY="16.0" maxHeight="-Infinity" maxWidth="-Infinity"
-                                       minHeight="-Infinity" minWidth="-Infinity" prefHeight="30.0" prefWidth="295.0"
-                                       text="Block" textFill="#6c6667">
-                                    <font>
-                                        <Font size="18.0"/>
-                                    </font>
-                                </Label>
-                                <FontIcon iconColor="#6c6667" iconLiteral="zondi-block" iconSize="20" layoutX="23.0"
-                                          layoutY="40.0"/>
-                            </children>
-                            <opaqueInsets>
-                                <Insets/>
-                            </opaqueInsets>
-                        </Pane>
+                        <Circle fx:id="imageCircle" fill="WHITE" layoutX="200.0" layoutY="113.0" radius="74.0"
+                                stroke="BLACK" strokeType="INSIDE" strokeWidth="0.0"/>
+                        <ImageView fitHeight="102.0" fitWidth="92.0" layoutX="157.0" layoutY="61.0" pickOnBounds="true"
+                                   preserveRatio="true">
+                            <image>
+                                <Image url="@../images/userInfo.png"/>
+                            </image>
+                        </ImageView>
+                        <Label fx:id="UserName" layoutX="13.0" layoutY="196.0" maxHeight="-Infinity"
+                               maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="30.0"
+                               prefWidth="295.0" text="Reem Monir" textFill="#595555">
+                            <font>
+                                <Font size="18.0"/>
+                            </font>
+                        </Label>
+                        <JFXButton layoutX="343.0" layoutY="196.0" maxHeight="-Infinity" maxWidth="-Infinity"
+                                   minHeight="-Infinity" minWidth="-Infinity" prefHeight="30.0" prefWidth="30.0"
+                                   textFill="#ffffff00"/>
                     </children>
-                </AnchorPane>
-            </content>
-        </ScrollPane>
+                </Pane>
+                <Pane layoutY="268.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity"
+                      minWidth="-Infinity" prefHeight="148.0" prefWidth="400.0" styleClass="pane">
+                    <children>
+                        <Label layoutX="13.0" layoutY="11.0" maxHeight="-Infinity" maxWidth="-Infinity"
+                               minHeight="-Infinity" minWidth="-Infinity" prefHeight="30.0" prefWidth="295.0"
+                               text="Media, Links and Docs" textFill="#00334e">
+                            <font>
+                                <Font size="18.0"/>
+                            </font>
+                        </Label>
+                        <JFXButton layoutX="342.0" layoutY="11.0" maxHeight="-Infinity" maxWidth="-Infinity"
+                                   minHeight="-Infinity" minWidth="-Infinity" prefHeight="30.0" prefWidth="30.0"
+                                   textFill="#ffffff00">
+                            <graphic>
+                                <FontIcon fx:id="files" iconLiteral="zondi-cheveron-right" iconSize="18"
+                                          styleClass="icons"/>
+                            </graphic>
+                        </JFXButton>
+                        <ListView layoutY="44.0" orientation="HORIZONTAL" prefHeight="101.0" prefWidth="389.0"
+                                  styleClass="pane"/>
+                    </children>
+                </Pane>
+                <Pane layoutY="426.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity"
+                      minWidth="-Infinity" prefHeight="61.0" prefWidth="400.0" styleClass="pane">
+                    <children>
+                        <JFXButton fx:id="deleteChat" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity"
+                                   minWidth="-Infinity" onAction="#handleOnDeleteChat" prefHeight="62.0"
+                                   prefWidth="400.0" styleClass="Btnbox" textFill="#ffffff00"/>
+                        <Label layoutX="52.0" layoutY="16.0" maxHeight="-Infinity" maxWidth="-Infinity"
+                               minHeight="-Infinity" minWidth="-Infinity" prefHeight="30.0" prefWidth="295.0"
+                               text="Delete Chat" textFill="#c71123">
+                            <font>
+                                <Font size="18.0"/>
+                            </font>
+                        </Label>
+                        <FontIcon iconColor="#c71123" iconLiteral="zondi-trash" iconSize="20" layoutX="21.0"
+                                  layoutY="42.0"/>
+                    </children>
+                    <opaqueInsets>
+                        <Insets/>
+                    </opaqueInsets>
+                </Pane>
+                <Pane layoutY="499.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity"
+                      minWidth="-Infinity" prefHeight="62.0" prefWidth="400.0" styleClass="pane">
+                    <children>
+                        <JFXButton fx:id="blockBtn" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity"
+                                   minWidth="-Infinity" onAction="#handleOnBlockBtn" prefHeight="62.0" prefWidth="400.0"
+                                   styleClass="Btnbox" textFill="#ffffff00"/>
+                        <Label layoutX="53.0" layoutY="16.0" maxHeight="-Infinity" maxWidth="-Infinity"
+                               minHeight="-Infinity" minWidth="-Infinity" prefHeight="30.0" prefWidth="295.0"
+                               text="Block" textFill="#6c6667">
+                            <font>
+                                <Font size="18.0"/>
+                            </font>
+                        </Label>
+                        <FontIcon iconColor="#6c6667" iconLiteral="zondi-block" iconSize="20" layoutX="23.0"
+                                  layoutY="40.0"/>
+                    </children>
+                    <opaqueInsets>
+                        <Insets/>
+                    </opaqueInsets>
+                </Pane>
+            </children>
+        </AnchorPane>
     </children>
 </AnchorPane>

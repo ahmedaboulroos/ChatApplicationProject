@@ -53,6 +53,7 @@ public class GroupChatDaoImpl extends UnicastRemoteObject implements GroupChatDa
             ps.setBinaryStream(3, in, groupChat.getGroupImageBytes().length);
             ps.setTimestamp(4, Timestamp.valueOf(groupChat.getCreationDateTime()));
             ps.executeUpdate();
+            dbConnection.setAutoCommit(true);
             ResultSet rs = ps.getGeneratedKeys();
             if (rs.next()) {
                 id = rs.getInt(1);
@@ -60,6 +61,7 @@ public class GroupChatDaoImpl extends UnicastRemoteObject implements GroupChatDa
         } catch (SQLException e) {
             e.printStackTrace();
         }
+        System.out.println("inside groupchatdaoimpl created group chat id " + id);
         return id;
     }
 
@@ -82,6 +84,7 @@ public class GroupChatDaoImpl extends UnicastRemoteObject implements GroupChatDa
 
     @Override
     public List<GroupChatMembership> getGroupChatMemberships(int groupChatId) {
+        String sql = "select id, user_id, group_chat_id, joined_date_time from group_chat_memberships where group_chat_id=?";
         List<GroupChatMembership> groupChatMembershipList = new ArrayList<>();
         ResultSet rs = null;
         int membership_id = 0;
@@ -91,7 +94,6 @@ public class GroupChatDaoImpl extends UnicastRemoteObject implements GroupChatDa
         Timestamp timestamp = null;
         PreparedStatement stmt = null;
         try {
-            String sql = "select GROUP_CHAT_MEMBERSHIPS.id, GROUP_CHAT_MEMBERSHIPS.user_id, GROUP_CHAT_MEMBERSHIPS.group_chat_id, GROUP_CHAT_MEMBERSHIPS.JOINED_DATE_TIME from GROUP_CHAT_MEMBERSHIPS where GROUP_CHAT_MEMBERSHIPS.group_chat_id=?";
             stmt = dbConnection.prepareStatement(sql);
             stmt.setInt(1, groupChatId);
             rs = stmt.executeQuery();

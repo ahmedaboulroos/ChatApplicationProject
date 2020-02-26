@@ -10,6 +10,8 @@ public interface ClientInterface extends Remote {
 
     void userLoggedOut(int userId) throws RemoteException;
 
+    void serverDisconnected() throws RemoteException;
+
 
     // user status changed
     void receiveUserStatusChanged(int userId) throws RemoteException;

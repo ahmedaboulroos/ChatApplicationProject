@@ -7,6 +7,7 @@ import eg.gov.iti.jets.models.entities.enums.UserGender;
 import eg.gov.iti.jets.models.entities.enums.UserStatus;
 import eg.gov.iti.jets.models.imageutiles.ImageUtiles;
 import eg.gov.iti.jets.models.network.implementations.ServerService;
+import eg.gov.iti.jets.models.network.interfaces.ClientInterface;
 import eg.gov.iti.jets.models.persistence.DBConnection;
 import javafx.embed.swing.SwingFXUtils;
 import javafx.scene.image.Image;
@@ -234,7 +235,7 @@ public class UserDaoImpl extends UnicastRemoteObject implements UserDao {
                 stmt.setInt(1, groupChatId);
                 rs = stmt.executeQuery();
                 if (rs.next()) {
-                    id = rs.getInt("group_chat_id");
+                    id = rs.getInt("id");
                     tilte = rs.getString("title");
                     description = rs.getString("description");
                     blob = rs.getBlob("group_image");
@@ -316,11 +317,19 @@ public class UserDaoImpl extends UnicastRemoteObject implements UserDao {
             ps.setInt(2, userId);
             ps.executeUpdate();
             List<Relationship> userRelationships = getUserRelationships(userId);
-            for (Relationship r : userRelationships) {
-                if (r.getFirstUserId() == userId) {
-                    ServerService.getClient(r.getSecondUserId()).receiveUserStatusChanged(userId);
-                } else {
-                    ServerService.getClient(r.getFirstUserId()).receiveUserStatusChanged(userId);
+            if (userRelationships != null) {
+                for (Relationship r : userRelationships) {
+                    if (r.getFirstUserId() == userId) {
+                        ClientInterface client = ServerService.getClient(r.getSecondUserId());
+                        if (client != null) {
+                            client.receiveUserStatusChanged(userId);
+                        }
+                    } else {
+                        ClientInterface client = ServerService.getClient(r.getFirstUserId());
+                        if (client != null) {
+                            client.receiveUserStatusChanged(userId);
+                        }
+                    }
                 }
             }
         } catch (SQLException e) {

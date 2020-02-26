@@ -1,8 +1,11 @@
 package eg.gov.iti.jets.controllers;
 
-import com.jfoenix.controls.JFXListCell;
 import com.jfoenix.controls.JFXButton;
 import com.jfoenix.controls.JFXComboBox;
+import com.jfoenix.controls.JFXListCell;
+import com.jfoenix.controls.JFXListView;
+import eg.gov.iti.jets.models.dao.interfaces.ContactsGroupDao;
+import eg.gov.iti.jets.models.dao.interfaces.ContactsGroupMembershipDao;
 import eg.gov.iti.jets.models.dao.interfaces.SingleChatDao;
 import eg.gov.iti.jets.models.dao.interfaces.UserDao;
 import eg.gov.iti.jets.models.entities.*;
@@ -10,13 +13,13 @@ import eg.gov.iti.jets.models.entities.enums.RelationshipStatus;
 import eg.gov.iti.jets.models.entities.enums.UserStatus;
 import eg.gov.iti.jets.models.imageutiles.ImageUtiles;
 import eg.gov.iti.jets.models.network.RMIConnection;
+import javafx.application.Platform;
 import javafx.collections.FXCollections;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 import javafx.geometry.Pos;
-import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
@@ -24,10 +27,8 @@ import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.HBox;
-import javafx.scene.layout.HBox;
 import javafx.scene.layout.Region;
 import javafx.scene.layout.StackPane;
-import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
 import javafx.scene.paint.ImagePattern;
 import javafx.scene.shape.Circle;
@@ -40,14 +41,12 @@ import java.io.ByteArrayInputStream;
 import java.io.IOException;
 import java.net.URL;
 import java.rmi.RemoteException;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.ResourceBundle;
+import java.util.*;
 
 public class LeftViewController implements Initializable {
     private static LeftViewController leftViewController;
-    private SingleChatDao singleChatDao = RMIConnection.getSingleChatDao();
 
+    private AddContactGroupViewController addContactGroupViewController;
     @FXML
     private Tab contactsTab;
 
@@ -73,20 +72,43 @@ public class LeftViewController implements Initializable {
     private JFXComboBox<UserStatus> userStatusCb;
 
     private UserDao userDao = RMIConnection.getUserDao();
+    private SingleChatDao singleChatDao = RMIConnection.getSingleChatDao();
+    private ContactsGroupDao contactsGroupDao = RMIConnection.getContactsGroupDao();
 
     private ClientStageCoordinator clientStageCoordinator;
+
     AddSingleChatViewController addSingleChatViewController;
+    Map<Integer, JFXListView<ContactsGroupMembership>> mContactGroupsListViews =
+            new HashMap<>();
 
     public static LeftViewController getInstance() {
         return leftViewController;
     }
 
+    private JFXListView<User> allContactsLv;
+
     public void setController(LeftViewController leftViewController) {
-        this.leftViewController = leftViewController;
+        LeftViewController.leftViewController = leftViewController;
     }
 
-    private ListView<User> allContactsLv;
+    public AddContactGroupViewController getAddContactGroupViewController() {
+        return addContactGroupViewController;
+    }
 
+    private ContactsGroupMembershipDao contactsGroupMembershipDao =
+            RMIConnection.getContactsGroupMembershipDao();
+
+    public void updateSingleChat(int singleChatMessageId) {
+        try {
+            SingleChatMessage singleChatMessage = RMIConnection.getSingleChatMessageDao().getSingleChatMessage(singleChatMessageId);
+            int singleChatId = singleChatMessage.getSingleChatId();
+            SingleChat singleChat = RMIConnection.getSingleChatDao().getSingleChat(singleChatId);
+            //singleChatsLv.getCellFactory().call(singleChat);
+            singleChatsLv.getSelectionModel().select(0);
+        } catch (RemoteException e) {
+            e.printStackTrace();
+        }
+    }
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
@@ -95,80 +117,33 @@ public class LeftViewController implements Initializable {
         loadGroups();
         loadSingleChats();
         loadGroupChats();
+        loadUserStatus();
     }
 
-    private void loadGroups() {
-        User user = clientStageCoordinator.currentUser;
-        int userId = user.getId();
-        try {
-            List<ContactsGroup> userGroups = userDao.getUserContactsGroups(userId);
-            if (userGroups != null) {
-                List<Integer> groupIds = new ArrayList<>();
-                for (ContactsGroup g : userGroups) {
-                    TitledPane titledPane = new TitledPane();
-                    titledPane.setText(g.getGroupName());
-                    List<String> groupUserNames = getGroupUsersNames(g);
-                    VBox vBox = new VBox();
-                    if (groupUserNames != null) {
-                        groupUserNames.forEach(s -> vBox.getChildren().add(new Label(s)));
-                    }
-                    titledPane.setContent(vBox);
-                    groupsAccordion.getPanes().add(titledPane);
-                }
-            } else {
-                System.out.println("No user groups");
-            }
-        } catch (RemoteException e) {
-            e.printStackTrace();
-        }
+    private void loadUserStatus() {
+        userStatusCb.getItems().addAll(UserStatus.AVAILABLE, UserStatus.BUSY, UserStatus.AWAY);
     }
-
-    private List<String> getGroupUsersNames(ContactsGroup g) throws RemoteException {
-//        ContactsGroupDao groupDao = RMIConnection.getContactsGroupDao();
-//        //get ids of users in group
-//        List<Integer> groupUsersIds = new ArrayList<>();
-//        List<GroupContact> groupContacts = groupDao.getGroupContacts(g.getGroupId());
-//        groupContacts.stream()
-//                .map(GroupContact::getUserId)
-//                .forEach(groupUsersIds::add);
-//
-//        List<String> groupUserNames = new ArrayList<>();
-//        if (groupUsersIds.isEmpty())
-//            groupUsersIds = null;
-//        else {
-//            for (Integer id : groupUsersIds) {
-//                User user = null;
-//                user = userDao.getUser(id);
-//                groupUserNames.add(user.getUsername() == null ?
-//                        user.getPhoneNumber() : user.getUsername());
-//            }
-//        }
-//
-//        return groupUserNames;
-        return null;
-    }
-
 
     private void loadContacts() {
         User user = clientStageCoordinator.currentUser;
-        allContactsLv = new ListView<>();
+        allContactsLv = new JFXListView<>();
         allContactsLv.setCellFactory(listViewListCellCallback -> new JFXListCell<>() {
             @Override
             protected void updateItem(User user, boolean empty) {
                 super.updateItem(user, empty);
                 if (user != null) {
-                    Image image;
+                    Image image = null;
                     if (user.getProfileImage() != null) {
                         image = new Image(new ByteArrayInputStream(user.getProfileImage()));
                     } else {
-                        image = new Image(getClass().getClassLoader().getResource("images/chat-circle-blue-512.png").toString());
+                        //image = new Image(getClass().getClassLoader().getResource("images/chat-circle-blue-512.png").toExternalForm());
                     }
                     ImageView imageView = new ImageView(image);
                     imageView.setFitHeight(50);
                     imageView.setFitWidth(50);
 
                     HBox box = new HBox();
-                    box.getChildren().addAll(imageView, new Label(user.getPhoneNumber()));
+                    box.getChildren().addAll(imageView, new Label(getUserDisplayName(user)));
                     setGraphic(box);
                 } else {
                     setGraphic(null);
@@ -184,7 +159,6 @@ public class LeftViewController implements Initializable {
             allContactsTPane.setContent(allContactsLv);
             groupsAccordion.getPanes().add(allContactsTPane);
 
-
             if (userRelationships != null) {
                 //GET ALL USER FRIENDS IDS
                 List<Integer> friendIds = new ArrayList<>();
@@ -197,17 +171,6 @@ public class LeftViewController implements Initializable {
                             friendIds.add(r.getSecondUserId());
                     }
                 }
-                //GET ALL USER FRIENDS USER OBJECTS
-                /*List<User> friends = new ArrayList<>();
-                for (Integer i : friendIds)
-                    friends.add(userDao.getUser(i));
-                List<Label> names = new ArrayList<>();
-                friends.stream()
-                        .map(f -> f.getUsername() == null ? f.getPhoneNumber() : f.getUsername())
-                        .forEach(s -> names.add(new Label(s)));
-                VBox vBox = new VBox();
-                vBox.getChildren().addAll(names);
-                allContactsTPane.setContent(vBox);*/
                 for (Integer i : friendIds)
                     allContactsLv.getItems().add(userDao.getUser(i));
             } else {
@@ -218,81 +181,159 @@ public class LeftViewController implements Initializable {
         }
     }
 
-    public void displayNewSingleChat(int singleChatId) {
-
+    private void loadGroups() {
+        User user = clientStageCoordinator.currentUser;
+        int userId = user.getId();
         try {
-            SingleChat singleChat = singleChatDao.getSingleChat(singleChatId);
+            List<ContactsGroup> userGroups = userDao.getUserContactsGroups(userId);
+            if (userGroups != null) {
+                for (ContactsGroup g : userGroups) {
+                    JFXListView<ContactsGroupMembership> contactsGroupLv =
+                            createContactGroupLv(g);
 
-            if (singleChat != null) {
-                singleChatsLv.getItems().add(singleChat);
+                    List<ContactsGroupMembership> memberships =
+                            contactsGroupDao.getContactsGroupMemberships(g.getId());
+                    if (memberships != null) {
+                        for (ContactsGroupMembership m : memberships)
+                            contactsGroupLv.getItems().add(m);
+                    }
+
+                }
+            } else {
+                System.out.println("No user groups");
             }
         } catch (RemoteException e) {
             e.printStackTrace();
         }
-        loadSingleChats();
+    }
+
+    private JFXListView<ContactsGroupMembership> createContactGroupLv(ContactsGroup g) {
+        //Set group cell factory
+        JFXListView<ContactsGroupMembership> contactsGroupLv = new JFXListView<>();
+        contactsGroupLv.setCellFactory(listViewListCellCallback -> new JFXListCell<>() {
+            @Override
+            protected void updateItem(ContactsGroupMembership membership, boolean empty) {
+                super.updateItem(membership, empty);
+                if (membership != null) {
+                    User user = null;
+                    try {
+                        user = userDao.getUser(membership.getUserId());
+                    } catch (RemoteException e) {
+                        e.printStackTrace();
+                    }
+                    if (user != null) {
+                        Image image = null;
+                        if (user.getProfileImage() != null) {
+                            image = new Image(new ByteArrayInputStream(user.getProfileImage()));
+                        } else {
+                            //image = new Image(getClass().getClassLoader().getResource("images/chat-circle-blue-512.png").toString());
+                        }
+                        ImageView imageView = new ImageView(image);
+                        imageView.setFitHeight(50);
+                        imageView.setFitWidth(50);
+
+                        HBox box = new HBox();
+                        box.getChildren().addAll(imageView, new Label(getUserDisplayName(user)));
+                        setGraphic(box);
+                    } else {
+                        setGraphic(null);
+                    }
+                    setText(null);
+                }
+            }
+        });
+        TitledPane groupTpane = new TitledPane();
+        groupTpane.setText(g.getGroupName());
+        groupTpane.setContent(contactsGroupLv);
+        mContactGroupsListViews.put(g.getId(), contactsGroupLv);
+        Platform.runLater(() -> groupsAccordion.getPanes().add(groupTpane));
+        return contactsGroupLv;
+    }
+
+    private String getUserDisplayName(User user) {
+        return user.getUsername() == null ? user.getPhoneNumber() : user.getUsername();
+    }
+
+    public void displayNewSingleChat(int singleChatId) {
+
+        try {
+            SingleChat singleChat = singleChatDao.getSingleChat(singleChatId);
+            if (singleChat != null) {
+                System.out.println("ana m4 null");
+                //  singleChatsLv.getItems().clear();
+                //   singleChatsLv.getItems().add(singleChat);
+                loadSingleChats();
+
+            }
+        } catch (RemoteException e) {
+            e.printStackTrace();
+        }
+
     }
     private void loadSingleChats() {
         try {
+            singleChatsLv.getItems().clear();
             List<SingleChat> singleChats = userDao.getUserSingleChats(ClientStageCoordinator.getInstance().currentUser.getId());
-            System.out.println(singleChats);
+            System.out.println("this is single chat " + singleChats);
             if (singleChats != null) {
                 singleChatsLv.setItems(FXCollections.observableList(singleChats));
                 singleChatsLv.setCellFactory(singleChatsLv -> new ListCell<SingleChat>() {
-
-
                     @Override
-                    public void updateItem(SingleChat item, boolean empty) {
-                        super.updateItem(item, empty);
-
-                        if (item != null) {
-
-                            try {
-                                int idTwo = singleChats.get(0).getUserTwoId();
-                                User user = userDao.getUser(idTwo);
-                                System.out.println(user.getUsername());
-                                HBox hBox = new HBox();
-                                hBox.setStyle("-fx-background-color: transparent  ;" +
-                                        "-fx-padding: 1;" + "-fx-border-style: solid inside;"
-                                        + "-fx-border-width: 3;" + "-fx-border-insets: 1;"
-                                        + "-fx-border-radius: 2;" + "-fx-border-color: white;");
-                                Circle imageCircle = new Circle();
-                                Image imageForTasting = new Image("images/chat-circle-blue-512.png");
-                                imageCircle.setFill(new ImagePattern(imageForTasting));
-                                imageCircle.setRadius(20);
-                                imageCircle.setStroke(Color.NAVY);
-                                imageCircle.setStrokeWidth(1);
-                                StackPane stackPane = new StackPane();
-                                Region selectedBar = new Region();
-                                selectedBar.setMinWidth(Region.USE_PREF_SIZE);
-                                selectedBar.setMaxHeight(Region.USE_PREF_SIZE);
-                                selectedBar.setMaxWidth(Double.MAX_VALUE);
-                                StackPane.setAlignment(selectedBar, Pos.BOTTOM_CENTER);
-                                stackPane.getChildren().addAll(imageCircle, selectedBar);
-                                String userInfo;
-                                if (user.getUsername() == null) {
-                                    userInfo = user.getPhoneNumber();
-                                } else {
-                                    userInfo = user.getUsername();
+                    public void updateItem(SingleChat singleChat, boolean empty) {
+                        super.updateItem(singleChat, empty);
+                        if (!empty) {
+                            if (singleChat != null) {
+                                try {
+                                    int idTwo = singleChat.getUserTwoId();
+                                    User user = userDao.getUser(idTwo);
+                                    System.out.println(user.getUsername());
+                                    HBox hBox = new HBox();
+                                    hBox.setStyle("-fx-background-color: transparent  ;" +
+                                            "-fx-padding: 1;" + "-fx-border-style: solid inside;"
+                                            + "-fx-border-width: 3;" + "-fx-border-insets: 1;"
+                                            + "-fx-border-radius: 2;" + "-fx-border-color: white;");
+                                    Circle imageCircle = new Circle();
+                                    Image imageForTasting = new Image("images/chat-circle-blue-512.png");
+                                    imageCircle.setFill(new ImagePattern(imageForTasting));
+                                    imageCircle.setRadius(20);
+                                    imageCircle.setStroke(Color.NAVY);
+                                    imageCircle.setStrokeWidth(1);
+                                    StackPane stackPane = new StackPane();
+                                    Region selectedBar = new Region();
+                                    selectedBar.setMinWidth(Region.USE_PREF_SIZE);
+                                    selectedBar.setMaxHeight(Region.USE_PREF_SIZE);
+                                    selectedBar.setMaxWidth(Double.MAX_VALUE);
+                                    StackPane.setAlignment(selectedBar, Pos.BOTTOM_CENTER);
+                                    stackPane.getChildren().addAll(imageCircle, selectedBar);
+                                    String userInfo;
+                                    if (user.getUsername() == null) {
+                                        userInfo = user.getPhoneNumber();
+                                    } else {
+                                        userInfo = user.getUsername();
+                                    }
+                                    Text text = new Text(userInfo);
+                                    text.setFont(Font.font("Arial Rounded MT Bold", FontWeight.BOLD, 20));//FontWeight.BOLD
+                                    text.setFill(Color.NAVY);
+                                    Label label = new Label();
+                                    label.setMinWidth(20);
+                                    hBox.getChildren().addAll(stackPane, label, text);
+                                    hBox.setAlignment(Pos.CENTER_LEFT);
+                                    setPrefWidth(200);
+                                    setPrefHeight(60);
+                                    hBox.setMaxWidth(200);
+                                    hBox.setMinWidth(200);
+                                    setGraphic(hBox);
+                                } catch (RemoteException e) {
+                                    e.printStackTrace();
                                 }
-                                Text text = new Text(userInfo);
-                                text.setFont(Font.font("Arial Rounded MT Bold", FontWeight.BOLD, 20));//FontWeight.BOLD
-                                text.setFill(Color.NAVY);
-                                Label label = new Label();
-                                label.setMinWidth(20);
-                                hBox.getChildren().addAll(stackPane, label, text);
-                                hBox.setAlignment(Pos.CENTER_LEFT);
-                                setPrefWidth(200);
-                                setPrefHeight(60);
-                                hBox.setMaxWidth(200);
-                                hBox.setMinWidth(200);
-                                setGraphic(hBox);
-                            } catch (RemoteException e) {
-                                e.printStackTrace();
+                            } else {
+                                setGraphic(null);
                             }
+                        } else {
+                            setGraphic(null);
                         }
                     }
                 });
-
 
             } else {
                 System.out.println("No Single chats for this user");
@@ -351,23 +392,26 @@ public class LeftViewController implements Initializable {
     @FXML
     void handleGroupChatSelection(MouseEvent event) {
         GroupChat groupChat = groupChatsLv.getSelectionModel().getSelectedItem();
+        System.out.println("inside left view controller handleGroupChatSelection" + groupChat);
+        List<GroupChatMessage> groupChatMessageList = null;
+        if (groupChat != null) {
+            try {
+                groupChatMessageList = RMIConnection.getGroupChatDao().getGroupChatMessages(groupChat.getId());
+            } catch (RemoteException e) {
+                e.printStackTrace();
+            }
+            System.out.println(groupChatMessageList);
+            ClientStageCoordinator.getInstance().openNewGroupChat(groupChat.getId());
+
+        } else {
+            System.out.println("inside leftViewController.handleGroupChatSelection selected item returns NULL");
+        }
+
         //System.out.println("inside leftViewController groupChat.getGroupChatId() "+groupChat.getGroupChatId());
         ////groupchatmessages controller to get the messages list from the DB
         /*GroupChatMessageController groupChatMessageController = new GroupChatMessageController();
         List<GroupChatMessage> groupChatMessageList = groupChatMessageController.getAllGroupChatMessages(groupChat.getGroupChatId());
         ///printing message list*/
-        List<GroupChatMessage> groupChatMessageList = null;
-        try {
-            groupChatMessageList = RMIConnection.getGroupChatDao().getGroupChatMessages(groupChat.getId());
-        } catch (RemoteException e) {
-            e.printStackTrace();
-        }
-        System.out.println(groupChatMessageList);
-
-        if (groupChat != null) {
-            System.out.println(groupChat.getId());
-            ClientStageCoordinator.getInstance().openNewGroupChat(groupChat.getId());
-        }
     }
 
     @FXML
@@ -390,6 +434,8 @@ public class LeftViewController implements Initializable {
         try {
             FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/views/AddContactGroupView.fxml"));
             Parent addContactGroupView = fxmlLoader.load();
+            addContactGroupViewController = fxmlLoader.getController();
+            AddContactGroupViewController.setController(addContactGroupViewController);
             Stage stage = new Stage();
             Scene scene = new Scene(addContactGroupView);
             stage.setScene(scene);
@@ -432,27 +478,6 @@ public class LeftViewController implements Initializable {
         }
     }
 
-    //TODO:REMOVE DTO FROM IMPLEMENTATION
-    /*public void addNewGroup(GroupDto groupDto) {
-        TitledPane titledPane = new TitledPane();
-        titledPane.setText(groupDto.getGroupName());
-        //TODO: maintain photo
-        groupDto.getUsers().forEach(userDto -> titledPane.getChildrenUnmodifiable().add(new Label(userDto.getUsername())));
-        groupsAccordion.getPanes().add(titledPane);
-    }
-
-    public void addContact(UserDto user) {
-        System.out.println(user);
-    }
-
-    public void addLoggedIn(UserDto user) {
-        System.out.println(user);
-    }
-
-    public void removeLoggedOut(UserDto user) {
-        System.out.println(user);
-    }*/
-
     @FXML
     void handleUserProfileBtnClick(ActionEvent event) {
         try {
@@ -473,12 +498,15 @@ public class LeftViewController implements Initializable {
             switch (userStatusCb.getSelectionModel().getSelectedItem()) {
                 case AVAILABLE:
                     RMIConnection.getUserDao().updateUserStatus(ClientStageCoordinator.getInstance().currentUser.getId(), UserStatus.AVAILABLE);
+                    userStatusCb.setStyle("-fx-background-color: lightgreen");
                     break;
                 case BUSY:
                     RMIConnection.getUserDao().updateUserStatus(ClientStageCoordinator.getInstance().currentUser.getId(), UserStatus.BUSY);
+                    userStatusCb.setStyle("-fx-background-color: pink");
                     break;
                 case AWAY:
                     RMIConnection.getUserDao().updateUserStatus(ClientStageCoordinator.getInstance().currentUser.getId(), UserStatus.AWAY);
+                    userStatusCb.setStyle("-fx-background-color: lightyellow");
                     break;
                 default:
                     System.out.println("WT!?");
@@ -486,6 +514,31 @@ public class LeftViewController implements Initializable {
         } catch (RemoteException e) {
             e.printStackTrace();
         }
+    }
+
+    public void displayContactsGroup(int groupId) {
+        try {
+            createContactGroupLv(contactsGroupDao.getContactsGroup(groupId));
+        } catch (RemoteException e) {
+            e.printStackTrace();
+        }
+    }
+
+    public void displayContactsGroupMembership(int contactsGroupMembershipId) {
+        try {
+            ContactsGroupMembership membership = contactsGroupMembershipDao.getContactsGroupMembership(contactsGroupMembershipId);
+            JFXListView<ContactsGroupMembership> groupLv =
+                    mContactGroupsListViews.get(membership.getContactsGroupId());
+            groupLv.getItems().add(membership);
+        } catch (RemoteException e) {
+            e.printStackTrace();
+        }
+
+
+
+        /*panes.forEach(p->{
+            if()
+        });*/
     }
 }
 
