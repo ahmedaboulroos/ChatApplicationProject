@@ -45,7 +45,7 @@ import java.util.*;
 
 public class LeftViewController implements Initializable {
     private static LeftViewController leftViewController;
-
+    private Map<Integer, ListCell<SingleChat>> singleChatListCellMap = new HashMap<>();
     private AddContactGroupViewController addContactGroupViewController;
     @FXML
     private Tab contactsTab;
@@ -106,6 +106,9 @@ public class LeftViewController implements Initializable {
             int selectedSingleChatId = singleChatsLv.getSelectionModel().getSelectedItem().getId();
             if (selectedSingleChatId == singleChatId) {
                 SingleChatViewController.getInstance().addSingleChatMessage(singleChatMessage);
+            } else {
+                ListCell<SingleChat> singleChatListCell = singleChatListCellMap.get(singleChatId);
+                singleChatListCell.setStyle("-fx-background-color: lightgreen");
             }
 
         } catch (RemoteException e) {
@@ -323,6 +326,7 @@ public class LeftViewController implements Initializable {
                                     hBox.setMaxWidth(200);
                                     hBox.setMinWidth(200);
                                     setGraphic(hBox);
+                                    singleChatListCellMap.put(singleChat.getId(), this);
                                 } catch (RemoteException e) {
                                     e.printStackTrace();
                                 }
@@ -381,7 +385,8 @@ public class LeftViewController implements Initializable {
     @FXML
     void handleSingleChatSelection(MouseEvent event) {
         SingleChat singleChat = singleChatsLv.getSelectionModel().getSelectedItem();
-
+        ListCell<SingleChat> singleChatListCell = singleChatListCellMap.get(singleChat.getId());
+        singleChatListCell.setStyle("-fx-background-color: #ffff");
         if (singleChat != null) {
             System.out.println(singleChat.getId());
             ClientStageCoordinator.getInstance().openNewSingleChat(singleChat.getId());
