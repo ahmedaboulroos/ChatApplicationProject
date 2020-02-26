@@ -102,9 +102,12 @@ public class LeftViewController implements Initializable {
         try {
             SingleChatMessage singleChatMessage = RMIConnection.getSingleChatMessageDao().getSingleChatMessage(singleChatMessageId);
             int singleChatId = singleChatMessage.getSingleChatId();
-            SingleChat singleChat = RMIConnection.getSingleChatDao().getSingleChat(singleChatId);
-            //singleChatsLv.getCellFactory().call(singleChat);
-            singleChatsLv.getSelectionModel().select(0);
+            //          SingleChat singleChat = RMIConnection.getSingleChatDao().getSingleChat(singleChatId);
+            int selectedSingleChatId = singleChatsLv.getSelectionModel().getSelectedItem().getId();
+            if (selectedSingleChatId == singleChatId) {
+                SingleChatViewController.getInstance().addSingleChatMessage(singleChatMessage);
+            }
+
         } catch (RemoteException e) {
             e.printStackTrace();
         }
