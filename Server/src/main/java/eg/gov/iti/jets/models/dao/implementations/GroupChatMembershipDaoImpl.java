@@ -78,7 +78,9 @@ public class GroupChatMembershipDaoImpl extends UnicastRemoteObject implements G
     @Override
     public User getUser(int groupChatMembershipId) {
         try {
+            System.out.println("inside groupchatmembership  imple  groupChatMembershipId ==>> " + groupChatMembershipId);
             GroupChatMembership groupChatMembership = getGroupChatMembership(groupChatMembershipId);
+            System.out.println("groupchat memberships dao impl ==> getUser GroupChatMembership groupChatMembership " + groupChatMembership);
             return UserDaoImpl.getInstance(dbConnection).getUser(groupChatMembership.getUserId());
         } catch (RemoteException e) {
             e.printStackTrace();

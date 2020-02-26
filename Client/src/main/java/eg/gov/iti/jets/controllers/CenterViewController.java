@@ -17,6 +17,7 @@ public class CenterViewController {
     @FXML
     private TabPane chatsTp;//chatsTp
     ContactInfoViewController contactInfoViewController;
+    SingleChatViewController singleChatViewController = SingleChatViewController.getInstance();
     public static CenterViewController getInstance() {
         if (instance == null) {
             instance = new CenterViewController();
@@ -30,7 +31,7 @@ public class CenterViewController {
         try {
             FXMLLoader centerViewFxmlLoader = new FXMLLoader(getClass().getResource("/views/SingleChatView.fxml"));
             Parent singleChatView = centerViewFxmlLoader.load();
-            SingleChatViewController singleChatViewController = centerViewFxmlLoader.getController();
+            singleChatViewController = centerViewFxmlLoader.getController();
             singleChatViewController.setController(singleChatViewController);
             singleChatViewController.setSingleChatMessages(singleChatId);
             Tab tab = new Tab(Integer.toString(singleChatId));
@@ -51,20 +52,15 @@ public class CenterViewController {
                     RightViewController.getInstance().rightViewBp.setCenter(null);
                 }
             });
-
-            // tab.setClosable(true);
             tab.setContent(singleChatView);
-            // chatsTp.getTabs().add(tab);
-            chatsTp.getTabs().add(0, tab);  // Place the new tab always first
-            //chatsTp.getSelectionModel().select(tab);    // Always show the new tab
-            chatsTp.setTabClosingPolicy(TabPane.TabClosingPolicy.ALL_TABS); // Add close button to all new tabs
+            chatsTp.getTabs().add(0, tab);
+            chatsTp.setTabClosingPolicy(TabPane.TabClosingPolicy.ALL_TABS);
             chatsTp.setOnMouseClicked(new EventHandler<Event>() {
                 @Override
                 public void handle(Event arg0) {
                     RightViewController.getInstance().rightViewBp.setCenter(pane);
                 }
             });
-            // a5ly lw eltab active y load elright view
         } catch (IOException e) {
             e.printStackTrace();
         }

@@ -6,6 +6,7 @@ import com.jfoenix.controls.JFXListCell;
 import com.jfoenix.controls.JFXListView;
 import eg.gov.iti.jets.models.dao.interfaces.ContactsGroupDao;
 import eg.gov.iti.jets.models.dao.interfaces.RelationshipDao;
+import eg.gov.iti.jets.models.dao.interfaces.ContactsGroupMembershipDao;
 import eg.gov.iti.jets.models.dao.interfaces.SingleChatDao;
 import eg.gov.iti.jets.models.dao.interfaces.UserDao;
 import eg.gov.iti.jets.models.entities.*;
@@ -44,9 +45,7 @@ import java.io.ByteArrayInputStream;
 import java.io.IOException;
 import java.net.URL;
 import java.rmi.RemoteException;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.ResourceBundle;
+import java.util.*;
 
 public class LeftViewController implements Initializable {
     private static LeftViewController leftViewController;
@@ -83,6 +82,8 @@ public class LeftViewController implements Initializable {
     private ClientStageCoordinator clientStageCoordinator;
 
     AddSingleChatViewController addSingleChatViewController;
+    Map<Integer, JFXListView<ContactsGroupMembership>> mContactGroupsListViews =
+            new HashMap<>();
 
     public static LeftViewController getInstance() {
         return leftViewController;
@@ -96,6 +97,24 @@ public class LeftViewController implements Initializable {
 
     public AddContactGroupViewController getAddContactGroupViewController() {
         return addContactGroupViewController;
+    }
+
+    private ContactsGroupMembershipDao contactsGroupMembershipDao =
+            RMIConnection.getContactsGroupMembershipDao();
+
+    public void updateSingleChat(int singleChatMessageId) {
+        try {
+            SingleChatMessage singleChatMessage = RMIConnection.getSingleChatMessageDao().getSingleChatMessage(singleChatMessageId);
+            int singleChatId = singleChatMessage.getSingleChatId();
+            //          SingleChat singleChat = RMIConnection.getSingleChatDao().getSingleChat(singleChatId);
+            int selectedSingleChatId = singleChatsLv.getSelectionModel().getSelectedItem().getId();
+            if (selectedSingleChatId == singleChatId) {
+                SingleChatViewController.getInstance().addSingleChatMessage(singleChatMessage);
+            }
+
+        } catch (RemoteException e) {
+            e.printStackTrace();
+        }
     }
 
     @Override
@@ -176,7 +195,7 @@ public class LeftViewController implements Initializable {
             List<ContactsGroup> userGroups = userDao.getUserContactsGroups(userId);
             if (userGroups != null) {
                 for (ContactsGroup g : userGroups) {
-                    ListView<ContactsGroupMembership> contactsGroupLv =
+                    JFXListView<ContactsGroupMembership> contactsGroupLv =
                             createContactGroupLv(g);
 
                     List<ContactsGroupMembership> memberships =
@@ -195,7 +214,7 @@ public class LeftViewController implements Initializable {
         }
     }
 
-    private ListView<ContactsGroupMembership> createContactGroupLv(ContactsGroup g) {
+    private JFXListView<ContactsGroupMembership> createContactGroupLv(ContactsGroup g) {
         //Set group cell factory
         JFXListView<ContactsGroupMembership> contactsGroupLv = new JFXListView<>();
         contactsGroupLv.setCellFactory(listViewListCellCallback -> new JFXListCell<>() {
@@ -233,6 +252,7 @@ public class LeftViewController implements Initializable {
         TitledPane groupTpane = new TitledPane();
         groupTpane.setText(g.getGroupName());
         groupTpane.setContent(contactsGroupLv);
+        mContactGroupsListViews.put(g.getId(), contactsGroupLv);
         Platform.runLater(() -> groupsAccordion.getPanes().add(groupTpane));
         return contactsGroupLv;
     }
@@ -245,78 +265,80 @@ public class LeftViewController implements Initializable {
 
         try {
             SingleChat singleChat = singleChatDao.getSingleChat(singleChatId);
-
             if (singleChat != null) {
-                singleChatsLv.getItems().add(singleChat);
+                System.out.println("ana m4 null");
+                Platform.runLater(() -> loadSingleChats());
             }
         } catch (RemoteException e) {
             e.printStackTrace();
         }
-        loadSingleChats();
+
     }
 
     private void loadSingleChats() {
         try {
+            singleChatsLv.getItems().clear();
             List<SingleChat> singleChats = userDao.getUserSingleChats(ClientStageCoordinator.getInstance().currentUser.getId());
-            System.out.println(singleChats);
+            System.out.println("this is single chat " + singleChats);
             if (singleChats != null) {
-                singleChatsLv.setItems(FXCollections.observableList(singleChats));
+                Platform.runLater(() -> singleChatsLv.setItems(FXCollections.observableList(singleChats)));
                 singleChatsLv.setCellFactory(singleChatsLv -> new ListCell<SingleChat>() {
-
-
                     @Override
-                    public void updateItem(SingleChat item, boolean empty) {
-                        super.updateItem(item, empty);
-
-                        if (item != null) {
-
-                            try {
-                                    int idTwo = item.getUserTwoId();
-                                User user = userDao.getUser(idTwo);
-                                System.out.println(user.getUsername());
-                                HBox hBox = new HBox();
-                                hBox.setStyle("-fx-background-color: transparent  ;" +
-                                        "-fx-padding: 1;" + "-fx-border-style: solid inside;"
-                                        + "-fx-border-width: 3;" + "-fx-border-insets: 1;"
-                                        + "-fx-border-radius: 2;" + "-fx-border-color: white;");
-                                Circle imageCircle = new Circle();
-                                Image imageForTasting = new Image("images/chat-circle-blue-512.png");
-                                imageCircle.setFill(new ImagePattern(imageForTasting));
-                                imageCircle.setRadius(20);
-                                imageCircle.setStroke(Color.NAVY);
-                                imageCircle.setStrokeWidth(1);
-                                StackPane stackPane = new StackPane();
-                                Region selectedBar = new Region();
-                                selectedBar.setMinWidth(Region.USE_PREF_SIZE);
-                                selectedBar.setMaxHeight(Region.USE_PREF_SIZE);
-                                selectedBar.setMaxWidth(Double.MAX_VALUE);
-                                StackPane.setAlignment(selectedBar, Pos.BOTTOM_CENTER);
-                                stackPane.getChildren().addAll(imageCircle, selectedBar);
-                                String userInfo;
-                                if (user.getUsername() == null) {
-                                    userInfo = user.getPhoneNumber();
-                                } else {
-                                    userInfo = user.getUsername();
+                    public void updateItem(SingleChat singleChat, boolean empty) {
+                        super.updateItem(singleChat, empty);
+                        if (!empty) {
+                            if (singleChat != null) {
+                                try {
+                                    int idTwo = singleChat.getUserTwoId();
+                                    User user = userDao.getUser(idTwo);
+                                    System.out.println(user.getUsername());
+                                    HBox hBox = new HBox();
+                                    hBox.setStyle("-fx-background-color: transparent  ;" +
+                                            "-fx-padding: 1;" + "-fx-border-style: solid inside;"
+                                            + "-fx-border-width: 3;" + "-fx-border-insets: 1;"
+                                            + "-fx-border-radius: 2;" + "-fx-border-color: white;");
+                                    Circle imageCircle = new Circle();
+                                    Image imageForTasting = new Image("images/chat-circle-blue-512.png");
+                                    imageCircle.setFill(new ImagePattern(imageForTasting));
+                                    imageCircle.setRadius(20);
+                                    imageCircle.setStroke(Color.NAVY);
+                                    imageCircle.setStrokeWidth(1);
+                                    StackPane stackPane = new StackPane();
+                                    Region selectedBar = new Region();
+                                    selectedBar.setMinWidth(Region.USE_PREF_SIZE);
+                                    selectedBar.setMaxHeight(Region.USE_PREF_SIZE);
+                                    selectedBar.setMaxWidth(Double.MAX_VALUE);
+                                    StackPane.setAlignment(selectedBar, Pos.BOTTOM_CENTER);
+                                    stackPane.getChildren().addAll(imageCircle, selectedBar);
+                                    String userInfo;
+                                    if (user.getUsername() == null) {
+                                        userInfo = user.getPhoneNumber();
+                                    } else {
+                                        userInfo = user.getUsername();
+                                    }
+                                    Text text = new Text(userInfo);
+                                    text.setFont(Font.font("Arial Rounded MT Bold", FontWeight.BOLD, 20));//FontWeight.BOLD
+                                    text.setFill(Color.NAVY);
+                                    Label label = new Label();
+                                    label.setMinWidth(20);
+                                    hBox.getChildren().addAll(stackPane, label, text);
+                                    hBox.setAlignment(Pos.CENTER_LEFT);
+                                    setPrefWidth(200);
+                                    setPrefHeight(60);
+                                    hBox.setMaxWidth(200);
+                                    hBox.setMinWidth(200);
+                                    setGraphic(hBox);
+                                } catch (RemoteException e) {
+                                    e.printStackTrace();
                                 }
-                                Text text = new Text(userInfo);
-                                text.setFont(Font.font("Arial Rounded MT Bold", FontWeight.BOLD, 20));//FontWeight.BOLD
-                                text.setFill(Color.NAVY);
-                                Label label = new Label();
-                                label.setMinWidth(20);
-                                hBox.getChildren().addAll(stackPane, label, text);
-                                hBox.setAlignment(Pos.CENTER_LEFT);
-                                setPrefWidth(200);
-                                setPrefHeight(60);
-                                hBox.setMaxWidth(200);
-                                hBox.setMinWidth(200);
-                                setGraphic(hBox);
-                            } catch (RemoteException e) {
-                                e.printStackTrace();
+                            } else {
+                                setGraphic(null);
                             }
+                        } else {
+                            setGraphic(null);
                         }
                     }
                 });
-
 
             } else {
                 System.out.println("No Single chats for this user");
@@ -326,71 +348,64 @@ public class LeftViewController implements Initializable {
         }
     }
 
-    private void loadGroupChats() {
-        List<GroupChat> groupChats = null;
-        try {
-            groupChats = userDao.getUserGroupChats(ClientStageCoordinator.getInstance().currentUser.getId());
-        } catch (RemoteException e) {
-            e.printStackTrace();
-        }
-        if (groupChats != null) {
-            System.out.println("inside leftView controller -->> preparing list view cells ....");
-            groupChatsLv.setItems(FXCollections.observableList(groupChats));
 
-            groupChatsLv.setCellFactory(groupChatsLv -> new ListCell<GroupChat>() {
-                @Override
-                public void updateItem(GroupChat item, boolean empty) {
-                    // super.updateItem(item, empty);
-                    if (item != null) {
-                        setText(item.getTitle());
-                        System.out.println("inside left view cell fact groupChat.getTitle() " + item.getTitle());
-                        Image imageForTasting = ImageUtiles.fromBytesToImage(item.getGroupImageBytes());
-                        if (imageForTasting != null) {
-                            Circle imageCircle = new Circle();
-                            imageCircle.setFill(new ImagePattern(imageForTasting));
-                            imageCircle.setRadius(20);
-                            imageCircle.setStroke(Color.GREEN);
-                            imageCircle.setStrokeWidth(3);
-                            setGraphic(imageCircle);
+    public void displayNewGroupChat() {
+        Platform.runLater(() -> {
+            loadGroupChats();
+        });
+    }
+
+    private void loadGroupChats() {
+        try {
+            List<GroupChat> groupChats = userDao.getUserGroupChats(ClientStageCoordinator.getInstance().currentUser.getId());
+            if (groupChats != null) {
+                System.out.println("inside leftView controller -->> preparing list view cells ....");
+                groupChatsLv.setItems(FXCollections.observableList(groupChats));
+                groupChatsLv.getItems().forEach(item -> item.toString());
+                groupChatsLv.setCellFactory(groupChatsLv -> new ListCell<GroupChat>() {
+                    @Override
+                    public void updateItem(GroupChat item, boolean empty) {
+                        super.updateItem(item, empty);
+                        if (item != null) {
+                            setText(item.getTitle());
+                            System.out.println("inside left view cell fact groupChat.getTitle() " + item.getTitle());
+                            Image imageForTasting = ImageUtiles.fromBytesToImage(item.getGroupImageBytes());
+                            if (imageForTasting != null) {
+                                Circle imageCircle = new Circle();
+                                imageCircle.setFill(new ImagePattern(imageForTasting));
+                                imageCircle.setRadius(20);
+                                imageCircle.setStroke(Color.GREEN);
+                                imageCircle.setStrokeWidth(3);
+                                setGraphic(imageCircle);
+                            }
+                        } else {
+                            setGraphic(null);
                         }
                     }
-                }
-            });
-        } else {
-            System.out.println("No Group chats for this user");
+                });
+            } else {
+                System.out.println("No Group chats for this user");
+            }
+        } catch (RemoteException e) {
+            e.printStackTrace();
         }
     }
 
     @FXML
     void handleSingleChatSelection(MouseEvent event) {
         SingleChat singleChat = singleChatsLv.getSelectionModel().getSelectedItem();
-
         if (singleChat != null) {
-            System.out.println(singleChat.getId());
             ClientStageCoordinator.getInstance().openNewSingleChat(singleChat.getId());
         }
-
     }
 
     @FXML
     void handleGroupChatSelection(MouseEvent event) {
         GroupChat groupChat = groupChatsLv.getSelectionModel().getSelectedItem();
-        //System.out.println("inside leftViewController groupChat.getGroupChatId() "+groupChat.getGroupChatId());
-        ////groupchatmessages controller to get the messages list from the DB
-        /*GroupChatMessageController groupChatMessageController = new GroupChatMessageController();
-        List<GroupChatMessage> groupChatMessageList = groupChatMessageController.getAllGroupChatMessages(groupChat.getGroupChatId());
-        ///printing message list*/
-        List<GroupChatMessage> groupChatMessageList = null;
-        try {
-            groupChatMessageList = RMIConnection.getGroupChatDao().getGroupChatMessages(groupChat.getId());
-        } catch (RemoteException e) {
-            e.printStackTrace();
-        }
-        System.out.println(groupChatMessageList);
-
         if (groupChat != null) {
-            System.out.println(groupChat.getId());
+            System.out.println("inside handleGroupChatSelection " + groupChat.toString());
             ClientStageCoordinator.getInstance().openNewGroupChat(groupChat.getId());
+
         }
     }
 
@@ -496,12 +511,29 @@ public class LeftViewController implements Initializable {
         }
     }
 
-    public void addGroup(int groupId) {
+    public void displayContactsGroup(int groupId) {
         try {
             createContactGroupLv(contactsGroupDao.getContactsGroup(groupId));
         } catch (RemoteException e) {
             e.printStackTrace();
         }
+    }
+
+    public void displayContactsGroupMembership(int contactsGroupMembershipId) {
+        try {
+            ContactsGroupMembership membership = contactsGroupMembershipDao.getContactsGroupMembership(contactsGroupMembershipId);
+            JFXListView<ContactsGroupMembership> groupLv =
+                    mContactGroupsListViews.get(membership.getContactsGroupId());
+            groupLv.getItems().add(membership);
+        } catch (RemoteException e) {
+            e.printStackTrace();
+        }
+
+
+
+        /*panes.forEach(p->{
+            if()
+        });*/
     }
 
     //
