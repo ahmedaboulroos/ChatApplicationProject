@@ -46,7 +46,7 @@ public class ContactInfoViewController implements Initializable {
     }
 
     public void setController(ContactInfoViewController contactInfoViewController) {
-        this.contactInfoViewController = contactInfoViewController;
+        ContactInfoViewController.contactInfoViewController = contactInfoViewController;
     }
 
     @Override
@@ -62,10 +62,19 @@ public class ContactInfoViewController implements Initializable {
 
     @FXML
     void handleOnDeleteChat(ActionEvent event) {
-
+        try {
+            System.out.println("singleChatId that deleted" + singleChatId);
+            singleChatDao.deleteSingleChat(singleChatId);
+            LeftViewController.getInstance().loadSingleChats();
+            RightViewController.getInstance().rightViewBp.setCenter(null);
+            CenterViewController.getInstance().centerViewBp.setCenter(null);
+        } catch (RemoteException e) {
+            e.printStackTrace();
+        }
     }
 
     public void setContactInfo(int singleChatId) {
+        this.singleChatId = singleChatId;
         try {
             System.out.println(singleChatId);
             SingleChat singleChat = singleChatDao.getSingleChat(singleChatId);

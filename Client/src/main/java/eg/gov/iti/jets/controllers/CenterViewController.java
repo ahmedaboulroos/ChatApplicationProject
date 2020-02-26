@@ -8,6 +8,7 @@ import javafx.scene.Parent;
 import javafx.scene.control.Tab;
 import javafx.scene.control.TabPane;
 import javafx.scene.input.MouseEvent;
+import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.Pane;
 
 import java.io.IOException;
@@ -16,10 +17,13 @@ public class CenterViewController {
 
     private static CenterViewController instance;
     @FXML
+    public BorderPane centerViewBp;
+    @FXML
     private TabPane chatsTp;//chatsTp
     ContactInfoViewController contactInfoViewController;
     GroupInfoViewController groupInfoViewController;
     SingleChatViewController singleChatViewController = SingleChatViewController.getInstance();
+
     public static CenterViewController getInstance() {
         if (instance == null) {
             instance = new CenterViewController();
