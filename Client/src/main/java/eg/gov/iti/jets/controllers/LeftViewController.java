@@ -5,6 +5,7 @@ import com.jfoenix.controls.JFXComboBox;
 import com.jfoenix.controls.JFXListCell;
 import com.jfoenix.controls.JFXListView;
 import eg.gov.iti.jets.models.dao.interfaces.ContactsGroupDao;
+import eg.gov.iti.jets.models.dao.interfaces.ContactsGroupMembershipDao;
 import eg.gov.iti.jets.models.dao.interfaces.SingleChatDao;
 import eg.gov.iti.jets.models.dao.interfaces.UserDao;
 import eg.gov.iti.jets.models.entities.*;
@@ -18,7 +19,6 @@ import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
-import javafx.geometry.Pos;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
@@ -26,23 +26,16 @@ import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.HBox;
-import javafx.scene.layout.Region;
-import javafx.scene.layout.StackPane;
 import javafx.scene.paint.Color;
 import javafx.scene.paint.ImagePattern;
 import javafx.scene.shape.Circle;
-import javafx.scene.text.Font;
-import javafx.scene.text.FontWeight;
-import javafx.scene.text.Text;
 import javafx.stage.Stage;
 
 import java.io.ByteArrayInputStream;
 import java.io.IOException;
 import java.net.URL;
 import java.rmi.RemoteException;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.ResourceBundle;
+import java.util.*;
 
 public class LeftViewController implements Initializable {
     private static LeftViewController leftViewController;
@@ -79,6 +72,8 @@ public class LeftViewController implements Initializable {
     private ClientStageCoordinator clientStageCoordinator;
 
     AddSingleChatViewController addSingleChatViewController;
+    Map<Integer, JFXListView<ContactsGroupMembership>> mContactGroupsListViews =
+            new HashMap<>();
 
     public static LeftViewController getInstance() {
         return leftViewController;
@@ -93,6 +88,9 @@ public class LeftViewController implements Initializable {
     public AddContactGroupViewController getAddContactGroupViewController() {
         return addContactGroupViewController;
     }
+
+    private ContactsGroupMembershipDao contactsGroupMembershipDao =
+            RMIConnection.getContactsGroupMembershipDao();
 
     public void updateSingleChat(int singleChatMessageId) {
         try {
@@ -184,7 +182,7 @@ public class LeftViewController implements Initializable {
             List<ContactsGroup> userGroups = userDao.getUserContactsGroups(userId);
             if (userGroups != null) {
                 for (ContactsGroup g : userGroups) {
-                    ListView<ContactsGroupMembership> contactsGroupLv =
+                    JFXListView<ContactsGroupMembership> contactsGroupLv =
                             createContactGroupLv(g);
 
                     List<ContactsGroupMembership> memberships =
@@ -203,7 +201,7 @@ public class LeftViewController implements Initializable {
         }
     }
 
-    private ListView<ContactsGroupMembership> createContactGroupLv(ContactsGroup g) {
+    private JFXListView<ContactsGroupMembership> createContactGroupLv(ContactsGroup g) {
         //Set group cell factory
         JFXListView<ContactsGroupMembership> contactsGroupLv = new JFXListView<>();
         contactsGroupLv.setCellFactory(listViewListCellCallback -> new JFXListCell<>() {
@@ -241,6 +239,7 @@ public class LeftViewController implements Initializable {
         TitledPane groupTpane = new TitledPane();
         groupTpane.setText(g.getGroupName());
         groupTpane.setContent(contactsGroupLv);
+        mContactGroupsListViews.put(g.getId(), contactsGroupLv);
         Platform.runLater(() -> groupsAccordion.getPanes().add(groupTpane));
         return contactsGroupLv;
     }
@@ -511,12 +510,29 @@ public class LeftViewController implements Initializable {
         }
     }
 
-    public void addGroup(int groupId) {
+    public void displayContactsGroup(int groupId) {
         try {
             createContactGroupLv(contactsGroupDao.getContactsGroup(groupId));
         } catch (RemoteException e) {
             e.printStackTrace();
         }
+    }
+
+    public void displayContactsGroupMembership(int contactsGroupMembershipId) {
+        try {
+            ContactsGroupMembership membership = contactsGroupMembershipDao.getContactsGroupMembership(contactsGroupMembershipId);
+            JFXListView<ContactsGroupMembership> groupLv =
+                    mContactGroupsListViews.get(membership.getContactsGroupId());
+            groupLv.getItems().add(membership);
+        } catch (RemoteException e) {
+            e.printStackTrace();
+        }
+
+
+
+        /*panes.forEach(p->{
+            if()
+        });*/
     }
 }
 

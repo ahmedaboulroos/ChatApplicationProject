@@ -1,7 +1,9 @@
 package eg.gov.iti.jets.models.dao.implementations;
 
 import eg.gov.iti.jets.models.dao.interfaces.ContactsGroupMembershipDao;
+import eg.gov.iti.jets.models.entities.ContactsGroup;
 import eg.gov.iti.jets.models.entities.ContactsGroupMembership;
+import eg.gov.iti.jets.models.entities.User;
 import eg.gov.iti.jets.models.network.implementations.ServerService;
 import eg.gov.iti.jets.models.network.interfaces.ClientInterface;
 
@@ -11,7 +13,6 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.util.List;
 
 public class ContactsGroupMembershipDaoImpl extends UnicastRemoteObject implements ContactsGroupMembershipDao {
 
@@ -38,7 +39,7 @@ public class ContactsGroupMembershipDaoImpl extends UnicastRemoteObject implemen
         int id = -1;
         String[] key = {"ID"};
         String sql = "INSERT INTO CONTACTS_GROUP_MEMBERSHIPS (ID, USER_ID, CONTACTS_GROUP_ID) VALUES (ID_SEQ.NEXTVAL,?,?)";
-        try (PreparedStatement ps = dbConnection.prepareStatement(sql)) {
+        try (PreparedStatement ps = dbConnection.prepareStatement(sql, key)) {
             ps.setInt(1, contactsGroupMembership.getUserId());
             ps.setInt(2, contactsGroupMembership.getContactsGroupId());
             ps.executeUpdate();
@@ -46,13 +47,18 @@ public class ContactsGroupMembershipDaoImpl extends UnicastRemoteObject implemen
             if (rs.next()) {
                 id = rs.getInt(1);
             }
-            List<ContactsGroupMembership> contactsGroupMemberships = ContactsGroupDaoImpl.getInstance(dbConnection).getContactsGroupMemberships(contactsGroupMembership.getContactsGroupId());
+            /*List<ContactsGroupMembership> contactsGroupMemberships = ContactsGroupDaoImpl.getInstance(dbConnection).getContactsGroupMemberships(contactsGroupMembership.getContactsGroupId());
             for (ContactsGroupMembership m : contactsGroupMemberships) {
                 ClientInterface client = ServerService.getClient(m.getUserId());
                 if (client != null) {
                     client.receiveNewContactsGroupMembership(id);
                 }
-            }
+            }*/
+            ContactsGroup contactsGroup = ContactsGroupDaoImpl.getInstance(dbConnection).getContactsGroup(contactsGroupMembership.getContactsGroupId());
+            User user = UserDaoImpl.getInstance(dbConnection).getUser(contactsGroup.getUserId());
+            ClientInterface client = ServerService.getClient(user.getId());
+            if (client != null)
+                client.receiveNewContactsGroupMembership(id);
         } catch (SQLException | RemoteException e) {
             e.printStackTrace();
         }
