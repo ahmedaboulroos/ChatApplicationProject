@@ -25,7 +25,7 @@ public class RightViewController implements Initializable {
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
-        System.out.println("ana omt");
+        //System.out.println("ana omt");
 
         //  rightViewBp.setCenter(addContactView());
 

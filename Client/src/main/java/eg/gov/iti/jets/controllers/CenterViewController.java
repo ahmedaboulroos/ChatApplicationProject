@@ -51,11 +51,11 @@ public class CenterViewController {
                     RightViewController.getInstance().rightViewBp.setCenter(null);
                 }
             });
-
             // tab.setClosable(true);
             tab.setContent(singleChatView);
             // chatsTp.getTabs().add(tab);
-            chatsTp.getTabs().add(0, tab);  // Place the new tab always first
+            chatsTp.getTabs().add(0, tab);
+            // Place the new tab always first
             //chatsTp.getSelectionModel().select(tab);    // Always show the new tab
             chatsTp.setTabClosingPolicy(TabPane.TabClosingPolicy.ALL_TABS); // Add close button to all new tabs
             chatsTp.setOnMouseClicked(new EventHandler<Event>() {

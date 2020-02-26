@@ -253,77 +253,82 @@ public class LeftViewController implements Initializable {
 
         try {
             SingleChat singleChat = singleChatDao.getSingleChat(singleChatId);
-
             if (singleChat != null) {
-                singleChatsLv.getItems().add(singleChat);
+                System.out.println("ana m4 null");
+                //  singleChatsLv.getItems().clear();
+                //   singleChatsLv.getItems().add(singleChat);
+                loadSingleChats();
+
             }
         } catch (RemoteException e) {
             e.printStackTrace();
         }
-        // loadSingleChats();
+
     }
     private void loadSingleChats() {
         try {
+            singleChatsLv.getItems().clear();
             List<SingleChat> singleChats = userDao.getUserSingleChats(ClientStageCoordinator.getInstance().currentUser.getId());
-            System.out.println(singleChats);
+            System.out.println("this is single chat " + singleChats);
             if (singleChats != null) {
                 singleChatsLv.setItems(FXCollections.observableList(singleChats));
                 singleChatsLv.setCellFactory(singleChatsLv -> new ListCell<SingleChat>() {
-
-
                     @Override
-                    public void updateItem(SingleChat item, boolean empty) {
-                        super.updateItem(item, empty);
-
-                        if (item != null) {
-
-                            try {
-                                    int idTwo = item.getUserTwoId();
-                                User user = userDao.getUser(idTwo);
-                                System.out.println(user.getUsername());
-                                HBox hBox = new HBox();
-                                hBox.setStyle("-fx-background-color: transparent  ;" +
-                                        "-fx-padding: 1;" + "-fx-border-style: solid inside;"
-                                        + "-fx-border-width: 3;" + "-fx-border-insets: 1;"
-                                        + "-fx-border-radius: 2;" + "-fx-border-color: white;");
-                                Circle imageCircle = new Circle();
-                                Image imageForTasting = new Image("images/chat-circle-blue-512.png");
-                                imageCircle.setFill(new ImagePattern(imageForTasting));
-                                imageCircle.setRadius(20);
-                                imageCircle.setStroke(Color.NAVY);
-                                imageCircle.setStrokeWidth(1);
-                                StackPane stackPane = new StackPane();
-                                Region selectedBar = new Region();
-                                selectedBar.setMinWidth(Region.USE_PREF_SIZE);
-                                selectedBar.setMaxHeight(Region.USE_PREF_SIZE);
-                                selectedBar.setMaxWidth(Double.MAX_VALUE);
-                                StackPane.setAlignment(selectedBar, Pos.BOTTOM_CENTER);
-                                stackPane.getChildren().addAll(imageCircle, selectedBar);
-                                String userInfo;
-                                if (user.getUsername() == null) {
-                                    userInfo = user.getPhoneNumber();
-                                } else {
-                                    userInfo = user.getUsername();
+                    public void updateItem(SingleChat singleChat, boolean empty) {
+                        super.updateItem(singleChat, empty);
+                        if (!empty) {
+                            if (singleChat != null) {
+                                try {
+                                    int idTwo = singleChat.getUserTwoId();
+                                    User user = userDao.getUser(idTwo);
+                                    System.out.println(user.getUsername());
+                                    HBox hBox = new HBox();
+                                    hBox.setStyle("-fx-background-color: transparent  ;" +
+                                            "-fx-padding: 1;" + "-fx-border-style: solid inside;"
+                                            + "-fx-border-width: 3;" + "-fx-border-insets: 1;"
+                                            + "-fx-border-radius: 2;" + "-fx-border-color: white;");
+                                    Circle imageCircle = new Circle();
+                                    Image imageForTasting = new Image("images/chat-circle-blue-512.png");
+                                    imageCircle.setFill(new ImagePattern(imageForTasting));
+                                    imageCircle.setRadius(20);
+                                    imageCircle.setStroke(Color.NAVY);
+                                    imageCircle.setStrokeWidth(1);
+                                    StackPane stackPane = new StackPane();
+                                    Region selectedBar = new Region();
+                                    selectedBar.setMinWidth(Region.USE_PREF_SIZE);
+                                    selectedBar.setMaxHeight(Region.USE_PREF_SIZE);
+                                    selectedBar.setMaxWidth(Double.MAX_VALUE);
+                                    StackPane.setAlignment(selectedBar, Pos.BOTTOM_CENTER);
+                                    stackPane.getChildren().addAll(imageCircle, selectedBar);
+                                    String userInfo;
+                                    if (user.getUsername() == null) {
+                                        userInfo = user.getPhoneNumber();
+                                    } else {
+                                        userInfo = user.getUsername();
+                                    }
+                                    Text text = new Text(userInfo);
+                                    text.setFont(Font.font("Arial Rounded MT Bold", FontWeight.BOLD, 20));//FontWeight.BOLD
+                                    text.setFill(Color.NAVY);
+                                    Label label = new Label();
+                                    label.setMinWidth(20);
+                                    hBox.getChildren().addAll(stackPane, label, text);
+                                    hBox.setAlignment(Pos.CENTER_LEFT);
+                                    setPrefWidth(200);
+                                    setPrefHeight(60);
+                                    hBox.setMaxWidth(200);
+                                    hBox.setMinWidth(200);
+                                    setGraphic(hBox);
+                                } catch (RemoteException e) {
+                                    e.printStackTrace();
                                 }
-                                Text text = new Text(userInfo);
-                                text.setFont(Font.font("Arial Rounded MT Bold", FontWeight.BOLD, 20));//FontWeight.BOLD
-                                text.setFill(Color.NAVY);
-                                Label label = new Label();
-                                label.setMinWidth(20);
-                                hBox.getChildren().addAll(stackPane, label, text);
-                                hBox.setAlignment(Pos.CENTER_LEFT);
-                                setPrefWidth(200);
-                                setPrefHeight(60);
-                                hBox.setMaxWidth(200);
-                                hBox.setMinWidth(200);
-                                setGraphic(hBox);
-                            } catch (RemoteException e) {
-                                e.printStackTrace();
+                            } else {
+                                setGraphic(null);
                             }
+                        } else {
+                            setGraphic(null);
                         }
                     }
                 });
-
 
             } else {
                 System.out.println("No Single chats for this user");

@@ -48,8 +48,14 @@ public class SingleChatDaoImpl extends UnicastRemoteObject implements SingleChat
             if (rs.next()) {
                 id = rs.getInt(1);
             }
-            ServerService.getClient(singleChat.getUserOneId()).receiveNewSingleChat(id);
-            ServerService.getClient(singleChat.getUserTwoId()).receiveNewSingleChat(id);
+            if (ServerService.getClient(singleChat.getUserTwoId()) != null) {
+                ServerService.getClient(singleChat.getUserTwoId()).receiveNewSingleChat(id);
+            }
+            if (ServerService.getClient(singleChat.getUserOneId()) != null) {
+                ServerService.getClient(singleChat.getUserOneId()).receiveNewSingleChat(id);
+
+            }
+
         } catch (SQLException | RemoteException e) {
             e.printStackTrace();
         }

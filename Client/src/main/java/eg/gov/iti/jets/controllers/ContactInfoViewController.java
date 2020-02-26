@@ -51,7 +51,7 @@ public class ContactInfoViewController implements Initializable {
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
-        System.out.println("el Contact Info view loaded");
+       // System.out.println("el Contact Info view loaded");
 
     }
 
