@@ -55,7 +55,6 @@ public class ClientService extends UnicastRemoteObject implements ClientInterfac
     @Override
     public void receiveNewSingleChat(int singleChatId) throws RemoteException {
         System.out.println(">> New Single Chat :" + singleChatId);
-        //singleChatViewController.displayNewSingleChat(singleChatId);
         leftViewController.displayNewSingleChat(singleChatId);
     }
 
@@ -63,7 +62,6 @@ public class ClientService extends UnicastRemoteObject implements ClientInterfac
     public void receiveNewSingleChatMessage(int singleChatMessageId) throws RemoteException {
         System.out.println(">> New Single Chat Message :" + singleChatMessageId);
         leftViewController.updateSingleChat(singleChatMessageId);
-        singleChatViewController.displayNewSingleChatMessage(singleChatMessageId);
     }
 
     @Override
