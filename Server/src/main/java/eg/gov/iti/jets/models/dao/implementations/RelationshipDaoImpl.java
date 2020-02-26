@@ -123,7 +123,7 @@ public class RelationshipDaoImpl extends UnicastRemoteObject implements Relation
             preparedStatement.setInt(1, relationship.getFirstUserId());
             preparedStatement.setInt(2, relationship.getSecondUserId());
             preparedStatement.setString(3, relationship.getStatus().toString());
-            preparedStatement.setInt(4, relationship.getFirstUserId());
+            preparedStatement.setInt(4, relationship.getId());
             preparedStatement.executeUpdate();
             ClientInterface clientOne = ServerService.getClient(relationship.getFirstUserId());
             if (clientOne != null) {

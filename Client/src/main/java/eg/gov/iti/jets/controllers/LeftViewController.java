@@ -4,11 +4,7 @@ import com.jfoenix.controls.JFXButton;
 import com.jfoenix.controls.JFXComboBox;
 import com.jfoenix.controls.JFXListCell;
 import com.jfoenix.controls.JFXListView;
-import eg.gov.iti.jets.models.dao.interfaces.ContactsGroupDao;
-import eg.gov.iti.jets.models.dao.interfaces.RelationshipDao;
-import eg.gov.iti.jets.models.dao.interfaces.ContactsGroupMembershipDao;
-import eg.gov.iti.jets.models.dao.interfaces.SingleChatDao;
-import eg.gov.iti.jets.models.dao.interfaces.UserDao;
+import eg.gov.iti.jets.models.dao.interfaces.*;
 import eg.gov.iti.jets.models.entities.*;
 import eg.gov.iti.jets.models.entities.enums.RelationshipStatus;
 import eg.gov.iti.jets.models.entities.enums.UserStatus;
@@ -82,6 +78,7 @@ public class LeftViewController implements Initializable {
     private ClientStageCoordinator clientStageCoordinator;
 
     AddSingleChatViewController addSingleChatViewController;
+    Map<Integer, JFXListCell<User>> mAllContactsListCells = new HashMap<>();
     Map<Integer, JFXListView<ContactsGroupMembership>> mContactGroupsListViews =
             new HashMap<>();
 
@@ -90,6 +87,7 @@ public class LeftViewController implements Initializable {
     }
 
     private JFXListView<User> allContactsLv;
+    private RelationshipDao relationshipDao = RMIConnection.getRelationshipDao();
 
     public void setController(LeftViewController leftViewController) {
         LeftViewController.leftViewController = leftViewController;
@@ -134,6 +132,7 @@ public class LeftViewController implements Initializable {
     private void loadContacts() {
         User user = clientStageCoordinator.currentUser;
         allContactsLv = new JFXListView<>();
+
         allContactsLv.setCellFactory(listViewListCellCallback -> new JFXListCell<>() {
             @Override
             protected void updateItem(User user, boolean empty) {
@@ -152,6 +151,8 @@ public class LeftViewController implements Initializable {
                     HBox box = new HBox();
                     box.getChildren().addAll(imageView, new Label(getUserDisplayName(user)));
                     setGraphic(box);
+                    mAllContactsListCells.put(user.getId(), this);
+
                 } else {
                     setGraphic(null);
                 }
@@ -594,5 +595,31 @@ public class LeftViewController implements Initializable {
             }
         }
     }
+    
+    public void displayRelationship(int relationshipId) {
+        try {
+            Relationship relationship = relationshipDao.getRelationship(relationshipId);
+            int userId;
+            if (relationship.getStatus() == RelationshipStatus.ACCEPTED) {
+                if (relationship.getFirstUserId() == ClientStageCoordinator.getInstance().currentUser.getId())
+                    userId = relationship.getSecondUserId();
+                else
+                    userId = relationship.getFirstUserId();
+                User user = userDao.getUser(userId);
+                allContactsLv.getItems().add(user);
+            } else if (relationship.getStatus() == RelationshipStatus.BLOCKED) {
+                if (relationship.getFirstUserId() == ClientStageCoordinator.getInstance().currentUser.getId())
+                    userId = relationship.getSecondUserId();
+                else
+                    userId = relationship.getFirstUserId();
+                //JFXListCell<User> userCell = mAllContactsListCells.get(userId);
+                allContactsLv.getItems().removeAll(userDao.getUser(userId));
+            }
+        } catch (RemoteException e) {
+            e.printStackTrace();
+        }
+    }
+
+
 }
 
