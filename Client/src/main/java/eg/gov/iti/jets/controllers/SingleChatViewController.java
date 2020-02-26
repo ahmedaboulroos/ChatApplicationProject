@@ -24,7 +24,7 @@ public class SingleChatViewController {
     }
 
     public void setController(SingleChatViewController singleChatViewController) {
-        this.singleChatViewController = singleChatViewController;
+        SingleChatViewController.singleChatViewController = singleChatViewController;
     }
 
     private User currentUser = ClientStageCoordinator.getInstance().currentUser;
@@ -48,11 +48,12 @@ public class SingleChatViewController {
             SingleChatMessageDao singleChatDao = RMIConnection.getSingleChatMessageDao();
             SingleChatMessage singleChatMessage = new SingleChatMessage(this.singleChatId, currentUser.getId(), msg);
             singleChatDao.createSingleChatMessage(singleChatMessage);
+            updateSingleChat();
         } catch (
                 RemoteException e) {
             e.printStackTrace();
         }
-        updateSingleChat();
+
     }
 
     private void updateSingleChat() {
@@ -67,23 +68,23 @@ public class SingleChatViewController {
         }
     }
 
-    public void displayNewSingleChatMessage(int singleChatMessageId) {
-
-        try {
-            System.out.println(singleChatMessageId + "el id");
-            SingleChatMessage singleChatMessage = singleChatMessageDao.getSingleChatMessage(singleChatMessageId);
-            System.out.println(singleChatMessage + "elobject");
-            singleChatMessagesLv.getItems().add(singleChatMessage);
-            System.out.println(" singleChatMessageId : " + singleChatMessage.getId()
-                    + "\n userId: " + singleChatMessage.getUserId()
-                    + "\n singleChatId: " + singleChatMessage.getSingleChatId()
-                    + "\n contentMsg " + singleChatMessage.getContent()
-                    + "\n messageTimeStamp " + singleChatMessage.getMessageDateTime());
-        } catch (RemoteException e) {
-            e.printStackTrace();
-        }
-        updateSingleChat();
-    }
+//    public void displayNewSingleChatMessage(int singleChatMessageId) {
+//
+//        try {
+//            System.out.println(singleChatMessageId + "el id");
+//            SingleChatMessage singleChatMessage = singleChatMessageDao.getSingleChatMessage(singleChatMessageId);
+//            System.out.println(singleChatMessage + "elobject");
+//            //singleChatMessagesLv.getItems().add(singleChatMessage);
+//            System.out.println(" singleChatMessageId : " + singleChatMessage.getId()
+//                    + "\n userId: " + singleChatMessage.getUserId()
+//                    + "\n singleChatId: " + singleChatMessage.getSingleChatId()
+//                    + "\n contentMsg " + singleChatMessage.getContent()
+//                    + "\n messageTimeStamp " + singleChatMessage.getMessageDateTime());
+//        } catch (RemoteException e) {
+//            e.printStackTrace();
+//        }
+//        updateSingleChat();
+//    }
 
 //    public void displayNewSingleChat(int singleChatId) {
 //       // RMIConnection.getSingleChatDao().
