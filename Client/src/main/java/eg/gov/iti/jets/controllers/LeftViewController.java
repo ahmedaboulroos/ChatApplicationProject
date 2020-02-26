@@ -102,9 +102,12 @@ public class LeftViewController implements Initializable {
         try {
             SingleChatMessage singleChatMessage = RMIConnection.getSingleChatMessageDao().getSingleChatMessage(singleChatMessageId);
             int singleChatId = singleChatMessage.getSingleChatId();
-            SingleChat singleChat = RMIConnection.getSingleChatDao().getSingleChat(singleChatId);
-            //singleChatsLv.getCellFactory().call(singleChat);
-            singleChatsLv.getSelectionModel().select(0);
+            //          SingleChat singleChat = RMIConnection.getSingleChatDao().getSingleChat(singleChatId);
+            int selectedSingleChatId = singleChatsLv.getSelectionModel().getSelectedItem().getId();
+            if (selectedSingleChatId == singleChatId) {
+                SingleChatViewController.getInstance().addSingleChatMessage(singleChatMessage);
+            }
+
         } catch (RemoteException e) {
             e.printStackTrace();
         }
@@ -260,10 +263,7 @@ public class LeftViewController implements Initializable {
             SingleChat singleChat = singleChatDao.getSingleChat(singleChatId);
             if (singleChat != null) {
                 System.out.println("ana m4 null");
-                //  singleChatsLv.getItems().clear();
-                //   singleChatsLv.getItems().add(singleChat);
-                loadSingleChats();
-
+                Platform.runLater(() -> loadSingleChats());
             }
         } catch (RemoteException e) {
             e.printStackTrace();
@@ -277,7 +277,7 @@ public class LeftViewController implements Initializable {
             List<SingleChat> singleChats = userDao.getUserSingleChats(ClientStageCoordinator.getInstance().currentUser.getId());
             System.out.println("this is single chat " + singleChats);
             if (singleChats != null) {
-                singleChatsLv.setItems(FXCollections.observableList(singleChats));
+                Platform.runLater(() -> singleChatsLv.setItems(FXCollections.observableList(singleChats)));
                 singleChatsLv.setCellFactory(singleChatsLv -> new ListCell<SingleChat>() {
                     @Override
                     public void updateItem(SingleChat singleChat, boolean empty) {
