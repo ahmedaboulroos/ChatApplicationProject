@@ -1,0 +1,228 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import com.jfoenix.controls.*?>
+<?import javafx.geometry.*?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.shape.Circle?>
+<?import javafx.scene.text.*?>
+<?import org.kordamp.ikonli.javafx.*?>
+<VBox xmlns:fx="http://javafx.com/fxml/1" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity"
+      minWidth="-Infinity" prefHeight="550.0" prefWidth="480.0" styleClass="SignInPane"
+      stylesheets="@../styles/loginStyle.css" xmlns="http://javafx.com/javafx/11.0.1"
+      fx:controller="eg.gov.iti.jets.controllers.SignUpController">
+    <children>
+        <HBox alignment="CENTER_LEFT" prefHeight="40.0" prefWidth="200.0" styleClass="SignIN-HBox1"
+              stylesheets="@../styles/loginStyle.css">
+            <children>
+                <Label alignment="CENTER" prefHeight="43.0" prefWidth="167.0" text="ChatApp" textAlignment="CENTER"
+                       textFill="#2196f3">
+                    <font>
+                        <Font name="System Bold" size="22.0"/>
+                    </font>
+                    <HBox.margin>
+                        <Insets left="20.0"/>
+                    </HBox.margin>
+                </Label>
+                <Region prefHeight="54.0" prefWidth="271.0"/>
+                <StackPane prefHeight="150.0" prefWidth="200.0">
+                    <children>
+                        <FontIcon iconColor="WHITE" iconLiteral="fa-camera" iconSize="35"/>
+                        <Circle id="circleimage" fill="#14181f" opacity="0.23" radius="42.0" stroke="WHITE"
+                                strokeType="INSIDE"/>
+                    </children>
+                </StackPane>
+            </children>
+            <VBox.margin>
+                <Insets bottom="20.0" top="10.0"/>
+            </VBox.margin>
+        </HBox>
+        <HBox alignment="CENTER_LEFT" prefHeight="40.0" prefWidth="200.0" styleClass="SignIN-HBox1">
+            <children>
+                <JFXTextField fx:id="phoneNoTf" alignment="CENTER" focusColor="#2196f3" prefHeight="25.0"
+                              prefWidth="224.0" promptText="Phone" styleClass="PhoneNumberTF"
+                              stylesheets="@../styles/loginStyle.css" unFocusColor="#14181f" HBox.hgrow="ALWAYS">
+                    <font>
+                        <Font size="16.0"/>
+                    </font>
+                    <HBox.margin>
+                        <Insets left="20.0"/>
+                    </HBox.margin>
+                </JFXTextField>
+                <FontIcon iconColor="WHITE" iconLiteral="fa-phone" iconSize="30" wrappingWidth="32.0">
+                    <HBox.margin>
+                        <Insets left="10.0" right="10.0"/>
+                    </HBox.margin>
+                </FontIcon>
+            </children>
+            <VBox.margin>
+                <Insets/>
+            </VBox.margin>
+        </HBox>
+        <HBox alignment="CENTER_LEFT" prefHeight="40.0" prefWidth="200.0" styleClass="SignIN-HBox1">
+            <children>
+                <JFXTextField fx:id="usernameTf" alignment="CENTER" focusColor="#2196f3" prefHeight="25.0"
+                              prefWidth="224.0" promptText="UserName" styleClass="PhoneNumberTF"
+                              stylesheets="@../styles/loginStyle.css" unFocusColor="#14181f" HBox.hgrow="ALWAYS">
+                    <font>
+                        <Font size="16.0"/>
+                    </font>
+                    <HBox.margin>
+                        <Insets left="20.0"/>
+                    </HBox.margin>
+                </JFXTextField>
+                <FontIcon iconColor="WHITE" iconLiteral="fa-user" iconSize="30" wrappingWidth="32.0">
+                    <HBox.margin>
+                        <Insets left="10.0" right="10.0"/>
+                    </HBox.margin>
+                </FontIcon>
+            </children>
+            <VBox.margin>
+                <Insets top="10.0"/>
+            </VBox.margin>
+        </HBox>
+        <HBox alignment="CENTER_LEFT" prefHeight="40.0" prefWidth="200.0" styleClass="SignIN-HBox1">
+            <children>
+                <JFXTextField fx:id="emailTf" alignment="CENTER" focusColor="#2196f3" prefHeight="25.0"
+                              prefWidth="224.0" promptText="Email" styleClass="PhoneNumberTF"
+                              stylesheets="@../styles/loginStyle.css" unFocusColor="#14181f" HBox.hgrow="ALWAYS">
+                    <font>
+                        <Font size="16.0"/>
+                    </font>
+                    <HBox.margin>
+                        <Insets left="20.0"/>
+                    </HBox.margin>
+                </JFXTextField>
+                <FontIcon iconColor="WHITE" iconLiteral="fa-envelope-o" iconSize="30" wrappingWidth="32.0">
+                    <HBox.margin>
+                        <Insets left="10.0" right="10.0"/>
+                    </HBox.margin>
+                </FontIcon>
+            </children>
+            <VBox.margin>
+                <Insets top="10.0"/>
+            </VBox.margin>
+        </HBox>
+        <HBox alignment="CENTER_LEFT" prefHeight="40.0" prefWidth="200.0" styleClass="SignIN-HBox1">
+            <children>
+                <JFXTextField fx:id="countryTf" alignment="CENTER" focusColor="#2196f3" prefHeight="25.0"
+                              prefWidth="224.0" promptText="Country" styleClass="PhoneNumberTF"
+                              stylesheets="@../styles/loginStyle.css" unFocusColor="#14181f" HBox.hgrow="ALWAYS">
+                    <font>
+                        <Font size="16.0"/>
+                    </font>
+                    <HBox.margin>
+                        <Insets left="20.0"/>
+                    </HBox.margin>
+                </JFXTextField>
+                <FontIcon iconColor="WHITE" iconLiteral="fa-home" iconSize="30" wrappingWidth="32.0">
+                    <HBox.margin>
+                        <Insets left="10.0" right="10.0"/>
+                    </HBox.margin>
+                </FontIcon>
+            </children>
+            <VBox.margin>
+                <Insets top="10.0"/>
+            </VBox.margin>
+        </HBox>
+        <HBox alignment="CENTER_LEFT" prefHeight="40.0" prefWidth="200.0" styleClass="SignIN-HBox1">
+            <children>
+                <JFXPasswordField fx:id="passwordTf" alignment="CENTER" focusColor="#2196f3" prefHeight="25.0"
+                                  prefWidth="224.0" promptText="Password" styleClass="signup-pass"
+                                  stylesheets="@../styles/loginStyle.css" unFocusColor="#14181f">
+                    <font>
+                        <Font size="16.0"/>
+                    </font>
+                    <HBox.margin>
+                        <Insets left="20.0"/>
+                    </HBox.margin>
+                </JFXPasswordField>
+                <FontIcon iconColor="WHITE" iconLiteral="fa-lock" iconSize="30" wrappingWidth="32.0">
+                    <HBox.margin>
+                        <Insets left="10.0" right="10.0"/>
+                    </HBox.margin>
+                </FontIcon>
+                <JFXPasswordField fx:id="confirmPasswordTf" alignment="CENTER" focusColor="#2196f3" prefHeight="25.0"
+                                  prefWidth="224.0" promptText="Confirm Password" styleClass="signup-pass"
+                                  stylesheets="@../styles/loginStyle.css" unFocusColor="#14181f">
+                    <font>
+                        <Font size="16.0"/>
+                    </font>
+                </JFXPasswordField>
+                <FontIcon iconColor="WHITE" iconLiteral="fa-lock" iconSize="30" wrappingWidth="32.0">
+                    <HBox.margin>
+                        <Insets left="10.0" right="10.0"/>
+                    </HBox.margin>
+                </FontIcon>
+            </children>
+            <VBox.margin>
+                <Insets top="10.0"/>
+            </VBox.margin>
+        </HBox>
+        <HBox alignment="CENTER_LEFT" prefHeight="40.0" prefWidth="200.0" styleClass="SignIN-HBox1">
+            <children>
+                <JFXDatePicker fx:id="birthDateDp" defaultColor="#14181f" prefHeight="33.0" prefWidth="205.0"
+                               style="-fx-background-color: #ffffff;">
+                    <HBox.margin>
+                        <Insets left="20.0"/>
+                    </HBox.margin>
+                </JFXDatePicker>
+                <JFXRadioButton text="Male" textFill="WHITE">
+                    <HBox.margin>
+                        <Insets left="20.0"/>
+                    </HBox.margin>
+                </JFXRadioButton>
+                <FontIcon iconColor="WHITE" iconLiteral="fa-male" iconSize="30" wrappingWidth="23.0">
+                    <HBox.margin>
+                        <Insets left="10.0"/>
+                    </HBox.margin>
+                </FontIcon>
+                <JFXRadioButton text="Female" textFill="WHITE">
+                    <HBox.margin>
+                        <Insets left="20.0"/>
+                    </HBox.margin>
+                </JFXRadioButton>
+                <FontIcon iconColor="WHITE" iconLiteral="fa-female" iconSize="30" wrappingWidth="32.0">
+                    <HBox.margin>
+                        <Insets left="10.0" right="10.0"/>
+                    </HBox.margin>
+                </FontIcon>
+            </children>
+            <VBox.margin>
+                <Insets top="10.0"/>
+            </VBox.margin>
+        </HBox>
+        <HBox alignment="CENTER_LEFT" prefHeight="40.0" prefWidth="200.0" styleClass="SignIN-HBox1">
+            <children>
+                <JFXTextArea id="bio" fx:id="bioTa" focusColor="#2196f3" prefHeight="40.0" prefWidth="440.0"
+                             promptText="Biography" stylesheets="@../styles/loginStyle.css" unFocusColor="#14181f"
+                             wrapText="true">
+                    <HBox.margin>
+                        <Insets left="20.0" right="15.0"/>
+                    </HBox.margin>
+                    <font>
+                        <Font size="19.0"/>
+                    </font>
+                    <opaqueInsets>
+                        <Insets/>
+                    </opaqueInsets>
+                    <padding>
+                        <Insets left="20.0" top="10.0"/>
+                    </padding>
+                </JFXTextArea>
+            </children>
+            <VBox.margin>
+                <Insets top="10.0"/>
+            </VBox.margin>
+        </HBox>
+        <JFXButton fx:id="signUpBtn" mnemonicParsing="false" onAction="#handleSignUpBtn" prefHeight="40.0"
+                   prefWidth="438.0" styleClass="blue-button" stylesheets="@../styles/loginStyle.css" text="Sign Up">
+            <VBox.margin>
+                <Insets bottom="20.0" left="20.0" top="20.0"/>
+            </VBox.margin>
+            <font>
+                <Font size="17.0"/>
+            </font>
+        </JFXButton>
+    </children>
+</VBox>

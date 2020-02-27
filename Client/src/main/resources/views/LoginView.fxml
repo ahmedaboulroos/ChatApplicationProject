@@ -1,140 +1,45 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import com.jfoenix.controls.*?>
-<?import javafx.geometry.*?>
-<?import javafx.scene.control.Label?>
-<?import javafx.scene.image.Image?>
-<?import javafx.scene.image.ImageView?>
-<?import javafx.scene.layout.*?>
-<?import javafx.scene.text.*?>
-<?import org.kordamp.ikonli.javafx.FontIcon?>
-<BorderPane xmlns:fx="http://javafx.com/fxml/1" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity"
-            minWidth="-Infinity" prefHeight="409.0" prefWidth="687.0" xmlns="http://javafx.com/javafx/11.0.1"
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.Pane?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.text.Font?>
+<AnchorPane xmlns:fx="http://javafx.com/fxml/1" id="AnchorPane" prefHeight="680.0" prefWidth="980.0" styleClass="parent"
+            stylesheets="@../styles/loginStyle.css" xmlns="http://javafx.com/javafx/11.0.1"
             fx:controller="eg.gov.iti.jets.controllers.LoginViewController">
-   <left>
-      <VBox alignment="TOP_CENTER" prefWidth="220.0" style="-fx-background-color: #00334E;">
-         <children>
-            <Region layoutX="10.0" layoutY="138.0" VBox.vgrow="ALWAYS"/>
-            <ImageView fitHeight="128.0" fitWidth="136.0" pickOnBounds="true" preserveRatio="true">
-               <image>
-                  <Image url="@../images/chat-circle-blue-512.png"/>
-               </image>
-            </ImageView>
-            <Region VBox.vgrow="ALWAYS"/>
-            <Label fx:id="errorLbl" textFill="#da9595">
-               <font>
-                  <Font size="14.0"/>
-               </font>
-               <VBox.margin>
-                  <Insets bottom="20.0"/>
-               </VBox.margin>
-            </Label>
-         </children>
-      </VBox>
-   </left>
-   <center>
-      <VBox alignment="TOP_CENTER">
-         <padding>
-            <Insets bottom="15.0" left="15.0" right="15.0" top="15.0"/>
-         </padding>
-         <children>
-            <Label text="Chat Appliction" textFill="#00334e">
-               <font>
-                  <Font name="Microsoft New Tai Lue" size="24.0"/>
-               </font>
-               <VBox.margin>
-                  <Insets bottom="15.0"/>
-               </VBox.margin>
-            </Label>
-            <HBox alignment="BOTTOM_LEFT">
-               <VBox.margin>
-                  <Insets bottom="10.0" left="10.0" right="10.0" top="20.0"/>
-               </VBox.margin>
-               <children>
-                  <JFXTextField fx:id="serverAddressTf" focusColor="#5588a3" labelFloat="true"
-                                promptText="Server IP Adress" HBox.hgrow="ALWAYS">
-                     <padding>
-                        <Insets bottom="5.0" left="5.0" right="5.0" top="5.0"/>
-                     </padding>
-                     <font>
+    <children>
+        <Pane layoutX="2.0" layoutY="140.0" prefHeight="400.0" prefWidth="980.0" styleClass="pane">
+            <children>
+                <Label layoutX="21.0" layoutY="109.0" text="Don't have account ?" textFill="WHITE" wrapText="true">
+                    <font>
                         <Font size="18.0"/>
-                     </font>
-                     <HBox.margin>
-                        <Insets right="-50.0"/>
-                     </HBox.margin>
-                  </JFXTextField>
-                  <JFXButton fx:id="checkServerAddressBtn" onAction="#handleCheckServerConnection" text=" ">
-                     <graphic>
-                        <FontIcon iconLiteral="gmi-refresh" iconSize="28"/>
-                     </graphic>
-                  </JFXButton>
-               </children>
-            </HBox>
-            <JFXTextField fx:id="phoneNumberTf" focusColor="#5588a3" labelFloat="true" prefHeight="31.0"
-                          prefWidth="434.0" promptText="Phone Number">
-               <VBox.margin>
-                  <Insets bottom="10.0" left="10.0" right="10.0" top="20.0"/>
-               </VBox.margin>
-               <font>
-                  <Font size="18.0"/>
-               </font>
-               <padding>
-                  <Insets bottom="5.0" left="5.0" right="5.0" top="5.0"/>
-               </padding>
-            </JFXTextField>
-            <JFXPasswordField fx:id="passwordPf" focusColor="#5588a3" labelFloat="true" promptText="Password">
-               <VBox.margin>
-                  <Insets bottom="10.0" left="10.0" right="10.0" top="20.0"/>
-               </VBox.margin>
-               <font>
-                  <Font size="18.0"/>
-               </font>
-               <padding>
-                  <Insets bottom="5.0" left="5.0" right="5.0" top="5.0"/>
-               </padding>
-            </JFXPasswordField>
-            <HBox prefHeight="38.0" prefWidth="444.0">
-               <VBox.margin>
-                  <Insets top="30.0"/>
-               </VBox.margin>
-               <children>
-                  <JFXCheckBox fx:id="rememberMeCb" checkedColor="#5588a3" prefHeight="18.0" prefWidth="115.0"
-                               text="Remember me">
-                     <opaqueInsets>
-                        <Insets/>
-                     </opaqueInsets>
-                     <HBox.margin>
-                        <Insets left="25.0"/>
-                     </HBox.margin>
-                  </JFXCheckBox>
-                  <Region prefHeight="38.0" prefWidth="206.0" HBox.hgrow="ALWAYS"/>
-                  <JFXButton fx:id="signInBtn" buttonType="RAISED" maxHeight="1.7976931348623157E308"
-                             maxWidth="1.7976931348623157E308" onAction="#handleSignInBtn" prefHeight="37.0"
-                             prefWidth="125.0" style="-fx-background-color: #00334E;" text="Sign in " textFill="WHITE">
-                     <HBox.margin>
-                        <Insets right="25.0"/>
-                     </HBox.margin>
-                     <opaqueInsets>
-                        <Insets/>
-                     </opaqueInsets>
-                  </JFXButton>
-               </children>
-            </HBox>
-            <Region prefHeight="200.0" prefWidth="200.0"/>
-            <JFXButton fx:id="signUpBtn" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308"
-                       onAction="#handleSignUpBtn" style="-fx-background-color: #5588A3;"
-                       text="Don't Have Account Sign Up " textFill="WHITE">
-               <VBox.margin>
-                  <Insets left="40.0" right="20.0" top="30.0"/>
-               </VBox.margin>
-               <opaqueInsets>
-                  <Insets/>
-               </opaqueInsets>
-               <font>
-                  <Font size="13.0"/>
-               </font>
-            </JFXButton>
-         </children>
-      </VBox>
-   </center>
-</BorderPane>
+                    </font>
+                </Label>
+                <Label layoutX="21.0" layoutY="149.0" prefHeight="62.0" prefWidth="167.0"
+                       text="Hurry and Sign Up to ChatApp." textFill="WHITE" wrapText="true">
+                    <font>
+                        <Font size="13.0"/>
+                    </font>
+                </Label>
+                <Button fx:id="signUpBtn" layoutX="21.0" layoutY="239.0" mnemonicParsing="false" onAction="#openSignUp"
+                        prefHeight="32.0" prefWidth="95.0" styleClass="signupButton" text="Sign Up"/>
+                <Label layoutX="793.0" layoutY="38.0" text="Have an account ?" textFill="WHITE" wrapText="true">
+                    <font>
+                        <Font size="18.0"/>
+                    </font>
+                </Label>
+                <Label layoutX="793.0" layoutY="78.0" prefHeight="62.0" prefWidth="167.0"
+                       text="Sign in and start chats with your friends!" textFill="WHITE" wrapText="true">
+                    <font>
+                        <Font size="13.0"/>
+                    </font>
+                </Label>
+                <Button fx:id="signInBtn" layoutX="793.0" layoutY="168.0" mnemonicParsing="false" onAction="#openSignIn"
+                        prefHeight="32.0" prefWidth="95.0" styleClass="signupButton" text="Sign In"/>
+                <VBox id="vbox" fx:id="vbox" layoutX="250.0" layoutY="-91.0" prefHeight="550.0" prefWidth="480.0"
+                      styleClass="white-pane-vbox"/>
+            </children>
+        </Pane>
+    </children>
+</AnchorPane>

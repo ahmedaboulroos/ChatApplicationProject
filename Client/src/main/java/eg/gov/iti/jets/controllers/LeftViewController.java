@@ -12,8 +12,8 @@ import eg.gov.iti.jets.models.imageutiles.ImageUtiles;
 import eg.gov.iti.jets.models.network.RMIConnection;
 import javafx.application.Platform;
 import javafx.collections.FXCollections;
-import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
+import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
@@ -34,8 +34,6 @@ import javafx.scene.text.Font;
 import javafx.scene.text.FontWeight;
 import javafx.scene.text.Text;
 import javafx.stage.Stage;
-import javafx.util.Duration;
-import org.controlsfx.control.Notifications;
 
 import java.io.ByteArrayInputStream;
 import java.io.IOException;
@@ -46,6 +44,7 @@ import java.util.*;
 public class LeftViewController implements Initializable {
     private static LeftViewController leftViewController;
     private Map<Integer, ListCell<SingleChat>> singleChatListCellMap = new HashMap<>();
+    private Map<Integer, ListCell<GroupChat>> groupChatListCellMap = new HashMap<>();
     private AddContactGroupViewController addContactGroupViewController;
     @FXML
     private Tab contactsTab;
@@ -118,6 +117,24 @@ public class LeftViewController implements Initializable {
         }
     }
 
+    public void updateGroupChat(int groupChatMessageId) {
+        try {
+            GroupChatMessage groupChatMessage = RMIConnection.getGroupChatMessageDao().getGroupChatMessage(groupChatMessageId);
+            int groupChatId = groupChatMessage.getGroupChatId();
+            int selectedGroupChatId = groupChatsLv.getSelectionModel().getSelectedItem().getId();
+            System.out.println("inside leftViewController =>> updateGroupChat" + selectedGroupChatId);
+            if (selectedGroupChatId == groupChatId) {
+                GroupChatViewController.getInstance().addGroupChatMessage(groupChatMessage);
+            } else {
+                ListCell<GroupChat> groupChatListCell = groupChatListCellMap.get(groupChatId);
+                groupChatListCell.setStyle("-fx-background-color: lightgreen");
+            }
+
+        } catch (RemoteException e) {
+            e.printStackTrace();
+        }
+    }
+
     @Override
     public void initialize(URL location, ResourceBundle resources) {
         clientStageCoordinator = ClientStageCoordinator.getInstance();
@@ -150,11 +167,36 @@ public class LeftViewController implements Initializable {
                     ImageView imageView = new ImageView(image);
                     imageView.setFitHeight(50);
                     imageView.setFitWidth(50);
+                    Button block = new Button("Block");
 
                     HBox box = new HBox();
-                    box.getChildren().addAll(imageView, new Label(getUserDisplayName(user)));
+                    box.getChildren().addAll(imageView, new Label(getUserDisplayName(user)), block);
                     setGraphic(box);
                     mAllContactsListCells.put(user.getId(), this);
+                    // add block button to the  allContactsLv listview
+                    ///////////////////////////////////////////////////
+
+                    block.setOnAction(new EventHandler<ActionEvent>() {
+                        @Override
+                        public void handle(ActionEvent actionEvent) {
+
+                            //JFXListCell<User> userCell = mAllContactsListCells.get(userId);
+                            try {
+                                Relationship relationship = relationshipDao.getRelationshipBetween(ClientStageCoordinator.getInstance().currentUser.getId(), user.getId());
+
+                                relationship.setStatus(RelationshipStatus.BLOCKED);
+                                relationshipDao.updateRelationship(relationship);
+
+                            } catch (RemoteException e) {
+                                e.printStackTrace();
+                            }
+
+                        }
+                    });
+
+
+                    ///////////////////////////////////////////////////////
+
 
                 } else {
                     setGraphic(null);
@@ -552,65 +594,6 @@ public class LeftViewController implements Initializable {
         });*/
     }
 
-    //
-    public void getRelationship(int relationshipId) throws RemoteException {
-        RelationshipDao relationshipDao = RMIConnection.getInstance().getRelationshipDao();
-        Relationship relationship = relationshipDao.getRelationship(relationshipId);
-        System.out.println(relationship.getFirstUserId());
-        if (relationship.getStatus() == RelationshipStatus.ACCEPTED) {
-            int id = relationship.getFirstUserId();
-
-            UserDao userDao = RMIConnection.getInstance().getUserDao();
-
-            User user = userDao.getUser(id);
-            //User user = clientStageCoordinator.currentUser;
-            ObservableList<User> userObservableList = FXCollections.observableArrayList();
-            if (id != user.getId()) {
-                System.out.println("kkk" + id);
-
-                userObservableList.add(user);
-                allContactsLv.setItems(userObservableList);
-            } else {
-
-                userObservableList.add(user);
-                allContactsLv.setItems(userObservableList);
-                System.out.println("SecondUserId" + relationship.getSecondUserId());
-
-            }
-
-        } else if (relationship.getStatus() == RelationshipStatus.PENDING) {
-            int id = relationship.getFirstUserId();
-
-            UserDao userDao = RMIConnection.getInstance().getUserDao();
-
-            User user = userDao.getUser(id);
-            Stage stage = ClientStageCoordinator.getInstance().getStage();
-            if (id != user.getId()) {
-                Platform.runLater(() -> {
-                    Notifications announcement = Notifications.create()
-                            .owner(stage)
-                            .title("User notification")
-                            .text(user.getPhoneNumber() + " notification")
-                            .position(Pos.BOTTOM_LEFT)
-                            .hideAfter(Duration.seconds(30));
-                    announcement.showInformation();
-                });
-
-            } else {
-                ///relationship.getSecondUserId();
-                Platform.runLater(() -> {
-                    Notifications announcement = Notifications.create()
-                            .owner(stage)
-                            .title("secondUser notification")
-                            .text(relationship.getSecondUserId() + " secondUsernotification")
-                            .position(Pos.BOTTOM_LEFT)
-                            .hideAfter(Duration.seconds(30));
-                    announcement.showInformation();
-                });
-            }
-        }
-    }
-    
     public void displayRelationship(int relationshipId) {
         try {
             Relationship relationship = relationshipDao.getRelationship(relationshipId);
@@ -627,8 +610,8 @@ public class LeftViewController implements Initializable {
                     userId = relationship.getSecondUserId();
                 else
                     userId = relationship.getFirstUserId();
-                //JFXListCell<User> userCell = mAllContactsListCells.get(userId);
-                allContactsLv.getItems().removeAll(userDao.getUser(userId));
+                JFXListCell<User> userCell = mAllContactsListCells.get(userId);
+                allContactsLv.getItems().removeAll(userCell.getItem());
             }
         } catch (RemoteException e) {
             e.printStackTrace();
