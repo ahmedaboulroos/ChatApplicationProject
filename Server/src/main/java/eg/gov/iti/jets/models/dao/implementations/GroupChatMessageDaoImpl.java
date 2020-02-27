@@ -34,6 +34,7 @@ public class GroupChatMessageDaoImpl extends UnicastRemoteObject implements Grou
 
     @Override
     public int createGroupChatMessage(GroupChatMessage groupChatMessage) {
+        System.out.println("inside GroupChatMessageDaoIMp groupChatMessage" + groupChatMessage);
         int id = -1;
         String[] key = {"ID"};
         String sql = "INSERT INTO  GROUP_CHAT_MESSAGES (ID, USER_ID, GROUP_CHAT_ID, CONTENT,MESSAGE_DATE_TIME) VALUES (ID_SEQ.NEXTVAL,?,?,?,?)";
@@ -48,9 +49,11 @@ public class GroupChatMessageDaoImpl extends UnicastRemoteObject implements Grou
                 id = rs.getInt(1);
             }
             List<GroupChatMembership> groupChatMemberships = GroupChatDaoImpl.getInstance(dbConnection).getGroupChatMemberships(groupChatMessage.getGroupChatId());
+            System.out.println("inside GroupChatMessageDaoIMp groupChatMessage.getGroupChatId()" + groupChatMessage.getGroupChatId());
             for (GroupChatMembership m : groupChatMemberships) {
                 ClientInterface client = ServerService.getClient(m.getUserId());
                 if (client != null) {
+                    System.out.println("inside groupChatMessageDao IMP message id" + id);
                     client.receiveNewGroupChatMessage(id);
                 }
             }
@@ -67,7 +70,7 @@ public class GroupChatMessageDaoImpl extends UnicastRemoteObject implements Grou
         try (PreparedStatement statement = dbConnection.prepareStatement(sql)) {
             statement.setInt(1, groupChatMessageId);
             ResultSet rs = statement.executeQuery();
-            if (rs.first()) {
+            if (rs.next()) {
                 groupChatMessage = new GroupChatMessage(rs.getInt(1), rs.getInt(2), rs.getInt(3), rs.getString(4), rs.getTimestamp(5).toLocalDateTime());
             }
         } catch (SQLException e) {

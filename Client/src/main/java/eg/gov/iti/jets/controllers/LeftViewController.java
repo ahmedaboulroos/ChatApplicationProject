@@ -124,6 +124,7 @@ public class LeftViewController implements Initializable {
             GroupChatMessage groupChatMessage = RMIConnection.getGroupChatMessageDao().getGroupChatMessage(groupChatMessageId);
             int groupChatId = groupChatMessage.getGroupChatId();
             int selectedGroupChatId = groupChatsLv.getSelectionModel().getSelectedItem().getId();
+            System.out.println("inside leftViewController =>> updateGroupChat" + selectedGroupChatId);
             if (selectedGroupChatId == groupChatId) {
                 GroupChatViewController.getInstance().addGroupChatMessage(groupChatMessage);
             } else {
