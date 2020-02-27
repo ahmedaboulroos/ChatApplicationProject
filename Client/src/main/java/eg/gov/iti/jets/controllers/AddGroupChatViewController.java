@@ -48,6 +48,7 @@ public class AddGroupChatViewController {
             int autoGenMembershipID = groupChatMembershipDao.createGroupChatMembership(membership);
             System.out.println("========================" + autoGenMembershipID);
             System.out.println("inside ===> add group chatView controller membershipDao.getUser" + groupChatMembershipDao.getUser(autoGenMembershipID));
+
         } catch (RemoteException e) {
             e.printStackTrace();
         }

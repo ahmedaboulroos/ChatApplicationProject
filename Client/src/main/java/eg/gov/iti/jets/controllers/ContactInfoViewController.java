@@ -28,6 +28,21 @@ public class ContactInfoViewController implements Initializable {
     private Label UserName;
 
     @FXML
+    private Label userStatusLb;
+
+    @FXML
+    private Label userGenderLb;
+
+    @FXML
+    private Label emailLb;
+
+    @FXML
+    private Label bioLb;
+
+    @FXML
+    private Label countryLb;
+
+    @FXML
     private FontIcon files;
 
     @FXML
@@ -46,12 +61,12 @@ public class ContactInfoViewController implements Initializable {
     }
 
     public void setController(ContactInfoViewController contactInfoViewController) {
-        this.contactInfoViewController = contactInfoViewController;
+        ContactInfoViewController.contactInfoViewController = contactInfoViewController;
     }
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
-        System.out.println("el Contact Info view loaded");
+       // System.out.println("el Contact Info view loaded");
 
     }
 
@@ -62,10 +77,19 @@ public class ContactInfoViewController implements Initializable {
 
     @FXML
     void handleOnDeleteChat(ActionEvent event) {
-
+        try {
+            System.out.println("singleChatId that deleted" + singleChatId);
+            singleChatDao.deleteSingleChat(singleChatId);
+            LeftViewController.getInstance().loadSingleChats();
+            RightViewController.getInstance().rightViewBp.setCenter(null);
+            CenterViewController.getInstance().centerViewBp.setCenter(null);
+        } catch (RemoteException e) {
+            e.printStackTrace();
+        }
     }
 
     public void setContactInfo(int singleChatId) {
+        this.singleChatId = singleChatId;
         try {
             System.out.println(singleChatId);
             SingleChat singleChat = singleChatDao.getSingleChat(singleChatId);
@@ -76,6 +100,11 @@ public class ContactInfoViewController implements Initializable {
             } else {
                 UserName.setText(userTwo.getPhoneNumber());
             }
+            userGenderLb.setText(userTwo.getUserGender().toString());
+            userStatusLb.setText(userTwo.getUserStatus().toString());
+            emailLb.setText(userTwo.getEmail());
+            countryLb.setText(userTwo.getCountry());
+            bioLb.setText(userTwo.getBio());
 
         } catch (RemoteException e) {
             e.printStackTrace();

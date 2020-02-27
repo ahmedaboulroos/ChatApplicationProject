@@ -39,7 +39,30 @@
                                    textFill="#ffffff00"/>
                     </children>
                 </Pane>
-                <Pane layoutY="268.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity"
+                <Pane layoutY="267.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity"
+                      minWidth="-Infinity" prefHeight="208.0" prefWidth="400.0" styleClass="pane">
+                    <opaqueInsets>
+                        <Insets/>
+                    </opaqueInsets>
+                    <children>
+                        <Label fx:id="userStatusLb" layoutX="16.0" layoutY="21.0" maxHeight="-Infinity"
+                               maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="25.0"
+                               prefWidth="368.0" textFill="#595555"/>
+                        <Label fx:id="userGenderLb" layoutX="16.0" layoutY="58.0" maxHeight="-Infinity"
+                               maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="25.0"
+                               prefWidth="368.0" textFill="#595555"/>
+                        <Label fx:id="emailLb" layoutX="16.0" layoutY="93.0" maxHeight="-Infinity" maxWidth="-Infinity"
+                               minHeight="-Infinity" minWidth="-Infinity" prefHeight="25.0" prefWidth="368.0"
+                               textFill="#595555"/>
+                        <Label fx:id="bioLb" layoutX="16.0" layoutY="131.0" maxHeight="-Infinity" maxWidth="-Infinity"
+                               minHeight="-Infinity" minWidth="-Infinity" prefHeight="25.0" prefWidth="368.0"
+                               textFill="#595555"/>
+                        <Label fx:id="countryLb" layoutX="16.0" layoutY="166.0" maxHeight="-Infinity"
+                               maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="25.0"
+                               prefWidth="368.0" textFill="#595555"/>
+                    </children>
+                </Pane>
+                <Pane layoutY="486.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity"
                       minWidth="-Infinity" prefHeight="148.0" prefWidth="400.0" styleClass="pane">
                     <children>
                         <Label layoutX="13.0" layoutY="11.0" maxHeight="-Infinity" maxWidth="-Infinity"
@@ -61,7 +84,7 @@
                                   styleClass="pane"/>
                     </children>
                 </Pane>
-                <Pane layoutY="426.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity"
+                <Pane layoutY="646.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity"
                       minWidth="-Infinity" prefHeight="61.0" prefWidth="400.0" styleClass="pane">
                     <children>
                         <JFXButton fx:id="deleteChat" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity"
@@ -76,26 +99,6 @@
                         </Label>
                         <FontIcon iconColor="#c71123" iconLiteral="zondi-trash" iconSize="20" layoutX="21.0"
                                   layoutY="42.0"/>
-                    </children>
-                    <opaqueInsets>
-                        <Insets/>
-                    </opaqueInsets>
-                </Pane>
-                <Pane layoutY="499.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity"
-                      minWidth="-Infinity" prefHeight="62.0" prefWidth="400.0" styleClass="pane">
-                    <children>
-                        <JFXButton fx:id="blockBtn" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity"
-                                   minWidth="-Infinity" onAction="#handleOnBlockBtn" prefHeight="62.0" prefWidth="400.0"
-                                   styleClass="Btnbox" textFill="#ffffff00"/>
-                        <Label layoutX="53.0" layoutY="16.0" maxHeight="-Infinity" maxWidth="-Infinity"
-                               minHeight="-Infinity" minWidth="-Infinity" prefHeight="30.0" prefWidth="295.0"
-                               text="Block" textFill="#6c6667">
-                            <font>
-                                <Font size="18.0"/>
-                            </font>
-                        </Label>
-                        <FontIcon iconColor="#6c6667" iconLiteral="zondi-block" iconSize="20" layoutX="23.0"
-                                  layoutY="40.0"/>
                     </children>
                     <opaqueInsets>
                         <Insets/>

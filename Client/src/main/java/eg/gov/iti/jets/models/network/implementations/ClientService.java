@@ -1,10 +1,7 @@
 package eg.gov.iti.jets.models.network.implementations;
 
 
-import eg.gov.iti.jets.controllers.ClientStageCoordinator;
-import eg.gov.iti.jets.controllers.GroupChatViewController;
-import eg.gov.iti.jets.controllers.LeftViewController;
-import eg.gov.iti.jets.controllers.SingleChatViewController;
+import eg.gov.iti.jets.controllers.*;
 import eg.gov.iti.jets.models.network.interfaces.ClientInterface;
 
 import java.rmi.RemoteException;
@@ -15,6 +12,8 @@ public class ClientService extends UnicastRemoteObject implements ClientInterfac
     private SingleChatViewController singleChatViewController = SingleChatViewController.getInstance();
     private GroupChatViewController groupChatViewController = GroupChatViewController.getInstance();
     private LeftViewController leftViewController = LeftViewController.getInstance();
+    private RightViewController rightViewController = RightViewController.getInstance();
+
 
     private ClientService() throws RemoteException {
     }
@@ -55,7 +54,6 @@ public class ClientService extends UnicastRemoteObject implements ClientInterfac
     @Override
     public void receiveNewSingleChat(int singleChatId) throws RemoteException {
         System.out.println(">> New Single Chat :" + singleChatId);
-        //singleChatViewController.displayNewSingleChat(singleChatId);
         leftViewController.displayNewSingleChat(singleChatId);
     }
 
@@ -63,7 +61,6 @@ public class ClientService extends UnicastRemoteObject implements ClientInterfac
     public void receiveNewSingleChatMessage(int singleChatMessageId) throws RemoteException {
         System.out.println(">> New Single Chat Message :" + singleChatMessageId);
         leftViewController.updateSingleChat(singleChatMessageId);
-        singleChatViewController.displayNewSingleChatMessage(singleChatMessageId);
     }
 
     @Override
@@ -72,14 +69,21 @@ public class ClientService extends UnicastRemoteObject implements ClientInterfac
         groupChatViewController.displayNewGroupChatMessage(groupChatMessageId);
     }
 
+
     @Override
     public void receiveNewGroupChatMembership(int groupChatMembershipId) throws RemoteException {
-        System.out.println(">> New Group Chat Membership :" + groupChatMembershipId);
+        System.out.println("client srevice >> recieve New Group Chat Membership :" + groupChatMembershipId);
+        if (groupChatMembershipId > 0) {
+            leftViewController.displayNewGroupChat();
+        }
+
     }
 
     @Override
     public void receiveNewRelationship(int relationshipId) throws RemoteException {
         System.out.println(">> New Relationship :" + relationshipId);
+        rightViewController.displayRelationship(relationshipId);
+        leftViewController.displayRelationship(relationshipId);
     }
 
     @Override
