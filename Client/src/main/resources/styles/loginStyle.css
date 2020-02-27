@@ -1,0 +1,65 @@
+.parent {
+    -fx-background-color: transparent;
+}
+
+.pane {
+    -fx-background-color: #2196f3;
+}
+
+.signupButton {
+    -fx-background-color: transparent;
+    -fx-background-radius: 5px;
+    -fx-border-color: #cccccc;
+    -fx-border-radius: 5px;
+    -fx-border-width: 1px;
+    -fx-text-fill: whitesmoke;
+}
+
+.white-pane-vbox {
+    -fx-background-color: #ffffff;
+
+}
+
+.SignInPane {
+    -fx-background-color: #151920;
+}
+
+.SignIN-HBox1 {
+    -fx-background-color: transparent;
+
+}
+
+.PhoneNumberTF {
+    -fx-background-color: #ffffff;
+    -fx-background-radius: 5px;
+}
+
+.signup-pass {
+    -fx-background-color: #ffffff;
+}
+
+/*.datepicker{*/
+/*    -fx-background-color: #ffffff;*/
+/*    -fx-background-radius: 5px;*/
+/*}*/
+#bio {
+    -fx-background-color: #ffffff;
+}
+
+.blue-button {
+    -fx-background-color: #2196F3;
+    -fx-background-radius: 5px;
+    -fx-border-color: #cccccc;
+    -fx-border-radius: 5px;
+    -fx-border-width: 1px;
+    -fx-text-fill: whitesmoke;
+}
+
+.blue-button:hover {
+    -fx-background-color: #14181F;
+    -fx-background-radius: 10px;
+    -fx-border-color: #2196F3;
+    -fx-border-radius: 10px;
+    -fx-border-width: 1px;
+    -fx-text-fill: whitesmoke;
+}
