@@ -157,13 +157,15 @@ public class GroupChatDaoImpl extends UnicastRemoteObject implements GroupChatDa
             stmt.setInt(1, groupChatId);
             rs = stmt.executeQuery();
             while (rs.next()) {
-                messageId = rs.getInt(1);
-                user_id = rs.getInt(2);
-                group_chat_id = rs.getInt(3);
-                messageContent = rs.getString(4);
-                timestamp = rs.getTimestamp(5);
+                messageId = rs.getInt("ID");
+                user_id = rs.getInt("USER_ID");
+                messageContent = rs.getString("CONTENT");
+                timestamp = rs.getTimestamp("MESSAGE_DATE_TIME");
                 Messsage_timestamp = timestamp.toLocalDateTime();
-                groupChatMessageList.add(new GroupChatMessage(messageId, user_id, group_chat_id, messageContent, Messsage_timestamp));
+                GroupChatMessage groupChatMessage = new GroupChatMessage(messageId, user_id, groupChatId, messageContent, Messsage_timestamp);
+                //System.out.println("inside groupchatdao groupChatMessage = "+groupChatMessage);
+                groupChatMessageList.add(groupChatMessage);
+                System.out.println("groupChatMessageList" + groupChatMessageList.size());
 
             }
         } catch (SQLException e) {
