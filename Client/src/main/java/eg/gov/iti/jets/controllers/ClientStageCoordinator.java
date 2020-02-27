@@ -6,8 +6,10 @@ import javafx.fxml.FXMLLoader;
 import javafx.geometry.Pos;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
+import javafx.scene.paint.Color;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
+import javafx.stage.StageStyle;
 import javafx.util.Duration;
 import org.controlsfx.control.Notifications;
 
@@ -52,18 +54,24 @@ public class ClientStageCoordinator {
     public void startLoginScene() throws IOException {
         FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/views/LoginView.fxml"));
         Parent loginView = fxmlLoader.load();
-        this.stage.setScene(new Scene(loginView));
+        LoginViewController loginViewController = fxmlLoader.getController();
+        loginViewController.setController(loginViewController);
+        Scene scene = new Scene(loginView);
+        scene.setFill(Color.TRANSPARENT);
+        this.stage.setScene(scene);
+        this.stage.initStyle(StageStyle.TRANSPARENT);
+        this.stage.setScene(scene);
         this.stage.setTitle("Login");
         this.stage.show();
     }
 
-    public void startRegistrationScene() throws IOException {
+    /*public void startRegistrationScene() throws IOException {
         FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/views/RegisterView.fxml"));
         Parent registrationView = fxmlLoader.load();
         this.stage.setScene(new Scene(registrationView));
         this.stage.setTitle("Registration");
         this.stage.show();
-    }
+    }*/
 
     public void displayUserLoginNotification(int userId) {
         System.out.println(">> User Logged In :" + userId);
