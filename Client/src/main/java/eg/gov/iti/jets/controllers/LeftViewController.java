@@ -46,6 +46,7 @@ import java.util.*;
 public class LeftViewController implements Initializable {
     private static LeftViewController leftViewController;
     private Map<Integer, ListCell<SingleChat>> singleChatListCellMap = new HashMap<>();
+    private Map<Integer, ListCell<GroupChat>> groupChatListCellMap = new HashMap<>();
     private AddContactGroupViewController addContactGroupViewController;
     @FXML
     private Tab contactsTab;
@@ -111,6 +112,23 @@ public class LeftViewController implements Initializable {
             } else {
                 ListCell<SingleChat> singleChatListCell = singleChatListCellMap.get(singleChatId);
                 singleChatListCell.setStyle("-fx-background-color: lightgreen");
+            }
+
+        } catch (RemoteException e) {
+            e.printStackTrace();
+        }
+    }
+
+    public void updateGroupChat(int groupChatMessageId) {
+        try {
+            GroupChatMessage groupChatMessage = RMIConnection.getGroupChatMessageDao().getGroupChatMessage(groupChatMessageId);
+            int groupChatId = groupChatMessage.getGroupChatId();
+            int selectedGroupChatId = groupChatsLv.getSelectionModel().getSelectedItem().getId();
+            if (selectedGroupChatId == groupChatId) {
+                GroupChatViewController.getInstance().addGroupChatMessage(groupChatMessage);
+            } else {
+                ListCell<GroupChat> groupChatListCell = groupChatListCellMap.get(groupChatId);
+                groupChatListCell.setStyle("-fx-background-color: lightgreen");
             }
 
         } catch (RemoteException e) {
@@ -270,8 +288,9 @@ public class LeftViewController implements Initializable {
         try {
             SingleChat singleChat = singleChatDao.getSingleChat(singleChatId);
             if (singleChat != null) {
-                System.out.println("ana m4 null");
-                Platform.runLater(() -> loadSingleChats());
+                //System.out.println("ana m4 null and this is my new single chat"+singleChat);
+                //  Platform.runLater(() -> loadSingleChats());
+                Platform.runLater(() -> singleChatsLv.getItems().add(singleChat));
             }
         } catch (RemoteException e) {
             e.printStackTrace();
@@ -279,7 +298,7 @@ public class LeftViewController implements Initializable {
 
     }
 
-    private void loadSingleChats() {
+    public void loadSingleChats() {
         try {
             singleChatsLv.getItems().clear();
             List<SingleChat> singleChats = userDao.getUserSingleChats(ClientStageCoordinator.getInstance().currentUser.getId());
@@ -293,8 +312,15 @@ public class LeftViewController implements Initializable {
                         if (!empty) {
                             if (singleChat != null) {
                                 try {
-                                    int idTwo = singleChat.getUserTwoId();
-                                    User user = userDao.getUser(idTwo);
+                                    User user = null;
+                                    int currentUserId = ClientStageCoordinator.getInstance().currentUser.getId();
+                                    int userTwoId = singleChat.getUserTwoId();
+                                    int userOneId = singleChat.getUserOneId();
+                                    if (currentUserId == userOneId) {
+                                        user = userDao.getUser(userTwoId);
+                                    } else {
+                                        user = userDao.getUser(userOneId);
+                                    }
                                     System.out.println(user.getUsername());
                                     HBox hBox = new HBox();
                                     hBox.setStyle("-fx-background-color: transparent  ;" +

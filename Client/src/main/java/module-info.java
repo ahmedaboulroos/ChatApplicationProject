@@ -15,6 +15,7 @@ module Client {
 
     requires org.kordamp.iconli.core;
     requires org.kordamp.ikonli.javafx;
+    requires org.kordamp.ikonli.dashicons;
     requires org.kordamp.ikonli.material;
     requires org.kordamp.ikonli.materialdesign;
     requires org.kordamp.ikonli.fontawesome;

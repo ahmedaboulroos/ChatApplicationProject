@@ -1,6 +1,6 @@
 package eg.gov.iti.jets.controllers;
 
-import com.jfoenix.controls.JFXComboBox;
+import com.jfoenix.controls.JFXListView;
 import eg.gov.iti.jets.models.dao.interfaces.SingleChatDao;
 import eg.gov.iti.jets.models.dao.interfaces.UserDao;
 import eg.gov.iti.jets.models.entities.Relationship;
@@ -35,65 +35,80 @@ import java.util.ResourceBundle;
 
 public class AddSingleChatViewController implements Initializable {
 
+
     private static AddSingleChatViewController addSingleChatViewController;
 
     public static AddSingleChatViewController getInstance() {
         return addSingleChatViewController;
     }
 
-    public void setController(AddSingleChatViewController addSingleChatViewController) {
-        this.addSingleChatViewController = addSingleChatViewController;
-    }
+    @FXML
+    private JFXListView<eg.gov.iti.jets.models.entities.User> userContactsLv;
 
     SingleChatDao singleChatDao = RMIConnection.getSingleChatDao();
     private User currentUser = ClientStageCoordinator.getInstance().currentUser;
     private int userTwoId;
     private ClientStageCoordinator clientStageCoordinator = ClientStageCoordinator.getInstance();
     private UserDao userDao = RMIConnection.getUserDao();
-    @FXML
-    private JFXComboBox<eg.gov.iti.jets.models.entities.User> usersCompoBox;
 
-    @FXML
-    void handleContactsCB(ActionEvent event) {
-        System.out.println(usersCompoBox.getSelectionModel().getSelectedItem());
-        User selectedItem = usersCompoBox.getSelectionModel().getSelectedItem();
-        System.out.println(selectedItem);
-        userTwoId = selectedItem.getId();
-
-        System.out.println(userTwoId);
+    public void setController(AddSingleChatViewController addSingleChatViewController) {
+        AddSingleChatViewController.addSingleChatViewController = addSingleChatViewController;
     }
+
+    @FXML
+    private Label errorLabel;
 
     @FXML
     void handleCreateButton(ActionEvent event) {
         try {
+            User selectedItem = userContactsLv.getSelectionModel().getSelectedItem();
+            System.out.println(selectedItem);
+            userTwoId = selectedItem.getId();
             SingleChat singleChat = new SingleChat(this.currentUser.getId(), userTwoId);
-            System.out.println(singleChat + "my singleChat");
-            singleChatDao.createSingleChat(singleChat);
+            //System.out.println(singleChat + "my singleChat");
+            if (!isSingleChatCreated(userTwoId, this.currentUser.getId())) {
+                singleChatDao.createSingleChat(singleChat);
+            } else {
+                errorLabel.setText("this is chat created before");
+                //  System.out.println("your single chat with this friend created before");
+            }
         } catch (RemoteException e) {
             e.printStackTrace();
         }
     }
 
+    public boolean isSingleChatCreated(int userTwoId, int currentUserId) {
+        try {
+            List<SingleChat> singleChatList = RMIConnection.getUserDao().getUserSingleChats(currentUserId);
+            //System.out.println(singleChatList.size());
+            for (int i = 0; i < singleChatList.size(); i++) {
+                if (singleChatList.get(i).getUserTwoId() == userTwoId || singleChatList.get(i).getUserOneId() == userTwoId) {
+                    return true;
+                }
+            }
+
+        } catch (RemoteException e) {
+            e.printStackTrace();
+        }
+        return false;
+    }
+
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
-        usersCompoBox.setPromptText("Choose Contact");
-        usersCompoBox.setEditable(false);
         List<User> contacts = loadContacts();
         ObservableList<User> options = FXCollections.observableList(contacts);
-        usersCompoBox.setItems(options);
-        usersCompoBox.setCellFactory(usersCompoBox -> new ListCell<eg.gov.iti.jets.models.entities.User>() {
+        userContactsLv.setItems(options);
+        userContactsLv.setCellFactory(userContactsLv -> new ListCell<eg.gov.iti.jets.models.entities.User>() {
             // super.updateItem(item, empty);
             @Override
             public void updateItem(eg.gov.iti.jets.models.entities.User item, boolean empty) {
                 super.updateItem(item, empty);
-
                 if (item != null) {
-                    // User user = usersCompoBox.getItems().get(0);
                     User user = item;
                     HBox hBox = new HBox();
                     hBox.setStyle("-fx-background-color: transparent  ;" +
                             "-fx-padding: 1;" + "-fx-border-style: solid inside;"
-                            + "-fx-border-width: 3;" + "-fx-border-insets: 1;"
+                            + "-fx-border-width: 4;" + "-fx-border-insets: 1;"
                             + "-fx-border-radius: 2;" + "-fx-border-color: white;");
                     Circle imageCircle = new Circle();
                     Image imageForTasting = new Image("images/chat-circle-blue-512.png");
@@ -128,6 +143,8 @@ public class AddSingleChatViewController implements Initializable {
                     hBox.setMaxWidth(200);
                     hBox.setMinWidth(200);
                     setGraphic(hBox);
+                } else {
+                    setGraphic(null);
                 }
             }
         });
