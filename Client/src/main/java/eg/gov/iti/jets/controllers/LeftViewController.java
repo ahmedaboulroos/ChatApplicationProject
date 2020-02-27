@@ -298,7 +298,7 @@ public class LeftViewController implements Initializable {
 
     }
 
-    private void loadSingleChats() {
+    public void loadSingleChats() {
         try {
             singleChatsLv.getItems().clear();
             List<SingleChat> singleChats = userDao.getUserSingleChats(ClientStageCoordinator.getInstance().currentUser.getId());
