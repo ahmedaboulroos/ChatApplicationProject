@@ -8,6 +8,7 @@ import eg.gov.iti.jets.models.network.RMIConnection;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.Label;
+import javafx.scene.control.ListView;
 
 import java.rmi.RemoteException;
 
@@ -20,19 +21,22 @@ public class AddMembershipGroupController {
     @FXML
     private Label errorsLbl;
     private int groupChatId;
+    private ListView<GroupChatMembership> membershipListView;
 
     @FXML
     void handleAddContactBtn(ActionEvent event) {
         try {
             User user = RMIConnection.getUserDao().getUser(phoneNumberTf.getText());
             System.out.println(user + "user number");
-            if (user != null) {
+
+            if (user != null && !membershipListView.getItems().contains(user)) {
                 GroupChatMembership groupChatMembership = new GroupChatMembership(user.getId(), groupChatId);
 
                 RMIConnection.getGroupChatMembershipDao().createGroupChatMembership(groupChatMembership);
                 System.out.println(groupChatMembership + "user   groupChatMembership  number");
                 errorsLbl.setText("user added");
                 phoneNumberTf.clear();
+                membershipListView.refresh();
             } else {
                 errorsLbl.setText("user not found");
             }
@@ -50,4 +54,8 @@ public class AddMembershipGroupController {
         this.addMembershipGroupController = addMembershipGroupController;
     }
 
+    public void setRefresh(ListView<GroupChatMembership> membershipListView) {
+        this.membershipListView = membershipListView;
+
+    }
 }
