@@ -123,10 +123,7 @@ public class GroupInfoViewController implements Initializable {
             if (groupChat.getCreationDateTime() != null) {
                 createdate.setText(groupChat.getCreationDateTime().toString());
             }
-            if (groupChat.getId() != 0) {
-                whocreted.setText(String.valueOf(groupChat.getId()));
-                membershipList();
-            }
+
 
         } catch (RemoteException e) {
             e.printStackTrace();
