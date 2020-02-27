@@ -48,7 +48,8 @@ public class ClientStageCoordinator {
         this.stage.setScene(new Scene(mainChatAppView));
         this.stage.setTitle("Chat Application");
         this.stage.show();
-        this.stage.setMaximized(true);
+        ////elnaggar
+        // this.stage.setMaximized(true);
     }
 
     public void startLoginScene() throws IOException {

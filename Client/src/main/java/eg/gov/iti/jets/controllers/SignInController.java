@@ -43,6 +43,7 @@ public class SignInController implements Initializable {
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
 
+
     }
 
     public void openSignIn(ActionEvent actionEvent) {
@@ -51,6 +52,17 @@ public class SignInController implements Initializable {
     @FXML
     void handleSignInBtn(ActionEvent event) {
         try {
+//            RequiredFieldValidator validator = new RequiredFieldValidator();
+//            // NOTE adding error class to text area is causing the cursor to disapper
+//            validator.setMessage("Please type something!");
+//            validator.setIcon(new FontAwesome().create(FontAwesome.Glyph.WARNING));
+//            phoneNumberTf.getValidators().add(validator);
+//            phoneNumberTf.focusedProperty().addListener((o, oldVal, newVal) -> {
+//                if (!newVal)
+//                    phoneNumberTf.validate();
+//            });
+
+
             UserDao userDao = RMIConnection.getUserDao();
             User user = userDao.getUser(phoneNumberTf.getText(), passwordPf.getText());
             if (user != null) {
