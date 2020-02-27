@@ -8,6 +8,7 @@ import eg.gov.iti.jets.models.entities.GroupChat;
 import eg.gov.iti.jets.models.entities.GroupChatMembership;
 import eg.gov.iti.jets.models.entities.User;
 import eg.gov.iti.jets.models.network.RMIConnection;
+import javafx.application.Platform;
 import javafx.collections.FXCollections;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -78,6 +79,7 @@ public class GroupInfoViewController implements Initializable {
             addMembershipGroupController = fxmlLoader.getController();
             addMembershipGroupController.setController(addMembershipGroupController);
             addMembershipGroupController.setGroupChatId(groupChatId);
+            addMembershipGroupController.setRefresh(membershipListView);
             Stage stage = new Stage();
             Scene scene = new Scene(addContactView);
             stage.setScene(scene);
@@ -104,6 +106,7 @@ public class GroupInfoViewController implements Initializable {
             membershipListView.getSelectionModel().getSelectedItem();
             try {
                 RMIConnection.getGroupChatMembershipDao().deleteGroupChatMembership(membershipListView.getSelectionModel().getSelectedItem().getId());
+                membershipListView.refresh();
             } catch (RemoteException e) {
                 e.printStackTrace();
             }
@@ -122,6 +125,7 @@ public class GroupInfoViewController implements Initializable {
             }
             if (groupChat.getCreationDateTime() != null) {
                 createdate.setText(groupChat.getCreationDateTime().toString());
+                membershipList();
             }
 
 
@@ -142,7 +146,7 @@ public class GroupInfoViewController implements Initializable {
         }
         if (groupChatMemberships != null) {
 
-            membershipListView.setItems(FXCollections.observableList(groupChatMemberships));
+            Platform.runLater(() -> membershipListView.setItems(FXCollections.observableList(groupChatMemberships)));
             membershipListView.setCellFactory(groupChatsLv -> new ListCell<GroupChatMembership>() {
                 @Override
                 public void updateItem(GroupChatMembership item, boolean empty) {
