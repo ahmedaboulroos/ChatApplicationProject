@@ -84,7 +84,6 @@ public class GroupChatViewController {
     public void addGroupChatMessage(GroupChatMessage groupChatMessage) {
         Platform.runLater(() -> {
             groupChatMessagesLv.getItems().add(groupChatMessage);
-            updateGroupChat();
         });
     }
 

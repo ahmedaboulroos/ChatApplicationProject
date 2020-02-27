@@ -49,11 +49,13 @@ public class UserDaoImpl extends UnicastRemoteObject implements UserDao {
     public int createUser(User user) {
         Date birthDate = user.getBirthDate() == null ? null : Date.valueOf(user.getBirthDate());
         String userGender = user.getUserGender() == null ? null : user.getUserGender().toString();
-        Blob profileImage = ImageUtiles.fromBytesToBlob(user.getProfileImage());
+
+        InputStream in = new ByteArrayInputStream(user.getProfileImage());
+
         String userStatus = user.getUserStatus() == null ? null : user.getUserStatus().toString();
         int id = -1;
         String key[] = {"ID"};
-        String sql = "insert into USERS (id, phone_number, username, password, email, country, bio, birth_date, user_gender, user_status) values (ID_SEQ.nextval,?,?,?,?,?,?,?,?,?,?,?)";
+        String sql = "insert into USERS (id, phone_number, username, password, email, country, bio, birth_date, user_gender,profile_image, user_status) values (ID_SEQ.nextval,?,?,?,?,?,?,?,?,?,?)";
         try (PreparedStatement ps = dbConnection.prepareStatement(sql, key)) {
             ps.setString(1, user.getPhoneNumber());
             ps.setString(2, user.getUsername());
@@ -63,8 +65,8 @@ public class UserDaoImpl extends UnicastRemoteObject implements UserDao {
             ps.setString(6, user.getBio());
             ps.setDate(7, birthDate);
             ps.setString(8, userGender);
-            ps.setString(9, userStatus);
-//                ps.setBlob(9, profileImage);
+            ps.setBinaryStream(9, in, user.getProfileImage().length);
+            ps.setString(10, userStatus);
             ps.executeUpdate();
             ResultSet rs = ps.getGeneratedKeys();
             if (rs.next()) {

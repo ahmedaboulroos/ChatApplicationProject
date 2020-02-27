@@ -28,8 +28,8 @@
                 <StackPane prefHeight="150.0" prefWidth="200.0">
                     <children>
                         <FontIcon iconColor="WHITE" iconLiteral="fa-camera" iconSize="35"/>
-                        <Circle id="circleimage" fill="#14181f" opacity="0.23" radius="42.0" stroke="WHITE"
-                                strokeType="INSIDE"/>
+                        <Circle fx:id="circleImage" fill="#14181f" onMouseClicked="#chooseImage" opacity="0.23"
+                                radius="42.0" stroke="WHITE" strokeType="INSIDE"/>
                     </children>
                 </StackPane>
             </children>
@@ -167,7 +167,7 @@
                         <Insets left="20.0"/>
                     </HBox.margin>
                 </JFXDatePicker>
-                <JFXRadioButton text="Male" textFill="WHITE">
+                <JFXRadioButton fx:id="maleRadioBtn" text="Male" textFill="WHITE">
                     <HBox.margin>
                         <Insets left="20.0"/>
                     </HBox.margin>
@@ -177,7 +177,7 @@
                         <Insets left="10.0"/>
                     </HBox.margin>
                 </FontIcon>
-                <JFXRadioButton text="Female" textFill="WHITE">
+                <JFXRadioButton fx:id="femaleRadioBtn" text="Female" textFill="WHITE">
                     <HBox.margin>
                         <Insets left="20.0"/>
                     </HBox.margin>
