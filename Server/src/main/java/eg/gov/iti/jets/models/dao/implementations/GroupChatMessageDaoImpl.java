@@ -70,7 +70,7 @@ public class GroupChatMessageDaoImpl extends UnicastRemoteObject implements Grou
         try (PreparedStatement statement = dbConnection.prepareStatement(sql)) {
             statement.setInt(1, groupChatMessageId);
             ResultSet rs = statement.executeQuery();
-            if (rs.first()) {
+            if (rs.next()) {
                 groupChatMessage = new GroupChatMessage(rs.getInt(1), rs.getInt(2), rs.getInt(3), rs.getString(4), rs.getTimestamp(5).toLocalDateTime());
             }
         } catch (SQLException e) {
