@@ -407,9 +407,10 @@ public class LeftViewController implements Initializable {
     @FXML
     void handleSingleChatSelection(MouseEvent event) {
         SingleChat singleChat = singleChatsLv.getSelectionModel().getSelectedItem();
-        ListCell<SingleChat> singleChatListCell = singleChatListCellMap.get(singleChat.getId());
-        singleChatListCell.setStyle("-fx-background-color: #ffff");
+
         if (singleChat != null) {
+            ListCell<SingleChat> singleChatListCell = singleChatListCellMap.get(singleChat.getId());
+            singleChatListCell.setStyle("-fx-background-color: #ffff");
             ClientStageCoordinator.getInstance().openNewSingleChat(singleChat.getId());
         }
     }
