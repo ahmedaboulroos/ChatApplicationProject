@@ -36,7 +36,7 @@ public class LoginViewController implements Initializable {
     @Override
     public void initialize(URL url, ResourceBundle rb) {
         TranslateTransition translate = new TranslateTransition(Duration.seconds(1), vbox);
-        System.out.println(vbox);
+        //System.out.println(vbox);
         translate.setToX(0);
         translate.play();
         translate.setOnFinished((e) -> {

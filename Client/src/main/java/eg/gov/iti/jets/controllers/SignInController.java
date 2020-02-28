@@ -62,7 +62,6 @@ public class SignInController implements Initializable {
 //                    phoneNumberTf.validate();
 //            });
 
-
             UserDao userDao = RMIConnection.getUserDao();
             User user = userDao.getUser(phoneNumberTf.getText(), passwordPf.getText());
             if (user != null) {

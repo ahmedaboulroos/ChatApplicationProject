@@ -5,10 +5,13 @@ import com.jfoenix.controls.JFXTextField;
 import eg.gov.iti.jets.models.dao.interfaces.UserDao;
 import eg.gov.iti.jets.models.entities.User;
 import eg.gov.iti.jets.models.network.RMIConnection;
+import eg.gov.iti.jets.models.network.implementations.ClientService;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.Label;
+import javafx.scene.image.Image;
+import javafx.scene.paint.ImagePattern;
 import javafx.scene.shape.Circle;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
@@ -40,10 +43,13 @@ public class IntroController implements Initializable {
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
-/*
-        circleIcon.setFill(new ImagePattern(
-                new Image(getClass().getResource("/images/vector-chat-icon.jpg").toString())));
-*/
+        try {
+            circleIcon.setFill(new ImagePattern(
+                    new Image("/main/resources/images/vector-chat-icon.jpg")));
+        } catch (Exception e) {
+            System.out.println("Intro Icon did not load");
+        }
+
         try {
             InetAddress inetAddress = InetAddress.getLocalHost();
             serverAddressTf.setText(inetAddress.getHostAddress());
@@ -91,16 +97,17 @@ public class IntroController implements Initializable {
 
                         Element element = (Element) node;
                         phone = element.getElementsByTagName("phone").item(0).getTextContent();
-
                         password = element.getElementsByTagName("password").item(0).getTextContent();
                     }
                 }
                 UserDao userDao = RMIConnection.getUserDao();
                 User user = userDao.getUser(phone, password);
-                System.out.println(user.getPhoneNumber());
+                //System.out.println(user.getPhoneNumber());
                 if (user != null) {
                     ClientStageCoordinator coordinator = ClientStageCoordinator.getInstance();
                     coordinator.currentUser = user;
+                    //System.out.println(ClientService.getInstance() + "client service");
+                    RMIConnection.getServerService().login(user.getId(), ClientService.getInstance());
                     coordinator.startMainChatAppScene();
                 }
             } catch (ParserConfigurationException e) {
