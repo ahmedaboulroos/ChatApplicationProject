@@ -49,9 +49,7 @@ public class UserDaoImpl extends UnicastRemoteObject implements UserDao {
     public int createUser(User user) {
         Date birthDate = user.getBirthDate() == null ? null : Date.valueOf(user.getBirthDate());
         String userGender = user.getUserGender() == null ? null : user.getUserGender().toString();
-
         InputStream in = new ByteArrayInputStream(user.getProfileImage());
-
         String userStatus = user.getUserStatus() == null ? null : user.getUserStatus().toString();
         int id = -1;
         String key[] = {"ID"};

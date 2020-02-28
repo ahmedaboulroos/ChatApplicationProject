@@ -1,37 +1,140 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-
-<?import com.jfoenix.controls.*?>
+<?import com.jfoenix.controls.JFXButton?>
 <?import javafx.geometry.Insets?>
 <?import javafx.scene.control.*?>
+<?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.*?>
-<BorderPane xmlns:fx="http://javafx.com/fxml/1" prefHeight="500.0" xmlns="http://javafx.com/javafx/11.0.1"
-            fx:controller="eg.gov.iti.jets.controllers.UsersViewController">
+<?import javafx.scene.text.*?>
+<BorderPane xmlns:fx="http://javafx.com/fxml/1" prefHeight="500.0" prefWidth="1000.0"
+            xmlns="http://javafx.com/javafx/11.0.1" fx:controller="eg.gov.iti.jets.controllers.UsersViewController">
     <center>
-        <VBox spacing="15.0">
+        <VBox>
             <children>
-                <HBox spacing="20.0">
+                <HBox spacing="10.0">
                     <children>
-                        <VBox spacing="15.0" HBox.hgrow="ALWAYS">
+                        <VBox prefWidth="500.0" spacing="15.0" HBox.hgrow="ALWAYS">
                             <children>
-                                <JFXTextField fx:id="phoneNoTf" prefHeight="25.0" prefWidth="251.0"
-                                              promptText="Phone Number"/>
-                                <JFXTextField fx:id="usernameTf" prefHeight="25.0" prefWidth="251.0"
-                                              promptText="Username"/>
-                                <JFXTextField fx:id="passwordTf" prefHeight="25.0" prefWidth="251.0"
-                                              promptText="Password"/>
-                                <JFXTextField fx:id="emailTf" prefHeight="25.0" prefWidth="251.0" promptText="Email"/>
+                                <HBox spacing="15.0">
+                                    <children>
+                                        <VBox minWidth="100.0" spacing="6.0">
+                                            <children>
+                                                <Label prefHeight="30.0" text="Phone Number">
+                                                    <font>
+                                                        <Font size="14.0"/>
+                                                    </font>
+                                                </Label>
+                                                <Label prefHeight="30.0" text="Username">
+                                                    <font>
+                                                        <Font size="14.0"/>
+                                                    </font>
+                                                </Label>
+                                                <Label prefHeight="30.0" text="Password">
+                                                    <font>
+                                                        <Font size="14.0"/>
+                                                    </font>
+                                                </Label>
+                                                <Label prefHeight="30.0" text="Email">
+                                                    <font>
+                                                        <Font size="14.0"/>
+                                                    </font>
+                                                </Label>
+                                                <Label layoutX="10.0" layoutY="100.0" prefHeight="30.0" text="Country">
+                                                    <font>
+                                                        <Font size="14.0"/>
+                                                    </font>
+                                                </Label>
+                                                <Label layoutX="10.0" layoutY="130.0" prefHeight="30.0" text="Gender">
+                                                    <font>
+                                                        <Font size="14.0"/>
+                                                    </font>
+                                                </Label>
+                                                <Label layoutX="10.0" layoutY="185.0" prefHeight="30.0"
+                                                       text="Birth Date">
+                                                    <font>
+                                                        <Font size="14.0"/>
+                                                    </font>
+                                                </Label>
+                                                <Label layoutX="10.0" layoutY="220.0" prefHeight="30.0" text="Avatar">
+                                                    <font>
+                                                        <Font size="14.0"/>
+                                                    </font>
+                                                </Label>
+                                            </children>
+                                        </VBox>
+                                        <VBox spacing="6.0" HBox.hgrow="ALWAYS">
+                                            <children>
+                                                <TextField fx:id="phoneNoTf" prefHeight="30.0">
+                                                    <font>
+                                                        <Font size="14.0"/>
+                                                    </font>
+                                                </TextField>
+                                                <TextField fx:id="usernameTf" prefHeight="30.0">
+                                                    <font>
+                                                        <Font size="14.0"/>
+                                                    </font>
+                                                </TextField>
+                                                <PasswordField fx:id="passwordPf"/>
+                                                <TextField fx:id="emailTf" prefHeight="30.0">
+                                                    <font>
+                                                        <Font size="14.0"/>
+                                                    </font>
+                                                </TextField>
+                                                <TextField fx:id="countryTf" prefHeight="30.0">
+                                                    <font>
+                                                        <Font size="14.0"/>
+                                                    </font>
+                                                </TextField>
+                                                <ComboBox fx:id="userGenderCb" prefHeight="32.0" prefWidth="600.0"/>
+                                                <DatePicker fx:id="birthDateDp" prefHeight="32.0" prefWidth="700.0"/>
+                                                <JFXButton fx:id="selectedImageBtn" onAction="#handleSelectImageBtn"
+                                                           prefHeight="30.0" prefWidth="700.0"
+                                                           style="-fx-background-color: lightgray;"
+                                                           text="Selected Image ( Default )">
+                                                    <font>
+                                                        <Font size="14.0"/>
+                                                    </font>
+                                                </JFXButton>
+                                            </children>
+                                        </VBox>
+                                    </children>
+                                </HBox>
+                                <HBox spacing="15.0">
+                                    <children>
+                                        <Label minWidth="100.0" prefHeight="30.0" text="Biography">
+                                            <font>
+                                                <Font size="14.0"/>
+                                            </font>
+                                        </Label>
+                                        <TextArea fx:id="bioTa" prefHeight="100.0" HBox.hgrow="ALWAYS">
+                                            <font>
+                                                <Font size="14.0"/>
+                                            </font>
+                                        </TextArea>
+                                    </children>
+                                </HBox>
                             </children>
                         </VBox>
-                        <VBox spacing="15.0" HBox.hgrow="ALWAYS">
+                        <Separator orientation="VERTICAL" prefHeight="200.0"/>
+                        <VBox alignment="TOP_CENTER" prefWidth="500.0" spacing="5.0" HBox.hgrow="ALWAYS">
                             <children>
-                                <JFXTextField fx:id="birthDateTf" prefHeight="25.0" prefWidth="169.0"
-                                              promptText="Birth Date"/>
-                                <JFXTextField fx:id="userGenderTf" prefHeight="25.0" prefWidth="169.0"
-                                              promptText="Gender"/>
-                                <JFXTextField fx:id="countryTf" prefHeight="25.0" prefWidth="251.0"
-                                              promptText="Country"/>
-                                <JFXTextField fx:id="bioTf" prefHeight="25.0" prefWidth="251.0" promptText="Bio"/>
+                                <ImageView fx:id="userProfileImageView" fitHeight="256.0" fitWidth="400.0"
+                                           pickOnBounds="true" preserveRatio="true" smooth="false" VBox.vgrow="NEVER"/>
+                                <Region prefHeight="200.0" prefWidth="200.0" VBox.vgrow="ALWAYS"/>
+                                <HBox alignment="CENTER_LEFT" spacing="10.0">
+                                    <children>
+                                        <Label fx:id="validationLbl" textFill="DARKRED"/>
+                                        <Region HBox.hgrow="ALWAYS"/>
+                                        <JFXButton onAction="#handleResetBtn" prefWidth="75.0"
+                                                   style="-fx-background-color: lightpink;" text="Reset"/>
+                                        <JFXButton layoutX="332.0" layoutY="15.0" onAction="#handleRegisterBtn"
+                                                   prefWidth="150.0" style="-fx-background-color: lightgreen;"
+                                                   text="Register"/>
+                                    </children>
+                                    <padding>
+                                        <Insets bottom="5.0" left="5.0" right="5.0" top="5.0"/>
+                                    </padding>
+                                </HBox>
                             </children>
                         </VBox>
                     </children>
@@ -39,22 +142,15 @@
                         <Insets bottom="10.0" left="10.0" right="10.0" top="10.0"/>
                     </padding>
                 </HBox>
-                <HBox>
-                    <children>
-                        <Region HBox.hgrow="ALWAYS"/>
-                        <JFXButton fx:id="registerBtn" prefWidth="150.0" style="-fx-background-color: lightblue;"
-                                   text="Register"/>
-                    </children>
-                    <padding>
-                        <Insets bottom="5.0" left="5.0" right="5.0" top="5.0"/>
-                    </padding>
-                </HBox>
                 <TableView fx:id="userViewTv" VBox.vgrow="ALWAYS">
                     <columns>
-                        <TableColumn fx:id="phoneNoCol" prefWidth="150.0" text="Phone No."/>
-                        <TableColumn fx:id="userNameCol" minWidth="6.4000244140625" prefWidth="150.0" text="Username"/>
-                        <TableColumn fx:id="passCol" prefWidth="150.0" text="Password"/>
-                        <TableColumn fx:id="EmailCol" prefWidth="200.0" text="Email"/>
+                        <TableColumn fx:id="phoneNoCol" prefWidth="120.0" text="Phone Number"/>
+                        <TableColumn fx:id="usernameCol" minWidth="6.4000244140625" prefWidth="200.0" text="Username"/>
+                        <TableColumn fx:id="emailCol" prefWidth="200.0" text="Email"/>
+                        <TableColumn fx:id="genderCol" prefWidth="100.0" text="Gender"/>
+                        <TableColumn fx:id="statusCol" prefWidth="100.0" text="Status"/>
+                        <TableColumn fx:id="countryCol" prefWidth="100.0" text="Country"/>
+                        <TableColumn fx:id="birthDateCol" prefWidth="100.0" text="Birth Date"/>
                     </columns>
                 </TableView>
             </children>
