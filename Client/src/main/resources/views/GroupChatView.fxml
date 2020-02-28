@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import com.jfoenix.controls.JFXButton?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.ListView?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.shape.Circle?>
+<?import javafx.scene.text.Font?>
+<?import javafx.scene.web.HTMLEditor?>
+<?import org.kordamp.ikonli.javafx.FontIcon?>
+<BorderPane xmlns:fx="http://javafx.com/fxml/1" prefHeight="600.0" prefWidth="600.0"
+            xmlns="http://javafx.com/javafx/11.0.1" fx:controller="eg.gov.iti.jets.controllers.GroupChatViewController">
+   <center>
+      <ListView fx:id="groupChatMessagesLv" prefHeight="200.0" prefWidth="600.0" styleClass="chat-panel"
+                stylesheets="@../styles/centerStyle.css" BorderPane.alignment="CENTER"/>
+   </center>
+   <bottom>
+      <AnchorPane prefHeight="222.0" prefWidth="600.0" BorderPane.alignment="CENTER">
+         <children>
+            <JFXButton alignment="CENTER" contentDisplay="RIGHT" layoutX="538.0" layoutY="14.0"
+                       onAction="#handleSendBtn" prefHeight="20.0" prefWidth="30.0" styleClass="main-btns"
+                       stylesheets="@../styles/centerStyle.css" text="Send" textAlignment="CENTER"
+                       AnchorPane.bottomAnchor="188.0" AnchorPane.rightAnchor="6.0">
+               <graphic>
+                  <FontIcon iconColor="DODGERBLUE" iconLiteral="zondi-send" iconSize="25" styleClass="icons"
+                            wrappingWidth="28.000003814697266"/>
+               </graphic>
+            </JFXButton>
+            <HTMLEditor fx:id="groupChatMessageHtml"
+                        htmlText="&lt;html&gt;&lt;head&gt;&lt;/head&gt;&lt;body contenteditable=&quot;true&quot;&gt;&lt;/body&gt;&lt;/html&gt;"
+                        layoutY="47.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity"
+                        minWidth="-Infinity" prefHeight="175.0" prefWidth="600.0" AnchorPane.bottomAnchor="0.0"
+                        AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="40.0"/>
+            <JFXButton alignment="CENTER" contentDisplay="RIGHT" layoutX="6.0" layoutY="3.0"
+                       onAction="#handleSaveSessionBtn" prefHeight="20.0" prefWidth="30.0" styleClass="main-btns"
+                       stylesheets="@../styles/centerStyle.css" text="Save" textAlignment="CENTER">
+               <graphic>
+                  <FontIcon fx:id="saveSessionBtn" iconColor="DODGERBLUE" iconLiteral="zondi-save-disk" iconSize="25"
+                            styleClass="icons" text=""/>
+               </graphic>
+            </JFXButton>
+         </children>
+      </AnchorPane>
+   </bottom>
+   <top>
+      <AnchorPane prefHeight="86.0" prefWidth="600.0" BorderPane.alignment="CENTER">
+         <children>
+            <Circle fx:id="imageCircle" fill="DODGERBLUE" layoutX="52.0" layoutY="40.0" radius="31.0" stroke="BLACK"
+                    strokeType="INSIDE" AnchorPane.bottomAnchor="9.0" AnchorPane.leftAnchor="21.0"
+                    AnchorPane.topAnchor="9.0"/>
+            <Label fx:id="nameLbl" layoutX="102.0" layoutY="22.0" text="Label">
+               <font>
+                  <Font size="25.0"/>
+               </font>
+            </Label>
+         </children>
+      </AnchorPane>
+   </top>
+</BorderPane>

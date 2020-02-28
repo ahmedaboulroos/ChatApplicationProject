@@ -14,6 +14,7 @@ import javafx.collections.FXCollections;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
+import javafx.geometry.Pos;
 import javafx.scene.control.Label;
 import javafx.scene.control.ListView;
 import javafx.scene.image.Image;
@@ -73,17 +74,7 @@ public class GroupChatViewController implements Initializable {
 
     @FXML
     void handleSendBtn(ActionEvent event) {
-        try {
-            String msg = groupChatMessageHtml.getHtmlText();
-            System.out.println(msg);
-            GroupChatMessageDao groupChatDao = RMIConnection.getGroupChatMessageDao();
-            System.out.println("inside GroupchatViewController ==> this.groupChatId, currentUser.getId(), msg" + this.groupChatId + " " + currentUser.getId() + " " + msg);
-            GroupChatMessage GroupChatMessage = new GroupChatMessage(currentUser.getId(), this.groupChatId, msg);
-            groupChatDao.createGroupChatMessage(GroupChatMessage);
-        } catch (
-                RemoteException e) {
-            e.printStackTrace();
-        }
+        sendMessage();
     }
 
     private void updateGroupChat() {
@@ -129,28 +120,63 @@ public class GroupChatViewController implements Initializable {
                 super.updateItem(message, empty);
                 if (message != null) {
                     HBox hBox = new HBox();
-                    byte[] imageBytes = groupChat.getGroupImageBytes();
-                    Circle circle = new Circle();
                     try {
-                        Image imageForTasting = ImageUtiles.fromBytesToImage(imageBytes);
-                        circle.setFill(new ImagePattern(imageForTasting));
-                    } catch (Exception e) {
-                        System.out.println("Chat Icon not loaded.");
+                        Pos pos = null;
+                        User user = null;
+
+                        if (message.getUserId() == currentUser.getId()) {
+                            user = currentUser;
+                            pos = Pos.CENTER_RIGHT;
+                        } else {
+                            user = userDao.getUser(message.getUserId());
+                            pos = Pos.CENTER_LEFT;
+                        }
+                        byte[] imageBytes = user.getProfileImage();
+                        Circle circle = new Circle();
+                        try {
+                            Image image = ImageUtiles.fromBytesToImage(imageBytes);
+                            circle.setFill(new ImagePattern(image));
+                        } catch (Exception e) {
+                            System.out.println("Chat Icon not loaded.");
+                        }
+                        circle.setRadius(20);
+
+                        WebView webView = new WebView();
+                        webView.getEngine().loadContent(message.getContent());
+                        webView.setMaxSize(400, 100);
+
+                        if (pos == Pos.CENTER_RIGHT) {
+                            hBox.getChildren().addAll(webView, circle);
+                        } else {
+                            hBox.getChildren().addAll(circle, webView);
+                        }
+                        hBox.setAlignment(pos);
+                        setGraphic(hBox);
+                        groupChatMessagesLv.scrollTo(groupChatMessagesLv.getItems().size() - 1);
+
+                    } catch (RemoteException e) {
+                        e.printStackTrace();
                     }
-                    circle.setRadius(20);
-
-                    WebView webView = new WebView();
-                    webView.getEngine().loadContent(message.getContent());
-                    webView.setMaxSize(400, 100);
-
-                    hBox.getChildren().addAll(circle, webView);
-                    setGraphic(hBox);
                 } else {
                     setGraphic(null);
                 }
                 setText(null);
             }
         });
+    }
+
+    private void sendMessage() {
+        try {
+            String msg = groupChatMessageHtml.getHtmlText();
+            System.out.println(msg);
+            GroupChatMessageDao groupChatDao = RMIConnection.getGroupChatMessageDao();
+            System.out.println("inside GroupchatViewController ==> this.groupChatId, currentUser.getId(), msg" + this.groupChatId + " " + currentUser.getId() + " " + msg);
+            GroupChatMessage GroupChatMessage = new GroupChatMessage(currentUser.getId(), this.groupChatId, msg);
+            groupChatDao.createGroupChatMessage(GroupChatMessage);
+        } catch (
+                RemoteException e) {
+            e.printStackTrace();
+        }
     }
 
 //    public void displayNewGroupChatMessage(int groupChatMessageId) throws RemoteException {
