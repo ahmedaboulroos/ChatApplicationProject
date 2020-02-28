@@ -45,8 +45,8 @@
                                         <Font size="18.0"/>
                                     </font>
                                 </Label>
-                                <TableView fx:id="announcementsTv" onMouseClicked="#handleAnnouncementSelection"
-                                           prefHeight="200.0" prefWidth="469.0" VBox.vgrow="ALWAYS">
+                                <TableView fx:id="announcementsTv" prefHeight="200.0" prefWidth="469.0"
+                                           VBox.vgrow="ALWAYS">
                                     <columns>
                                         <TableColumn fx:id="announcementId" prefWidth="75.0" text="ID"/>
                                         <TableColumn fx:id="announcementTitle" prefWidth="300.0" text="Title"/>
