@@ -14,10 +14,10 @@ import javafx.collections.FXCollections;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
+import javafx.geometry.Pos;
 import javafx.scene.control.Label;
 import javafx.scene.control.ListView;
 import javafx.scene.image.Image;
-import javafx.scene.input.KeyCode;
 import javafx.scene.layout.HBox;
 import javafx.scene.paint.ImagePattern;
 import javafx.scene.shape.Circle;
@@ -114,33 +114,49 @@ public class GroupChatViewController implements Initializable {
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
-        groupChatMessagesLv.setOnKeyPressed(keyEvent -> {
-            if (keyEvent.getCode() == KeyCode.ENTER && keyEvent.isShiftDown()) {
-                sendMessage();
-            }
-        });
         groupChatMessagesLv.setCellFactory(listViewListCellCallback -> new JFXListCell<>() {
             @Override
             protected void updateItem(GroupChatMessage message, boolean empty) {
                 super.updateItem(message, empty);
                 if (message != null) {
                     HBox hBox = new HBox();
-                    byte[] imageBytes = groupChat.getGroupImageBytes();
-                    Circle circle = new Circle();
                     try {
-                        Image imageForTasting = ImageUtiles.fromBytesToImage(imageBytes);
-                        circle.setFill(new ImagePattern(imageForTasting));
-                    } catch (Exception e) {
-                        System.out.println("Chat Icon not loaded.");
+                        Pos pos = null;
+                        User user = null;
+
+                        if (message.getUserId() == currentUser.getId()) {
+                            user = currentUser;
+                            pos = Pos.CENTER_RIGHT;
+                        } else {
+                            user = userDao.getUser(message.getUserId());
+                            pos = Pos.CENTER_LEFT;
+                        }
+                        byte[] imageBytes = user.getProfileImage();
+                        Circle circle = new Circle();
+                        try {
+                            Image image = ImageUtiles.fromBytesToImage(imageBytes);
+                            circle.setFill(new ImagePattern(image));
+                        } catch (Exception e) {
+                            System.out.println("Chat Icon not loaded.");
+                        }
+                        circle.setRadius(20);
+
+                        WebView webView = new WebView();
+                        webView.getEngine().loadContent(message.getContent());
+                        webView.setMaxSize(400, 100);
+
+                        if (pos == Pos.CENTER_RIGHT) {
+                            hBox.getChildren().addAll(webView, circle);
+                        } else {
+                            hBox.getChildren().addAll(circle, webView);
+                        }
+                        hBox.setAlignment(pos);
+                        setGraphic(hBox);
+                        groupChatMessagesLv.scrollTo(groupChatMessagesLv.getItems().size() - 1);
+
+                    } catch (RemoteException e) {
+                        e.printStackTrace();
                     }
-                    circle.setRadius(20);
-
-                    WebView webView = new WebView();
-                    webView.getEngine().loadContent(message.getContent());
-                    webView.setMaxSize(400, 100);
-
-                    hBox.getChildren().addAll(circle, webView);
-                    setGraphic(hBox);
                 } else {
                     setGraphic(null);
                 }

@@ -113,13 +113,14 @@ public class SingleChatViewController implements Initializable {
                         webView.getEngine().loadContent(message.getContent());
                         webView.setMaxSize(400, 100);
 
-                        hBox.setAlignment(pos);
                         if (pos == Pos.CENTER_RIGHT) {
                             hBox.getChildren().addAll(webView, circle);
                         } else {
                             hBox.getChildren().addAll(circle, webView);
                         }
+                        hBox.setAlignment(pos);
                         setGraphic(hBox);
+                        singleChatMessagesLv.scrollTo(singleChatMessagesLv.getItems().size() - 1);
                     } catch (RemoteException e) {
                         e.printStackTrace();
                     }
