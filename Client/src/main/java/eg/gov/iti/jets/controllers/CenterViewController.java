@@ -1,13 +1,8 @@
 package eg.gov.iti.jets.controllers;
 
-import javafx.event.Event;
-import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
-import javafx.scene.control.Tab;
-import javafx.scene.control.TabPane;
-import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.Pane;
 
@@ -18,8 +13,9 @@ public class CenterViewController {
     private static CenterViewController instance;
     @FXML
     public BorderPane centerViewBp;
-    @FXML
+    /*@FXML
     private TabPane chatsTp;//chatsTp
+     */
     ContactInfoViewController contactInfoViewController;
     GroupInfoViewController groupInfoViewController;
     SingleChatViewController singleChatViewController = SingleChatViewController.getInstance();
@@ -40,10 +36,13 @@ public class CenterViewController {
             singleChatViewController = centerViewFxmlLoader.getController();
             singleChatViewController.setController(singleChatViewController);
             singleChatViewController.setSingleChatMessages(singleChatId);
-            Tab tab = new Tab(Integer.toString(singleChatId));
+            centerViewBp.setCenter(singleChatView);
+            //Tab tab = new Tab(Integer.toString(singleChatId));
             Pane pane = loadContactView();
+            RightViewController.getInstance().rightViewBp.setCenter(null);
+            RightViewController.getInstance().rightViewBp.setCenter(pane);
             contactInfoViewController.setContactInfo(singleChatId);
-            tab.setOnClosed(new EventHandler<Event>() {
+            /*tab.setOnClosed(new EventHandler<Event>() {
                 @Override
                 public void handle(Event arg0) {
                     RightViewController.getInstance().rightViewBp.setCenter(null);
@@ -66,7 +65,7 @@ public class CenterViewController {
                 public void handle(Event arg0) {
                     RightViewController.getInstance().rightViewBp.setCenter(pane);
                 }
-            });
+            });*/
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -106,7 +105,7 @@ public class CenterViewController {
         return paneGroup;
     }
 
-    public void addGroupChat(int groupChatId) {
+    public void displayGroupChat(int groupChatId) {
         this.groupChatId = groupChatId;
         try {
             FXMLLoader centerViewFxmlLoader = new FXMLLoader(getClass().getResource("/views/GroupChatView.fxml"));
@@ -114,9 +113,13 @@ public class CenterViewController {
             GroupChatViewController groupChatViewController = centerViewFxmlLoader.getController();
             groupChatViewController.setController(groupChatViewController);
             groupChatViewController.setGroupChatMessages(groupChatId);
+            centerViewBp.setCenter(groupChatView);
             Pane groupPane = loadGroupContactView();
             groupInfoViewController.setGroupInfo(groupChatId);
-            Tab tab = new Tab(Integer.toString(groupChatId));
+            RightViewController.getInstance().rightViewBp.setCenter(null);
+            RightViewController.getInstance().rightViewBp.setCenter(groupPane);
+
+            /*Tab tab = new Tab(Integer.toString(groupChatId));
             tab.setOnClosed(new EventHandler<Event>() {
                 @Override
                 public void handle(Event event) {
@@ -143,7 +146,7 @@ public class CenterViewController {
                     RightViewController.getInstance().rightViewBp.setCenter(groupPane);
 
                 }
-            });
+            });*/
         } catch (IOException e) {
             e.printStackTrace();
         }

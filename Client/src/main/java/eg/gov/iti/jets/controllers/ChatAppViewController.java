@@ -58,32 +58,10 @@ public class ChatAppViewController implements Initializable {
     }
 
     public void openGroupChat(int groupChatId) {
-        centerViewController.addGroupChat(groupChatId);
+        centerViewController.displayGroupChat(groupChatId);
     }
 
     public void setController(ChatAppViewController chatAppViewController) {
-        this.chatAppViewController = chatAppViewController;
+        ChatAppViewController.chatAppViewController = chatAppViewController;
     }
-
-    //TODO:REMOVE DTO FROM IMPLEMENTATION
-    /*public void displayNewGroup(GroupDto groupDto) {
-        leftViewController.addNewGroup(groupDto);
-    }
-
-    public void displayRelationship(UserDto user) {
-        leftViewController.addContact(user);
-    }
-
-    public void displayMsg(String hi_hi) {
-        System.out.println(hi_hi);
-    }
-
-    public void loggedIn(UserDto user) {
-        leftViewController.addLoggedIn(user);
-    }
-
-    public void loggedOut(UserDto user) {
-        leftViewController.removeLoggedOut(user);
-    }
-*/
 }

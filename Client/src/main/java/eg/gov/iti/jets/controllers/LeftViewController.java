@@ -120,6 +120,7 @@ public class LeftViewController implements Initializable {
     public void updateGroupChat(int groupChatMessageId) {
         try {
             GroupChatMessage groupChatMessage = RMIConnection.getGroupChatMessageDao().getGroupChatMessage(groupChatMessageId);
+
             int groupChatId = groupChatMessage.getGroupChatId();
             int selectedGroupChatId = groupChatsLv.getSelectionModel().getSelectedItem().getId();
             System.out.println("inside leftViewController =>> updateGroupChat" + selectedGroupChatId);
@@ -459,7 +460,6 @@ public class LeftViewController implements Initializable {
     @FXML
     void handleSingleChatSelection(MouseEvent event) {
         SingleChat singleChat = singleChatsLv.getSelectionModel().getSelectedItem();
-
         if (singleChat != null) {
             ListCell<SingleChat> singleChatListCell = singleChatListCellMap.get(singleChat.getId());
             singleChatListCell.setStyle("-fx-background-color: #ffff");
@@ -473,7 +473,6 @@ public class LeftViewController implements Initializable {
         if (groupChat != null) {
             System.out.println("inside handleGroupChatSelection " + groupChat.toString());
             ClientStageCoordinator.getInstance().openNewGroupChat(groupChat.getId());
-
         }
     }
 

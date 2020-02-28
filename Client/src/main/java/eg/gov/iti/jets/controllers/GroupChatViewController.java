@@ -30,7 +30,7 @@ public class GroupChatViewController {
     }
 
     public void setController(GroupChatViewController groupChatViewController) {
-        this.groupChatViewController = groupChatViewController;
+        GroupChatViewController.groupChatViewController = groupChatViewController;
     }
 
     @FXML
@@ -43,9 +43,10 @@ public class GroupChatViewController {
         try {
             this.groupChatId = groupChatId;
             this.groupChatId = groupChatId;
-            updateGroupChat();
             List<GroupChatMessage> groupChatMessages = RMIConnection.getGroupChatDao().getGroupChatMessages(groupChatId);
-            groupChatMessagesLv.setItems(FXCollections.observableList(groupChatMessages));
+            if (groupChatMessages != null)
+                groupChatMessagesLv.setItems(FXCollections.observableList(groupChatMessages));
+            //updateGroupChat();
         } catch (RemoteException e) {
             e.printStackTrace();
         }

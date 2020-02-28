@@ -62,7 +62,7 @@ public class GroupInfoViewController implements Initializable {
     }
 
     public void setController(GroupInfoViewController groupInfoViewController) {
-        this.groupInfoViewController = groupInfoViewController;
+        GroupInfoViewController.groupInfoViewController = groupInfoViewController;
     }
 
     @Override
@@ -162,15 +162,17 @@ public class GroupInfoViewController implements Initializable {
                         }
                         //   System.out.println("inside Right view cell ");
                         //  Image imageForTasting = ImageUtiles.fromBytesToImage(item.getGroupImageBytes());
-                        Image imageForTasting = new Image("images/chat-circle-blue-512.png");
-                        if (imageForTasting != null) {
-                            Circle imageCircle = new Circle();
+                        Circle imageCircle = new Circle();
+                        try {
+                            Image imageForTasting = new Image("images/chat-circle-blue-512.png");
                             imageCircle.setFill(new ImagePattern(imageForTasting));
-                            imageCircle.setRadius(20);
-                            imageCircle.setStroke(Color.GREEN);
-                            imageCircle.setStrokeWidth(3);
-                            setGraphic(imageCircle);
+                        } catch (Exception e) {
+                            System.out.println("Group Chat Icon not loaded.");
                         }
+                        imageCircle.setRadius(20);
+                        imageCircle.setStroke(Color.GREEN);
+                        imageCircle.setStrokeWidth(3);
+                        setGraphic(imageCircle);
                     }
                 }
             });
