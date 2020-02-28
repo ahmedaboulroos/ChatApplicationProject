@@ -354,12 +354,12 @@ public class LeftViewController implements Initializable {
                                     HBox hBox = new HBox();
                                     hBox.setStyle("-fx-background-color: transparent  ;" +
                                             "-fx-padding: 1;" + "-fx-border-style: solid inside;"
-                                            + "-fx-border-width: 3;" + "-fx-border-insets: 1;"
+                                            + "-fx-border-width: 4;" + "-fx-border-insets: 1;"
                                             + "-fx-border-radius: 2;" + "-fx-border-color: white;");
                                     Circle imageCircle = new Circle();
                                     try {
-                                        Image imageForTasting = new Image("images/chat-circle-blue-512.png");
-                                        imageCircle.setFill(new ImagePattern(imageForTasting));
+                                        // Image imageForTasting = new Image("images/chat-circle-blue-512.png");
+                                        imageCircle.setFill(new ImagePattern(ImageUtiles.fromBytesToImage(user.getProfileImage())));
                                     } catch (Exception e) {
                                         System.out.println("Single Chat Icon not loaded.");
                                     }
