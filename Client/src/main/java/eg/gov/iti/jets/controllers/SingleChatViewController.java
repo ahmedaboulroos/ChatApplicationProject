@@ -26,6 +26,8 @@ import javafx.scene.web.WebView;
 
 import java.net.URL;
 import java.rmi.RemoteException;
+import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.ResourceBundle;
 
@@ -69,10 +71,6 @@ public class SingleChatViewController implements Initializable {
         updateSingleChat();
     }
 
-    @FXML
-    void handleSaveSessionBtn(ActionEvent event) {
-
-    }
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
@@ -165,4 +163,36 @@ public class SingleChatViewController implements Initializable {
     public void addSingleChatMessage(SingleChatMessage singleChatMessage) {
         Platform.runLater(() -> singleChatMessagesLv.getItems().add(singleChatMessage));
     }
+
+    @FXML
+    void handleSaveSessionBtn(ActionEvent event) {
+        List<SingleChatMessage> singleChatMessageList = getSingleChatMessages(singleChatId);
+        System.out.println(singleChatMessageList);
+    }
+
+    public List<SingleChatMessage> getSingleChatMessages(int singleChatId) {
+        List<SingleChatMessage> singleChatMessagesList = null;
+        List<SingleChatMessage> singleChatMessageFilteredList = new ArrayList<>();
+        try {
+            LocalDateTime loggedInTime = ClientStageCoordinator.getInstance().loggedInTime;
+            singleChatMessagesList = singleChatDao.getSingleChatMessages(singleChatId);
+            if (singleChatMessagesList.size() > 0) {
+                for (SingleChatMessage singleChatMessage : singleChatMessagesList) {
+                    if (singleChatMessage.getMessageDateTime().isAfter(loggedInTime)) {
+                        System.out.println("single chat message " + singleChatMessage + "\n singlechat message time stamp " + singleChatMessage.getMessageDateTime());
+                        System.out.println("loggedInTime" + loggedInTime);
+                        if (singleChatMessage != null) {
+                            System.out.println(singleChatMessage);
+                            singleChatMessageFilteredList.add(singleChatMessage);
+                        }
+
+                    }
+                }
+            }
+        } catch (RemoteException e) {
+            e.printStackTrace();
+        }
+        return singleChatMessageFilteredList;
+    }
+
 }
