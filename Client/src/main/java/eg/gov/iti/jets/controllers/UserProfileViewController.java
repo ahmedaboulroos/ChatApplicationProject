@@ -6,14 +6,18 @@ import eg.gov.iti.jets.models.entities.Announcement;
 import eg.gov.iti.jets.models.network.RMIConnection;
 import javafx.collections.FXCollections;
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
+import javafx.scene.Parent;
 import javafx.scene.control.SelectionMode;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.input.MouseEvent;
+import javafx.scene.layout.AnchorPane;
 import javafx.scene.web.WebView;
 
+import java.io.IOException;
 import java.net.URL;
 import java.rmi.RemoteException;
 import java.util.ArrayList;
@@ -34,7 +38,8 @@ public class UserProfileViewController implements Initializable {
     private TableColumn<AnnouncementsTableModel, String> announcementTimestamp;
     @FXML
     private WebView contentWv;
-
+    @FXML
+    private AnchorPane profileViewAP;
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
@@ -45,6 +50,7 @@ public class UserProfileViewController implements Initializable {
             announcementId.setCellValueFactory(new PropertyValueFactory<AnnouncementsTableModel, Integer>("announcementId"));
             announcementTitle.setCellValueFactory(new PropertyValueFactory<AnnouncementsTableModel, String>("announcementTitle"));
             announcementTimestamp.setCellValueFactory(new PropertyValueFactory<AnnouncementsTableModel, String>("announcementTimestamp"));
+            addProfileIntoAncorPane();//
         } catch (RemoteException e) {
             e.printStackTrace();
         }
@@ -71,4 +77,16 @@ public class UserProfileViewController implements Initializable {
         }
     }
 
+    public void addProfileIntoAncorPane() {
+
+        try {
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/views/EditProfileView.fxml."));
+            Parent editProfileView = loader.load();
+            //EditProfileViewController editProfileViewController  = loader.getController();
+            profileViewAP.getChildren().add(editProfileView);
+
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
 }
