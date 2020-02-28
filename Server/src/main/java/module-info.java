@@ -30,7 +30,6 @@ module Server {
     opens eg.gov.iti.jets;
     opens eg.gov.iti.jets.controllers;
     opens eg.gov.iti.jets.models.entities;
-    opens eg.gov.iti.jets.models.dto;
     opens eg.gov.iti.jets.models.dao.interfaces;
 
     exports eg.gov.iti.jets.models.dao.interfaces to java.rmi;
