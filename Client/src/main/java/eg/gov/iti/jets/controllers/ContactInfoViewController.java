@@ -100,11 +100,16 @@ public class ContactInfoViewController implements Initializable {
             } else {
                 UserName.setText(userTwo.getPhoneNumber());
             }
-            userGenderLb.setText(userTwo.getUserGender().toString());
-            userStatusLb.setText(userTwo.getUserStatus().toString());
-            emailLb.setText(userTwo.getEmail());
-            countryLb.setText(userTwo.getCountry());
-            bioLb.setText(userTwo.getBio());
+            if (userTwo.getUserGender() != null)
+                userGenderLb.setText(userTwo.getUserGender().toString());
+            if (userTwo.getUserStatus() != null)
+                userStatusLb.setText(userTwo.getUserStatus().toString());
+            if (userTwo.getEmail() != null)
+                emailLb.setText(userTwo.getEmail());
+            if (userTwo.getCountry() != null)
+                countryLb.setText(userTwo.getCountry());
+            if (userTwo.getBio() != null)
+                bioLb.setText(userTwo.getBio());
 
         } catch (RemoteException e) {
             e.printStackTrace();

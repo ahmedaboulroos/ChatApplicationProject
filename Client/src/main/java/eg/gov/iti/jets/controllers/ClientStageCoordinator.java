@@ -9,7 +9,6 @@ import javafx.scene.Scene;
 import javafx.scene.paint.Color;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
-import javafx.stage.StageStyle;
 import javafx.util.Duration;
 import org.controlsfx.control.Notifications;
 
@@ -60,7 +59,7 @@ public class ClientStageCoordinator {
         Scene scene = new Scene(loginView);
         scene.setFill(Color.TRANSPARENT);
         this.stage.setScene(scene);
-        this.stage.initStyle(StageStyle.TRANSPARENT);
+        //this.stage.initStyle(StageStyle.TRANSPARENT);
         this.stage.setScene(scene);
         this.stage.setTitle("Login");
         this.stage.show();

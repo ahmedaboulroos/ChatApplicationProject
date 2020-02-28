@@ -162,7 +162,11 @@ public class LeftViewController implements Initializable {
                     if (user.getProfileImage() != null) {
                         image = new Image(new ByteArrayInputStream(user.getProfileImage()));
                     } else {
-                        //image = new Image(getClass().getClassLoader().getResource("images/chat-circle-blue-512.png").toExternalForm());
+                        try {
+                            image = new Image(getClass().getClassLoader().getResource("images/chat-circle-blue-512.png").toExternalForm());
+                        } catch (Exception e) {
+                            System.out.println("Contact Friend Icon not loaded.");
+                        }
                     }
                     ImageView imageView = new ImageView(image);
                     imageView.setFitHeight(50);
@@ -193,11 +197,7 @@ public class LeftViewController implements Initializable {
 
                         }
                     });
-
-
                     ///////////////////////////////////////////////////////
-
-
                 } else {
                     setGraphic(null);
                 }
@@ -250,7 +250,6 @@ public class LeftViewController implements Initializable {
                         for (ContactsGroupMembership m : memberships)
                             contactsGroupLv.getItems().add(m);
                     }
-
                 }
             } else {
                 System.out.println("No user groups");
@@ -279,7 +278,12 @@ public class LeftViewController implements Initializable {
                         if (user.getProfileImage() != null) {
                             image = new Image(new ByteArrayInputStream(user.getProfileImage()));
                         } else {
-                            //image = new Image(getClass().getClassLoader().getResource("images/chat-circle-blue-512.png").toString());
+                            try {
+                                image = new Image(getClass().getClassLoader().getResource("images/chat-circle-blue-512.png").toString());
+
+                            } catch (Exception e) {
+                                System.out.println("Group Contact Icon not loaded.");
+                            }
                         }
                         ImageView imageView = new ImageView(image);
                         imageView.setFitHeight(50);
@@ -352,8 +356,12 @@ public class LeftViewController implements Initializable {
                                             + "-fx-border-width: 3;" + "-fx-border-insets: 1;"
                                             + "-fx-border-radius: 2;" + "-fx-border-color: white;");
                                     Circle imageCircle = new Circle();
-                                    Image imageForTasting = new Image("images/chat-circle-blue-512.png");
-                                    imageCircle.setFill(new ImagePattern(imageForTasting));
+                                    try {
+                                        Image imageForTasting = new Image("images/chat-circle-blue-512.png");
+                                        imageCircle.setFill(new ImagePattern(imageForTasting));
+                                    } catch (Exception e) {
+                                        System.out.println("Single Chat Icon not loaded.");
+                                    }
                                     imageCircle.setRadius(20);
                                     imageCircle.setStroke(Color.NAVY);
                                     imageCircle.setStrokeWidth(1);
@@ -424,15 +432,17 @@ public class LeftViewController implements Initializable {
                         if (item != null) {
                             setText(item.getTitle());
                             System.out.println("inside left view cell fact groupChat.getTitle() " + item.getTitle());
-                            Image imageForTasting = ImageUtiles.fromBytesToImage(item.getGroupImageBytes());
-                            if (imageForTasting != null) {
-                                Circle imageCircle = new Circle();
+                            Circle imageCircle = new Circle();
+                            try {
+                                Image imageForTasting = ImageUtiles.fromBytesToImage(item.getGroupImageBytes());
                                 imageCircle.setFill(new ImagePattern(imageForTasting));
-                                imageCircle.setRadius(20);
-                                imageCircle.setStroke(Color.GREEN);
-                                imageCircle.setStrokeWidth(3);
-                                setGraphic(imageCircle);
+                            } catch (Exception e) {
+                                System.out.println("Group Chat Icon not loaded.");
                             }
+                            imageCircle.setRadius(20);
+                            imageCircle.setStroke(Color.GREEN);
+                            imageCircle.setStrokeWidth(3);
+                            setGraphic(imageCircle);
                         } else {
                             setGraphic(null);
                         }
