@@ -8,7 +8,8 @@ import eg.gov.iti.jets.models.entities.GroupChat;
 import eg.gov.iti.jets.models.entities.GroupChatMembership;
 import eg.gov.iti.jets.models.entities.User;
 import eg.gov.iti.jets.models.network.RMIConnection;
-import javafx.application.Platform;
+import javafx.beans.property.ListProperty;
+import javafx.beans.property.SimpleListProperty;
 import javafx.collections.FXCollections;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -35,7 +36,9 @@ public class GroupInfoViewController implements Initializable {
     private static GroupInfoViewController groupInfoViewController;
     AddMembershipGroupController addMembershipGroupController;
     List<GroupChatMembership> groupChatMemberships = null;
+
     GroupChat groupChat;
+    protected ListProperty<GroupChatMembership> listProperty = new SimpleListProperty<>();
     @FXML
     private Label gname;
     @FXML
@@ -80,10 +83,12 @@ public class GroupInfoViewController implements Initializable {
             addMembershipGroupController.setController(addMembershipGroupController);
             addMembershipGroupController.setGroupChatId(groupChatId);
             addMembershipGroupController.setRefresh(membershipListView);
+            addMembershipGroupController.setClear(groupChatMemberships);
             Stage stage = new Stage();
             Scene scene = new Scene(addContactView);
             stage.setScene(scene);
             stage.setTitle("Add Contact");
+            //  addMembershipGroupController.setGroupInfoViewController(this);
             stage.show();
         } catch (IOException e) {
             e.printStackTrace();
@@ -106,7 +111,7 @@ public class GroupInfoViewController implements Initializable {
             membershipListView.getSelectionModel().getSelectedItem();
             try {
                 RMIConnection.getGroupChatMembershipDao().deleteGroupChatMembership(membershipListView.getSelectionModel().getSelectedItem().getId());
-                membershipListView.refresh();
+
             } catch (RemoteException e) {
                 e.printStackTrace();
             }
@@ -136,8 +141,6 @@ public class GroupInfoViewController implements Initializable {
 
     public void membershipList() {
         try {
-
-
             // System.out.println(groupChat.getId()+"groupchat"+"group is here"+groupChatId);
             groupChatMemberships = groupChatDao.getGroupChatMemberships(groupChatId);
             System.out.println(groupChatMemberships + "nour membership");
@@ -145,8 +148,10 @@ public class GroupInfoViewController implements Initializable {
             e.printStackTrace();
         }
         if (groupChatMemberships != null) {
-
-            Platform.runLater(() -> membershipListView.setItems(FXCollections.observableList(groupChatMemberships)));
+            membershipListView.setItems(FXCollections.observableList(groupChatMemberships));
+            // listProperty.set(FXCollections.observableArrayList(groupChatMemberships));
+            //   membershipListView.itemsProperty().bindBidirectional(listProperty);
+            //     membershipListView.setItems(listProperty);
             membershipListView.setCellFactory(groupChatsLv -> new ListCell<GroupChatMembership>() {
                 @Override
                 public void updateItem(GroupChatMembership item, boolean empty) {
@@ -180,6 +185,14 @@ public class GroupInfoViewController implements Initializable {
             System.out.println("No Group chats for this user");
         }
     }
-
-
 }
+
+/*
+    public void addInList(GroupChatMembership groupChatMembership){
+        listProperty.add(groupChatMembership);
+        membershipListView.refresh();
+
+    }
+*/
+
+
