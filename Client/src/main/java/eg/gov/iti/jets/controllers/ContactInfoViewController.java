@@ -82,7 +82,7 @@ public class ContactInfoViewController implements Initializable {
             singleChatDao.deleteSingleChat(singleChatId);
             LeftViewController.getInstance().loadSingleChats();
             RightViewController.getInstance().rightViewBp.setCenter(null);
-            CenterViewController.getInstance().centerViewBp.setCenter(null);
+//            CenterViewController.getInstance().centerViewBp.setCenter(null);
         } catch (RemoteException e) {
             e.printStackTrace();
         }

@@ -7,6 +7,7 @@ import eg.gov.iti.jets.models.entities.Relationship;
 import eg.gov.iti.jets.models.entities.SingleChat;
 import eg.gov.iti.jets.models.entities.User;
 import eg.gov.iti.jets.models.entities.enums.RelationshipStatus;
+import eg.gov.iti.jets.models.imageutiles.ImageUtiles;
 import eg.gov.iti.jets.models.network.RMIConnection;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -14,9 +15,9 @@ import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.geometry.Pos;
+import javafx.scene.Node;
 import javafx.scene.control.Label;
 import javafx.scene.control.ListCell;
-import javafx.scene.image.Image;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.Region;
 import javafx.scene.layout.StackPane;
@@ -68,6 +69,7 @@ public class AddSingleChatViewController implements Initializable {
             //System.out.println(singleChat + "my singleChat");
             if (!isSingleChatCreated(userTwoId, this.currentUser.getId())) {
                 singleChatDao.createSingleChat(singleChat);
+                ((Node) (event.getSource())).getScene().getWindow().hide();
             } else {
                 errorLabel.setText("this is chat created before");
                 //  System.out.println("your single chat with this friend created before");
@@ -79,13 +81,17 @@ public class AddSingleChatViewController implements Initializable {
 
     public boolean isSingleChatCreated(int userTwoId, int currentUserId) {
         try {
+
             List<SingleChat> singleChatList = RMIConnection.getUserDao().getUserSingleChats(currentUserId);
             //System.out.println(singleChatList.size());
-            for (int i = 0; i < singleChatList.size(); i++) {
-                if (singleChatList.get(i).getUserTwoId() == userTwoId || singleChatList.get(i).getUserOneId() == userTwoId) {
-                    return true;
+            if (singleChatList != null) {
+                for (int i = 0; i < singleChatList.size(); i++) {
+                    if (singleChatList.get(i).getUserTwoId() == userTwoId || singleChatList.get(i).getUserOneId() == userTwoId) {
+                        return true;
+                    }
                 }
             }
+
 
         } catch (RemoteException e) {
             e.printStackTrace();
@@ -111,8 +117,9 @@ public class AddSingleChatViewController implements Initializable {
                             + "-fx-border-width: 4;" + "-fx-border-insets: 1;"
                             + "-fx-border-radius: 2;" + "-fx-border-color: white;");
                     Circle imageCircle = new Circle();
-                    Image imageForTasting = new Image("images/chat-circle-blue-512.png");
-                    imageCircle.setFill(new ImagePattern(imageForTasting));
+                    //Image imageForTasting = new Image("images/chat-circle-blue-512.png");
+
+                    imageCircle.setFill(new ImagePattern(ImageUtiles.fromBytesToImage(user.getProfileImage())));
                     imageCircle.setRadius(20);
                     imageCircle.setStroke(Color.NAVY);
                     imageCircle.setStrokeWidth(1);
