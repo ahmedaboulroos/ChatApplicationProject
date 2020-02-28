@@ -67,6 +67,16 @@ public class MainServerViewController implements Initializable {
             Parent welcomeScene = FXMLLoader.load(getClass().getResource("/views/WelcomeView.fxml"));
             welcomeTab.setContent(welcomeScene);
             startService();
+
+            Parent dashboardView = FXMLLoader.load(getClass().getResource("/views/DashboardView.fxml"));
+            dashboardTab.setContent(dashboardView);
+
+            Parent usersScene = FXMLLoader.load(getClass().getResource("/views/UsersView.fxml"));
+            usersTab.setContent(usersScene);
+
+            Parent announcementScene = FXMLLoader.load(getClass().getResource("/views/AnnouncementsView.fxml"));
+            announcementsTab.setContent(announcementScene);
+
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -74,38 +84,20 @@ public class MainServerViewController implements Initializable {
 
     @FXML
     void handleDashboardBtnClick(ActionEvent event) {
-        try {
-            Parent dashboardView = FXMLLoader.load(getClass().getResource("/views/DashboardView.fxml"));
-            dashboardTab.setContent(dashboardView);
-            tabPane.getSelectionModel().select(dashboardTab);
-            title.setText("Dashboard");
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
+        tabPane.getSelectionModel().select(dashboardTab);
+        title.setText("Dashboard");
     }
 
     @FXML
     void handleUsersBtnClick(ActionEvent event) {
-        try {
-            Parent usersScene = FXMLLoader.load(getClass().getResource("/views/UsersView.fxml"));
-            usersTab.setContent(usersScene);
-            tabPane.getSelectionModel().select(usersTab);
-            title.setText("System Users");
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
+        tabPane.getSelectionModel().select(usersTab);
+        title.setText("System Users");
     }
 
     @FXML
     void handleAnnouncementsBtnClick(ActionEvent event) {
-        try {
-            Parent announcementScene = FXMLLoader.load(getClass().getResource("/views/AnnouncementsView.fxml"));
-            announcementsTab.setContent(announcementScene);
-            tabPane.getSelectionModel().select(announcementsTab);
-            title.setText("Announcements");
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
+        tabPane.getSelectionModel().select(announcementsTab);
+        title.setText("Announcements");
     }
 
     @FXML
