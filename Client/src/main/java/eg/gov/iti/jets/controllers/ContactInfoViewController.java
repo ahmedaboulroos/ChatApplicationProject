@@ -5,11 +5,14 @@ import eg.gov.iti.jets.models.dao.interfaces.SingleChatDao;
 import eg.gov.iti.jets.models.dao.interfaces.UserDao;
 import eg.gov.iti.jets.models.entities.SingleChat;
 import eg.gov.iti.jets.models.entities.User;
+import eg.gov.iti.jets.models.imageutiles.ImageUtiles;
 import eg.gov.iti.jets.models.network.RMIConnection;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.Label;
+import javafx.scene.paint.Color;
+import javafx.scene.paint.ImagePattern;
 import javafx.scene.shape.Circle;
 import org.kordamp.ikonli.javafx.FontIcon;
 
@@ -21,6 +24,7 @@ public class ContactInfoViewController implements Initializable {
     private static ContactInfoViewController contactInfoViewController;
     private UserDao userDao = RMIConnection.getUserDao();
     private SingleChatDao singleChatDao = RMIConnection.getSingleChatDao();
+    private User currentUser = ClientStageCoordinator.getInstance().currentUser;
     @FXML
     private Circle imageCircle;
 
@@ -71,11 +75,6 @@ public class ContactInfoViewController implements Initializable {
     }
 
     @FXML
-    void handleOnBlockBtn(ActionEvent event) {
-
-    }
-
-    @FXML
     void handleOnDeleteChat(ActionEvent event) {
         try {
             System.out.println("singleChatId that deleted" + singleChatId);
@@ -92,8 +91,23 @@ public class ContactInfoViewController implements Initializable {
         this.singleChatId = singleChatId;
         try {
             System.out.println(singleChatId);
+            User userTwo = null;
             SingleChat singleChat = singleChatDao.getSingleChat(singleChatId);
-            User userTwo = userDao.getUser(singleChat.getUserTwoId());
+            if (currentUser.getId() == singleChat.getUserOneId()) {
+                userTwo = userDao.getUser(singleChat.getUserTwoId());
+            } else {
+                userTwo = userDao.getUser(singleChat.getUserOneId());
+            }
+
+            try {
+                // Image imageForTasting = new Image("images/chat-circle-blue-512.png");
+                imageCircle.setFill(new ImagePattern(ImageUtiles.fromBytesToImage(userTwo.getProfileImage())));
+            } catch (Exception e) {
+                System.out.println("ContactInfo Icon not loaded.");
+            }
+            //imageCircle.setRadius(20);
+            imageCircle.setStroke(Color.NAVY);
+            imageCircle.setStrokeWidth(1);
             System.out.println(singleChat.getUserTwoId());
             if (userTwo.getUsername() != null) {
                 UserName.setText(userTwo.getUsername());

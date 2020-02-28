@@ -39,6 +39,7 @@ import java.io.ByteArrayInputStream;
 import java.io.IOException;
 import java.net.URL;
 import java.rmi.RemoteException;
+import java.time.LocalDateTime;
 import java.util.*;
 
 public class LeftViewController implements Initializable {
@@ -354,12 +355,12 @@ public class LeftViewController implements Initializable {
                                     HBox hBox = new HBox();
                                     hBox.setStyle("-fx-background-color: transparent  ;" +
                                             "-fx-padding: 1;" + "-fx-border-style: solid inside;"
-                                            + "-fx-border-width: 3;" + "-fx-border-insets: 1;"
+                                            + "-fx-border-width: 4;" + "-fx-border-insets: 1;"
                                             + "-fx-border-radius: 2;" + "-fx-border-color: white;");
                                     Circle imageCircle = new Circle();
                                     try {
-                                        Image imageForTasting = new Image("images/chat-circle-blue-512.png");
-                                        imageCircle.setFill(new ImagePattern(imageForTasting));
+                                        // Image imageForTasting = new Image("images/chat-circle-blue-512.png");
+                                        imageCircle.setFill(new ImagePattern(ImageUtiles.fromBytesToImage(user.getProfileImage())));
                                     } catch (Exception e) {
                                         System.out.println("Single Chat Icon not loaded.");
                                     }
@@ -630,15 +631,23 @@ public class LeftViewController implements Initializable {
     public List<SingleChatMessage> getSingleChatMessages(int currentUserId, int singleChatId) {
         List<SingleChatMessage> singleChatMessagesList = null;
         List<SingleChatMessage> singleChatMessageFilteredList = null;
+
         try {
+            LocalDateTime loggedInTime = ClientStageCoordinator.getInstance().loggedInTime;
             singleChatMessagesList = singleChatDao.getSingleChatMessages(singleChatId);
             if (singleChatMessagesList.size() > 0) {
-
+                for (SingleChatMessage singleChatMessage : singleChatMessagesList) {
+                    if (singleChatMessage.getMessageDateTime().isAfter(loggedInTime)) {
+                        System.out.println("single chat message " + singleChatMessage + "\n singlechat message time stamp " + singleChatMessage.getMessageDateTime());
+                        System.out.println("loggedInTime" + loggedInTime);
+                        singleChatMessageFilteredList.add(singleChatMessage);
+                    }
+                }
             }
         } catch (RemoteException e) {
             e.printStackTrace();
         }
-        return singleChatMessagesList;
+        return singleChatMessageFilteredList;
     }
 
 }

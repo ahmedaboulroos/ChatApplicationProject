@@ -21,6 +21,7 @@ import java.net.MalformedURLException;
 import java.net.URL;
 import java.rmi.RemoteException;
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.ResourceBundle;
 
 public class SignUpController implements Initializable {
@@ -76,6 +77,8 @@ public class SignUpController implements Initializable {
                 temp.setId(userId);
                 ClientStageCoordinator coordinator = ClientStageCoordinator.getInstance();
                 coordinator.currentUser = temp;
+                coordinator.loggedInTime = LocalDateTime.now();
+                System.out.println("Singn up time stamp " + coordinator.loggedInTime);
                 coordinator.startMainChatAppScene();
 
             } catch (RemoteException e) {

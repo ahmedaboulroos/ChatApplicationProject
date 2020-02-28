@@ -26,6 +26,7 @@ import javax.xml.transform.stream.StreamResult;
 import java.io.File;
 import java.io.IOException;
 import java.net.URL;
+import java.time.LocalDateTime;
 import java.util.ResourceBundle;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -65,7 +66,10 @@ public class SignInController implements Initializable {
             UserDao userDao = RMIConnection.getUserDao();
             User user = userDao.getUser(phoneNumberTf.getText(), passwordPf.getText());
             if (user != null) {
-                ClientStageCoordinator.getInstance().currentUser = user;
+                ClientStageCoordinator coordinator = ClientStageCoordinator.getInstance();
+                coordinator.currentUser = user;
+                coordinator.loggedInTime = LocalDateTime.now();
+                System.out.println("Singn In time stamp " + coordinator.loggedInTime);
                 ClientStageCoordinator.getInstance().startMainChatAppScene();
                 RMIConnection.getServerService().login(user.getId(), ClientService.getInstance());
                 if (rememberMeCb.isSelected()) {
