@@ -45,7 +45,7 @@ public class IntroController implements Initializable {
     public void initialize(URL url, ResourceBundle resourceBundle) {
         try {
             circleIcon.setFill(new ImagePattern(
-                    new Image("/main/resources/images/vector-chat-icon.jpg")));
+                    new Image("images/vector-chat-icon.jpg")));
         } catch (Exception e) {
             System.out.println("Intro Icon did not load");
         }
