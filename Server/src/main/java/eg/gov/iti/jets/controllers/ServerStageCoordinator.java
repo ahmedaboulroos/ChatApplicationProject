@@ -8,7 +8,7 @@ import javafx.stage.Stage;
 import java.io.IOException;
 
 public class ServerStageCoordinator {
-    private Stage stage;
+    private static Stage stage;
 
     public ServerStageCoordinator(Stage stage) {
         this.stage = stage;
@@ -37,4 +37,8 @@ public class ServerStageCoordinator {
 //        stage.show();
 //    }
 
+
+    public static Stage getStage() {
+        return stage;
+    }
 }
