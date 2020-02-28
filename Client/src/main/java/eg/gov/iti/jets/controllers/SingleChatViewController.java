@@ -18,6 +18,7 @@ import javafx.geometry.Pos;
 import javafx.scene.control.Label;
 import javafx.scene.control.ListView;
 import javafx.scene.image.Image;
+import javafx.scene.input.KeyCode;
 import javafx.scene.layout.HBox;
 import javafx.scene.paint.ImagePattern;
 import javafx.scene.shape.Circle;
@@ -76,6 +77,11 @@ public class SingleChatViewController implements Initializable {
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
+        singleChatMessageHtml.setOnKeyPressed(keyEvent -> {
+            if (keyEvent.getCode() == KeyCode.ENTER && keyEvent.isShiftDown()) {
+                sendMessage();
+            }
+        });
         singleChatMessagesLv.setCellFactory(listViewListCellCallback -> new JFXListCell<>() {
             @Override
             protected void updateItem(SingleChatMessage message, boolean empty) {
@@ -127,6 +133,10 @@ public class SingleChatViewController implements Initializable {
 
     @FXML
     void handleSendBtn(ActionEvent event) {
+        sendMessage();
+    }
+
+    private void sendMessage() {
         try {
             String msg = singleChatMessageHtml.getHtmlText();
             SingleChatMessageDao singleChatDao = RMIConnection.getSingleChatMessageDao();

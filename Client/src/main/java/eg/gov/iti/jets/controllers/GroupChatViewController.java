@@ -17,6 +17,7 @@ import javafx.fxml.Initializable;
 import javafx.scene.control.Label;
 import javafx.scene.control.ListView;
 import javafx.scene.image.Image;
+import javafx.scene.input.KeyCode;
 import javafx.scene.layout.HBox;
 import javafx.scene.paint.ImagePattern;
 import javafx.scene.shape.Circle;
@@ -73,17 +74,7 @@ public class GroupChatViewController implements Initializable {
 
     @FXML
     void handleSendBtn(ActionEvent event) {
-        try {
-            String msg = groupChatMessageHtml.getHtmlText();
-            System.out.println(msg);
-            GroupChatMessageDao groupChatDao = RMIConnection.getGroupChatMessageDao();
-            System.out.println("inside GroupchatViewController ==> this.groupChatId, currentUser.getId(), msg" + this.groupChatId + " " + currentUser.getId() + " " + msg);
-            GroupChatMessage GroupChatMessage = new GroupChatMessage(currentUser.getId(), this.groupChatId, msg);
-            groupChatDao.createGroupChatMessage(GroupChatMessage);
-        } catch (
-                RemoteException e) {
-            e.printStackTrace();
-        }
+        sendMessage();
     }
 
     private void updateGroupChat() {
@@ -123,6 +114,11 @@ public class GroupChatViewController implements Initializable {
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
+        groupChatMessagesLv.setOnKeyPressed(keyEvent -> {
+            if (keyEvent.getCode() == KeyCode.ENTER && keyEvent.isShiftDown()) {
+                sendMessage();
+            }
+        });
         groupChatMessagesLv.setCellFactory(listViewListCellCallback -> new JFXListCell<>() {
             @Override
             protected void updateItem(GroupChatMessage message, boolean empty) {
@@ -151,6 +147,20 @@ public class GroupChatViewController implements Initializable {
                 setText(null);
             }
         });
+    }
+
+    private void sendMessage() {
+        try {
+            String msg = groupChatMessageHtml.getHtmlText();
+            System.out.println(msg);
+            GroupChatMessageDao groupChatDao = RMIConnection.getGroupChatMessageDao();
+            System.out.println("inside GroupchatViewController ==> this.groupChatId, currentUser.getId(), msg" + this.groupChatId + " " + currentUser.getId() + " " + msg);
+            GroupChatMessage GroupChatMessage = new GroupChatMessage(currentUser.getId(), this.groupChatId, msg);
+            groupChatDao.createGroupChatMessage(GroupChatMessage);
+        } catch (
+                RemoteException e) {
+            e.printStackTrace();
+        }
     }
 
 //    public void displayNewGroupChatMessage(int groupChatMessageId) throws RemoteException {
