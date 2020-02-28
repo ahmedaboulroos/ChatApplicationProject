@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<SingleChat>
+    <SingleChatMessage>
+        <singleChatMessageId>123</singleChatMessageId>
+        <userId>2222</userId>
+        <content>GOOD MORNING DUUUUUUUDE</content>
+        <messageTimestamp>2020-01-30T09:00:00</messageTimestamp>
+    </SingleChatMessage>
+    <SingleChatMessage>
+        <singleChatMessageId>123</singleChatMessageId>
+        <userId>2222</userId>
+        <content>Heyyyyy</content>
+        <messageTimestamp>2020-01-30T09:00:00</messageTimestamp>
+    </SingleChatMessage>
+    <SingleChatMessage>
+        <singleChatMessageId>123</singleChatMessageId>
+        <userId>2222</userId>
+        <content>Talk to me :"333</content>
+        <messageTimestamp>2020-01-30T09:00:00</messageTimestamp>
+    </SingleChatMessage>
+</SingleChat>
