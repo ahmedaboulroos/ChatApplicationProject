@@ -13,11 +13,13 @@ import javafx.util.Duration;
 import org.controlsfx.control.Notifications;
 
 import java.io.IOException;
+import java.time.LocalDateTime;
 
 public class ClientStageCoordinator {
 
     private static ClientStageCoordinator instance;
     public User currentUser;
+    LocalDateTime loggedInTime;
     private Stage stage;
     private ChatAppViewController chatAppViewController = ChatAppViewController.getInstance();
 

@@ -3,8 +3,6 @@
 <?import com.jfoenix.controls.JFXButton?>
 <?import javafx.geometry.Insets?>
 <?import javafx.scene.control.*?>
-<?import javafx.scene.image.Image?>
-<?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.*?>
 <?import javafx.scene.shape.Circle?>
 <?import javafx.scene.text.Font?>
@@ -21,12 +19,6 @@
                     <children>
                         <Circle fx:id="imageCircle" fill="WHITE" layoutX="200.0" layoutY="113.0" radius="74.0"
                                 stroke="BLACK" strokeType="INSIDE" strokeWidth="0.0"/>
-                        <ImageView fitHeight="102.0" fitWidth="92.0" layoutX="157.0" layoutY="61.0" pickOnBounds="true"
-                                   preserveRatio="true">
-                            <image>
-                                <Image url="@../images/userInfo.png"/>
-                            </image>
-                        </ImageView>
                         <Label fx:id="UserName" layoutX="13.0" layoutY="196.0" maxHeight="-Infinity"
                                maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="30.0"
                                prefWidth="295.0" text="Reem Monir" textFill="#595555">
@@ -34,9 +26,6 @@
                                 <Font size="18.0"/>
                             </font>
                         </Label>
-                        <JFXButton layoutX="343.0" layoutY="196.0" maxHeight="-Infinity" maxWidth="-Infinity"
-                                   minHeight="-Infinity" minWidth="-Infinity" prefHeight="30.0" prefWidth="30.0"
-                                   textFill="#ffffff00"/>
                     </children>
                 </Pane>
                 <Pane layoutY="267.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity"

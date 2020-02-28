@@ -39,6 +39,7 @@ import java.io.ByteArrayInputStream;
 import java.io.IOException;
 import java.net.URL;
 import java.rmi.RemoteException;
+import java.time.LocalDateTime;
 import java.util.*;
 
 public class LeftViewController implements Initializable {
@@ -630,15 +631,23 @@ public class LeftViewController implements Initializable {
     public List<SingleChatMessage> getSingleChatMessages(int currentUserId, int singleChatId) {
         List<SingleChatMessage> singleChatMessagesList = null;
         List<SingleChatMessage> singleChatMessageFilteredList = null;
+
         try {
+            LocalDateTime loggedInTime = ClientStageCoordinator.getInstance().loggedInTime;
             singleChatMessagesList = singleChatDao.getSingleChatMessages(singleChatId);
             if (singleChatMessagesList.size() > 0) {
-
+                for (SingleChatMessage singleChatMessage : singleChatMessagesList) {
+                    if (singleChatMessage.getMessageDateTime().isAfter(loggedInTime)) {
+                        System.out.println("single chat message " + singleChatMessage + "\n singlechat message time stamp " + singleChatMessage.getMessageDateTime());
+                        System.out.println("loggedInTime" + loggedInTime);
+                        singleChatMessageFilteredList.add(singleChatMessage);
+                    }
+                }
             }
         } catch (RemoteException e) {
             e.printStackTrace();
         }
-        return singleChatMessagesList;
+        return singleChatMessageFilteredList;
     }
 
 }
