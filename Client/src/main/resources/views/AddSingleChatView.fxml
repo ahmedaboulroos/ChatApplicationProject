@@ -16,12 +16,12 @@
                maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="18.0"
                prefWidth="158.0" textAlignment="CENTER" textFill="#f81b1b"/>
         <Label layoutX="24.0" layoutY="28.0" prefHeight="22.0" prefWidth="174.0" text="Choose your Contact"
-               textFill="#2578ca">
+               textFill="WHITE">
             <font>
                 <Font name="Bell MT" size="18.0"/>
             </font>
         </Label>
-        <JFXButton layoutX="318.0" layoutY="360.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity"
+        <JFXButton layoutX="335.0" layoutY="360.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity"
                    minWidth="-Infinity" onAction="#handleCreateButton" styleClass="buttons"
                    stylesheets="@../styles/style1.css" text="Create"/>
     </children>
