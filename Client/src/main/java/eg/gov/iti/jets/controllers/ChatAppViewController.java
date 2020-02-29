@@ -39,6 +39,7 @@ public class ChatAppViewController implements Initializable {
             FXMLLoader centerViewFxmlLoader = new FXMLLoader(getClass().getResource("/views/CenterView.fxml"));
             Parent centerView = centerViewFxmlLoader.load();
             centerViewController = centerViewFxmlLoader.getController();
+            centerViewController.setController(centerViewController);
             chatAppBp.setCenter(centerView);
 
             FXMLLoader rightViewFxmlLoader = new FXMLLoader(getClass().getResource("/views/RightView.fxml"));

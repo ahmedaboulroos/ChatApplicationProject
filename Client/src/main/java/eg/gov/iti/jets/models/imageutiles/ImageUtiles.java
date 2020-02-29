@@ -10,7 +10,7 @@ import java.sql.Blob;
 import java.sql.SQLException;
 
 public class ImageUtiles {
-    public static Blob fromBytesToBlob(byte[] bytesArr) {
+    /*public static Blob fromBytesToBlob(byte[] bytesArr) {
         Blob blob = null;
         try {
             if (bytesArr != null)
@@ -20,7 +20,7 @@ public class ImageUtiles {
         }
         return blob;
 
-    }
+    }*/
 
     public static byte[] fromBlobToBytes(Blob blob) {
         int blobLength;

@@ -149,7 +149,9 @@ public class SingleChatViewController implements Initializable {
 
     private void sendMessage() {
         try {
-            String msg = singleChatMessageHtml.getHtmlText();
+            String msg = singleChatMessageHtml.getHtmlText().replace("<html dir=\"ltr\"><head></head><body contenteditable=\"true\">", "").replace("<p>", "\n")
+                    .replace("<br>", "\n").replace("&nbsp;", " ").replace("</p>", "\n").replace("</body></html>", "");
+            // System.out.println("msggggggggggggggggggggggggggggggggggggggggg"+msg);
             SingleChatMessageDao singleChatDao = RMIConnection.getSingleChatMessageDao();
             SingleChatMessage singleChatMessage = new SingleChatMessage(this.singleChatId, currentUser.getId(), msg);
             singleChatDao.createSingleChatMessage(singleChatMessage);
@@ -190,8 +192,10 @@ public class SingleChatViewController implements Initializable {
     @FXML
     void handleSaveSessionBtn(ActionEvent event) {
         List<SingleChatMessage> singleChatMessageList = getSingleChatMessages(singleChatId);
-        generateXml(singleChatMessageList);
-        System.out.println(singleChatMessageList);
+        if (singleChatMessageList != null) {
+            generateXml(singleChatMessageList);
+            System.out.println(singleChatMessageList);
+        }
     }
 
     public List<SingleChatMessage> getSingleChatMessages(int singleChatId) {
@@ -224,14 +228,9 @@ public class SingleChatViewController implements Initializable {
             JAXBContext context = JAXBContext.newInstance(ObjectFactory.class);
 
             eg.gov.iti.jets.models.singleChat.SingleChat singleChat = new eg.gov.iti.jets.models.singleChat.SingleChat();
-            //  eg.gov.iti.jets.models.singleChat.SingleChat.SingleChatMessage singleChatMessage1 = new eg.gov.iti.jets.models.singleChat.SingleChat.SingleChatMessage();
             List<eg.gov.iti.jets.models.singleChat.SingleChat.SingleChatMessage> singleChatMessageList1 = singleChat.getSingleChatMessage();
             for (int i = 0; i < singleChatMessageList.size(); i++) {
-//                LocalDateTime date = singleChatMessageList.get(i).getMessageDateTime();
-//                GregorianCalendar gcal = GregorianCalendar.from(date.atStartOfDay(ZoneId.systemDefault()));
-//                XMLGregorianCalendar xcal = DatatypeFactory.newInstance().newXMLGregorianCalendar(gcal);
                 eg.gov.iti.jets.models.singleChat.SingleChat.SingleChatMessage singleChatMessage1 = new eg.gov.iti.jets.models.singleChat.SingleChat.SingleChatMessage();
-                //   singleChatMessage1.setUserId(singleChatMessageList.get(i).getUserId());
                 singleChatMessage1.setContent(singleChatMessageList.get(i).getContent());
                 singleChatMessageList1.add(singleChatMessage1);
             }
@@ -257,7 +256,6 @@ public class SingleChatViewController implements Initializable {
             } catch (FileNotFoundException e) {
                 e.printStackTrace();
             }
-
 
         } catch (PropertyException e) {
             e.printStackTrace();

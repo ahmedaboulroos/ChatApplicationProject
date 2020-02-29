@@ -295,6 +295,7 @@ public class UserDaoImpl extends UnicastRemoteObject implements UserDao {
         Date birthDate = user.getBirthDate() == null ? null : Date.valueOf(user.getBirthDate());
         String userGender = user.getUserGender() == null ? null : user.getUserGender().toString();
         String sql = "update USERS set PHONE_NUMBER = ?, USERNAME = ?, PASSWORD = ?, EMAIL = ?, COUNTRY = ?, BIO = ?, BIRTH_DATE = ?, USER_GENDER = ?, USER_STATUS = ?, PROFILE_IMAGE = ? where ID = ?";
+        InputStream in = new ByteArrayInputStream(user.getProfileImage());
         try (PreparedStatement preparedStatement = dbConnection.prepareStatement(sql)) {
             preparedStatement.setString(1, user.getPhoneNumber());
             preparedStatement.setString(2, user.getUsername());
@@ -305,7 +306,7 @@ public class UserDaoImpl extends UnicastRemoteObject implements UserDao {
             preparedStatement.setDate(7, birthDate);
             preparedStatement.setString(8, userGender);
             preparedStatement.setString(9, user.getUserStatus().toString());
-            preparedStatement.setBlob(10, ImageUtiles.fromBytesToBlob(user.getProfileImage()));
+            preparedStatement.setBinaryStream(10, in, user.getProfileImage().length);
             preparedStatement.setInt(11, user.getId());
             preparedStatement.executeUpdate();
         } catch (SQLException e) {

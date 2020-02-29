@@ -15,6 +15,13 @@
         <HBox alignment="CENTER_LEFT" prefHeight="40.0" prefWidth="200.0" styleClass="SignIN-HBox1"
               stylesheets="@../styles/loginStyle.css">
             <children>
+                <StackPane prefHeight="84.0" prefWidth="145.0">
+                    <children>
+                        <FontIcon iconColor="WHITE" iconLiteral="fa-camera" iconSize="35"/>
+                        <Circle fx:id="circleImage" fill="#14181f" onMouseClicked="#chooseImage" opacity="0.23"
+                                radius="42.0" stroke="WHITE" strokeType="INSIDE"/>
+                    </children>
+                </StackPane>
                 <Label alignment="CENTER" prefHeight="43.0" prefWidth="167.0" text="ChatApp" textAlignment="CENTER"
                        textFill="#2196f3">
                     <font>
@@ -24,14 +31,17 @@
                         <Insets left="20.0"/>
                     </HBox.margin>
                 </Label>
-                <Region prefHeight="54.0" prefWidth="271.0"/>
-                <StackPane prefHeight="150.0" prefWidth="200.0">
-                    <children>
-                        <FontIcon iconColor="WHITE" iconLiteral="fa-camera" iconSize="35"/>
-                        <Circle fx:id="circleImage" fill="#14181f" onMouseClicked="#chooseImage" opacity="0.23"
-                                radius="42.0" stroke="WHITE" strokeType="INSIDE"/>
-                    </children>
-                </StackPane>
+                <Region prefHeight="66.0" prefWidth="85.0"/>
+                <JFXButton alignment="TOP_RIGHT" onMouseClicked="#closeBtnHandler" prefHeight="18.0" prefWidth="28.0"
+                           text=" ">
+                    <graphic>
+                        <FontIcon iconColor="#1d84d5" iconLiteral="dashicons-no" iconSize="30"
+                                  onMouseClicked="#closeBtnHandler" wrappingWidth="24.0"/>
+                    </graphic>
+                    <HBox.margin>
+                        <Insets bottom="45.0" left="15.0"/>
+                    </HBox.margin>
+                </JFXButton>
             </children>
             <VBox.margin>
                 <Insets bottom="20.0" top="10.0"/>

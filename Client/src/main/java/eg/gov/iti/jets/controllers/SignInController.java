@@ -7,10 +7,12 @@ import eg.gov.iti.jets.models.dao.interfaces.UserDao;
 import eg.gov.iti.jets.models.entities.User;
 import eg.gov.iti.jets.models.network.RMIConnection;
 import eg.gov.iti.jets.models.network.implementations.ClientService;
+import javafx.application.Platform;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.Label;
+import javafx.scene.input.MouseEvent;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 
@@ -81,6 +83,12 @@ public class SignInController implements Initializable {
         } catch (IOException e) {
             e.printStackTrace();
         }
+    }
+
+
+    @FXML
+    public void closeBtnHandler(MouseEvent Event) {
+        Platform.exit();
     }
 
     private void rememberMeCbHandelAction() {

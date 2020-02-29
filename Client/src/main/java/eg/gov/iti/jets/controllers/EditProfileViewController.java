@@ -1,6 +1,8 @@
 package eg.gov.iti.jets.controllers;
 
+import com.jfoenix.controls.JFXButton;
 import com.jfoenix.controls.JFXTextArea;
+import com.jfoenix.controls.JFXTextField;
 import eg.gov.iti.jets.models.dao.interfaces.UserDao;
 import eg.gov.iti.jets.models.entities.User;
 import eg.gov.iti.jets.models.imageutiles.ImageUtiles;
@@ -9,10 +11,7 @@ import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.Node;
-import javafx.scene.control.Button;
 import javafx.scene.control.Label;
-import javafx.scene.control.PasswordField;
-import javafx.scene.control.TextField;
 import javafx.scene.image.Image;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.paint.ImagePattern;
@@ -20,128 +19,131 @@ import javafx.scene.shape.Circle;
 import javafx.stage.FileChooser;
 
 import java.io.File;
+import java.net.URISyntaxException;
 import java.net.URL;
+import java.nio.file.Paths;
 import java.rmi.RemoteException;
 import java.util.ResourceBundle;
 
 public class EditProfileViewController implements Initializable {
 
-    private Label label;
+
     @FXML
-    private Circle Photo;
+    private Circle PhotoCIR;
+
+
     @FXML
-    private Button editPhotoBT;
+    private JFXTextField nameJFT;
     @FXML
-    private TextField check;
+    private JFXTextField phoneJFT;
     @FXML
-    private TextField nameTF;
+    private JFXTextField countryJFT;
     @FXML
-    private TextField phoneTF;
+    private JFXTextField emailJFT;
     @FXML
-    private TextField emailTF;
+    private JFXTextField passJFT;
     @FXML
-    private TextField countryTF;
-    @FXML
-    private PasswordField newPassTF;
-    @FXML
-    private PasswordField confirmPassTF;
+    private JFXTextField confirumJFT;
     @FXML
     private JFXTextArea biograpyTArea;
+    @FXML
+    private JFXButton updateJFB;
+    @FXML
+    private Label errorLbl;
+
     private User user = ClientStageCoordinator.getInstance().currentUser;
     private UserDao userDao = RMIConnection.getInstance().getUserDao();
+    private Image image;
+    private File file;
+
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
+        phoneJFT.setDisable(true);
 
         getUserForContentProfile();
     }
 
     private void getUserForContentProfile() {
-        nameTF.setText(user.getUsername());
-        phoneTF.setText(user.getPhoneNumber());
-        emailTF.setText(user.getEmail());
-        countryTF.setText(user.getCountry());
-        newPassTF.setText(user.getPassword());
-        confirmPassTF.setText(user.getPassword());
+        nameJFT.setText(user.getUsername());
+        phoneJFT.setText(user.getPhoneNumber());
+        countryJFT.setText(user.getCountry());
+        emailJFT.setText(user.getEmail());
+
+        passJFT.setText(user.getPassword());
+        confirumJFT.setText(user.getPassword());
         biograpyTArea.setText(user.getBio());
         byte[] imageBytes = user.getProfileImage();
 
         try {
             Image image = ImageUtiles.fromBytesToImage(imageBytes);
-            Photo.setFill(new ImagePattern(image));
+            PhotoCIR.setFill(new ImagePattern(image));
         } catch (Exception e) {
             System.out.println("Chat Icon not loaded.");
         }
 
     }
 
-    public void handelEditOnStatus(MouseEvent mouseEvent) {
-
-        // user.setUserStatus();
-
-
-    }
-
 
     public void updateProfileBT(ActionEvent actionEvent) {
-        if (nameTF.getText() != null || phoneTF.getText() != null || emailTF.getText() != null || biograpyTArea.getText() != null
-                || countryTF.getText() != null || (newPassTF.getText() != null && confirmPassTF.getText() != null)) {
 
-            try {
+        try {
 
-                System.out.println("here");
-                user.setUsername(nameTF.getText());
-                user.setPhoneNumber(phoneTF.getText());
-                user.setEmail(emailTF.getText());
-                user.setBio(biograpyTArea.getText());
-                user.setPassword(newPassTF.getText());
-                user.setCountry(countryTF.getText());
-                System.out.println(user.toString());
-                System.out.println(userDao);
-                userDao.updateUser(user);
 
-            } catch (RemoteException e) {
-                e.printStackTrace();
+            user.setUsername(nameJFT.getText());
+            user.setPhoneNumber(phoneJFT.getText());
+            user.setEmail(emailJFT.getText());
+            user.setBio(biograpyTArea.getText());
+            if (!passJFT.getText().equals(confirumJFT.getText())) {
+                passJFT.setStyle("-fx-background-color: #ffcccb");
+                confirumJFT.setStyle("-fx-background-color: #ffcccb");
+
+            } else {
+                user.setPassword(passJFT.getText());
+
             }
+            user.setCountry(countryJFT.getText());
+            byte[] imageBytes = null;
+            if (file != null)
+                imageBytes = ImageUtiles.fromImageToBytes(file.getPath());
+            else {
+                URL res = getClass().getClassLoader().getResource("images/user.png");
+                try {
+                    file = Paths.get(res.toURI()).toFile();
+                } catch (URISyntaxException e) {
+                    e.printStackTrace();
+                }
+                String absolutePath = file.getAbsolutePath();
+                System.out.println(">> imageBytes == null");
+                imageBytes = ImageUtiles.fromImageToBytes(absolutePath);
+                System.out.println(imageBytes);
+            }
+            System.out.println("length" + imageBytes.length);
+            user.setProfileImage(imageBytes);
+            System.out.println(image);
+            System.out.println("imagggggg" + user.getProfileImage());
+            userDao.updateUser(user);
+
+
+        } catch (RemoteException e) {
+            e.printStackTrace();
         }
     }
 
-    public void handelCancelBT(ActionEvent actionEvent) {
-        nameTF.setText(user.getUsername());
-        phoneTF.setText(user.getPhoneNumber());
-        emailTF.setText(user.getEmail());
-        biograpyTArea.setText(user.getBio());
-        newPassTF.setText(user.getPassword());
-        countryTF.setText(user.getCountry());
-        confirmPassTF.setText(user.getPassword());
 
-
-    }
-
-    public void handelEditPhototBT(ActionEvent actionEvent) {
-
-
+    public void getPhotoByByte(MouseEvent mouseEvent) {
         FileChooser fileChooser = new FileChooser();
         fileChooser.getExtensionFilters().addAll(
                 new FileChooser.ExtensionFilter("Image Files",
                         "*.bmp", "*.png", "*.jpg", "*.gif"));
-        File file = fileChooser.showOpenDialog(((Node) actionEvent.getSource()).getScene().getWindow());
+        file = fileChooser.showOpenDialog(((Node) mouseEvent.getSource()).getScene().getWindow());
 
-        Image image = new Image(file.toURI().toString());
+        image = new Image(file.toURI().toString());
+
+
         System.out.println("image loaded <<");
 
-        Photo.setFill(new ImagePattern(image));
-
-
-        byte[] imageBytes = ImageUtiles.fromImageToBytes(file.toURI().toString());
-
-        user.setProfileImage(imageBytes);
-//        try {
-//            System.out.println(imageBytes);
-//            userDao.updateUser(user);
-//        } catch (RemoteException e) {
-//            e.printStackTrace();
-//        }
+        PhotoCIR.setFill(new ImagePattern(image));
 
 
     }
