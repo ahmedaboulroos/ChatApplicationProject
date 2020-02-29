@@ -1,5 +1,6 @@
 package eg.gov.iti.jets.controllers;
 
+import com.jfoenix.controls.JFXButton;
 import eg.gov.iti.jets.models.dao.interfaces.RelationshipDao;
 import eg.gov.iti.jets.models.dao.interfaces.UserDao;
 import eg.gov.iti.jets.models.entities.Relationship;
@@ -10,7 +11,6 @@ import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
-import javafx.scene.control.Button;
 import javafx.scene.control.ListCell;
 import javafx.scene.control.ListView;
 import javafx.scene.layout.BorderPane;
@@ -75,7 +75,7 @@ public class RightViewController implements Initializable {
                             userId = relationship.getSecondUserId();
                             try {
                                 user = userDao.getUser(userId);
-                                Text content = new Text("Friend reject you :" + getUserDisplayName(user));
+                                Text content = new Text("your requset rejected by  :" + getUserDisplayName(user));
                                 hBox.getChildren().addAll(content);
                                 setGraphic(hBox);
                             } catch (RemoteException e) {
@@ -102,10 +102,12 @@ public class RightViewController implements Initializable {
                                 user = userDao.getUser(userId);
                                 Text content = new Text(getUserDisplayName(user) + " sent you a friend request.");
 
-                                Button accept = new Button("Accept");
-                                Button reject = new Button("Reject");
-                                Button block = new Button("Block");
-
+                                JFXButton accept = new JFXButton("Accept");
+                                accept.setStyle("-fx-background-color: #4F33FF");
+                                JFXButton reject = new JFXButton("Reject");
+                                reject.setStyle("-fx-background-color: #ECF0F1");
+                                JFXButton block = new JFXButton("Block");
+                                block.setStyle("-fx-background-color: #ffcccb");
                                 accept.setOnAction(new EventHandler<ActionEvent>() {
                                     @Override
                                     public void handle(ActionEvent actionEvent) {
@@ -175,15 +177,15 @@ public class RightViewController implements Initializable {
     }
 
     public void displayRelationship(int relationshipId) {
-         Relationship relationship = null;
-            try {
-                relationship = relationshipDao.getRelationship(relationshipId);
-                System.out.println(relationship.getFirstUserId());
-                relationshipLv.getItems().add(relationship);
+        Relationship relationship = null;
+        try {
+            relationship = relationshipDao.getRelationship(relationshipId);
+            System.out.println(relationship.getFirstUserId());
+            relationshipLv.getItems().add(relationship);
 
-            } catch (RemoteException e) {
-                e.printStackTrace();
-            }
+        } catch (RemoteException e) {
+            e.printStackTrace();
+        }
 
     }
 
