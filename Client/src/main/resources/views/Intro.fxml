@@ -36,7 +36,9 @@
                 text=""/>
       <JFXButton fx:id="checkServerAddressBtn" layoutX="314.0" layoutY="392.0" onAction="#handleCheckServerConnection"
                  text=" " textFill="TRANSPARENT"/>
-      <Label fx:id="errorLbl" layoutX="239.0" layoutY="424.0" textAlignment="CENTER" textFill="#da9595">
+      <Label fx:id="errorLbl" layoutX="239.0" layoutY="470.0" textAlignment="CENTER" textFill="#da9595"
+             AnchorPane.bottomAnchor="60.0" AnchorPane.leftAnchor="240.0" AnchorPane.rightAnchor="240.0"
+             AnchorPane.topAnchor="470.0">
          <font>
             <Font size="14.0"/>
          </font>

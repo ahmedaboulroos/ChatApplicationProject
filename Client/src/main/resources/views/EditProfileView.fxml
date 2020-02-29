@@ -1,0 +1,257 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import com.jfoenix.controls.JFXButton?>
+<?import com.jfoenix.controls.JFXTextArea?>
+<?import javafx.geometry.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.shape.Circle?>
+<?import javafx.scene.text.*?>
+<?import org.kordamp.ikonli.javafx.*?>
+<AnchorPane xmlns:fx="http://javafx.com/fxml/1" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity"
+            minWidth="-Infinity" prefHeight="565.0" prefWidth="603.0" xmlns="http://javafx.com/javafx/10.0.2-internal"
+            fx:controller="eg.gov.iti.jets.controllers.EditProfileViewController">
+    <children>
+        <Pane layoutX="-3.0" layoutY="-2.0" prefHeight="147.0" prefWidth="607.0" style="-fx-background-color: #b2ddfb;">
+            <children>
+                <Circle fx:id="Photo" fill="WHITE" layoutX="79.0" layoutY="74.0" radius="49.0" stroke="BLACK"
+                        strokeType="INSIDE"/>
+                <Button fx:id="editPhotoBT" layoutX="161.0" layoutY="98.0" mnemonicParsing="false"
+                        onAction="#handelEditPhototBT"
+                        style="-fx-background-color: #0473ad; -fx-background-radius: 20; -fx-border-color: #04355c; -fx-border-radius: 20;"
+                        text="Edit Photo" textFill="#fffefe">
+                    <font>
+                        <Font name="Bell MT" size="12.0"/>
+                    </font>
+                </Button>
+                <Label layoutX="217.0" layoutY="17.0" prefHeight="58.0" prefWidth="240.0" text="Profile"
+                       textFill="#fffbfb">
+                    <font>
+                        <Font name="Bell MT" size="40.0"/>
+                    </font>
+                </Label>
+                <Separator layoutX="47.0" layoutY="144.0" prefHeight="0.0" prefWidth="485.0"
+                           style="-fx-background-color: #04355c;"/>
+                <TextField fx:id="check" layoutX="381.0" layoutY="76.0" prefHeight="44.0" prefWidth="197.0"
+                           style="-fx-background-color: blue; -fx-alignment: CENTER;" text="Invalid Data">
+                    <font>
+                        <Font size="20.0"/>
+                    </font>
+                </TextField>
+            </children>
+        </Pane>
+        <Pane layoutX="-3.0" layoutY="145.0" prefHeight="423.0" prefWidth="607.0"
+              style="-fx-background-color: #b2ddfb;">
+            <children>
+                <VBox layoutX="9.0" layoutY="19.0" prefHeight="404.0" prefWidth="593.0">
+                    <children>
+                        <HBox>
+                            <children>
+                                <FontIcon iconLiteral="dashicons-admin-users" iconSize="30" wrappingWidth="17.0">
+                                    <HBox.margin>
+                                        <Insets left="25.0" right="15.0"/>
+                                    </HBox.margin>
+                                </FontIcon>
+                                <Label prefHeight="28.0" prefWidth="60.0" text="Name" textFill="#fff9f9">
+                                    <font>
+                                        <Font size="19.0"/>
+                                    </font>
+                                    <HBox.margin>
+                                        <Insets left="20.0" right="15.0"/>
+                                    </HBox.margin>
+                                </Label>
+                                <TextField fx:id="nameTF" prefHeight="27.0" prefWidth="300.0"
+                                           style="-fx-background-color: #b2ddfb; -fx-border-radius: 30; -fx-border-color: #04355c; -fx-background-radius: 30;"
+                                           styleClass="text-input">
+                                    <HBox.margin>
+                                        <Insets left="30.0"/>
+                                    </HBox.margin>
+                                </TextField>
+                            </children>
+                            <VBox.margin>
+                                <Insets bottom="15.0"/>
+                            </VBox.margin>
+                        </HBox>
+                        <HBox>
+                            <children>
+                                <FontIcon iconLiteral="eli-phone" iconSize="25">
+                                    <HBox.margin>
+                                        <Insets left="25.0" right="15.0"/>
+                                    </HBox.margin>
+                                </FontIcon>
+                                <Label prefHeight="28.0" prefWidth="63.0" text="Phone" textFill="#fff9f9">
+                                    <font>
+                                        <Font size="19.0"/>
+                                    </font>
+                                    <HBox.margin>
+                                        <Insets left="15.0" right="15.0"/>
+                                    </HBox.margin>
+                                </Label>
+                                <TextField fx:id="phoneTF" prefHeight="28.0" prefWidth="300.0"
+                                           style="-fx-background-color: #b2ddfb; -fx-border-radius: 30; -fx-border-color: #04355c; -fx-background-radius: 30;"
+                                           styleClass="text-input">
+                                    <HBox.margin>
+                                        <Insets left="20.0"/>
+                                    </HBox.margin>
+                                </TextField>
+                            </children>
+                            <VBox.margin>
+                                <Insets bottom="15.0"/>
+                            </VBox.margin>
+                        </HBox>
+                        <HBox>
+                            <children>
+                                <FontIcon>
+                                    <HBox.margin>
+                                        <Insets left="25.0" right="15.0"/>
+                                    </HBox.margin>
+                                </FontIcon>
+                                <Label text="Email" textFill="#fff9f9">
+                                    <font>
+                                        <Font size="19.0"/>
+                                    </font>
+                                    <HBox.margin>
+                                        <Insets left="15.0" right="30.0"/>
+                                    </HBox.margin>
+                                </Label>
+                                <TextField fx:id="emailTF" prefHeight="28.0" prefWidth="300.0"
+                                           style="-fx-background-color: #b2ddfb; -fx-border-radius: 30; -fx-border-color: #04355c; -fx-background-radius: 30;"
+                                           styleClass="text-input">
+                                    <HBox.margin>
+                                        <Insets left="60.0"/>
+                                    </HBox.margin>
+                                </TextField>
+                            </children>
+                            <VBox.margin>
+                                <Insets bottom="15.0"/>
+                            </VBox.margin>
+                        </HBox>
+                        <HBox>
+                            <children>
+                                <FontIcon iconLiteral="oi-basket" iconSize="25">
+                                    <HBox.margin>
+                                        <Insets left="25.0" right="15.0"/>
+                                    </HBox.margin>
+                                </FontIcon>
+                                <Label text="Country" textFill="#fff9f9">
+                                    <font>
+                                        <Font size="19.0"/>
+                                    </font>
+                                    <HBox.margin>
+                                        <Insets left="15.0" right="25.0"/>
+                                    </HBox.margin>
+                                </Label>
+                                <TextField fx:id="countryTF" prefHeight="28.0" prefWidth="300.0"
+                                           style="-fx-background-color: #b2ddfb; -fx-border-radius: 30; -fx-border-color: #04355c; -fx-background-radius: 30;"
+                                           styleClass="text-input">
+                                    <HBox.margin>
+                                        <Insets left="30.0"/>
+                                    </HBox.margin>
+                                </TextField>
+                            </children>
+                            <VBox.margin>
+                                <Insets bottom="15.0"/>
+                            </VBox.margin>
+                        </HBox>
+                        <HBox>
+                            <children>
+                                <FontIcon>
+                                    <HBox.margin>
+                                        <Insets left="25.0" right="15.0"/>
+                                    </HBox.margin>
+                                </FontIcon>
+                                <Label text="New Password" textFill="#fff9f9">
+                                    <font>
+                                        <Font size="18.0"/>
+                                    </font>
+                                    <HBox.margin>
+                                        <Insets left="15.0" right="15.0"/>
+                                    </HBox.margin>
+                                </Label>
+                                <PasswordField fx:id="newPassTF" prefHeight="28.0" prefWidth="291.0"
+                                               style="-fx-border-radius: 30; -fx-border-color: #04355c; -fx-background-radius: 30; -fx-background-color: #b2ddfb;"
+                                               styleClass="text-input">
+                                    <HBox.margin>
+                                        <Insets left="25.0"/>
+                                    </HBox.margin>
+                                </PasswordField>
+                            </children>
+                            <VBox.margin>
+                                <Insets bottom="15.0"/>
+                            </VBox.margin>
+                        </HBox>
+                        <HBox>
+                            <children>
+                                <FontIcon>
+                                    <HBox.margin>
+                                        <Insets left="25.0" right="15.0"/>
+                                    </HBox.margin>
+                                </FontIcon>
+                                <Label text="Confirm Password" textFill="#fff9f9">
+                                    <font>
+                                        <Font size="18.0"/>
+                                    </font>
+                                    <HBox.margin>
+                                        <Insets left="15.0" right="15.0"/>
+                                    </HBox.margin>
+                                </Label>
+                                <PasswordField fx:id="confirmPassTF" prefHeight="28.0" prefWidth="288.0"
+                                               style="-fx-border-radius: 30; -fx-border-color: #04355c; -fx-background-radius: 30; -fx-background-color: #b2ddfb; "
+                                               styleClass="text-input"/>
+                            </children>
+                            <VBox.margin>
+                                <Insets bottom="15.0"/>
+                            </VBox.margin>
+                        </HBox>
+                        <HBox>
+                            <children>
+                                <FontIcon iconLiteral="ti-briefcase" iconSize="25">
+                                    <HBox.margin>
+                                        <Insets left="25.0" right="15.0" top="10.0"/>
+                                    </HBox.margin>
+                                </FontIcon>
+                                <Label prefHeight="17.0" prefWidth="72.0" text="Biograpy" textFill="WHITE">
+                                    <font>
+                                        <Font size="18.0"/>
+                                    </font>
+                                    <HBox.margin>
+                                        <Insets left="15.0" right="15.0" top="10.0"/>
+                                    </HBox.margin>
+                                </Label>
+                                <JFXTextArea fx:id="biograpyTArea" prefHeight="50.0" prefWidth="315.0">
+                                    <HBox.margin>
+                                        <Insets left="20.0"/>
+                                    </HBox.margin>
+                                </JFXTextArea>
+                            </children>
+                        </HBox>
+                        <HBox>
+                            <children>
+                                <Region prefHeight="37.0" prefWidth="230.0"/>
+                                <JFXButton fx:id="updateProfileBT" onAction="#updateProfileBT" prefHeight="37.0"
+                                           prefWidth="116.0"
+                                           style="-fx-background-color: #145374; -fx-background-radius: 10;"
+                                           text="Update Profile" textFill="WHITE">
+                                    <HBox.margin>
+                                        <Insets right="20.0"/>
+                                    </HBox.margin>
+                                </JFXButton>
+                                <JFXButton fx:id="cancelBT" onAction="#handelCancelBT" prefHeight="37.0"
+                                           prefWidth="70.0"
+                                           style="-fx-background-radius: 10; -fx-background-color: #145374;"
+                                           text="Cancel" textFill="WHITE">
+                                    <HBox.margin>
+                                        <Insets left="50.0"/>
+                                    </HBox.margin>
+                                </JFXButton>
+                            </children>
+                            <VBox.margin>
+                                <Insets top="25.0"/>
+                            </VBox.margin>
+                        </HBox>
+                    </children>
+                </VBox>
+            </children>
+        </Pane>
+    </children>
+</AnchorPane>

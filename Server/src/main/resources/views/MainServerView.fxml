@@ -15,56 +15,71 @@
             <children>
                 <VBox alignment="TOP_CENTER" spacing="5.0">
                     <children>
-                        <Label maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308"
-                               minHeight="-Infinity" prefHeight="75.0" prefWidth="250.0"
-                               style="-fx-background-color: #00A2D3;" text="Admin Panel" textFill="WHITE">
-                            <padding>
-                                <Insets left="10.0"/>
-                            </padding>
-                            <font>
-                                <Font name="Ebrima" size="19.0"/>
-                            </font>
+                        <HBox alignment="CENTER_LEFT" prefHeight="75.0" style="-fx-background-color: #00A2D3;">
                             <VBox.margin>
                                 <Insets right="1.0"/>
                             </VBox.margin>
-                        </Label>
-                  <VBox spacing="10.0">
-                     <children>
-                        <JFXButton fx:id="dashboardBtn" alignment="TOP_LEFT" onAction="#handleDashboardBtnClick" prefWidth="250.0" ripplerFill="#2f98e4" styleClass="menuBtn" text="   Dashboard" textFill="#145374">
-                           <font>
-                              <Font name="Calibri Light" size="15.0" />
-                           </font>
-                           <graphic>
-                                    <FontIcon iconColor="#7c8184" iconLiteral="fa-dashboard" iconSize="24" />
-                           </graphic>
-                           <padding>
-                              <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
-                           </padding>
-                        </JFXButton>
-                        <JFXButton fx:id="usersBtn" alignment="TOP_LEFT" onAction="#handleUsersBtnClick" prefWidth="250.0" ripplerFill="#2f98e4" styleClass="menuBtn" text="   System Users" textFill="#145374">
-                           <font>
-                              <Font name="Calibri Light" size="15.0" />
-                           </font>
-                           <graphic>
-                              <FontIcon iconColor="#7c8184" iconLiteral="fa-users" iconSize="24" />
-                           </graphic>
-                           <padding>
-                              <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
-                           </padding>
-                        </JFXButton>
-                        <JFXButton fx:id="announcementsBtn" alignment="TOP_LEFT" onAction="#handleAnnouncementsBtnClick" prefWidth="250.0" ripplerFill="#2f98e4" styleClass="menuBtn" text="   Announcements" textFill="#145374">
-                           <font>
-                              <Font name="Calibri Light" size="15.0" />
-                           </font>
-                            <graphic>
-                                <FontIcon iconColor="#7c8184" iconLiteral="fa-bell-o" iconSize="24"/>
-                            </graphic>
-                            <padding>
-                                <Insets bottom="10.0" left="10.0" right="10.0" top="10.0"/>
-                            </padding>
-                        </JFXButton>
-                     </children>
-                  </VBox>
+                            <children>
+                                <Label text="Admin Panel" textFill="WHITE">
+                                    <padding>
+                                        <Insets left="10.0"/>
+                                    </padding>
+                                    <font>
+                                        <Font name="Ebrima" size="19.0"/>
+                                    </font>
+                                </Label>
+                                <Region HBox.hgrow="ALWAYS"/>
+                                <JFXButton onAction="#handleSettingsBtn" ripplerFill="#007dff" text=" ">
+                                    <graphic>
+                                        <FontIcon iconColor="WHITE" iconLiteral="mdi-settings" iconSize="30"/>
+                                    </graphic>
+                                </JFXButton>
+                            </children>
+                        </HBox>
+                        <VBox spacing="10.0">
+                            <children>
+                                <JFXButton fx:id="dashboardBtn" alignment="TOP_LEFT" onAction="#handleDashboardBtnClick"
+                                           prefWidth="250.0" ripplerFill="#00a2d3" styleClass="menuBtn"
+                                           text="   Dashboard" textFill="#145374">
+                                    <font>
+                                        <Font name="Calibri Light" size="15.0"/>
+                                    </font>
+                                    <graphic>
+                                        <FontIcon iconColor="#7c8184" iconLiteral="fa-dashboard" iconSize="24"/>
+                                    </graphic>
+                                    <padding>
+                                        <Insets bottom="10.0" left="10.0" right="10.0" top="10.0"/>
+                                    </padding>
+                                </JFXButton>
+                                <JFXButton fx:id="usersBtn" alignment="TOP_LEFT" onAction="#handleUsersBtnClick"
+                                           prefWidth="250.0" ripplerFill="#00a2d3" styleClass="menuBtn"
+                                           text="   System Users" textFill="#145374">
+                                    <font>
+                                        <Font name="Calibri Light" size="15.0"/>
+                                    </font>
+                                    <graphic>
+                                        <FontIcon iconColor="#7c8184" iconLiteral="fa-users" iconSize="24"/>
+                                    </graphic>
+                                    <padding>
+                                        <Insets bottom="10.0" left="10.0" right="10.0" top="10.0"/>
+                                    </padding>
+                                </JFXButton>
+                                <JFXButton fx:id="announcementsBtn" alignment="TOP_LEFT"
+                                           onAction="#handleAnnouncementsBtnClick" prefWidth="250.0"
+                                           ripplerFill="#00a2d3" styleClass="menuBtn" text="   Announcements"
+                                           textFill="#145374">
+                                    <font>
+                                        <Font name="Calibri Light" size="15.0"/>
+                                    </font>
+                                    <graphic>
+                                        <FontIcon iconColor="#7c8184" iconLiteral="fa-bell-o" iconSize="24"/>
+                                    </graphic>
+                                    <padding>
+                                        <Insets bottom="10.0" left="10.0" right="10.0" top="10.0"/>
+                                    </padding>
+                                </JFXButton>
+                            </children>
+                        </VBox>
                         <Region VBox.vgrow="ALWAYS"/>
                         <JFXTextField fx:id="serverAddressTf" disable="true" editable="false" labelFloat="true"
                                       promptText="Server IP Address">
@@ -76,7 +91,7 @@
                             </font>
                         </JFXTextField>
                         <JFXButton fx:id="serverStatusBtn" contentDisplay="RIGHT" graphicTextGap="0.0"
-                                   onAction="#handleServiceBtnClick" prefWidth="200.0" ripplerFill="BLACK"
+                                   onAction="#handleServiceBtnClick" prefWidth="200.0" ripplerFill="WHITE"
                                    styleClass="serverStatusBtn" text="Service Running          " textFill="WHITE">
                             <font>
                                 <Font name="Microsoft New Tai Lue" size="15.0"/>
@@ -103,33 +118,33 @@
       </HBox>
    </left>
    <center>
-        <VBox maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" spacing="5.0" BorderPane.alignment="CENTER">
-            <children>
-            <HBox alignment="CENTER_LEFT" prefHeight="70.0">
-               <children>
-                        <Label fx:id="title" text="Chat Application Service" textFill="#7c8184">
-                            <font>
-                                <Font size="18.0" />
-                            </font>
-                        </Label>
-                  <Region HBox.hgrow="ALWAYS" />
-               </children>
-               <VBox.margin>
-                  <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
+       <VBox maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" BorderPane.alignment="CENTER">
+           <children>
+               <HBox alignment="CENTER_LEFT" prefHeight="50.0">
+                   <children>
+                       <Label fx:id="title" text="Chat Application Service" textFill="#7c8184">
+                           <font>
+                               <Font size="18.0"/>
+                           </font>
+                       </Label>
+                       <Region HBox.hgrow="ALWAYS"/>
+                   </children>
+                   <VBox.margin>
+                       <Insets/>
                </VBox.margin>
                <padding>
-                  <Insets bottom="15.0" left="15.0" right="15.0" top="15.0" />
+                   <Insets bottom="10.0" left="10.0" right="10.0" top="10.0"/>
                </padding>
             </HBox>
-                <TabPane fx:id="tabPane" prefHeight="200.0" prefWidth="200.0" tabClosingPolicy="UNAVAILABLE"
-                         VBox.vgrow="ALWAYS">
-                    <tabs>
-                        <Tab fx:id="welcomeTab" closable="false" text="Welcome"/>
-                        <Tab fx:id="dashboardTab" closable="false" text="Dashboard"/>
-                        <Tab fx:id="usersTab" closable="false" text="System Users"/>
-                        <Tab fx:id="announcementsTab" closable="false" text="Announcements"/>
-                    </tabs>
-                </TabPane>
+               <TabPane fx:id="tabPane" prefHeight="200.0" prefWidth="200.0" tabClosingPolicy="UNAVAILABLE"
+                        VBox.vgrow="ALWAYS">
+                   <tabs>
+                       <Tab fx:id="welcomeTab" closable="false" text="Welcome"/>
+                       <Tab fx:id="dashboardTab" closable="false" text="Dashboard"/>
+                       <Tab fx:id="usersTab" closable="false" text="System Users"/>
+                       <Tab fx:id="announcementsTab" closable="false" text="Announcements"/>
+                   </tabs>
+               </TabPane>
                 <Region prefHeight="5.0" prefWidth="200.0" style="-fx-background-color: #00A2D3;">
                     <VBox.margin>
                         <Insets left="-4.0"/>

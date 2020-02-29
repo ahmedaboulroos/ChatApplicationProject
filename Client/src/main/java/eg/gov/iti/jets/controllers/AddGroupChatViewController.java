@@ -38,7 +38,8 @@ public class AddGroupChatViewController {
     @FXML
     void handleCreateGroupChat(ActionEvent event) {
         try {
-            GroupChat groupChat = new GroupChat(titleTf.getText(), descriptionTf.getText(), ImageUtiles.fromImageToBytes(file.getAbsolutePath()), LocalDateTime.now());
+            String filePath = file == null ? null : file.getAbsolutePath();
+            GroupChat groupChat = new GroupChat(titleTf.getText(), descriptionTf.getText(), ImageUtiles.fromImageToBytes(filePath), LocalDateTime.now());
             int autoGenGroupChatID = groupChatDao.createGroupChat(groupChat);
             System.out.println("inside ====>> handleCreateGroupChat  isGroupChatCreated" + autoGenGroupChatID);
             System.out.println("inside -->> AddGroupChatViewController Current user id" + ClientStageCoordinator.getInstance().currentUser.getId());

@@ -1,8 +1,9 @@
 .tab-pane {
-    -fx-tab-max-height: 0 ;
+    -fx-tab-max-height: 0;
 }
+
 .tab-pane .tab-header-area {
-    visibility: hidden ;
+    visibility: hidden;
 }
 
 .menuBtn {
@@ -15,6 +16,69 @@
 }
 
 .serverStatusBtn {
-    -fx-background-color:  #00A2D3;
+    -fx-background-color: #00A2D3;
 }
 
+.default-color0.chart-pie {
+    -fx-pie-color: #00A2D3;
+}
+
+.default-color1.chart-pie {
+    -fx-pie-color: #ab9dd3;
+}
+
+.default-color2.chart-pie {
+    -fx-pie-color: #00A2D3;
+}
+
+.default-color3.chart-pie {
+    -fx-pie-color: #ab9dd3;
+}
+
+.default-color4.chart-pie {
+    -fx-pie-color: #00A2D3;
+}
+
+.default-color5.chart-pie {
+    -fx-pie-color: #ab9dd3;
+}
+
+.data0.chart-bar {
+    -fx-bar-fill: #ab9dd3;
+}
+
+.data1.chart-bar {
+    -fx-bar-fill: #00A2D3;
+}
+
+.data2.chart-bar {
+    -fx-bar-fill: #ab9dd3;
+}
+
+.data3.chart-bar {
+    -fx-bar-fill: #00A2D3;
+}
+
+.data4.chart-bar {
+    -fx-bar-fill: #ab9dd3;
+}
+
+.data5.chart-bar {
+    -fx-bar-fill: #00A2D3;
+}
+
+.data6.chart-bar {
+    -fx-bar-fill: #ab9dd3;
+}
+
+.data7.chart-bar {
+    -fx-bar-fill: #00A2D3;
+}
+
+.data8.chart-bar {
+    -fx-bar-fill: #ab9dd3;
+}
+
+.data9.chart-bar {
+    -fx-bar-fill: #00A2D3;
+}

@@ -1,5 +1,6 @@
 package eg.gov.iti.jets.models.dao.implementations;
 
+import eg.gov.iti.jets.controllers.ServerStageCoordinator;
 import eg.gov.iti.jets.models.dao.interfaces.UserDao;
 import eg.gov.iti.jets.models.entities.*;
 import eg.gov.iti.jets.models.entities.enums.RelationshipStatus;
@@ -52,7 +53,7 @@ public class UserDaoImpl extends UnicastRemoteObject implements UserDao {
         InputStream in = new ByteArrayInputStream(user.getProfileImage());
         String userStatus = user.getUserStatus() == null ? null : user.getUserStatus().toString();
         int id = -1;
-        String key[] = {"ID"};
+        String[] key = {"ID"};
         String sql = "insert into USERS (id, phone_number, username, password, email, country, bio, birth_date, user_gender,profile_image, user_status) values (ID_SEQ.nextval,?,?,?,?,?,?,?,?,?,?)";
         try (PreparedStatement ps = dbConnection.prepareStatement(sql, key)) {
             ps.setString(1, user.getPhoneNumber());
@@ -73,6 +74,7 @@ public class UserDaoImpl extends UnicastRemoteObject implements UserDao {
         } catch (SQLException e) {
             e.printStackTrace();
         }
+        ServerStageCoordinator.updateUsers();
         return id;
     }
 
@@ -289,6 +291,7 @@ public class UserDaoImpl extends UnicastRemoteObject implements UserDao {
 
     @Override
     public void updateUser(User user) {
+        System.out.println(user.getId());
         Date birthDate = user.getBirthDate() == null ? null : Date.valueOf(user.getBirthDate());
         String userGender = user.getUserGender() == null ? null : user.getUserGender().toString();
         String sql = "update USERS set PHONE_NUMBER = ?, USERNAME = ?, PASSWORD = ?, EMAIL = ?, COUNTRY = ?, BIO = ?, BIRTH_DATE = ?, USER_GENDER = ?, USER_STATUS = ?, PROFILE_IMAGE = ? where ID = ?";
@@ -303,6 +306,7 @@ public class UserDaoImpl extends UnicastRemoteObject implements UserDao {
             preparedStatement.setString(8, userGender);
             preparedStatement.setString(9, user.getUserStatus().toString());
             preparedStatement.setBlob(10, ImageUtiles.fromBytesToBlob(user.getProfileImage()));
+            preparedStatement.setInt(11, user.getId());
             preparedStatement.executeUpdate();
         } catch (SQLException e) {
             e.printStackTrace();

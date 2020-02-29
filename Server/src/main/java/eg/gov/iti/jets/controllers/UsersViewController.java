@@ -152,7 +152,7 @@ public class UsersViewController implements Initializable {
         }
     }
 
-    void updateUsersTable() {
+    public void updateUsersTable() {
         try {
             List<User> allUsers = userDao.getAllUsers();
             if (allUsers != null) {
@@ -193,7 +193,7 @@ public class UsersViewController implements Initializable {
                 .position(Pos.BOTTOM_RIGHT)
                 .showInformation();
         clearFieldsData();
-        updateUsersTable();
+//        updateUsersTable();
     }
 
     boolean validUserInputFields() {

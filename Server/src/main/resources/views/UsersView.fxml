@@ -74,7 +74,11 @@
                                                         <Font size="14.0"/>
                                                     </font>
                                                 </TextField>
-                                                <PasswordField fx:id="passwordPf"/>
+                                                <PasswordField fx:id="passwordPf">
+                                                    <font>
+                                                        <Font size="14.0"/>
+                                                    </font>
+                                                </PasswordField>
                                                 <TextField fx:id="emailTf" prefHeight="30.0">
                                                     <font>
                                                         <Font size="14.0"/>
@@ -125,11 +129,19 @@
                                     <children>
                                         <Label fx:id="validationLbl" textFill="DARKRED"/>
                                         <Region HBox.hgrow="ALWAYS"/>
-                                        <JFXButton onAction="#handleResetBtn" prefWidth="75.0"
-                                                   style="-fx-background-color: lightpink;" text="Reset"/>
+                                        <JFXButton onAction="#handleResetBtn" prefWidth="100.0"
+                                                   style="-fx-background-color: lightgray;" text="Reset">
+                                            <font>
+                                                <Font size="14.0"/>
+                                            </font>
+                                        </JFXButton>
                                         <JFXButton layoutX="332.0" layoutY="15.0" onAction="#handleRegisterBtn"
-                                                   prefWidth="150.0" style="-fx-background-color: lightgreen;"
-                                                   text="Register"/>
+                                                   prefWidth="150.0" style="-fx-background-color: lightblue;"
+                                                   text="Register">
+                                            <font>
+                                                <Font size="14.0"/>
+                                            </font>
+                                        </JFXButton>
                                     </children>
                                     <padding>
                                         <Insets bottom="5.0" left="5.0" right="5.0" top="5.0"/>
@@ -152,6 +164,9 @@
                         <TableColumn fx:id="countryCol" prefWidth="100.0" text="Country"/>
                         <TableColumn fx:id="birthDateCol" prefWidth="100.0" text="Birth Date"/>
                     </columns>
+                    <VBox.margin>
+                        <Insets right="5.0"/>
+                    </VBox.margin>
                 </TableView>
             </children>
             <padding>
