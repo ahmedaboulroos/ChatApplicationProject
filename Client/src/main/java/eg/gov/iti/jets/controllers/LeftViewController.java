@@ -95,6 +95,8 @@ public class LeftViewController implements Initializable {
     private ContactsGroupMembershipDao contactsGroupMembershipDao =
             RMIConnection.getContactsGroupMembershipDao();
 
+    String styleCell;
+
     public void updateSingleChat(int singleChatMessageId) {
         try {
             SingleChatMessage singleChatMessage = RMIConnection.getSingleChatMessageDao().getSingleChatMessage(singleChatMessageId);
@@ -111,7 +113,9 @@ public class LeftViewController implements Initializable {
                     SingleChatViewController.getInstance().addSingleChatMessage(singleChatMessage);
                 } else {
                     ListCell<SingleChat> singleChatListCell = singleChatListCellMap.get(singleChatId);
+                    styleCell = singleChatListCell.getStyle();
                     singleChatListCell.setStyle("-fx-background-color: lightgreen");
+
                 }
             }
         } catch (RemoteException e) {
@@ -131,6 +135,7 @@ public class LeftViewController implements Initializable {
                 GroupChatViewController.getInstance().addGroupChatMessage(groupChatMessage);
             } else {
                 ListCell<GroupChat> groupChatListCell = groupChatListCellMap.get(groupChatId);
+                styleCell = groupChatListCell.getStyle();
                 groupChatListCell.setStyle("-fx-background-color: lightgreen");
             }
 
@@ -350,7 +355,7 @@ public class LeftViewController implements Initializable {
                                     HBox hBox = new HBox();
                                     hBox.setStyle("-fx-background-color: transparent  ;" +
                                             "-fx-padding: 1;" + "-fx-border-style: solid inside;"
-                                            + "-fx-border-width: 4;" + "-fx-border-insets: 1;"
+                                            + "-fx-border-width: 0;" + "-fx-border-insets: 1;"
                                             + "-fx-border-radius: 2;" + "-fx-border-color: white;");
                                     Circle imageCircle = new Circle();
                                     try {
@@ -376,7 +381,7 @@ public class LeftViewController implements Initializable {
                                         userInfo = user.getUsername();
                                     }
                                     Text text = new Text(userInfo);
-                                    text.setFont(Font.font("Arial Rounded MT Bold", FontWeight.BOLD, 20));//FontWeight.BOLD
+                                    text.setFont(Font.font("Arial Rounded MT Bold", FontWeight.BOLD, 18));//FontWeight.BOLD
                                     text.setFill(Color.NAVY);
                                     Label label = new Label();
                                     label.setMinWidth(20);
@@ -426,7 +431,13 @@ public class LeftViewController implements Initializable {
                         super.updateItem(item, empty);
                         if (!empty) {
                             if (item != null) {
-                                setText(item.getTitle());
+                                //setText(item.getTitle());
+                                HBox hBox = new HBox();
+                                hBox.setStyle("-fx-background-color: transparent  ;" +
+                                        "-fx-padding: 1;" + "-fx-border-style: solid inside;"
+                                        + "-fx-border-width: 0;" + "-fx-border-insets: 1;"
+                                        + "-fx-border-radius: 2;" + "-fx-border-color: white;");
+
                                 System.out.println("inside left view cell fact groupChat.getTitle() " + item.getTitle());
                                 Circle imageCircle = new Circle();
                                 try {
@@ -436,9 +447,29 @@ public class LeftViewController implements Initializable {
                                     System.out.println("Group Chat Icon not loaded.");
                                 }
                                 imageCircle.setRadius(20);
-                                imageCircle.setStroke(Color.GREEN);
-                                imageCircle.setStrokeWidth(3);
-                                setGraphic(imageCircle);
+                                imageCircle.setStroke(Color.NAVY);
+                                imageCircle.setStrokeWidth(1);
+                                StackPane stackPane = new StackPane();
+                                Region selectedBar = new Region();
+                                selectedBar.setMinWidth(Region.USE_PREF_SIZE);
+                                selectedBar.setMaxHeight(Region.USE_PREF_SIZE);
+                                selectedBar.setMaxWidth(Double.MAX_VALUE);
+                                StackPane.setAlignment(selectedBar, Pos.BOTTOM_CENTER);
+                                stackPane.getChildren().addAll(imageCircle, selectedBar);
+                                Text text = new Text(item.getTitle());
+                                text.setFont(Font.font("Arial Rounded MT Bold", FontWeight.BOLD, 18));//FontWeight.BOLD
+                                text.setFill(Color.NAVY);
+                                Label label = new Label();
+                                label.setMinWidth(20);
+                                hBox.getChildren().addAll(stackPane, label, text);
+                                hBox.setAlignment(Pos.CENTER_LEFT);
+                                setPrefWidth(200);
+                                setPrefHeight(60);
+                                hBox.setMaxWidth(200);
+                                hBox.setMinWidth(200);
+                                setGraphic(hBox);
+                                groupChatListCellMap.put(item.getId(), this);
+                                // setGraphic(imageCircle);
                             } else {
                                 setGraphic(null);
                             }
@@ -462,7 +493,9 @@ public class LeftViewController implements Initializable {
         if (singleChat != null) {
             ListCell<SingleChat> singleChatListCell = singleChatListCellMap.get(singleChat.getId());
             if (singleChatListCell != null) {
-                singleChatListCell.setStyle("-fx-background-color: #ffff");
+                System.out.println(styleCell);
+                singleChatListCell.setStyle("-fx-background-color: #ffffff;");
+                singleChatListCell.setStyle(styleCell);
                 ClientStageCoordinator.getInstance().openNewSingleChat(singleChat.getId());
             }
         }
@@ -473,9 +506,19 @@ public class LeftViewController implements Initializable {
     @FXML
     void handleGroupChatSelection(MouseEvent event) {
         groupChat = groupChatsLv.getSelectionModel().getSelectedItem();
+
         if (groupChat != null) {
-            System.out.println("inside handleGroupChatSelection " + groupChat.toString());
-            ClientStageCoordinator.getInstance().openNewGroupChat(groupChat.getId());
+            ListCell<GroupChat> groupChatListCell = groupChatListCellMap.get(groupChat.getId());
+
+            if (groupChatListCell != null) {
+                System.out.println(styleCell);
+                groupChatListCell.setStyle("-fx-background-color: #ffffff;");
+
+                groupChatListCell.setStyle(styleCell);
+
+                System.out.println("inside handleGroupChatSelection " + groupChat.toString());
+                ClientStageCoordinator.getInstance().openNewGroupChat(groupChat.getId());
+            }
         }
     }
 
