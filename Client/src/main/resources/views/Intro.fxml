@@ -11,42 +11,44 @@
 <AnchorPane xmlns:fx="http://javafx.com/fxml/1" prefHeight="550.0" prefWidth="480.0" styleClass="SignInPane"
             stylesheets="@../styles/loginStyle.css" xmlns="http://javafx.com/javafx/11.0.1"
             fx:controller="eg.gov.iti.jets.controllers.IntroController">
-   <children>
-      <AnchorPane layoutX="10.0" layoutY="10.0" prefHeight="30.0" prefWidth="480.0" styleClass="SignInPane"
-                  stylesheets="@../styles/loginStyle.css" AnchorPane.leftAnchor="0.0" AnchorPane.topAnchor="0.0">
-         <children>
-            <FontIcon iconColor="#2196f3" iconLiteral="dashicons-no" iconSize="25" layoutX="449.0" layoutY="32.0"
-                      onMouseClicked="#closeBtnHandler" text=""/>
-            <JFXButton layoutX="448.0" layoutY="8.0" prefHeight="25.0" prefWidth="0.0" textFill="TRANSPARENT"
-                       onMouseClicked="#closeBtnHandler"/>
-         </children>
-      </AnchorPane>
-      <Circle fx:id="circleIcon" fill="DODGERBLUE" layoutX="240.0" layoutY="197.0" radius="100.0" stroke="BLACK"
-              strokeType="INSIDE" AnchorPane.bottomAnchor="253.0" AnchorPane.leftAnchor="140.0"
-              AnchorPane.rightAnchor="140.0" AnchorPane.topAnchor="97.0"/>
-      <JFXTextField fx:id="serverAddressTf" focusColor="#5588a3" labelFloat="true" layoutX="134.0" layoutY="387.0"
-                    promptText="Server IP Address" unFocusColor="DODGERBLUE">
-         <padding>
-            <Insets bottom="5.0" left="5.0" right="5.0" top="5.0"/>
-         </padding>
-         <font>
-            <Font size="18.0"/>
-         </font>
-      </JFXTextField>
-      <FontIcon iconColor="DODGERBLUE" iconLiteral="gmi-refresh" iconSize="28" layoutX="310.0" layoutY="419.0"
-                text=""/>
-      <JFXButton fx:id="checkServerAddressBtn" layoutX="314.0" layoutY="392.0" onAction="#handleCheckServerConnection"
-                 text=" " textFill="TRANSPARENT"/>
-      <Label fx:id="errorLbl" layoutX="239.0" layoutY="424.0" textAlignment="CENTER" textFill="#da9595">
-         <font>
-            <Font size="14.0"/>
-         </font>
-      </Label>
-      <Label alignment="CENTER" layoutX="157.0" layoutY="316.0" prefHeight="43.0" prefWidth="167.0" text="ChatApp"
-             textAlignment="CENTER" textFill="#2196f3">
-         <font>
-            <Font name="System Bold" size="22.0"/>
-         </font>
-      </Label>
-   </children>
+    <children>
+        <AnchorPane layoutX="10.0" layoutY="10.0" prefHeight="30.0" prefWidth="480.0" styleClass="SignInPane"
+                    stylesheets="@../styles/loginStyle.css" AnchorPane.leftAnchor="0.0" AnchorPane.topAnchor="0.0">
+            <children>
+                <FontIcon iconColor="#2196f3" iconLiteral="dashicons-no" iconSize="25" layoutX="449.0" layoutY="32.0"
+                          text=""/>
+                <JFXButton layoutX="448.0" layoutY="8.0" prefHeight="25.0" prefWidth="0.0" textFill="TRANSPARENT"/>
+            </children>
+        </AnchorPane>
+        <Circle fx:id="circleIcon" fill="DODGERBLUE" layoutX="240.0" layoutY="197.0" radius="100.0" stroke="BLACK"
+                strokeType="INSIDE" AnchorPane.bottomAnchor="253.0" AnchorPane.leftAnchor="140.0"
+                AnchorPane.rightAnchor="140.0" AnchorPane.topAnchor="97.0"/>
+        <JFXTextField fx:id="serverAddressTf" focusColor="#5588a3" labelFloat="true" layoutX="134.0" layoutY="387.0"
+                      promptText="Server IP Address" unFocusColor="DODGERBLUE">
+            <padding>
+                <Insets bottom="5.0" left="5.0" right="5.0" top="5.0"/>
+            </padding>
+            <font>
+                <Font size="18.0"/>
+            </font>
+        </JFXTextField>
+        <FontIcon iconColor="DODGERBLUE" iconLiteral="gmi-refresh" iconSize="28" layoutX="310.0" layoutY="419.0"
+                  text=""/>
+        <JFXButton fx:id="checkServerAddressBtn" layoutX="314.0" layoutY="392.0" onAction="#handleCheckServerConnection"
+                   text=" " textFill="TRANSPARENT"/>
+        <Label fx:id="errorLbl" alignment="CENTER" contentDisplay="CENTER" layoutX="97.0" layoutY="469.0"
+               prefHeight="20.0" prefWidth="287.0" textAlignment="CENTER" textFill="#da9595"
+               AnchorPane.bottomAnchor="61.0" AnchorPane.leftAnchor="97.0" AnchorPane.rightAnchor="96.0"
+               AnchorPane.topAnchor="469.0">
+            <font>
+                <Font size="14.0"/>
+            </font>
+        </Label>
+        <Label alignment="CENTER" layoutX="157.0" layoutY="316.0" prefHeight="43.0" prefWidth="167.0" text="ChatApp"
+               textAlignment="CENTER" textFill="#2196f3">
+            <font>
+                <Font name="System Bold" size="22.0"/>
+            </font>
+        </Label>
+    </children>
 </AnchorPane>

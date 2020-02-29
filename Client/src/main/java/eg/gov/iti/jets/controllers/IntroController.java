@@ -76,6 +76,7 @@ public class IntroController implements Initializable {
             checkServerAddressBtn.setDisable(true);
             LoginViewController.getInstance().enable();
             performRememberMeOperation();
+            errorLbl.setText("");
         } else {
             errorLbl.setText("Server Connection Error");
         }

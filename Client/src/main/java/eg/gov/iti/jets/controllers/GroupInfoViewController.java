@@ -7,6 +7,8 @@ import eg.gov.iti.jets.models.dao.interfaces.UserDao;
 import eg.gov.iti.jets.models.entities.GroupChat;
 import eg.gov.iti.jets.models.entities.GroupChatMembership;
 import eg.gov.iti.jets.models.entities.User;
+import eg.gov.iti.jets.models.entities.enums.UserStatus;
+import eg.gov.iti.jets.models.imageutiles.ImageUtiles;
 import eg.gov.iti.jets.models.network.RMIConnection;
 import javafx.beans.property.ListProperty;
 import javafx.beans.property.SimpleListProperty;
@@ -137,6 +139,7 @@ public class GroupInfoViewController implements Initializable {
         }
         if (groupChatMemberships != null) {
             membershipListView.setItems(FXCollections.observableList(groupChatMemberships));
+
             // listProperty.set(FXCollections.observableArrayList(groupChatMemberships));
             //   membershipListView.itemsProperty().bindBidirectional(listProperty);
             //     membershipListView.setItems(listProperty);
@@ -158,11 +161,24 @@ public class GroupInfoViewController implements Initializable {
                         Circle imageCircle = new Circle();
                         try {
                             User user = userDao.getUser(item.getUserId());
-                            //  Image imageForTasting = ImageUtiles.fromBytesToImage(user.getProfileImage());
-                            Image imageForTasting = new Image("images/chat-circle-blue-512.png");
+                            //  System.out.println("status is " + user.getUserStatus());
+                            Image imageForTasting = ImageUtiles.fromBytesToImage(user.getProfileImage());
+                            //Image imageForTasting = new Image("images/chat-circle-blue-512.png");
+
                             imageCircle.setFill(new ImagePattern(imageForTasting));
                             imageCircle.setRadius(20);
-                            imageCircle.setStroke(Color.GREEN);
+                            if (user.getUserStatus() == UserStatus.AVAILABLE) {
+                                imageCircle.setStroke(Color.GREEN);
+
+                            }
+                            if (user.getUserStatus() == UserStatus.AWAY) {
+                                imageCircle.setStroke(Color.RED);
+
+                            }
+                            if (user.getUserStatus() == UserStatus.BUSY) {
+                                imageCircle.setStroke(Color.ORANGE);
+
+                            }
                             imageCircle.setStrokeWidth(3);
                             setGraphic(imageCircle);
                         } catch (Exception e) {
