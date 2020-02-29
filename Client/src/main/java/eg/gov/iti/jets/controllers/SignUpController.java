@@ -19,28 +19,25 @@ import javafx.stage.FileChooser;
 import java.io.File;
 import java.io.IOException;
 import java.net.MalformedURLException;
+import java.net.URISyntaxException;
 import java.net.URL;
+import java.nio.file.Paths;
 import java.rmi.RemoteException;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.ResourceBundle;
 
 public class SignUpController implements Initializable {
+    Image userImage;
+    byte[] imageBytes = null;
+    File file;
+    boolean valid;
     @FXML
     private JFXTextField phoneNoTf;
-
-    Image userImage;
-
     @FXML
     private JFXTextField usernameTf;
-
-    byte[] imageBytes;
-    File file;
-
     @FXML
     private JFXTextField emailTf;
-    boolean valid;
-
     @FXML
     private JFXTextArea bioTa;
 
@@ -86,6 +83,20 @@ public class SignUpController implements Initializable {
         String bio = bioTa.getText();
         String email = emailTf.getText();
         String country = countryCbox.getSelectionModel().getSelectedItem();
+        if (imageBytes == null) {
+            URL res = getClass().getClassLoader().getResource("images/user.png");
+            File file = null;
+            try {
+                file = Paths.get(res.toURI()).toFile();
+            } catch (URISyntaxException e) {
+                e.printStackTrace();
+            }
+            String absolutePath = file.getAbsolutePath();
+            System.out.println(">> imageBytes == null");
+            imageBytes = ImageUtiles.fromImageToBytes(absolutePath);
+            System.out.println(imageBytes);
+        }
+
         User user = new User(phone, userName, pass, email, country, bio, dateOfBirth, UserGender.MALE, imageBytes, UserStatus.AVAILABLE);
         return user;
     }
@@ -95,7 +106,6 @@ public class SignUpController implements Initializable {
         validateSignUp();
         if (valid) {
             try {
-
                 User temp = initUser();
                 System.out.println("inside sign up controller handle signup btn " + temp);
                 int userId = RMIConnection.getUserDao().createUser(temp);
@@ -116,7 +126,6 @@ public class SignUpController implements Initializable {
 
     @FXML
     private void chooseImage(MouseEvent event) {
-
         FileChooser fileChooser = new FileChooser();
         fileChooser.getExtensionFilters().addAll(
                 new FileChooser.ExtensionFilter("Image Files",
@@ -142,21 +151,20 @@ public class SignUpController implements Initializable {
         valid = true;
         validatePhoneNumber();
         validatePassword();
-        //validateEmail();
+        validateEmail();
     }
 
-    /*private void validateEmail() {
+    private void validateEmail() {
         String email = emailTf.getText();
-        if(email.length()>0 && !email.matches("^[A-Z0-9._%+-]+@[A-Z0-9.-]+\\.[A-Z]{2,6}$")){
+        if (email.length() > 0 && !email.matches("(?:[a-z0-9!#$%&'*+/=?^_`{|}~-]+(?:\\.[a-z0-9!#$%&'*+/=?^_`{|}~-]+)*|\"(?:[\\x01-\\x08\\x0b\\x0c\\x0e-\\x1f\\x21\\x23-\\x5b\\x5d-\\x7f]|\\\\[\\x01-\\x09\\x0b\\x0c\\x0e-\\x7f])*\")@(?:(?:[a-z0-9](?:[a-z0-9-]*[a-z0-9])?\\.)+[a-z0-9](?:[a-z0-9-]*[a-z0-9])?|\\[(?:(?:25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\\.){3}(?:25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?|[a-z0-9-]*[a-z0-9]:(?:[\\x01-\\x08\\x0b\\x0c\\x0e-\\x1f\\x21-\\x5a\\x53-\\x7f]|\\\\[\\x01-\\x09\\x0b\\x0c\\x0e-\\x7f])+)\\])")) {
             emailTf.setStyle("-fx-background-color: #ffcccb");
             emailErrLbl.setText("Invalid Email Address");
             valid = false;
-        }
-        else{
+        } else {
             emailTf.setStyle("-fx-background-color: white");
             emailErrLbl.setText("");
         }
-    }*/
+    }
 
     private void validatePassword() {
         if (passwordPf.getText().length() == 0) {
@@ -164,13 +172,11 @@ public class SignUpController implements Initializable {
             confirmPasswordPf.setStyle("-fx-background-color: #ffcccb");
             passwordErrLbl.setText("Must Enter Password");
             valid = false;
-            System.out.println("TEXT FEL IF BT3T el pass");
         } else if (!passwordPf.getText().equals(confirmPasswordPf.getText())) {
             passwordPf.setStyle("-fx-background-color: #ffcccb");
             confirmPasswordPf.setStyle("-fx-background-color: #ffcccb");
             passwordErrLbl.setText("Password and Confirm Password do not match");
             valid = false;
-            System.out.println("TEXT FEL IF BT3T el pass");
         } else {
             passwordPf.setStyle("-fx-background-color: white");
             passwordErrLbl.setText("");
@@ -183,7 +189,6 @@ public class SignUpController implements Initializable {
             phoneErrLbl.setText("Invalid Phone Number");
             valid = false;
         } else {
-            System.out.println("TEXT FEL ELSE");
             phoneNoTf.setStyle("-fx-background-color: white");
             phoneErrLbl.setText("");
         }
