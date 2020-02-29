@@ -61,21 +61,27 @@ public class AddSingleChatViewController implements Initializable {
 
     @FXML
     void handleCreateButton(ActionEvent event) {
-        try {
-            User selectedItem = userContactsLv.getSelectionModel().getSelectedItem();
-            System.out.println(selectedItem);
-            userTwoId = selectedItem.getId();
-            SingleChat singleChat = new SingleChat(this.currentUser.getId(), userTwoId);
-            //System.out.println(singleChat + "my singleChat");
-            if (!isSingleChatCreated(userTwoId, this.currentUser.getId())) {
-                singleChatDao.createSingleChat(singleChat);
-                ((Node) (event.getSource())).getScene().getWindow().hide();
-            } else {
-                errorLabel.setText("this is chat created before");
-                //  System.out.println("your single chat with this friend created before");
+
+        User selectedItem = userContactsLv.getSelectionModel().getSelectedItem();
+        System.out.println(selectedItem);
+        if (selectedItem != null) {
+            try {
+                userTwoId = selectedItem.getId();
+
+                SingleChat singleChat = new SingleChat(this.currentUser.getId(), userTwoId);
+                //System.out.println(singleChat + "my singleChat");
+                if (!isSingleChatCreated(userTwoId, this.currentUser.getId())) {
+                    singleChatDao.createSingleChat(singleChat);
+                    ((Node) (event.getSource())).getScene().getWindow().hide();
+                } else {
+                    errorLabel.setText("this is chat created before");
+                    //  System.out.println("your single chat with this friend created before");
+                }
+            } catch (RemoteException e) {
+                e.printStackTrace();
             }
-        } catch (RemoteException e) {
-            e.printStackTrace();
+        } else {
+            errorLabel.setText("Please, Add New Contact");
         }
     }
 

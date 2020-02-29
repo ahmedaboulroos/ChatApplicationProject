@@ -104,17 +104,24 @@ public class LeftViewController implements Initializable {
             SingleChatMessage singleChatMessage = RMIConnection.getSingleChatMessageDao().getSingleChatMessage(singleChatMessageId);
             int singleChatId = singleChatMessage.getSingleChatId();
             //          SingleChat singleChat = RMIConnection.getSingleChatDao().getSingleChat(singleChatId);
-            int selectedSingleChatId = singleChatsLv.getSelectionModel().getSelectedItem().getId();
-            if (selectedSingleChatId == singleChatId) {
-                SingleChatViewController.getInstance().addSingleChatMessage(singleChatMessage);
-            } else {
-                ListCell<SingleChat> singleChatListCell = singleChatListCellMap.get(singleChatId);
-                singleChatListCell.setStyle("-fx-background-color: lightgreen");
-            }
+            SingleChat selectedSingleChat = singleChatsLv.getSelectionModel().getSelectedItem();
 
+            if (selectedSingleChat != null) {
+
+
+                int selectedSingleChatId = selectedSingleChat.getId();
+
+                if (selectedSingleChatId == singleChatId) {
+                    SingleChatViewController.getInstance().addSingleChatMessage(singleChatMessage);
+                } else {
+                    ListCell<SingleChat> singleChatListCell = singleChatListCellMap.get(singleChatId);
+                    singleChatListCell.setStyle("-fx-background-color: lightgreen");
+                }
+            }
         } catch (RemoteException e) {
             e.printStackTrace();
         }
+
     }
 
     public void updateGroupChat(int groupChatMessageId) {
@@ -614,7 +621,7 @@ public class LeftViewController implements Initializable {
                 else
                     userId = relationship.getFirstUserId();
                 User user = userDao.getUser(userId);
-                allContactsLv.getItems().add(user);
+                Platform.runLater(() -> allContactsLv.getItems().add(user));
             } else if (relationship.getStatus() == RelationshipStatus.BLOCKED) {
                 if (relationship.getFirstUserId() == ClientStageCoordinator.getInstance().currentUser.getId())
                     userId = relationship.getSecondUserId();

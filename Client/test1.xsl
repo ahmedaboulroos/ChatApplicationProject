@@ -10,13 +10,11 @@
                 <table border="1">
                     <tr bgcolor="#9acd32">
                         <th>message</th>
-
                     </tr>
                     <xsl:for-each select="SingleChat/SingleChatMessage">
                         <tr>
                             <td>
                                 <xsl:value-of select="content"/>
-
                             </td>
 
                         </tr>
@@ -25,5 +23,4 @@
             </body>
         </html>
     </xsl:template>
-
 </xsl:stylesheet>
