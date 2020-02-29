@@ -1,0 +1,48 @@
+.mainPane {
+    -fx-background-color: #2196F3;
+}
+
+.tap {
+    -fx-background-color: #2196F3;
+    -fx-background-radius: 0px;
+    -fx-text-fill: #151920;
+}
+
+.tap:hover {
+    -fx-background-radius: 0px;
+    -fx-border-color: #ffffff;
+    -fx-border-width: 0px 0px 3px 0px;
+    -fx-border-radius: 0px;
+    -fx-text-fill: #ffffff;
+}
+
+.addNewBtn {
+    -fx-background-color: transparent;
+    -fx-background-radius: 0px;
+    -fx-text-fill: transparent;
+}
+
+.icons {
+    -fx-fill: #151920;
+}
+
+.addNewBtn:hover {
+    -fx-background-color: transparent;
+    -fx-background-radius: 0px;
+    -fx-border-color: #ffffff;
+    -fx-border-width: 0px 0px 3px 0px;
+    -fx-border-radius: 0px;
+    -fx-text-fill: transparent;
+
+}
+
+.addNewBtn:hover .icons {
+    -fx-fill: white;
+}
+
+.darkTap {
+    -fx-background-color: gray;
+}
+   
+
+
