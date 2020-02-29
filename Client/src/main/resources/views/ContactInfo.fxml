@@ -22,8 +22,10 @@
                       AnchorPane.topAnchor="0.0">
                     <children>
                         <Circle fx:id="imageCircle" fill="WHITE" layoutX="125.0" layoutY="87.0" radius="60.0"
-                                stroke="BLACK" strokeType="INSIDE" strokeWidth="0.0"
-                                style="-fx-stroke-width: 3px; -fx-stroke: green;"/>
+                                stroke="BLACK" strokeType="INSIDE" strokeWidth="0.0"/>
+                        <Label fx:id="statusLb" layoutX="151.0" layoutY="146.0" maxHeight="-Infinity"
+                               maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="12.0"
+                               prefWidth="13.0" styleClass="online"/>
                         <Label fx:id="UserName" layoutX="14.0" layoutY="152.0" maxHeight="-Infinity"
                                maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="30.0"
                                prefWidth="220.0" text="Reem Monir" textFill="#ffeaea">
