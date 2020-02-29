@@ -19,17 +19,20 @@ import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
-import javafx.scene.control.Label;
 import javafx.scene.control.ListCell;
 import javafx.scene.control.ListView;
 import javafx.scene.image.Image;
 import javafx.scene.paint.Color;
 import javafx.scene.paint.ImagePattern;
 import javafx.scene.shape.Circle;
+import javafx.scene.text.Text;
 import javafx.stage.Stage;
 
+import java.io.File;
 import java.io.IOException;
+import java.net.URISyntaxException;
 import java.net.URL;
+import java.nio.file.Paths;
 import java.rmi.RemoteException;
 import java.util.List;
 import java.util.ResourceBundle;
@@ -42,11 +45,11 @@ public class GroupInfoViewController implements Initializable {
     GroupChat groupChat;
     protected ListProperty<GroupChatMembership> listProperty = new SimpleListProperty<>();
     @FXML
-    private Label gname;
+    private Text gname;
     @FXML
-    private Label desc;
+    private Text desc;
     @FXML
-    private Label createdate;
+    private Text createdate;
     private GroupChatDao groupChatDao = RMIConnection.getGroupChatDao();
     private UserDao userDao = RMIConnection.getUserDao();
     private int groupChatId;
@@ -87,6 +90,8 @@ public class GroupInfoViewController implements Initializable {
             Scene scene = new Scene(addContactView);
             stage.setScene(scene);
             stage.setTitle("Add Contact");
+            stage.setMaxWidth(557);
+            stage.setMaxHeight(346);
             //  addMembershipGroupController.setGroupInfoViewController(this);
             stage.show();
         } catch (IOException e) {
@@ -162,10 +167,21 @@ public class GroupInfoViewController implements Initializable {
                         Circle imageCircle = new Circle();
                         try {
                             User user = userDao.getUser(item.getUserId());
-                            //  System.out.println("status is " + user.getUserStatus());
-                            Image imageForTasting = ImageUtiles.fromBytesToImage(user.getProfileImage());
-                            //Image imageForTasting = new Image("images/chat-circle-blue-512.png");
+                            Image imageForTasting = null;
+                            byte[] image = user.getProfileImage();
 
+                            if (image == null) {
+                                File file = null;
+                                URL res = getClass().getClassLoader().getResource("images/user.png");
+                                try {
+                                    file = Paths.get(res.toURI()).toFile();
+                                    String filePath = file.getAbsolutePath();
+                                    image = ImageUtiles.fromImageToBytes(filePath);
+                                } catch (URISyntaxException e) {
+                                    e.printStackTrace();
+                                }
+                            }
+                            imageForTasting = ImageUtiles.fromBytesToImage(image);
                             imageCircle.setFill(new ImagePattern(imageForTasting));
                             imageCircle.setRadius(20);
                             if (user.getUserStatus() == UserStatus.AVAILABLE) {

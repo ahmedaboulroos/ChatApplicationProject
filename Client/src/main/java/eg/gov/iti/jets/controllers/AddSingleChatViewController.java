@@ -128,8 +128,9 @@ public class AddSingleChatViewController implements Initializable {
                             + "-fx-border-radius: 2;" + "-fx-border-color: white;");
                     Circle imageCircle = new Circle();
                     //Image imageForTasting = new Image("images/chat-circle-blue-512.png");
-
-                    imageCircle.setFill(new ImagePattern(ImageUtiles.fromBytesToImage(user.getProfileImage())));
+                    if (user.getProfileImage() != null) {
+                        imageCircle.setFill(new ImagePattern(ImageUtiles.fromBytesToImage(user.getProfileImage())));
+                    }
                     imageCircle.setRadius(20);
                     imageCircle.setStroke(Color.NAVY);
                     imageCircle.setStrokeWidth(1);

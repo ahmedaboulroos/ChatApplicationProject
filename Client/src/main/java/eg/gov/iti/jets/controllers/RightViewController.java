@@ -6,7 +6,6 @@ import eg.gov.iti.jets.models.entities.Relationship;
 import eg.gov.iti.jets.models.entities.User;
 import eg.gov.iti.jets.models.entities.enums.RelationshipStatus;
 import eg.gov.iti.jets.models.network.RMIConnection;
-import javafx.application.Platform;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
@@ -166,9 +165,7 @@ public class RightViewController implements Initializable {
     }
 
     public void displayRelationship(int relationshipId) {
-
-        Platform.runLater(() -> {
-            Relationship relationship = null;
+         Relationship relationship = null;
             try {
                 relationship = relationshipDao.getRelationship(relationshipId);
                 System.out.println(relationship.getFirstUserId());
@@ -177,7 +174,6 @@ public class RightViewController implements Initializable {
             } catch (RemoteException e) {
                 e.printStackTrace();
             }
-        });
 
     }
 

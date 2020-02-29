@@ -9,7 +9,6 @@ import eg.gov.iti.jets.models.entities.GroupChatMessage;
 import eg.gov.iti.jets.models.entities.User;
 import eg.gov.iti.jets.models.imageutiles.ImageUtiles;
 import eg.gov.iti.jets.models.network.RMIConnection;
-import javafx.application.Platform;
 import javafx.collections.FXCollections;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -24,7 +23,10 @@ import javafx.scene.shape.Circle;
 import javafx.scene.web.HTMLEditor;
 import javafx.scene.web.WebView;
 
+import java.io.File;
+import java.net.URISyntaxException;
 import java.net.URL;
+import java.nio.file.Paths;
 import java.rmi.RemoteException;
 import java.util.List;
 import java.util.ResourceBundle;
@@ -80,13 +82,20 @@ public class GroupChatViewController implements Initializable {
     private void updateGroupChat() {
         try {
             byte[] imageBytes = groupChat.getGroupImageBytes();
-            try {
-                Image imageForTasting = ImageUtiles.fromBytesToImage(imageBytes);
-                imageCircle.setFill(new ImagePattern(imageForTasting));
-            } catch (Exception e) {
-                System.out.println("Group Chat Icon not loaded.");
+            if (imageBytes == null) {
+                File file = null;
+                URL res = getClass().getClassLoader().getResource("images/group-icon.png");
+                try {
+                    file = Paths.get(res.toURI()).toFile();
+                    String filePath = file.getAbsolutePath();
+                    imageBytes = ImageUtiles.fromImageToBytes(filePath);
+                } catch (URISyntaxException e) {
+                    e.printStackTrace();
+                }
             }
-            imageCircle.setRadius(20);
+            Image image = ImageUtiles.fromBytesToImage(imageBytes);
+            imageCircle.setFill(new ImagePattern(image));
+
             nameLbl.setText(groupChat.getTitle());
             groupChatMessagesLv.getItems().clear();
             List<GroupChatMessage> groupChatMessages = RMIConnection.getGroupChatDao().getGroupChatMessages(groupChatId);
@@ -102,9 +111,7 @@ public class GroupChatViewController implements Initializable {
 
 
     public void addGroupChatMessage(GroupChatMessage groupChatMessage) {
-        Platform.runLater(() -> {
             groupChatMessagesLv.getItems().add(groupChatMessage);
-        });
     }
 
     @FXML
@@ -122,7 +129,6 @@ public class GroupChatViewController implements Initializable {
                     try {
                         Pos pos = null;
                         User user = null;
-
                         if (message.getUserId() == currentUser.getId()) {
                             user = currentUser;
                             pos = Pos.CENTER_RIGHT;
@@ -130,14 +136,21 @@ public class GroupChatViewController implements Initializable {
                             user = userDao.getUser(message.getUserId());
                             pos = Pos.CENTER_LEFT;
                         }
-                        byte[] imageBytes = user.getProfileImage();
                         Circle circle = new Circle();
-                        try {
-                            Image image = ImageUtiles.fromBytesToImage(imageBytes);
-                            circle.setFill(new ImagePattern(image));
-                        } catch (Exception e) {
-                            System.out.println("Chat Icon not loaded.");
+                        byte[] imageBytes = user.getProfileImage();
+                        if (imageBytes == null) {
+                            File file = null;
+                            URL res = getClass().getClassLoader().getResource("images/group-icon.png");
+                            try {
+                                file = Paths.get(res.toURI()).toFile();
+                                String filePath = file.getAbsolutePath();
+                                imageBytes = ImageUtiles.fromImageToBytes(filePath);
+                            } catch (URISyntaxException e) {
+                                e.printStackTrace();
+                            }
                         }
+                        Image image = ImageUtiles.fromBytesToImage(imageBytes);
+                        circle.setFill(new ImagePattern(image));
                         circle.setRadius(20);
 
                         WebView webView = new WebView();
@@ -177,21 +190,6 @@ public class GroupChatViewController implements Initializable {
             e.printStackTrace();
         }
     }
-
-//    public void displayNewGroupChatMessage(int groupChatMessageId) throws RemoteException {
-//        GroupChatMessage groupChatMessage = null;
-//        groupChatMessage = groupChatMessageDao.getGroupChatMessage(groupChatMessageId);
-//
-//        User user = userDao.getUser(groupChatMessage.getUserId());
-//        System.out.println(
-//                " groupChatMessageId : " + groupChatMessage.getGroupChatId()
-//                        + "\n userId: " + groupChatMessage.getUserId()
-//                        + "\n  Id " + groupChatMessage.getId()
-//                        + "\n content " + groupChatMessage.getContent()
-//                        + "\n TimeStamp " + groupChatMessage.getMessageDateTime());
-//        System.out.println("name : " + user.getUsername() + "Image : " + user.getProfileImage());
-//    }
-
 }
 
 
