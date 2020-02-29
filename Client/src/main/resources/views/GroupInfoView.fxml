@@ -18,10 +18,10 @@
             <Text fx:id="gname" fill="#fcfcfc" strokeType="OUTSIDE" strokeWidth="0.0" text="Group chat info"
                   textAlignment="CENTER" wrappingWidth="228.6762066841129">
                <font>
-                  <Font name="Vijaya" size="37.0"/>
+                  <Font name="Bell MT" size="31.0"/>
                </font>
                <HBox.margin>
-                  <Insets top="10.0"/>
+                  <Insets/>
                </HBox.margin>
             </Text>
             <FontIcon iconColor="#e8e2e2" iconLiteral="typ-group-outline" iconSize="40" layoutX="10.0" layoutY="42.0"/>
