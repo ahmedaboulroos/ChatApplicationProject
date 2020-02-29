@@ -466,10 +466,10 @@ public class LeftViewController implements Initializable {
             ClientStageCoordinator.getInstance().openNewSingleChat(singleChat.getId());
         }
     }
-
+    GroupChat groupChat;
     @FXML
     void handleGroupChatSelection(MouseEvent event) {
-        GroupChat groupChat = groupChatsLv.getSelectionModel().getSelectedItem();
+        groupChat = groupChatsLv.getSelectionModel().getSelectedItem();
         if (groupChat != null) {
             System.out.println("inside handleGroupChatSelection " + groupChat.toString());
             ClientStageCoordinator.getInstance().openNewGroupChat(groupChat.getId());
@@ -561,14 +561,17 @@ public class LeftViewController implements Initializable {
                 case AVAILABLE:
                     RMIConnection.getUserDao().updateUserStatus(ClientStageCoordinator.getInstance().currentUser.getId(), UserStatus.AVAILABLE);
                     userStatusCb.setStyle("-fx-background-color: lightgreen");
+                    ClientStageCoordinator.getInstance().openNewGroupChat(groupChat.getId());
                     break;
                 case BUSY:
                     RMIConnection.getUserDao().updateUserStatus(ClientStageCoordinator.getInstance().currentUser.getId(), UserStatus.BUSY);
                     userStatusCb.setStyle("-fx-background-color: pink");
+                    ClientStageCoordinator.getInstance().openNewGroupChat(groupChat.getId());
                     break;
                 case AWAY:
                     RMIConnection.getUserDao().updateUserStatus(ClientStageCoordinator.getInstance().currentUser.getId(), UserStatus.AWAY);
                     userStatusCb.setStyle("-fx-background-color: lightyellow");
+                    ClientStageCoordinator.getInstance().openNewGroupChat(groupChat.getId());
                     break;
                 default:
                     System.out.println("WT!?");
