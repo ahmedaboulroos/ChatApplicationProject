@@ -10,7 +10,6 @@ import eg.gov.iti.jets.models.entities.User;
 import eg.gov.iti.jets.models.imageutiles.ImageUtiles;
 import eg.gov.iti.jets.models.network.RMIConnection;
 import eg.gov.iti.jets.models.singleChat.ObjectFactory;
-import javafx.application.Platform;
 import javafx.collections.FXCollections;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -186,7 +185,7 @@ public class SingleChatViewController implements Initializable {
     }
 
     public void addSingleChatMessage(SingleChatMessage singleChatMessage) {
-        Platform.runLater(() -> singleChatMessagesLv.getItems().add(singleChatMessage));
+        singleChatMessagesLv.getItems().add(singleChatMessage);
     }
 
     @FXML

@@ -204,13 +204,24 @@ public class SignUpController implements Initializable {
     }
 
     private void validatePhoneNumber() {
-        if (!phoneNoTf.getText().matches("01(0|1|2|5)\\d{8}")) {
+        String phoneNo = phoneNoTf.getText();
+        if (!phoneNo.matches("01(0|1|2|5)\\d{8}")) {
             phoneNoTf.setStyle("-fx-background-color: #ffcccb");
             phoneErrLbl.setText("Invalid Phone Number");
             valid = false;
         } else {
-            phoneNoTf.setStyle("-fx-background-color: white");
-            phoneErrLbl.setText("");
+            try {
+                if (RMIConnection.getUserDao().getUser(phoneNo) != null) {
+                    phoneNoTf.setStyle("-fx-background-color: #ffcccb");
+                    phoneErrLbl.setText("Phone Number already has an account");
+                    valid = false;
+                } else {
+                    phoneNoTf.setStyle("-fx-background-color: white");
+                    phoneErrLbl.setText("");
+                }
+            } catch (RemoteException e) {
+                e.printStackTrace();
+            }
         }
     }
 }

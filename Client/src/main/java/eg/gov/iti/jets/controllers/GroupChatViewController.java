@@ -9,7 +9,6 @@ import eg.gov.iti.jets.models.entities.GroupChatMessage;
 import eg.gov.iti.jets.models.entities.User;
 import eg.gov.iti.jets.models.imageutiles.ImageUtiles;
 import eg.gov.iti.jets.models.network.RMIConnection;
-import javafx.application.Platform;
 import javafx.collections.FXCollections;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -24,7 +23,10 @@ import javafx.scene.shape.Circle;
 import javafx.scene.web.HTMLEditor;
 import javafx.scene.web.WebView;
 
+import java.io.File;
+import java.net.URISyntaxException;
 import java.net.URL;
+import java.nio.file.Paths;
 import java.rmi.RemoteException;
 import java.util.List;
 import java.util.ResourceBundle;
@@ -102,9 +104,7 @@ public class GroupChatViewController implements Initializable {
 
 
     public void addGroupChatMessage(GroupChatMessage groupChatMessage) {
-        Platform.runLater(() -> {
             groupChatMessagesLv.getItems().add(groupChatMessage);
-        });
     }
 
     @FXML
@@ -122,7 +122,6 @@ public class GroupChatViewController implements Initializable {
                     try {
                         Pos pos = null;
                         User user = null;
-
                         if (message.getUserId() == currentUser.getId()) {
                             user = currentUser;
                             pos = Pos.CENTER_RIGHT;
@@ -130,14 +129,21 @@ public class GroupChatViewController implements Initializable {
                             user = userDao.getUser(message.getUserId());
                             pos = Pos.CENTER_LEFT;
                         }
-                        byte[] imageBytes = user.getProfileImage();
                         Circle circle = new Circle();
-                        try {
-                            Image image = ImageUtiles.fromBytesToImage(imageBytes);
-                            circle.setFill(new ImagePattern(image));
-                        } catch (Exception e) {
-                            System.out.println("Chat Icon not loaded.");
+                        byte[] imageBytes = user.getProfileImage();
+                        if (imageBytes == null) {
+                            File file = null;
+                            URL res = getClass().getClassLoader().getResource("images/user.png");
+                            try {
+                                file = Paths.get(res.toURI()).toFile();
+                                String filePath = file.getAbsolutePath();
+                                imageBytes = ImageUtiles.fromImageToBytes(filePath);
+                            } catch (URISyntaxException e) {
+                                e.printStackTrace();
+                            }
                         }
+                        Image image = ImageUtiles.fromBytesToImage(imageBytes);
+                        circle.setFill(new ImagePattern(image));
                         circle.setRadius(20);
 
                         WebView webView = new WebView();

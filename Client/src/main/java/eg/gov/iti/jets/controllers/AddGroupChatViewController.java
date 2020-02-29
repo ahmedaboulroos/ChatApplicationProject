@@ -14,6 +14,9 @@ import javafx.scene.control.Label;
 import javafx.stage.FileChooser;
 
 import java.io.File;
+import java.net.URISyntaxException;
+import java.net.URL;
+import java.nio.file.Paths;
 import java.rmi.RemoteException;
 import java.time.LocalDateTime;
 
@@ -38,8 +41,18 @@ public class AddGroupChatViewController {
     @FXML
     void handleCreateGroupChat(ActionEvent event) {
         try {
-            String filePath = file == null ? null : file.getAbsolutePath();
-            GroupChat groupChat = new GroupChat(titleTf.getText(), descriptionTf.getText(), ImageUtiles.fromImageToBytes(filePath), LocalDateTime.now());
+            byte[] image = null;
+            if (file == null) {
+                URL res = getClass().getClassLoader().getResource("images/user.png");
+                try {
+                    file = Paths.get(res.toURI()).toFile();
+                } catch (URISyntaxException e) {
+                    e.printStackTrace();
+                }
+            }
+            String filePath = file.getAbsolutePath();
+            image = ImageUtiles.fromImageToBytes(filePath);
+            GroupChat groupChat = new GroupChat(titleTf.getText(), descriptionTf.getText(), image, LocalDateTime.now());
             int autoGenGroupChatID = groupChatDao.createGroupChat(groupChat);
             System.out.println("inside ====>> handleCreateGroupChat  isGroupChatCreated" + autoGenGroupChatID);
             System.out.println("inside -->> AddGroupChatViewController Current user id" + ClientStageCoordinator.getInstance().currentUser.getId());

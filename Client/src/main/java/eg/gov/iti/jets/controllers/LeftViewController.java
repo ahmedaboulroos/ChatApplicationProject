@@ -10,7 +10,6 @@ import eg.gov.iti.jets.models.entities.enums.RelationshipStatus;
 import eg.gov.iti.jets.models.entities.enums.UserStatus;
 import eg.gov.iti.jets.models.imageutiles.ImageUtiles;
 import eg.gov.iti.jets.models.network.RMIConnection;
-import javafx.application.Platform;
 import javafx.collections.FXCollections;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
@@ -311,7 +310,7 @@ public class LeftViewController implements Initializable {
         groupTpane.setText(g.getGroupName());
         groupTpane.setContent(contactsGroupLv);
         mContactGroupsListViews.put(g.getId(), contactsGroupLv);
-        Platform.runLater(() -> groupsAccordion.getPanes().add(groupTpane));
+        groupsAccordion.getPanes().add(groupTpane);
         return contactsGroupLv;
     }
 
@@ -324,9 +323,7 @@ public class LeftViewController implements Initializable {
         try {
             SingleChat singleChat = singleChatDao.getSingleChat(singleChatId);
             if (singleChat != null) {
-                //System.out.println("ana m4 null and this is my new single chat"+singleChat);
-                //  Platform.runLater(() -> loadSingleChats());
-                Platform.runLater(() -> singleChatsLv.getItems().add(singleChat));
+                singleChatsLv.getItems().add(singleChat);
             }
         } catch (RemoteException e) {
             e.printStackTrace();
@@ -340,7 +337,7 @@ public class LeftViewController implements Initializable {
             List<SingleChat> singleChats = userDao.getUserSingleChats(ClientStageCoordinator.getInstance().currentUser.getId());
             System.out.println("this is single chat " + singleChats);
             if (singleChats != null) {
-                Platform.runLater(() -> singleChatsLv.setItems(FXCollections.observableList(singleChats)));
+                singleChatsLv.setItems(FXCollections.observableList(singleChats));
                 singleChatsLv.setCellFactory(singleChatsLv -> new ListCell<SingleChat>() {
                     @Override
                     public void updateItem(SingleChat singleChat, boolean empty) {
@@ -421,7 +418,7 @@ public class LeftViewController implements Initializable {
 
 
     public void displayNewGroupChat() {
-        Platform.runLater(this::loadGroupChats);
+        loadGroupChats();
     }
 
     private void loadGroupChats() {
@@ -621,7 +618,7 @@ public class LeftViewController implements Initializable {
                 else
                     userId = relationship.getFirstUserId();
                 User user = userDao.getUser(userId);
-                Platform.runLater(() -> allContactsLv.getItems().add(user));
+                allContactsLv.getItems().add(user);
             } else if (relationship.getStatus() == RelationshipStatus.BLOCKED) {
                 if (relationship.getFirstUserId() == ClientStageCoordinator.getInstance().currentUser.getId())
                     userId = relationship.getSecondUserId();
