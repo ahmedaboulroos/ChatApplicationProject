@@ -38,6 +38,12 @@ public class DBConnection {
                 final String encryptionType = databaseProperties.getProperty("encryptionType");
                 final String checksumType = databaseProperties.getProperty("checksumType");
 
+                System.out.println(username);
+                System.out.println(password);
+                System.out.println(url);
+                System.out.println(encryptionType);
+                System.out.println(checksumType);
+
                 OracleDriver dr = new OracleDriver();
                 Properties prop = new Properties();
 

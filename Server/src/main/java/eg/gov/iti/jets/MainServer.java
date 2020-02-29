@@ -58,13 +58,13 @@ public class MainServer extends Application {
             Schema schema = schemaFactory.newSchema(new File("src/main/resources/configs/database_settings.xsd"));
             marshaller.setSchema(schema);
 
-            File xmlFileSettings = new File("src/main/resources/configs/database_settings.xsd");
+            File xmlFileSettings = new File("src/main/resources/configs/database_settings.xml");
             if (!xmlFileSettings.exists()) {
                 DatabaseSettings databaseSettings = new DatabaseSettings();
-                databaseSettings.setDatabaseUrl("jdbc:oracle:thin:@(DESCRIPTION=(ADDRESS=(PROTOCOL=tcp)(HOST=localhost)(PORT=1521))" + "(CONNECT_DATA=(SERVICE_NAME=XE)))");
+                databaseSettings.setDatabaseUrl("jdbc:oracle:thin:@(DESCRIPTION=(ADDRESS=(PROTOCOL=tcp)(HOST=localhost)(PORT=1521))(CONNECT_DATA=(SERVICE_NAME=XE)))");
                 databaseSettings.setDatabaseUsername("CHATAPP");
                 databaseSettings.setDatabasePassword("CHATAPP");
-                databaseSettings.setEncryptionType("( " + AnoServices.ENCRYPTION_AES256 + "," + AnoServices.ENCRYPTION_AES192 + ")");
+                databaseSettings.setEncryptionType("( " + AnoServices.ENCRYPTION_AES256 + " , " + AnoServices.ENCRYPTION_AES192 + " )");
                 databaseSettings.setChecksumType("( " + AnoServices.CHECKSUM_SHA1 + " )");
                 marshaller.marshal(databaseSettings, new FileOutputStream("src/main/resources/configs/database_settings.xml"));
             }
@@ -96,7 +96,7 @@ public class MainServer extends Application {
             Schema schema = schemaFactory.newSchema(new File("src/main/resources/configs/server_settings.xsd"));
             marshaller.setSchema(schema);
 
-            File xmlFileSettings = new File("src/main/resources/configs/server_settings.xsd");
+            File xmlFileSettings = new File("src/main/resources/configs/server_settings.xml");
             if (!xmlFileSettings.exists()) {
                 ServerSettings serverSettings = new ServerSettings();
                 serverSettings.setServerUsername("amin");
