@@ -5,7 +5,7 @@
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.AnchorPane?>
-<?import javafx.scene.text.Font?>
+<?import javafx.scene.text.*?>
 <?import org.kordamp.ikonli.javafx.FontIcon?>
 <AnchorPane xmlns:fx="http://javafx.com/fxml/1" prefHeight="369.0" prefWidth="600.0"
             style="-fx-background-color: #0087ED;" xmlns="http://javafx.com/javafx/11.0.1"
@@ -28,7 +28,11 @@
                 <Font size="18.0"/>
             </font>
         </JFXTextField>
-        <Label fx:id="pathLbl" layoutX="59.0" layoutY="169.0" textFill="RED"/>
+        <Label fx:id="pathLbl" layoutX="14.0" layoutY="317.0" prefHeight="43.0" prefWidth="266.0" textFill="RED">
+            <font>
+                <Font size="18.0"/>
+            </font>
+        </Label>
         <JFXButton layoutX="405.0" layoutY="215.0" onAction="#handleSelectImage" prefHeight="39.0" prefWidth="122.0"
                    ripplerFill="GAINSBORO"
                    style="-fx-background-color: e8e8e8; -fx-border-radius: 10px; -fx-background-radius: 10px;"

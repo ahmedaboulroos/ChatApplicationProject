@@ -102,7 +102,7 @@ public class GroupInfoViewController implements Initializable {
     @FXML
     void handleDeleteContactGroup(ActionEvent event) {
         if (membershipListView.getSelectionModel().getSelectedItem() != null) {
-            membershipListView.getSelectionModel().getSelectedItem();
+//            membershipListView.getSelectionModel().getSelectedItem();
             try {
                 RMIConnection.getGroupChatMembershipDao().deleteGroupChatMembership(membershipListView.getSelectionModel().getSelectedItem().getId());
                 CenterViewController.getInstance().centerViewBp.setCenter(null);
