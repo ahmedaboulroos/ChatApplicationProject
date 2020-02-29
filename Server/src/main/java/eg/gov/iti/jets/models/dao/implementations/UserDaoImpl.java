@@ -1,5 +1,6 @@
 package eg.gov.iti.jets.models.dao.implementations;
 
+import eg.gov.iti.jets.controllers.ServerStageCoordinator;
 import eg.gov.iti.jets.models.dao.interfaces.UserDao;
 import eg.gov.iti.jets.models.entities.*;
 import eg.gov.iti.jets.models.entities.enums.RelationshipStatus;
@@ -73,6 +74,7 @@ public class UserDaoImpl extends UnicastRemoteObject implements UserDao {
         } catch (SQLException e) {
             e.printStackTrace();
         }
+        ServerStageCoordinator.updateUsers();
         return id;
     }
 
