@@ -126,3 +126,7 @@
 .list-cell:hover {
     -fx-background-color: white;
 }
+
+.list-cell, .list-cell:empty {
+    -fx-background-color: white
+}
