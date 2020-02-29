@@ -158,9 +158,21 @@ public class GroupChatViewController implements Initializable {
                         webView.setMaxSize(400, 100);
 
                         if (pos == Pos.CENTER_RIGHT) {
-                            hBox.getChildren().addAll(webView, circle);
+                            webView.setStyle("-fx-background-color: #EEEEEE ;" + "font-family: Arial, Helvetica, sans-serif;");
+                            hBox.getChildren().addAll(webView, new Label("   "), circle);
+
+                            hBox.setStyle("-fx-background-color: #EEEEEE ;" + "-fx-background-radius: 30px ;" +
+                                    "-fx-padding: 1;" + "-fx-border-style: solid inside;"
+                                    + "-fx-border-width: 0;" + "-fx-border-insets: 1;"
+                                    + "-fx-border-radius: 2;" + "-fx-border-color: white;");
                         } else {
-                            hBox.getChildren().addAll(circle, webView);
+                            webView.setStyle("-fx-background-color: #8CD3EC ;" + "font-family: Arial, Helvetica, sans-serif;");
+                            hBox.getChildren().addAll(circle, new Label("   "), webView);
+
+                            hBox.setStyle("-fx-background-color: #8CD3EC ;" + "-fx-background-radius: 30px ;" +
+                                    "-fx-padding: 1;" + "-fx-border-style: solid inside;"
+                                    + "-fx-border-width: 0;" + "-fx-border-insets: 1;"
+                                    + "-fx-border-radius: 2;" + "-fx-border-color: white;");
                         }
                         hBox.setAlignment(pos);
                         setGraphic(hBox);

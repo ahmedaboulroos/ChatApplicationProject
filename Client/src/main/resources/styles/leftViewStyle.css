@@ -3,15 +3,15 @@
 }
 
 .tap {
-    -fx-background-color: #2196F3;
-    -fx-background-radius: 0px;
+    -fx-background-color: #8CD3EC;
+    -fx-background-radius: 8px;
     -fx-text-fill: #151920;
 }
 
 .tap:hover {
-    -fx-background-radius: 0px;
+    -fx-background-radius: 8px;
     -fx-border-color: #ffffff;
-    -fx-border-width: 0px 0px 3px 0px;
+    -fx-border-width: 0px 0px 4px 0px;
     -fx-border-radius: 0px;
     -fx-text-fill: #ffffff;
 }
