@@ -9,6 +9,7 @@ import eg.gov.iti.jets.models.entities.SingleChatMessage;
 import eg.gov.iti.jets.models.entities.User;
 import eg.gov.iti.jets.models.imageutiles.ImageUtiles;
 import eg.gov.iti.jets.models.network.RMIConnection;
+import eg.gov.iti.jets.models.singleChat.ObjectFactory;
 import javafx.application.Platform;
 import javafx.collections.FXCollections;
 import javafx.event.ActionEvent;
@@ -24,7 +25,18 @@ import javafx.scene.paint.ImagePattern;
 import javafx.scene.shape.Circle;
 import javafx.scene.web.HTMLEditor;
 import javafx.scene.web.WebView;
+import org.xml.sax.SAXException;
 
+import javax.xml.XMLConstants;
+import javax.xml.bind.JAXBContext;
+import javax.xml.bind.JAXBException;
+import javax.xml.bind.Marshaller;
+import javax.xml.bind.PropertyException;
+import javax.xml.validation.Schema;
+import javax.xml.validation.SchemaFactory;
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
 import java.net.URL;
 import java.rmi.RemoteException;
 import java.time.LocalDateTime;
@@ -178,6 +190,7 @@ public class SingleChatViewController implements Initializable {
     @FXML
     void handleSaveSessionBtn(ActionEvent event) {
         List<SingleChatMessage> singleChatMessageList = getSingleChatMessages(singleChatId);
+        generateXml(singleChatMessageList);
         System.out.println(singleChatMessageList);
     }
 
@@ -206,4 +219,50 @@ public class SingleChatViewController implements Initializable {
         return singleChatMessageFilteredList;
     }
 
+    public void generateXml(List<SingleChatMessage> singleChatMessageList) {
+        try {
+            JAXBContext context = JAXBContext.newInstance(ObjectFactory.class);
+
+            eg.gov.iti.jets.models.singleChat.SingleChat singleChat = new eg.gov.iti.jets.models.singleChat.SingleChat();
+            //  eg.gov.iti.jets.models.singleChat.SingleChat.SingleChatMessage singleChatMessage1 = new eg.gov.iti.jets.models.singleChat.SingleChat.SingleChatMessage();
+            List<eg.gov.iti.jets.models.singleChat.SingleChat.SingleChatMessage> singleChatMessageList1 = singleChat.getSingleChatMessage();
+            for (int i = 0; i < singleChatMessageList.size(); i++) {
+//                LocalDateTime date = singleChatMessageList.get(i).getMessageDateTime();
+//                GregorianCalendar gcal = GregorianCalendar.from(date.atStartOfDay(ZoneId.systemDefault()));
+//                XMLGregorianCalendar xcal = DatatypeFactory.newInstance().newXMLGregorianCalendar(gcal);
+                eg.gov.iti.jets.models.singleChat.SingleChat.SingleChatMessage singleChatMessage1 = new eg.gov.iti.jets.models.singleChat.SingleChat.SingleChatMessage();
+                //   singleChatMessage1.setUserId(singleChatMessageList.get(i).getUserId());
+                singleChatMessage1.setContent(singleChatMessageList.get(i).getContent());
+                singleChatMessageList1.add(singleChatMessage1);
+            }
+            eg.gov.iti.jets.models.singleChat.SingleChat singleChat1 = new eg.gov.iti.jets.models.singleChat.SingleChat();
+            singleChat1.getSingleChatMessage().addAll(singleChatMessageList1);
+
+            Marshaller marshaller = context.createMarshaller();
+            marshaller.setProperty(Marshaller.JAXB_FORMATTED_OUTPUT, Boolean.TRUE);
+
+            SchemaFactory schemaFactory = SchemaFactory.newInstance(XMLConstants.W3C_XML_SCHEMA_NS_URI);
+            Schema schema = null;
+            try {
+                schema = schemaFactory.newSchema(new File("single-chat-message.xsd"));
+            } catch (SAXException e) {
+                e.printStackTrace();
+            }
+            marshaller.setSchema(schema);
+            marshaller.setProperty("com.sun.xml.bind.xmlHeaders", "<?xml-stylesheet type='text/xsl' href='test1.xsl'?>");
+            try {
+                marshaller.marshal(singleChat1, new FileOutputStream("chat-out1.xml"));
+            } catch (JAXBException e) {
+                e.printStackTrace();
+            } catch (FileNotFoundException e) {
+                e.printStackTrace();
+            }
+
+
+        } catch (PropertyException e) {
+            e.printStackTrace();
+        } catch (JAXBException e) {
+            e.printStackTrace();
+        }
+    }
 }

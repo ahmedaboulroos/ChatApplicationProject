@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?><?xml-stylesheet type='text/xsl' href='test1.xsl'?>
+<SingleChat>
+    <SingleChatMessage>
+        <content>&lt;html dir="ltr"&gt;&lt;head&gt;&lt;/head&gt;&lt;body contenteditable="true"&gt;&lt;p&gt;ggggggggggggggggggggg&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</content>
+    </SingleChatMessage>
+    <SingleChatMessage>
+        <content>&lt;html dir="ltr"&gt;&lt;head&gt;&lt;/head&gt;&lt;body contenteditable="true"&gt;&lt;p&gt;ggggggggggggggggggggghhhhhhhhhhhhhhhhhhhhhhhhhhhhhh&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</content>
+    </SingleChatMessage>
+    <SingleChatMessage>
+        <content>&lt;html dir="ltr"&gt;&lt;head&gt;&lt;/head&gt;&lt;body contenteditable="true"&gt;&lt;p&gt;&lt;span
+            style="color: rgb(255, 0, 255);"&gt;ghghghghghghgh&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;
+        </content>
+    </SingleChatMessage>
+</SingleChat>
