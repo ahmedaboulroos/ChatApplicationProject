@@ -102,7 +102,11 @@ public class AddSingleChatViewController implements Initializable {
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
         List<User> contacts = loadContacts();
-        ObservableList<User> options = FXCollections.observableList(contacts);
+        ObservableList<User> options = null;
+        if (contacts != null) {
+            options = FXCollections.observableList(contacts);
+        }
+
         userContactsLv.setItems(options);
         userContactsLv.setCellFactory(userContactsLv -> new ListCell<eg.gov.iti.jets.models.entities.User>() {
             // super.updateItem(item, empty);
