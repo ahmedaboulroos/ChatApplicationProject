@@ -19,15 +19,18 @@ public class CenterViewController {
     ContactInfoViewController contactInfoViewController;
     GroupInfoViewController groupInfoViewController;
     SingleChatViewController singleChatViewController = SingleChatViewController.getInstance();
+    private static CenterViewController centerViewController;
 
     public static CenterViewController getInstance() {
-        if (instance == null) {
-            instance = new CenterViewController();
-        }
-        return instance;
+        return centerViewController;
+    }
+
+    public void setController(CenterViewController centerViewController) {
+        CenterViewController.centerViewController = centerViewController;
     }
 
     private int singleChatId;
+
     public void addSingleChat(int singleChatId) {
         this.singleChatId = singleChatId;
         try {
