@@ -75,26 +75,26 @@ public class ClientStageCoordinator {
         this.stage.show();
     }*/
 
-    public void displayUserLoginNotification(int userId) {
-        System.out.println(">> User Logged In :" + userId);
+    public void displayUserLoginNotification(String userName) {
+        System.out.println(">> User Logged In :" + userName);
         Platform.runLater(() -> {
             Notifications announcement = Notifications.create()
                     .owner(this.stage)
                     .title("User Logged In")
-                    .text("User Logged In : " + userId)
+                    .text("User Logged In : " + userName)
                     .position(Pos.BOTTOM_RIGHT)
                     .hideAfter(Duration.seconds(30));
             announcement.showInformation();
         });
     }
 
-    public void displayUserLogoutNotification(int userId) {
-        System.out.println(">> User Logged Out :" + userId);
+    public void displayUserLogoutNotification(String userName) {
+        System.out.println(">> User Logged Out :" + userName);
         Platform.runLater(() -> {
             Notifications announcement = Notifications.create()
                     .owner(this.stage)
                     .title("User Logged Out")
-                    .text(userId + " Logged Out")
+                    .text(userName + " Logged Out")
                     .position(Pos.BOTTOM_RIGHT)
                     .hideAfter(Duration.seconds(30));
             announcement.showInformation();
@@ -167,16 +167,5 @@ public class ClientStageCoordinator {
         });
     }
 
-    public void displayUserRejectNotification(int userId) {
-        System.out.println(">> User Logged In :" + userId);
-        Platform.runLater(() -> {
-            Notifications announcement = Notifications.create()
-                    .owner(this.stage)
-                    .title("User Reject you")
-                    .text("User reject : " + userId)
-                    .position(Pos.BOTTOM_RIGHT)
-                    .hideAfter(Duration.seconds(30));
-            announcement.showInformation();
-        });
-    }
+
 }
