@@ -4,10 +4,6 @@
   <xs:element name="server_settings" type="server_settingsType"/>
   <xs:complexType name="server_settingsType">
     <xs:sequence>
-      <xs:element type="xs:string" name="database_password"/>
-      <xs:element type="xs:string" name="database_port"/>
-      <xs:element type="xs:string" name="database_url"/>
-      <xs:element type="xs:string" name="database_username"/>
       <xs:element type="xs:string" name="server_password"/>
       <xs:element type="xs:string" name="server_username"/>
     </xs:sequence>
