@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<database_settings>
+    <checksum_type>( SHA1 )</checksum_type>
+    <database_password>CHATAPP</database_password>
+    <database_url>
+        jdbc:oracle:thin:@(DESCRIPTION=(ADDRESS=(PROTOCOL=tcp)(HOST=localhost)(PORT=1521))(CONNECT_DATA=(SERVICE_NAME=XE)))
+    </database_url>
+    <database_username>CHATAPP</database_username>
+    <encryption_type>( AES256,AES192)</encryption_type>
+</database_settings>
