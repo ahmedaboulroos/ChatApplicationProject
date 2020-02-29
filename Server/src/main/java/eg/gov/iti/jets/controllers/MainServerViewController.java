@@ -21,6 +21,10 @@ import java.util.ResourceBundle;
 
 public class MainServerViewController implements Initializable {
 
+    private AnnouncementsViewController announcementsViewController;
+    private DashboardViewController dashboardViewController;
+    private UsersViewController usersViewController;
+
     @FXML
     private JFXButton dashboardBtn;
 
@@ -64,17 +68,24 @@ public class MainServerViewController implements Initializable {
         try {
             InetAddress inetAddress = InetAddress.getLocalHost();
             serverAddressTf.setText(inetAddress.getHostAddress());
+
             Parent welcomeScene = FXMLLoader.load(getClass().getResource("/views/WelcomeView.fxml"));
             welcomeTab.setContent(welcomeScene);
             startService();
 
-            Parent dashboardView = FXMLLoader.load(getClass().getResource("/views/DashboardView.fxml"));
+            FXMLLoader dashboardFxmlLoader = new FXMLLoader(getClass().getResource("/views/DashboardView.fxml"));
+            Parent dashboardView = dashboardFxmlLoader.load();
+            dashboardViewController = dashboardFxmlLoader.getController();
             dashboardTab.setContent(dashboardView);
 
-            Parent usersScene = FXMLLoader.load(getClass().getResource("/views/UsersView.fxml"));
+            FXMLLoader usersFxmlLoader = new FXMLLoader(getClass().getResource("/views/UsersView.fxml"));
+            Parent usersScene = usersFxmlLoader.load();
+            usersViewController = usersFxmlLoader.getController();
             usersTab.setContent(usersScene);
 
-            Parent announcementScene = FXMLLoader.load(getClass().getResource("/views/AnnouncementsView.fxml"));
+            FXMLLoader announcementsFxmlLoader = new FXMLLoader(getClass().getResource("/views/AnnouncementsView.fxml"));
+            Parent announcementScene = announcementsFxmlLoader.load();
+            announcementsViewController = announcementsFxmlLoader.getController();
             announcementsTab.setContent(announcementScene);
 
         } catch (IOException e) {
@@ -109,6 +120,11 @@ public class MainServerViewController implements Initializable {
         }
     }
 
+    @FXML
+    void handleSettingsBtn(ActionEvent event) {
+        System.out.println("Settings");
+    }
+
     private void startService() {
         RMIConnection.getInstance().startConnection();
         serverStatusBtn.setText("Service Running          ");
@@ -131,4 +147,15 @@ public class MainServerViewController implements Initializable {
         serviceRunning = false;
     }
 
+    public AnnouncementsViewController getAnnouncementsViewController() {
+        return announcementsViewController;
+    }
+
+    public DashboardViewController getDashboardViewController() {
+        return dashboardViewController;
+    }
+
+    public UsersViewController getUsersViewController() {
+        return usersViewController;
+    }
 }
