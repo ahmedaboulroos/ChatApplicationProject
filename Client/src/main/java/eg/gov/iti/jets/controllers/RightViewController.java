@@ -115,7 +115,10 @@ public class RightViewController implements Initializable {
                                     @Override
                                     public void handle(ActionEvent actionEvent) {
                                         try {
+
                                             relationshipDao.deleteRelationship(relationship.getId());
+
+                                            ClientStageCoordinator.getInstance().displayUserRejectNotification(userId);
                                         } catch (RemoteException e) {
                                             e.printStackTrace();
                                         }
@@ -176,4 +179,5 @@ public class RightViewController implements Initializable {
         });
 
     }
+
 }
