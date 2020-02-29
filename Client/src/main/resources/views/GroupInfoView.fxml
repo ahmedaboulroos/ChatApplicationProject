@@ -10,81 +10,81 @@
 <?import org.kordamp.ikonli.javafx.FontIcon?>
 <AnchorPane xmlns:fx="http://javafx.com/fxml/1" maxWidth="250.0" minWidth="250.0" prefHeight="652.0" prefWidth="250.0"
             xmlns="http://javafx.com/javafx/11.0.1" fx:controller="eg.gov.iti.jets.controllers.GroupInfoViewController">
-   <children>
-      <HBox alignment="CENTER" prefHeight="50.0" prefWidth="250.0" style="-fx-background-color: DODGERBLUE;"
-            AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
-         <children>
-            <Pane prefHeight="200.0" prefWidth="200.0"/>
-            <Text fx:id="gname" fill="#fcfcfc" strokeType="OUTSIDE" strokeWidth="0.0" text="Group chat info"
-                  textAlignment="CENTER" wrappingWidth="216.6762066841129">
-               <font>
-                  <Font size="26.0"/>
-               </font>
-               <HBox.margin>
-                  <Insets/>
-               </HBox.margin>
-            </Text>
-            <Pane prefHeight="200.0" prefWidth="200.0"/>
-         </children>
+    <children>
+        <HBox alignment="CENTER" prefHeight="50.0" prefWidth="250.0" style="-fx-background-color: DODGERBLUE;"
+              AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+            <children>
+                <Pane prefHeight="200.0" prefWidth="200.0"/>
+                <Text fx:id="gname" fill="#fcfcfc" strokeType="OUTSIDE" strokeWidth="0.0" text="Group chat info"
+                      textAlignment="CENTER" wrappingWidth="216.6762066841129">
+                    <font>
+                        <Font size="26.0"/>
+                    </font>
+                    <HBox.margin>
+                        <Insets/>
+                    </HBox.margin>
+                </Text>
+                <Pane prefHeight="200.0" prefWidth="200.0"/>
+            </children>
       </HBox>
-      <SplitPane dividerPositions="0.32441471571906355, 0.5" layoutY="50.0" orientation="VERTICAL" prefHeight="602.0"
-                 prefWidth="250.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0"
-                 AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="50.0">
-         <items>
-            <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="171.0" prefWidth="298.0"
-                        style="-fx-background-color: #E8E8E8;">
-               <children>
-                  <VBox maxHeight="1.7976931348623157E308" maxWidth="309.0" prefHeight="192.0" prefWidth="250.0"
-                        AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0"
-                        AnchorPane.topAnchor="0.0">
-                     <children>
-                        <HBox prefHeight="44.0" prefWidth="309.0">
-                           <children>
-                              <Text fill="DODGERBLUE" strokeType="OUTSIDE" strokeWidth="0.0" text="Created On:"
-                                    wrappingWidth="136.53667449951172">
-                                 <font>
-                                    <Font size="20.0"/>
-                                 </font>
-                                 <HBox.margin>
-                                    <Insets left="10.0"/>
-                                 </HBox.margin>
-                              </Text>
-                              <Text fx:id="createdate" strokeType="OUTSIDE" strokeWidth="0.0" text="Text"
-                                    wrappingWidth="163.29458236694336">
-                                 <font>
-                                    <Font size="20.0"/>
-                                 </font>
-                              </Text>
+        <SplitPane dividerPositions="0.32441471571906355, 0.5" layoutY="50.0" orientation="VERTICAL" prefHeight="602.0"
+                   prefWidth="250.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0"
+                   AnchorPane.rightAnchor="0.0">
+            <items>
+                <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="150.0" prefWidth="250.0"
+                            style="-fx-background-color: #E8E8E8;">
+                    <children>
+                        <VBox maxHeight="1.7976931348623157E308" maxWidth="309.0" prefHeight="167.0" prefWidth="248.0"
+                              AnchorPane.bottomAnchor="25.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0"
+                              AnchorPane.topAnchor="0.0">
+                            <children>
+                                <HBox prefHeight="42.0" prefWidth="245.0">
+                                    <children>
+                                        <Text fill="DODGERBLUE" strokeType="OUTSIDE" strokeWidth="0.0"
+                                              text="Created On:" wrappingWidth="114.53667449951172">
+                                            <font>
+                                                <Font size="20.0"/>
+                                            </font>
+                                            <HBox.margin>
+                                                <Insets left="10.0"/>
+                                            </HBox.margin>
+                                        </Text>
+                                        <Text fx:id="createdate" strokeType="OUTSIDE" strokeWidth="0.0" text="Text"
+                                              wrappingWidth="110.29458236694336">
+                                            <font>
+                                                <Font size="20.0"/>
+                                            </font>
+                                        </Text>
                            </children>
                            <opaqueInsets>
-                              <Insets/>
+                               <Insets/>
                            </opaqueInsets>
                         </HBox>
-                        <HBox layoutX="10.0" layoutY="10.0" prefHeight="50.0" prefWidth="309.0">
-                           <children>
-                              <Text fill="DODGERBLUE" strokeType="OUTSIDE" strokeWidth="0.0" text="Description:"
-                                    wrappingWidth="136.53667449951172">
-                                 <font>
-                                    <Font size="20.0"/>
-                                 </font>
-                                 <HBox.margin>
-                                    <Insets left="10.0"/>
-                                 </HBox.margin>
-                              </Text>
-                           </children>
+                                <HBox layoutX="10.0" layoutY="10.0" prefHeight="35.0" prefWidth="248.0">
+                                    <children>
+                                        <Text fill="DODGERBLUE" strokeType="OUTSIDE" strokeWidth="0.0"
+                                              text="Description:" wrappingWidth="136.53667449951172">
+                                            <font>
+                                                <Font size="20.0"/>
+                                            </font>
+                                            <HBox.margin>
+                                                <Insets left="10.0"/>
+                                            </HBox.margin>
+                                        </Text>
+                                    </children>
                         </HBox>
-                        <HBox layoutX="10.0" layoutY="54.0" prefHeight="95.0" prefWidth="309.0">
-                           <children>
-                              <Text fx:id="desc" fill="#181819" strokeType="OUTSIDE" strokeWidth="0.0" text="   text"
-                                    wrappingWidth="232.3366928100586">
-                                 <font>
-                                    <Font size="20.0"/>
-                                 </font>
-                                 <HBox.margin>
-                                    <Insets left="5.0"/>
-                                 </HBox.margin>
-                              </Text>
-                           </children>
+                                <HBox layoutX="10.0" layoutY="54.0" prefHeight="79.0" prefWidth="248.0">
+                                    <children>
+                                        <Text fx:id="desc" fill="#181819" strokeType="OUTSIDE" strokeWidth="0.0"
+                                              text="   text" wrappingWidth="232.3366928100586">
+                                            <font>
+                                                <Font size="20.0"/>
+                                            </font>
+                                            <HBox.margin>
+                                                <Insets left="5.0"/>
+                                            </HBox.margin>
+                                        </Text>
+                                    </children>
                         </HBox>
                      </children>
                   </VBox>
@@ -93,63 +93,64 @@
             <VBox>
                <children>
                   <HBox prefHeight="49.0" prefWidth="309.0" VBox.vgrow="ALWAYS">
-                     <children>
-                        <Text fill="DODGERBLUE" strokeType="OUTSIDE" strokeWidth="0.0" text="Media and Files"
-                              wrappingWidth="193.70953559875488">
-                           <font>
-                              <Font name="System Bold" size="22.0"/>
-                           </font>
-                           <HBox.margin>
-                              <Insets left="10.0" top="5.0"/>
-                           </HBox.margin>
-                        </Text>
-                        <Region prefHeight="0.0" prefWidth="146.0" HBox.hgrow="ALWAYS"/>
-                        <Button alignment="CENTER" contentDisplay="RIGHT" mnemonicParsing="false" prefHeight="25.0"
-                                prefWidth="25.0"
-                                style="-fx-border-radius: 20px; -fx-background-radius: 20px; -fx-background-color: Dodgerblue;"
-                                textFill="DODGERBLUE">
-                           <graphic>
-                              <FontIcon iconColor="WHITE" iconLiteral="oct-arrow-right" iconSize="25" text=""
-                                        textAlignment="CENTER" wrappingWidth="16.599991023540497"/>
-                           </graphic>
-                           <HBox.margin>
-                              <Insets bottom="5.0" right="5.0" top="5.0"/>
-                           </HBox.margin>
-                        </Button>
-                     </children>
+                      <children>
+                          <Text fill="DODGERBLUE" strokeType="OUTSIDE" strokeWidth="0.0" text="Media and Files"
+                                wrappingWidth="193.70953559875488">
+                              <font>
+                                  <Font name="System Bold" size="22.0"/>
+                              </font>
+                              <HBox.margin>
+                                  <Insets left="10.0" top="5.0"/>
+                              </HBox.margin>
+                          </Text>
+                          <Region prefHeight="0.0" prefWidth="146.0" HBox.hgrow="ALWAYS"/>
+                          <Button alignment="CENTER" contentDisplay="RIGHT" mnemonicParsing="false" prefHeight="25.0"
+                                  prefWidth="25.0"
+                                  style="-fx-border-radius: 20px; -fx-background-radius: 20px; -fx-background-color: Dodgerblue;"
+                                  textFill="DODGERBLUE">
+                              <graphic>
+                                  <FontIcon iconColor="WHITE" iconLiteral="oct-arrow-right" iconSize="25" text=""
+                                            textAlignment="CENTER" wrappingWidth="16.599991023540497"/>
+                              </graphic>
+                              <HBox.margin>
+                                  <Insets bottom="5.0" right="5.0" top="5.0"/>
+                              </HBox.margin>
+                          </Button>
+                      </children>
                   </HBox>
-                  <ListView prefHeight="66.0" prefWidth="294.0"/>
+                   <ListView prefHeight="66.0" prefWidth="294.0"/>
                </children>
             </VBox>
             <VBox>
                <children>
-                  <ListView fx:id="membershipListView" prefHeight="263.0" prefWidth="322.0"
-                            style="-fx-background-color: #E8E8E8;"/>
+                   <ListView fx:id="membershipListView" prefHeight="263.0" prefWidth="322.0"
+                             style="-fx-background-color: #E8E8E8;"/>
                   <HBox prefHeight="64.0" prefWidth="298.0" style="-fx-background-color: #E8E8E8;">
-                     <children>
-                        <JFXButton fx:id="addUser" onAction="#handleAddContactGroup" prefHeight="29.0" prefWidth="85.0"
-                                   style="-fx-background-color: DODGERBLUE; -fx-border-radius: 10px; -fx-background-radius: 10px;"
-                                   text="Add" textFill="WHITE">
-                           <HBox.margin>
-                              <Insets left="25.0" top="10.0"/>
-                           </HBox.margin>
-                           <font>
-                              <Font size="13.0"/>
-                           </font>
-                        </JFXButton>
-                        <Region prefHeight="50.0" prefWidth="101.0" HBox.hgrow="ALWAYS"/>
-                        <JFXButton fx:id="deleteUser" onAction="#handleDeleteContactGroup" prefHeight="29.0"
-                                   prefWidth="105.0"
-                                   style="-fx-background-color: DODGERBLUE; -fx-border-radius: 10px; -fx-background-radius: 10px;"
-                                   text="Remove" textFill="WHITE">
-                           <HBox.margin>
-                              <Insets right="25.0" top="10.0"/>
-                           </HBox.margin>
-                           <font>
-                              <Font size="13.0"/>
-                           </font>
-                        </JFXButton>
-                     </children>
+                      <children>
+                          <JFXButton fx:id="addUser" onAction="#handleAddContactGroup" prefHeight="29.0"
+                                     prefWidth="85.0"
+                                     style="-fx-background-color: DODGERBLUE; -fx-border-radius: 10px; -fx-background-radius: 10px;"
+                                     text="Add" textFill="WHITE">
+                              <HBox.margin>
+                                  <Insets left="25.0" top="10.0"/>
+                              </HBox.margin>
+                              <font>
+                                  <Font size="13.0"/>
+                              </font>
+                          </JFXButton>
+                          <Region prefHeight="50.0" prefWidth="101.0" HBox.hgrow="ALWAYS"/>
+                          <JFXButton fx:id="deleteUser" onAction="#handleDeleteContactGroup" prefHeight="29.0"
+                                     prefWidth="105.0"
+                                     style="-fx-background-color: DODGERBLUE; -fx-border-radius: 10px; -fx-background-radius: 10px;"
+                                     text="Remove" textFill="WHITE">
+                              <HBox.margin>
+                                  <Insets right="25.0" top="10.0"/>
+                              </HBox.margin>
+                              <font>
+                                  <Font size="13.0"/>
+                              </font>
+                          </JFXButton>
+                      </children>
                   </HBox>
                </children>
             </VBox>

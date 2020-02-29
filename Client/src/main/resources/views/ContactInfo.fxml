@@ -8,69 +8,67 @@
 <?import javafx.scene.text.Font?>
 <?import org.kordamp.ikonli.javafx.FontIcon?>
 <AnchorPane xmlns:fx="http://javafx.com/fxml/1" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity"
-            minWidth="-Infinity" prefWidth="250.0" xmlns="http://javafx.com/javafx/11.0.1"
+            minWidth="-Infinity" prefHeight="637.0" prefWidth="250.0" xmlns="http://javafx.com/javafx/11.0.1"
             fx:controller="eg.gov.iti.jets.controllers.ContactInfoViewController">
     <children>
         <AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity"
-                    prefHeight="712.0" prefWidth="400.0" stylesheets="@../styles/style1.css"
-                    AnchorPane.bottomAnchor="-2.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0"
+                    prefHeight="588.0" prefWidth="250.0" stylesheets="@../styles/style1.css"
+                    AnchorPane.bottomAnchor="124.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0"
                     AnchorPane.topAnchor="0.0">
             <children>
                 <Pane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity"
-                      prefHeight="258.0" prefWidth="400.0" style="-fx-background-color: #0087ED;" styleClass="pane"
-                      AnchorPane.bottomAnchor="447.20000000000005" AnchorPane.leftAnchor="0.0"
-                      AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+                      prefHeight="213.0" prefWidth="250.0" style="-fx-background-color: DodgerBlue;" styleClass="pane"
+                      AnchorPane.bottomAnchor="300.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0"
+                      AnchorPane.topAnchor="0.0">
                     <children>
-                        <Circle fx:id="imageCircle" fill="WHITE" layoutX="125.0" layoutY="114.0" radius="74.0"
+                        <Circle fx:id="imageCircle" fill="WHITE" layoutX="125.0" layoutY="87.0" radius="60.0"
                                 stroke="BLACK" strokeType="INSIDE" strokeWidth="0.0"
                                 style="-fx-stroke-width: 3px; -fx-stroke: green;"/>
-                        <Label fx:id="UserName" layoutX="13.0" layoutY="196.0" maxHeight="-Infinity"
+                        <Label fx:id="UserName" layoutX="14.0" layoutY="152.0" maxHeight="-Infinity"
                                maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="30.0"
-                               prefWidth="250.0" text="Reem Monir" textFill="#ffeaea">
+                               prefWidth="220.0" text="Reem Monir" textFill="#ffeaea">
                             <font>
                                 <Font size="20.0"/>
                             </font>
                         </Label>
                     </children>
                 </Pane>
-                <Pane layoutY="267.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity"
-                      minWidth="-Infinity" prefHeight="208.0" prefWidth="400.0" style="-fx-background-color: #0087ED;"
-                      styleClass="pane" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0">
+                <Pane layoutY="227.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity"
+                      minWidth="-Infinity" prefHeight="160.0" prefWidth="250.0"
+                      style="-fx-background-color: dodgerblue;" styleClass="pane" AnchorPane.leftAnchor="0.0"
+                      AnchorPane.rightAnchor="0.0">
                     <opaqueInsets>
                         <Insets/>
                     </opaqueInsets>
                     <children>
-                        <Label fx:id="userStatusLb" layoutX="16.0" layoutY="21.0" maxHeight="-Infinity"
+                        <Label fx:id="userGenderLb" layoutX="15.0" layoutY="14.0" maxHeight="-Infinity"
                                maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="25.0"
                                prefWidth="220.0" textFill="#595555"/>
-                        <Label fx:id="userGenderLb" layoutX="16.0" layoutY="58.0" maxHeight="-Infinity"
-                               maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="25.0"
-                               prefWidth="220.0" textFill="#595555"/>
-                        <Label fx:id="emailLb" layoutX="16.0" layoutY="93.0" maxHeight="-Infinity" maxWidth="-Infinity"
+                        <Label fx:id="emailLb" layoutX="15.0" layoutY="49.0" maxHeight="-Infinity" maxWidth="-Infinity"
                                minHeight="-Infinity" minWidth="-Infinity" prefHeight="25.0" prefWidth="220.0"
                                textFill="#595555"/>
-                        <Label fx:id="bioLb" layoutX="16.0" layoutY="131.0" maxHeight="-Infinity" maxWidth="-Infinity"
+                        <Label fx:id="bioLb" layoutX="15.0" layoutY="87.0" maxHeight="-Infinity" maxWidth="-Infinity"
                                minHeight="-Infinity" minWidth="-Infinity" prefHeight="25.0" prefWidth="220.0"
                                textFill="#595555"/>
-                        <Label fx:id="countryLb" layoutX="16.0" layoutY="166.0" maxHeight="-Infinity"
+                        <Label fx:id="countryLb" layoutX="15.0" layoutY="122.0" maxHeight="-Infinity"
                                maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="25.0"
                                prefWidth="220.0" textFill="#595555"/>
                     </children>
                 </Pane>
-                <Pane layoutY="486.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity"
-                      minWidth="-Infinity" prefHeight="148.0" prefWidth="400.0" style="-fx-background-color: #0087ED;"
+                <Pane layoutY="407.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity"
+                      minWidth="-Infinity" prefHeight="160.0" prefWidth="250.0" style="-fx-background-color: #0087ED;"
                       styleClass="pane" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0">
                     <children>
                         <Label alignment="TOP_LEFT" layoutX="13.0" layoutY="11.0" maxHeight="-Infinity"
                                maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="30.0"
-                               prefWidth="295.0" text="Media and Files" textFill="WHITE">
+                               prefWidth="220.0" text="Media and Files" textFill="WHITE">
                             <font>
-                                <Font size="24.0"/>
+                                <Font size="22.0"/>
                             </font>
                         </Label>
                         <Region layoutX="256.0" layoutY="11.0" nodeOrientation="LEFT_TO_RIGHT" prefHeight="30.0"
                                 prefWidth="94.0"/>
-                        <JFXButton alignment="TOP_RIGHT" contentDisplay="RIGHT" layoutX="206.0" layoutY="14.0"
+                        <JFXButton alignment="TOP_RIGHT" contentDisplay="RIGHT" layoutX="206.0" layoutY="11.0"
                                    maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity"
                                    nodeOrientation="RIGHT_TO_LEFT" prefHeight="30.0" prefWidth="30.0"
                                    style="-fx-border-radius: 20px; -fx-background-radius: 20px; -fx-background-color: white;"
@@ -80,38 +78,34 @@
                                           iconSize="24" styleClass="icons" wrappingWidth="24.0"/>
                             </graphic>
                         </JFXButton>
-                        <ListView layoutY="44.0" orientation="HORIZONTAL" prefHeight="108.0" prefWidth="250.0"
+                        <ListView layoutY="44.0" orientation="HORIZONTAL" prefHeight="120.0" prefWidth="250.0"
                                   style="-fx-background-color: #0087ED;" styleClass="pane"/>
                     </children>
                 </Pane>
-                <HBox layoutY="637.0" prefHeight="61.0" prefWidth="400.0" AnchorPane.bottomAnchor="8.0"
-                      AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0">
-                    <children>
-                        <JFXButton fx:id="deleteChat" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity"
-                                   minWidth="-Infinity" onAction="#handleOnDeleteChat" prefHeight="55.0"
-                                   prefWidth="220.0" styleClass="Btnbox" textFill="#ffffff00">
-                            <graphic>
-                                <Label maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity"
-                                       minWidth="-Infinity" prefHeight="49.0" prefWidth="220.0" text="Delete Chat"
-                                       textFill="#c71123">
-                                    <font>
-                                        <Font size="18.0"/>
-                                    </font>
-                                    <graphic>
-                                        <FontIcon iconColor="#c71123" iconLiteral="zondi-trash" iconSize="20"/>
-                                    </graphic>
-                                </Label>
-                            </graphic>
-                        </JFXButton>
-                    </children>
-                </HBox>
-                <Separator layoutY="470.0" prefHeight="20.0" prefWidth="400.0" style="-fx-background-color: #DCDCDC;"
+                <HBox layoutY="637.0" prefHeight="0.0" prefWidth="250.0" AnchorPane.bottomAnchor="69.0"
+                      AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0"/>
+                <Separator layoutY="387.0" prefHeight="20.0" prefWidth="400.0" style="-fx-background-color: #DCDCDC;"
                            AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0"/>
-                <Separator layoutY="253.0" prefHeight="20.0" prefWidth="400.0" style="-fx-background-color: #DCDCDC;"
+                <Separator layoutY="212.0" prefHeight="20.0" prefWidth="400.0" style="-fx-background-color: #DCDCDC;"
                            AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0"/>
-                <Separator layoutY="628.0" prefHeight="20.0" prefWidth="400.0" style="-fx-background-color: #DCDCDC;"
+                <Separator layoutY="567.0" prefHeight="20.0" prefWidth="400.0" style="-fx-background-color: #DCDCDC;"
                            AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0"/>
             </children>
         </AnchorPane>
+        <JFXButton fx:id="deleteChat" layoutY="582.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity"
+                   minWidth="-Infinity" onAction="#handleOnDeleteChat" prefHeight="55.0" prefWidth="250.0"
+                   styleClass="Btnbox" text="Button" textFill="#ffffff00" AnchorPane.bottomAnchor="0.0">
+            <graphic>
+                <Label maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity"
+                       prefHeight="49.0" prefWidth="250.0" text="Delete Chat" textFill="#c71123">
+                    <font>
+                        <Font size="18.0"/>
+                    </font>
+                    <graphic>
+                        <FontIcon iconColor="#c71123" iconLiteral="zondi-trash" iconSize="20"/>
+                    </graphic>
+                </Label>
+            </graphic>
+        </JFXButton>
     </children>
 </AnchorPane>
