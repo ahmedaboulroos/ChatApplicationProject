@@ -12,7 +12,7 @@
             xmlns="http://javafx.com/javafx/11.0.1"
             fx:controller="eg.gov.iti.jets.controllers.SingleChatViewController">
     <center>
-        <ListView fx:id="singleChatMessagesLv" prefHeight="200.0" prefWidth="600.0" styleClass="chat-panel"
+        <ListView fx:id="singleChatMessagesLv" prefHeight="200.0" prefWidth="600.0" styleClass="list-cell"
                   stylesheets="@../styles/centerStyle.css" BorderPane.alignment="CENTER"/>
     </center>
     <bottom>
