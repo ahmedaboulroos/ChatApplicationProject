@@ -10,6 +10,8 @@ import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.Label;
+import javafx.scene.control.RadioButton;
+import javafx.scene.control.ToggleGroup;
 import javafx.scene.image.Image;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.paint.ImagePattern;
@@ -32,6 +34,8 @@ public class SignUpController implements Initializable {
     byte[] imageBytes = null;
     File file;
     boolean valid;
+    ToggleGroup tg = new ToggleGroup();
+
     @FXML
     private JFXTextField phoneNoTf;
     @FXML
@@ -40,10 +44,8 @@ public class SignUpController implements Initializable {
     private JFXTextField emailTf;
     @FXML
     private JFXTextArea bioTa;
-
     @FXML
     private JFXButton signUpBtn;
-
     @FXML
     private JFXDatePicker birthDateDp;
 
@@ -61,9 +63,17 @@ public class SignUpController implements Initializable {
     private Label phoneErrLbl;
     @FXML
     private Label emailErrLbl;
+    @FXML
+    private JFXRadioButton maleRadioBtn;
+    @FXML
+    private JFXRadioButton femaleRadioBtn;
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
+        maleRadioBtn.setToggleGroup(tg);
+        femaleRadioBtn.setToggleGroup(tg);
+        maleRadioBtn.setSelected(true);
+
         countryCbox.getItems().addAll(
                 "Egypt",
                 "Saudi Arabia",
@@ -96,8 +106,11 @@ public class SignUpController implements Initializable {
             imageBytes = ImageUtiles.fromImageToBytes(absolutePath);
             System.out.println(imageBytes);
         }
-
-        User user = new User(phone, userName, pass, email, country, bio, dateOfBirth, UserGender.MALE, imageBytes, UserStatus.AVAILABLE);
+        UserGender userGender = UserGender.MALE;
+        RadioButton rd = (RadioButton) tg.getSelectedToggle();
+        if (rd == femaleRadioBtn)
+            userGender = UserGender.FEMALE;
+        User user = new User(phone, userName, pass, email, country, bio, dateOfBirth, userGender, imageBytes, UserStatus.AVAILABLE);
         return user;
     }
 
