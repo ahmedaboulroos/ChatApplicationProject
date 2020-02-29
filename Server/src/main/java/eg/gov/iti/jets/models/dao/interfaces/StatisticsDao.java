@@ -5,7 +5,7 @@ import java.util.Map;
 public interface StatisticsDao {
     Map<String, Integer> getUsersByGender();
 
-    Map<String, Integer> getUsersByStatus();
+    int getNumberOfAllUsers();
 
     Map<String, Integer> getUsersNumByCountry();
 }
