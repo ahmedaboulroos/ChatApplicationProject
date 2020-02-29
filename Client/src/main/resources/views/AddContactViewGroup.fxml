@@ -7,13 +7,17 @@
 <?import javafx.scene.text.Font?>
 <?import org.kordamp.ikonli.javafx.FontIcon?>
 <AnchorPane xmlns:fx="http://javafx.com/fxml/1" prefHeight="346.0" prefWidth="557.0"
-            style="-fx-background-color: #5588a3;" xmlns="http://javafx.com/javafx/11.0.1"
+            style="-fx-background-color: #0087ED;" xmlns="http://javafx.com/javafx/11.0.1"
             fx:controller="eg.gov.iti.jets.controllers.AddMembershipGroupController">
     <children>
         <JFXButton fx:id="addContactBtn" layoutX="357.0" layoutY="143.0" onAction="#handleAddContactBtn"
                    prefHeight="39.0" prefWidth="127.0"
                    style="-fx-background-color: e8e8e8; -fx-padding: 8 10 10 10; -fx-background-radius: 20;"
-                   text="Add Contact"/>
+                   text="Add Contact">
+            <font>
+                <Font size="14.0"/>
+            </font>
+        </JFXButton>
         <JFXTextField fx:id="phoneNumberTf" layoutX="97.0" layoutY="143.0" promptText="phone number"
                       style="-fx-border-color: 20px;" unFocusColor="#5c4e4e">
             <font>
