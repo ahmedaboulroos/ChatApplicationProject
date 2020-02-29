@@ -50,7 +50,7 @@ public class StatisticsDaoDaoImpl implements StatisticsDao {
     @Override
     public Map<String, Integer> getUsersByStatus() {
         Map<String, Integer> usersNumByStatusmap = new HashMap<String, Integer>();
-        String sql = "Select Count(ID),USER_STATUS from USERS where USER_STATUS in('Available','Offline') group by(USER_STATUS)";
+        String sql = "Select Count(ID),USER_STATUS from USERS where USER_STATUS in('AVAILABLE','BUSY','AWAY','OFFLINE') group by(USER_STATUS)";
         ResultSet resultSet = null;
         try (PreparedStatement ps = connection.prepareStatement(sql)) {
             resultSet = ps.executeQuery();
