@@ -58,7 +58,7 @@ public class MainServer extends Application {
             Schema schema = schemaFactory.newSchema(new File("src/main/resources/configs/database_settings.xsd"));
             marshaller.setSchema(schema);
 
-            File xmlFileSettings = new File("src/main/resources/configs/database_settings.xml");
+            File xmlFileSettings = new File("database_settings.xml");
             if (!xmlFileSettings.exists()) {
                 DatabaseSettings databaseSettings = new DatabaseSettings();
                 databaseSettings.setDatabaseUrl("jdbc:oracle:thin:@(DESCRIPTION=(ADDRESS=(PROTOCOL=tcp)(HOST=localhost)(PORT=1521))(CONNECT_DATA=(SERVICE_NAME=XE)))");
@@ -66,10 +66,10 @@ public class MainServer extends Application {
                 databaseSettings.setDatabasePassword("CHATAPP");
                 databaseSettings.setEncryptionType("( " + AnoServices.ENCRYPTION_AES256 + " , " + AnoServices.ENCRYPTION_AES192 + " )");
                 databaseSettings.setChecksumType("( " + AnoServices.CHECKSUM_SHA1 + " )");
-                marshaller.marshal(databaseSettings, new FileOutputStream("src/main/resources/configs/database_settings.xml"));
+                marshaller.marshal(databaseSettings, new FileOutputStream("database_settings.xml"));
             }
 
-            DatabaseSettings newDatabaseSettings = (DatabaseSettings) context.createUnmarshaller().unmarshal(new FileReader("src/main/resources/configs/database_settings.xml"));
+            DatabaseSettings newDatabaseSettings = (DatabaseSettings) context.createUnmarshaller().unmarshal(new FileReader("database_settings.xml"));
             System.out.println(newDatabaseSettings);
 
             Properties databaseProperties = new Properties();
@@ -96,15 +96,15 @@ public class MainServer extends Application {
             Schema schema = schemaFactory.newSchema(new File("src/main/resources/configs/server_settings.xsd"));
             marshaller.setSchema(schema);
 
-            File xmlFileSettings = new File("src/main/resources/configs/server_settings.xml");
+            File xmlFileSettings = new File("server_settings.xml");
             if (!xmlFileSettings.exists()) {
                 ServerSettings serverSettings = new ServerSettings();
                 serverSettings.setServerUsername("amin");
                 serverSettings.setServerPassword("amin");
-                marshaller.marshal(serverSettings, new FileOutputStream("src/main/resources/configs/server_settings.xml"));
+                marshaller.marshal(serverSettings, new FileOutputStream("server_settings.xml"));
             }
 
-            ServerSettings newServerSettings = (ServerSettings) context.createUnmarshaller().unmarshal(new FileReader("src/main/resources/configs/server_settings.xml"));
+            ServerSettings newServerSettings = (ServerSettings) context.createUnmarshaller().unmarshal(new FileReader("server_settings.xml"));
             System.out.println(newServerSettings);
 
             Properties properties = new Properties();
