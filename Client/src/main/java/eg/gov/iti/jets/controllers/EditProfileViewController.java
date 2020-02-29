@@ -1,6 +1,7 @@
 package eg.gov.iti.jets.controllers;
 
 import com.jfoenix.controls.JFXButton;
+import com.jfoenix.controls.JFXPasswordField;
 import com.jfoenix.controls.JFXTextArea;
 import com.jfoenix.controls.JFXTextField;
 import eg.gov.iti.jets.models.dao.interfaces.UserDao;
@@ -11,7 +12,6 @@ import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.Node;
-import javafx.scene.control.Label;
 import javafx.scene.image.Image;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.paint.ImagePattern;
@@ -41,15 +41,14 @@ public class EditProfileViewController implements Initializable {
     @FXML
     private JFXTextField emailJFT;
     @FXML
-    private JFXTextField passJFT;
+    private JFXPasswordField passJFXP;
     @FXML
-    private JFXTextField confirumJFT;
+    private JFXPasswordField confirumJFXP;
     @FXML
     private JFXTextArea biograpyTArea;
     @FXML
     private JFXButton updateJFB;
-    @FXML
-    private Label errorLbl;
+
 
     private User user = ClientStageCoordinator.getInstance().currentUser;
     private UserDao userDao = RMIConnection.getInstance().getUserDao();
@@ -70,8 +69,8 @@ public class EditProfileViewController implements Initializable {
         countryJFT.setText(user.getCountry());
         emailJFT.setText(user.getEmail());
 
-        passJFT.setText(user.getPassword());
-        confirumJFT.setText(user.getPassword());
+        passJFXP.setText(user.getPassword());
+        confirumJFXP.setText(user.getPassword());
         biograpyTArea.setText(user.getBio());
         byte[] imageBytes = user.getProfileImage();
 
@@ -94,12 +93,12 @@ public class EditProfileViewController implements Initializable {
             user.setPhoneNumber(phoneJFT.getText());
             user.setEmail(emailJFT.getText());
             user.setBio(biograpyTArea.getText());
-            if (!passJFT.getText().equals(confirumJFT.getText())) {
-                passJFT.setStyle("-fx-background-color: #ffcccb");
-                confirumJFT.setStyle("-fx-background-color: #ffcccb");
+            if (!passJFXP.getText().equals(confirumJFXP.getText())) {
+                passJFXP.setStyle("-fx-background-color: #ffcccb");
+                confirumJFXP.setStyle("-fx-background-color: #ffcccb");
 
             } else {
-                user.setPassword(passJFT.getText());
+                user.setPassword(passJFXP.getText());
 
             }
             user.setCountry(countryJFT.getText());
@@ -120,8 +119,7 @@ public class EditProfileViewController implements Initializable {
             }
             System.out.println("length" + imageBytes.length);
             user.setProfileImage(imageBytes);
-            System.out.println(image);
-            System.out.println("imagggggg" + user.getProfileImage());
+
             userDao.updateUser(user);
 
 

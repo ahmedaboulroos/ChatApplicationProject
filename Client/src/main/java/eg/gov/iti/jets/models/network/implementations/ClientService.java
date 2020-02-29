@@ -3,6 +3,7 @@ package eg.gov.iti.jets.models.network.implementations;
 
 import eg.gov.iti.jets.controllers.*;
 import eg.gov.iti.jets.models.network.interfaces.ClientInterface;
+import javafx.application.Platform;
 
 import java.rmi.RemoteException;
 import java.rmi.server.UnicastRemoteObject;
@@ -33,48 +34,61 @@ public class ClientService extends UnicastRemoteObject implements ClientInterfac
 
     @Override
     public void userLoggedIn(int userId) throws RemoteException {
-        ClientStageCoordinator.getInstance().displayUserLoginNotification(userId);
+        Platform.runLater(() -> {
+            ClientStageCoordinator.getInstance().displayUserLoginNotification(userId);
+        });
     }
 
     @Override
     public void userLoggedOut(int userId) throws RemoteException {
-        ClientStageCoordinator.getInstance().displayUserLogoutNotification(userId);
+        Platform.runLater(() -> {
+            ClientStageCoordinator.getInstance().displayUserLogoutNotification(userId);
+        });
     }
 
     @Override
     public void serverDisconnected() throws RemoteException {
-        ClientStageCoordinator.getInstance().displayServerDisconnectedError();
+        Platform.runLater(() -> {
+            ClientStageCoordinator.getInstance().displayServerDisconnectedError();
+        });
     }
 
     @Override
     public void receiveUserStatusChanged(int userId) throws RemoteException {
-        ClientStageCoordinator.getInstance().displayUserStatusChange(userId);
+        Platform.runLater(() -> {
+            ClientStageCoordinator.getInstance().displayUserStatusChange(userId);
+        });
     }
 
     @Override
     public void receiveNewSingleChat(int singleChatId) throws RemoteException {
         System.out.println(">> New Single Chat :" + singleChatId);
-        leftViewController.displayNewSingleChat(singleChatId);
+        Platform.runLater(() -> {
+            leftViewController.displayNewSingleChat(singleChatId);
+        });
     }
 
     @Override
     public void receiveNewSingleChatMessage(int singleChatMessageId) throws RemoteException {
         System.out.println(">> New Single Chat Message :" + singleChatMessageId);
-        leftViewController.updateSingleChat(singleChatMessageId);
+        Platform.runLater(() -> {
+            leftViewController.updateSingleChat(singleChatMessageId);
+        });
     }
 
     @Override
     public void receiveNewGroupChatMessage(int groupChatMessageId) throws RemoteException {
         System.out.println(">> New Group Chat Message :" + groupChatMessageId);
-        leftViewController.updateGroupChat(groupChatMessageId);
+        Platform.runLater(() -> {
+            leftViewController.updateGroupChat(groupChatMessageId);
+        });
     }
-
 
     @Override
     public void receiveNewGroupChatMembership(int groupChatMembershipId) throws RemoteException {
         System.out.println("client srevice >> recieve New Group Chat Membership :" + groupChatMembershipId);
         if (groupChatMembershipId > 0) {
-            leftViewController.displayNewGroupChat();
+            Platform.runLater(() -> leftViewController.displayNewGroupChat());
         }
 
     }
@@ -82,28 +96,39 @@ public class ClientService extends UnicastRemoteObject implements ClientInterfac
     @Override
     public void receiveNewRelationship(int relationshipId) throws RemoteException {
         System.out.println(">> New Relationship :" + relationshipId);
-        rightViewController.displayRelationship(relationshipId);
-        leftViewController.displayRelationship(relationshipId);
+        Platform.runLater(() -> {
+            rightViewController.displayRelationship(relationshipId);
+            leftViewController.displayRelationship(relationshipId);
+        });
+
     }
 
     @Override
     public void receiveNewContactsGroup(int groupId) throws RemoteException {
         System.out.println(">> New Contacts Group :" + groupId);
-        leftViewController.displayContactsGroup(groupId);
-        leftViewController.getAddContactGroupViewController().displayContactsGroup(groupId);
+        Platform.runLater(() -> {
+            leftViewController.displayContactsGroup(groupId);
+            leftViewController.getAddContactGroupViewController().displayContactsGroup(groupId);
+        });
+
     }
 
     @Override
     public void receiveNewContactsGroupMembership(int contactsGroupMembershipId) throws RemoteException {
         System.out.println(">> New Contacts Group Membership :" + contactsGroupMembershipId);
-        leftViewController.displayContactsGroupMembership(contactsGroupMembershipId);
-        leftViewController.getAddContactGroupViewController()
-                .displayContactsGroupMembership(contactsGroupMembershipId);
+        Platform.runLater(() -> {
+            leftViewController.displayContactsGroupMembership(contactsGroupMembershipId);
+            leftViewController.getAddContactGroupViewController()
+                    .displayContactsGroupMembership(contactsGroupMembershipId);
+        });
     }
 
     @Override
     public void receiveNewAnnouncement(int announcementId) throws RemoteException {
-        ClientStageCoordinator.getInstance().displayServerAnnouncement(announcementId);
+        Platform.runLater(() -> {
+            ClientStageCoordinator.getInstance().displayServerAnnouncement(announcementId);
+        });
+
     }
 
 }

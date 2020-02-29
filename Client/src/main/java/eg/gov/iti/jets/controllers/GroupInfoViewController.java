@@ -28,8 +28,11 @@ import javafx.scene.paint.ImagePattern;
 import javafx.scene.shape.Circle;
 import javafx.stage.Stage;
 
+import java.io.File;
 import java.io.IOException;
+import java.net.URISyntaxException;
 import java.net.URL;
+import java.nio.file.Paths;
 import java.rmi.RemoteException;
 import java.util.List;
 import java.util.ResourceBundle;
@@ -162,10 +165,21 @@ public class GroupInfoViewController implements Initializable {
                         Circle imageCircle = new Circle();
                         try {
                             User user = userDao.getUser(item.getUserId());
-                            //  System.out.println("status is " + user.getUserStatus());
-                            Image imageForTasting = ImageUtiles.fromBytesToImage(user.getProfileImage());
-                            //Image imageForTasting = new Image("images/chat-circle-blue-512.png");
-
+                            Image imageForTasting = null;
+                            if (user.getProfileImage() == null) {
+                                imageForTasting = ImageUtiles.fromBytesToImage(user.getProfileImage());
+                                byte[] image = null;
+                                File file = null;
+                                URL res = getClass().getClassLoader().getResource("images/user.png");
+                                try {
+                                    file = Paths.get(res.toURI()).toFile();
+                                    String filePath = file.getAbsolutePath();
+                                    image = ImageUtiles.fromImageToBytes(filePath);
+                                    imageForTasting = ImageUtiles.fromBytesToImage(image);
+                                } catch (URISyntaxException e) {
+                                    e.printStackTrace();
+                                }
+                            }
                             imageCircle.setFill(new ImagePattern(imageForTasting));
                             imageCircle.setRadius(20);
                             if (user.getUserStatus() == UserStatus.AVAILABLE) {

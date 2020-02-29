@@ -95,24 +95,21 @@
                                 <Insets left="180.0"/>
                             </HBox.margin>
                         </FontIcon>
-                        <JFXTextField fx:id="passJFT" focusColor="#151920" prefHeight="35.0" prefWidth="188.0"
-                                      style="-fx-background-color: #ffffff;" unFocusColor="#2196f3">
+                        <JFXPasswordField fx:id="passJFXP" prefHeight="35.0" prefWidth="188.0">
                             <HBox.margin>
-                                <Insets left="30.0" right="20.0"/>
+                                <Insets left="25.0" right="20.0"/>
                             </HBox.margin>
-                        </JFXTextField>
+                        </JFXPasswordField>
                         <FontIcon iconColor="WHITE" iconLiteral="fa-lock" iconSize="40">
                             <HBox.margin>
                                 <Insets left="80.0" right="30.0"/>
                             </HBox.margin>
                         </FontIcon>
-                        <JFXTextField fx:id="confirumJFT" focusColor="#151920" prefHeight="35.0" prefWidth="188.0"
-                                      style="-fx-background-color: #ffffff;" stylesheets="@../styles/editprofilecss"
-                                      unFocusColor="#2196f3">
+                        <JFXPasswordField fx:id="confirumJFXP" prefHeight="35.0" prefWidth="188.0">
                             <HBox.margin>
-                                <Insets bottom="20.0" right="30.0"/>
+                                <Insets right="30.0"/>
                             </HBox.margin>
-                        </JFXTextField>
+                        </JFXPasswordField>
                     </children>
                     <VBox.margin>
                         <Insets top="40.0"/>

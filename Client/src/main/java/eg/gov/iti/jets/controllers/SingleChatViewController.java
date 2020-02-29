@@ -10,7 +10,6 @@ import eg.gov.iti.jets.models.entities.User;
 import eg.gov.iti.jets.models.imageutiles.ImageUtiles;
 import eg.gov.iti.jets.models.network.RMIConnection;
 import eg.gov.iti.jets.models.singleChat.ObjectFactory;
-import javafx.application.Platform;
 import javafx.collections.FXCollections;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -37,7 +36,9 @@ import javax.xml.validation.SchemaFactory;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
+import java.net.URISyntaxException;
 import java.net.URL;
+import java.nio.file.Paths;
 import java.rmi.RemoteException;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
@@ -101,7 +102,6 @@ public class SingleChatViewController implements Initializable {
                     try {
                         Pos pos = null;
                         User user = null;
-
                         if (message.getUserId() == currentUser.getId()) {
                             user = currentUser;
                             pos = Pos.CENTER_RIGHT;
@@ -109,14 +109,21 @@ public class SingleChatViewController implements Initializable {
                             user = userDao.getUser(message.getUserId());
                             pos = Pos.CENTER_LEFT;
                         }
-                        byte[] imageBytes = user.getProfileImage();
                         Circle circle = new Circle();
-                        try {
-                            Image image = ImageUtiles.fromBytesToImage(imageBytes);
-                            circle.setFill(new ImagePattern(image));
-                        } catch (Exception e) {
-                            System.out.println("Chat Icon not loaded.");
+                        byte[] imageBytes = user.getProfileImage();
+                        if (imageBytes == null) {
+                            File file = null;
+                            URL res = getClass().getClassLoader().getResource("images/user.png");
+                            try {
+                                file = Paths.get(res.toURI()).toFile();
+                                String filePath = file.getAbsolutePath();
+                                imageBytes = ImageUtiles.fromImageToBytes(filePath);
+                            } catch (URISyntaxException e) {
+                                e.printStackTrace();
+                            }
                         }
+                        Image image = ImageUtiles.fromBytesToImage(imageBytes);
+                        circle.setFill(new ImagePattern(image));
                         circle.setRadius(20);
 
                         WebView webView = new WebView();
@@ -186,7 +193,7 @@ public class SingleChatViewController implements Initializable {
     }
 
     public void addSingleChatMessage(SingleChatMessage singleChatMessage) {
-        Platform.runLater(() -> singleChatMessagesLv.getItems().add(singleChatMessage));
+        singleChatMessagesLv.getItems().add(singleChatMessage);
     }
 
     @FXML

@@ -11,7 +11,6 @@ import eg.gov.iti.jets.models.entities.ContactsGroupMembership;
 import eg.gov.iti.jets.models.entities.Relationship;
 import eg.gov.iti.jets.models.entities.User;
 import eg.gov.iti.jets.models.network.RMIConnection;
-import javafx.application.Platform;
 import javafx.collections.FXCollections;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -203,7 +202,7 @@ public class AddContactGroupViewController implements Initializable {
     public void displayContactsGroup(int groupId) {
         try {
             ContactsGroup group = contactsGroupDao.getContactsGroup(groupId);
-            Platform.runLater(() -> availableGroupsLv.getItems().add(group));
+            availableGroupsLv.getItems().add(group);
         } catch (RemoteException e) {
             e.printStackTrace();
         }
