@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" attributeFormDefault="unqualified"
+           elementFormDefault="qualified">
+  <xs:element name="server_settings" type="server_settingsType"/>
+  <xs:complexType name="server_settingsType">
+    <xs:sequence>
+      <xs:element type="xs:string" name="server_password"/>
+      <xs:element type="xs:string" name="server_username"/>
+    </xs:sequence>
+  </xs:complexType>
+</xs:schema>

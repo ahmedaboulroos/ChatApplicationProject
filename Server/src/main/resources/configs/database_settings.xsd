@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" attributeFormDefault="unqualified"
+           elementFormDefault="qualified">
+  <xs:element name="database_settings" type="database_settingsType"/>
+  <xs:complexType name="database_settingsType">
+    <xs:sequence>
+      <xs:element type="xs:string" name="checksum_type"/>
+      <xs:element type="xs:string" name="database_password"/>
+      <xs:element type="xs:string" name="database_url"/>
+      <xs:element type="xs:string" name="database_username"/>
+      <xs:element type="xs:string" name="encryption_type"/>
+    </xs:sequence>
+  </xs:complexType>
+</xs:schema>

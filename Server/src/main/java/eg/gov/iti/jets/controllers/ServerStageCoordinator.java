@@ -7,8 +7,10 @@ import javafx.scene.Scene;
 import javafx.stage.Stage;
 
 import java.io.IOException;
+import java.util.Properties;
 
 public class ServerStageCoordinator {
+    private static Properties serverProperties;
     private static Stage stage;
     private static MainServerViewController mainServerViewController;
 
@@ -28,14 +30,28 @@ public class ServerStageCoordinator {
         });
     }
 
-//    public void startServerLoginScene(boolean dbConnStarted, boolean rmiConnStarted) {
-//        FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/views/LoginView.fxml"));
-//        Parent mainServerView = fxmlLoader.load();
-//        MainServerViewController mainServerViewController = fxmlLoader.getController();
-//        stage.setScene(new Scene(mainServerView));
-//        stage.setTitle("Chat Application Server - Admin Panel");
-//        stage.show();
-//    }
+    public static Properties getServerProperties() {
+        return serverProperties;
+    }
+
+    public static void setServerProperties(Properties properties) {
+        serverProperties = properties;
+    }
+
+    public void startServerLoginScene() {
+        try {
+            FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/views/LoginView.fxml"));
+            Parent loginView = fxmlLoader.load();
+            LoginViewController loginViewController = fxmlLoader.getController();
+            loginViewController.setCoordinator(this);
+            stage.setMaximized(false);
+            stage.setScene(new Scene(loginView));
+            stage.setTitle("Login - Admin Panel");
+            stage.show();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
 
     public static Stage getStage() {
         return stage;
@@ -47,14 +63,18 @@ public class ServerStageCoordinator {
         });
     }
 
-    public void startMainServerScene() throws IOException {
-        FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/views/MainServerView.fxml"));
-        Parent mainServerView = fxmlLoader.load();
-        mainServerViewController = fxmlLoader.getController();
-        stage.setMaximized(true);
-        stage.setScene(new Scene(mainServerView));
-        stage.setTitle("Chat Application Server - Admin Panel");
-        stage.show();
+    public void startMainServerScene() {
+        try {
+            FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/views/MainServerView.fxml"));
+            Parent mainServerView = fxmlLoader.load();
+            mainServerViewController = fxmlLoader.getController();
+            stage.setScene(new Scene(mainServerView));
+            stage.setTitle("Chat Application Server - Admin Panel");
+            stage.setMaximized(true);
+            stage.show();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 
 }
