@@ -9,8 +9,11 @@ import eg.gov.iti.jets.models.imageutiles.ImageUtiles;
 import eg.gov.iti.jets.models.network.RMIConnection;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
+import javafx.fxml.Initializable;
 import javafx.scene.Node;
 import javafx.scene.control.Label;
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
 import javafx.stage.FileChooser;
 
 import java.io.File;
@@ -19,8 +22,9 @@ import java.net.URL;
 import java.nio.file.Paths;
 import java.rmi.RemoteException;
 import java.time.LocalDateTime;
+import java.util.ResourceBundle;
 
-public class AddGroupChatViewController {
+public class AddGroupChatViewController implements Initializable {
 
     GroupChatDao groupChatDao = RMIConnection.getGroupChatDao();
     GroupChatMembershipDao groupChatMembershipDao = RMIConnection.getGroupChatMembershipDao();
@@ -31,11 +35,20 @@ public class AddGroupChatViewController {
     private JFXTextField descriptionTf;
     @FXML
     private Label pathLbl;
+    Image defultImage = new Image("images/user.png");
+    @FXML
+    private ImageView imageView;
 
     @FXML
     void handleSelectImage(ActionEvent event) {
         FileChooser fileChooser = new FileChooser();
         file = fileChooser.showOpenDialog(null);
+        if (file != null) {
+            Image image = new Image(file.toURI().toString());
+            imageView.setImage(image);
+        } else {
+            imageView.setImage(defultImage);
+        }
     }
 
     @FXML
@@ -69,4 +82,8 @@ public class AddGroupChatViewController {
         }
     }
 
+    @Override
+    public void initialize(URL url, ResourceBundle resourceBundle) {
+        imageView.setImage(defultImage);
+    }
 }
