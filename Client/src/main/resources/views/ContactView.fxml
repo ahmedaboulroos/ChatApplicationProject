@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import com.jfoenix.controls.JFXButton?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.Tooltip?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.shape.Circle?>
+<?import javafx.scene.text.Font?>
+<?import org.kordamp.ikonli.javafx.FontIcon?>
+<AnchorPane xmlns:fx="http://javafx.com/fxml/1" prefHeight="61.0" prefWidth="222.0"
+            xmlns="http://javafx.com/javafx/11.0.1" fx:controller="eg.gov.iti.jets.controllers.ContactViewController">
+   <children>
+      <Circle fx:id="contactImageCircle" fill="DODGERBLUE" layoutX="35.0" layoutY="30.0" radius="23.0" stroke="BLACK"
+              strokeType="INSIDE"/>
+      <Label fx:id="contactNameLbl" layoutX="64.0" layoutY="18.0" text="Label">
+         <font>
+            <Font size="16.0"/>
+         </font>
+      </Label>
+      <JFXButton fx:id="button" layoutX="194.0" layoutY="8.0" prefHeight="25.0" prefWidth="33.0"
+                 AnchorPane.rightAnchor="5.0">
+         <graphic>
+            <FontIcon fx:id="buttonIcon" iconColor="DODGERBLUE" iconLiteral="typ-cancel" iconSize="35"/>
+         </graphic>
+         <tooltip>
+            <Tooltip fx:id="buttonTip" text="Block"/>
+         </tooltip>
+      </JFXButton>
+   </children>
+</AnchorPane>

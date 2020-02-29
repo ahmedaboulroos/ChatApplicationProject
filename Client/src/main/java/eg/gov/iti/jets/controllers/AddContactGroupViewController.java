@@ -212,7 +212,8 @@ public class AddContactGroupViewController implements Initializable {
         try {
             ContactsGroupMembership membership =
                     contactsGroupMembershipDao.getContactsGroupMembership(contactsGroupMembershipId);
-            availableGroupContactsLv.getItems().add(membership);
+            if (membership != null)
+                availableGroupContactsLv.getItems().add(membership);
         } catch (RemoteException e) {
             e.printStackTrace();
         }

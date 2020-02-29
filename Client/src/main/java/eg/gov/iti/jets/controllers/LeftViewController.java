@@ -12,7 +12,6 @@ import eg.gov.iti.jets.models.imageutiles.ImageUtiles;
 import eg.gov.iti.jets.models.network.RMIConnection;
 import javafx.collections.FXCollections;
 import javafx.event.ActionEvent;
-import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
@@ -21,7 +20,6 @@ import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.image.Image;
-import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.Region;
@@ -34,7 +32,6 @@ import javafx.scene.text.FontWeight;
 import javafx.scene.text.Text;
 import javafx.stage.Stage;
 
-import java.io.ByteArrayInputStream;
 import java.io.IOException;
 import java.net.URL;
 import java.rmi.RemoteException;
@@ -145,6 +142,7 @@ public class LeftViewController implements Initializable {
     @Override
     public void initialize(URL location, ResourceBundle resources) {
         clientStageCoordinator = ClientStageCoordinator.getInstance();
+        setUpAllContactsLv();
         loadContacts();
         loadGroups();
         loadSingleChats();
@@ -152,68 +150,49 @@ public class LeftViewController implements Initializable {
         loadUserStatus();
     }
 
-    private void loadUserStatus() {
-        userStatusCb.getItems().addAll(UserStatus.AVAILABLE, UserStatus.BUSY, UserStatus.AWAY);
-    }
-
-    private void loadContacts() {
+    private void setUpAllContactsLv() {
         User user = clientStageCoordinator.currentUser;
         allContactsLv = new JFXListView<>();
-
         allContactsLv.setCellFactory(listViewListCellCallback -> new JFXListCell<>() {
             @Override
             protected void updateItem(User user, boolean empty) {
                 super.updateItem(user, empty);
                 if (user != null) {
-                    Image image = null;
-                    if (user.getProfileImage() != null) {
-                        image = new Image(new ByteArrayInputStream(user.getProfileImage()));
-                    } else {
-                        try {
-                            image = new Image(getClass().getClassLoader().getResource("images/chat-circle-blue-512.png").toExternalForm());
-                        } catch (Exception e) {
-                            System.out.println("Contact Friend Icon not loaded.");
-                        }
-                    }
-                    ImageView imageView = new ImageView(image);
-                    imageView.setFitHeight(50);
-                    imageView.setFitWidth(50);
-                    JFXButton block = new JFXButton("Block");
+                    try {
+                        mAllContactsListCells.put(user.getId(), this);
+                        FXMLLoader contactViewLoader = new FXMLLoader(getClass().getResource("/views/ContactView.fxml"));
 
-                    block.setStyle("-fx-background-color: #ffcccb");
-
-
-                    HBox box = new HBox();
-                    box.getChildren().addAll(imageView, new Label(getUserDisplayName(user)), block);
-                    setGraphic(box);
-                    mAllContactsListCells.put(user.getId(), this);
-
-
-                    block.setOnAction(new EventHandler<ActionEvent>() {
-                        @Override
-                        public void handle(ActionEvent actionEvent) {
-
-                            //JFXListCell<User> userCell = mAllContactsListCells.get(userId);
+                        Parent contactView = contactViewLoader.load();
+                        ContactViewController contactViewController = contactViewLoader.getController();
+                        contactViewController.displayUser(user);
+                        contactViewController.getButton().setOnAction(actionEvent -> {
                             try {
                                 Relationship relationship = relationshipDao.getRelationshipBetween(ClientStageCoordinator.getInstance().currentUser.getId(), user.getId());
-
                                 relationship.setStatus(RelationshipStatus.BLOCKED);
                                 relationshipDao.updateRelationship(relationship);
-
+                                setGraphic(contactView);
                             } catch (RemoteException e) {
                                 e.printStackTrace();
                             }
-
-                        }
-                    });
-
+                        });
+                    } catch (IOException ex) {
+                        ex.printStackTrace();
+                    }
                 } else {
                     setGraphic(null);
                 }
                 setText(null);
             }
         });
+    }
 
+    private void loadUserStatus() {
+        userStatusCb.getItems().addAll(UserStatus.AVAILABLE, UserStatus.BUSY, UserStatus.AWAY);
+        userStatusCb.setValue(UserStatus.AVAILABLE);
+    }
+
+    private void loadContacts() {
+        User user = ClientStageCoordinator.getInstance().currentUser;
         try {
             List<Relationship> userRelationships = userDao.getUserRelationships(user.getId());
             TitledPane allContactsTPane = new TitledPane();
@@ -282,30 +261,41 @@ public class LeftViewController implements Initializable {
                     } catch (RemoteException e) {
                         e.printStackTrace();
                     }
-                    if (user != null) {
-                        Image image = null;
-                        if (user.getProfileImage() != null) {
-                            image = new Image(new ByteArrayInputStream(user.getProfileImage()));
-                        } else {
-                            try {
-                                image = new Image(getClass().getClassLoader().getResource("images/chat-circle-blue-512.png").toString());
 
-                            } catch (Exception e) {
-                                System.out.println("Group Contact Icon not loaded.");
+                    try {
+                        if (user != null && relationshipDao.getRelationshipBetween(
+                                ClientStageCoordinator.getInstance().currentUser.getId(), user.getId()).getStatus() ==
+                                RelationshipStatus.ACCEPTED) {
+                            try {
+                                FXMLLoader contactViewLoader = new FXMLLoader(getClass().getResource("/views/ContactView.fxml"));
+                                Parent contactView = contactViewLoader.load();
+                                ContactViewController contactViewController = contactViewLoader.getController();
+                                contactViewController.displayUser(user);
+                                User finalUser = user;
+                                //TODO: HANDLE REMOVING FROM GROUP
+                                contactViewController.getButtonIcon().setVisible(false);
+                                contactViewController.getButton().setVisible(false);
+                                contactViewController.getButtonTip().setText("Eliminate");
+                                contactViewController.getButtonIcon().setIconLiteral("dashicons-minus");
+                                contactViewController.getButton().setOnAction(actionEvent -> {
+                                    try {
+                                        contactsGroupMembershipDao.deleteGroupContactMembership(membership.getId());
+                                    } catch (RemoteException e) {
+                                        e.printStackTrace();
+                                    }
+                                });
+                                setGraphic(contactView);
+                            } catch (IOException ex) {
+                                ex.printStackTrace();
                             }
                         }
-                        ImageView imageView = new ImageView(image);
-                        imageView.setFitHeight(50);
-                        imageView.setFitWidth(50);
-
-                        HBox box = new HBox();
-                        box.getChildren().addAll(imageView, new Label(getUserDisplayName(user)));
-                        setGraphic(box);
-                    } else {
-                        setGraphic(null);
+                    } catch (RemoteException e) {
+                        e.printStackTrace();
                     }
-                    setText(null);
+                } else {
+                    setGraphic(null);
                 }
+                setText(null);
             }
         });
         TitledPane groupTpane = new TitledPane();
@@ -613,18 +603,24 @@ public class LeftViewController implements Initializable {
     public void displayContactsGroupMembership(int contactsGroupMembershipId) {
         try {
             ContactsGroupMembership membership = contactsGroupMembershipDao.getContactsGroupMembership(contactsGroupMembershipId);
-            JFXListView<ContactsGroupMembership> groupLv =
-                    mContactGroupsListViews.get(membership.getContactsGroupId());
-            groupLv.getItems().add(membership);
+            if (membership != null) {
+                JFXListView<ContactsGroupMembership> groupLv =
+                        mContactGroupsListViews.get(membership.getContactsGroupId());
+                groupLv.getItems().add(membership);
+            } else {
+                reloadAllContactsAndGroups();
+            }
         } catch (RemoteException e) {
             e.printStackTrace();
         }
+    }
 
-
-
-        /*panes.forEach(p->{
-            if()
-        });*/
+    private void reloadAllContactsAndGroups() {
+        groupsAccordion = new Accordion();
+        mAllContactsListCells = new HashMap<>();
+        mContactGroupsListViews = new HashMap<>();
+        loadContacts();
+        loadGroups();
     }
 
     public void displayRelationship(int relationshipId) {

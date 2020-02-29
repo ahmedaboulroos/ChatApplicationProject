@@ -1,5 +1,24 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import javafx.scene.layout.BorderPane?>
+<?import com.jfoenix.controls.JFXButton?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.shape.Circle?>
+<?import org.kordamp.ikonli.javafx.FontIcon?>
 <BorderPane xmlns:fx="http://javafx.com/fxml/1" fx:id="rightViewBp" xmlns="http://javafx.com/javafx/11.0.1"
-            fx:controller="eg.gov.iti.jets.controllers.RightViewController"/>
+            fx:controller="eg.gov.iti.jets.controllers.RightViewController">
+   <top>
+      <AnchorPane prefHeight="60.0" prefWidth="250.0" BorderPane.alignment="CENTER">
+         <children>
+            <JFXButton fx:id="requestsBtn" layoutX="220.0" layoutY="10.0" onAction="#handleRequestsBtn"
+                       prefHeight="40.0" prefWidth="35.0" AnchorPane.bottomAnchor="5.0" AnchorPane.rightAnchor="10.0"
+                       AnchorPane.topAnchor="5.0">
+               <graphic>
+                  <FontIcon iconLiteral="dashicons-admin-site-alt2" iconSize="35"/>
+               </graphic>
+            </JFXButton>
+            <Circle fx:id="requestsNotifCircle" fill="RED" layoutX="198.0" layoutY="40.0" radius="7.0" stroke="BLACK"
+                    strokeType="INSIDE" visible="false"/>
+         </children>
+      </AnchorPane>
+   </top>
+</BorderPane>

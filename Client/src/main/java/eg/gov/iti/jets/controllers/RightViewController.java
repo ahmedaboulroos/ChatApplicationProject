@@ -7,6 +7,7 @@ import eg.gov.iti.jets.models.entities.Relationship;
 import eg.gov.iti.jets.models.entities.User;
 import eg.gov.iti.jets.models.entities.enums.RelationshipStatus;
 import eg.gov.iti.jets.models.network.RMIConnection;
+import javafx.collections.FXCollections;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
@@ -16,21 +17,28 @@ import javafx.scene.control.ListView;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
+import javafx.scene.shape.Circle;
 import javafx.scene.text.Text;
 
 import java.net.URL;
 import java.rmi.RemoteException;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.ResourceBundle;
 
 public class RightViewController implements Initializable {
     private static RightViewController rightViewController;
     @FXML
     public BorderPane rightViewBp;
-    boolean isActiveTap;
-    private ListView<Relationship> relationshipLv;
+    @FXML
+    public JFXButton requestsBtn;
+    @FXML
+    Circle requestsNotifCircle;
+    ListView<Relationship> relationshipLv = new ListView<>();
     private UserDao userDao = RMIConnection.getUserDao();
     private RelationshipDao relationshipDao = RMIConnection.getInstance().getRelationshipDao();
-
+    private List<Relationship> relationshipList;
+    private User user = ClientStageCoordinator.getInstance().currentUser;
 
     public static RightViewController getInstance() {
         return rightViewController;
@@ -38,11 +46,16 @@ public class RightViewController implements Initializable {
 
     public void setController(RightViewController rightViewController) {
         RightViewController.rightViewController = rightViewController;
-        System.out.println("right view controller etsat");
     }
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
+        try {
+            relationshipList = userDao.getUserRelationships(user.getId());
+        } catch (RemoteException e) {
+            relationshipList = new ArrayList<>();
+            e.printStackTrace();
+        }
 
         relationshipLv = new ListView<>();
         rightViewBp.setCenter(relationshipLv);
@@ -85,7 +98,6 @@ public class RightViewController implements Initializable {
                     }
                     // shows notfication of frindship request
                     else if (relationship.getStatus() == RelationshipStatus.PENDING) {
-
                         if (relationship.getFirstUserId() == ClientStageCoordinator.getInstance().currentUser.getId()) {
                             userId = relationship.getSecondUserId();
                             try {
@@ -117,10 +129,8 @@ public class RightViewController implements Initializable {
                                         } catch (RemoteException e) {
                                             e.printStackTrace();
                                         }
-
                                     }
                                 });
-
 
                                 reject.setOnAction(new EventHandler<ActionEvent>() {
                                     @Override
@@ -149,20 +159,15 @@ public class RightViewController implements Initializable {
 
                                     }
                                 });
-
-
                                 HBox hboxForButton = new HBox(accept, reject, block);
                                 hboxForButton.setSpacing(20);
-
 
                                 VBox vBox = new VBox(content, hboxForButton);
                                 setGraphic(vBox);
                             } catch (RemoteException e) {
                                 e.printStackTrace();
                             }
-
                         }
-
                     }
                 } else {
                     setGraphic(null);
@@ -170,6 +175,14 @@ public class RightViewController implements Initializable {
                 setText(null);
             }
         });
+        relationshipLv.setItems(FXCollections.observableList(relationshipList));
+    }
+
+    @FXML
+    public void handleRequestsBtn(ActionEvent event) {
+        requestsNotifCircle.setVisible(false);
+        relationshipLv.setItems(FXCollections.observableList(relationshipList));
+        rightViewBp.setCenter(relationshipLv);
     }
 
     private String getUserDisplayName(User user) {
@@ -181,13 +194,10 @@ public class RightViewController implements Initializable {
         try {
             relationship = relationshipDao.getRelationship(relationshipId);
             System.out.println(relationship.getFirstUserId());
-            relationshipLv.getItems().add(relationship);
-
+            relationshipList.add(relationship);
+            requestsNotifCircle.setVisible(true);
         } catch (RemoteException e) {
             e.printStackTrace();
         }
-
     }
-
 }
-
