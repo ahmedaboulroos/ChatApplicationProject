@@ -124,7 +124,7 @@ public class AddSingleChatViewController implements Initializable {
                     HBox hBox = new HBox();
                     hBox.setStyle("-fx-background-color: transparent  ;" +
                             "-fx-padding: 1;" + "-fx-border-style: solid inside;"
-                            + "-fx-border-width: 4;" + "-fx-border-insets: 1;"
+                            + "-fx-border-width: 0;" + "-fx-border-insets: 1;"
                             + "-fx-border-radius: 2;" + "-fx-border-color: white;");
                     Circle imageCircle = new Circle();
                     //Image imageForTasting = new Image("images/chat-circle-blue-512.png");
