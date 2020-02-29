@@ -1,0 +1,42 @@
+
+.vbox{
+	-fx-background-color: #2196F3;
+}
+
+
+.btn{
+	-fx-background-color: #151920;
+    -fx-background-radius: 5px;
+    -fx-border-color: #cccccc;
+    -fx-border-radius: 5px;
+    -fx-border-width: 1px;
+    -fx-text-fill: whitesmoke;
+
+}
+.btn:hover{
+	-fx-background-color: #4FDD42;
+    -fx-background-radius: 10px;
+    -fx-border-color: #2196F3;
+    -fx-border-radius: 10px;
+    -fx-border-width: 1px;
+    -fx-text-fill: whitesmoke;
+}
+
+.canclebtn{
+	-fx-background-color: #151920;
+    -fx-background-radius: 5px;
+    -fx-border-color: #cccccc;
+    -fx-border-radius: 5px;
+    -fx-border-width: 1px;
+    -fx-text-fill: whitesmoke;
+
+}
+
+.canclebtn:hover{
+	-fx-background-color: #DD4F42;
+    -fx-background-radius: 10px;
+    -fx-border-color: #2196F3;
+    -fx-border-radius: 10px;
+    -fx-border-width: 1px;
+    -fx-text-fill: whitesmoke;
+}

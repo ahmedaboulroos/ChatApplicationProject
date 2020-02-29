@@ -21,7 +21,7 @@ module Client {
     requires org.kordamp.ikonli.fontawesome;
     requires org.kordamp.ikonli.fontawesome5;
     requires java.sql;
-    requires java.sql.rowset;
+    //requires java.sql.rowset;
     requires java.xml.bind;
 
     opens eg.gov.iti.jets.models.singleChat;
