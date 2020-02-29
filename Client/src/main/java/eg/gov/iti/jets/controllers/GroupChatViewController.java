@@ -82,13 +82,20 @@ public class GroupChatViewController implements Initializable {
     private void updateGroupChat() {
         try {
             byte[] imageBytes = groupChat.getGroupImageBytes();
-            try {
-                Image imageForTasting = ImageUtiles.fromBytesToImage(imageBytes);
-                imageCircle.setFill(new ImagePattern(imageForTasting));
-            } catch (Exception e) {
-                System.out.println("Group Chat Icon not loaded.");
+            if (imageBytes == null) {
+                File file = null;
+                URL res = getClass().getClassLoader().getResource("images/group-icon.png");
+                try {
+                    file = Paths.get(res.toURI()).toFile();
+                    String filePath = file.getAbsolutePath();
+                    imageBytes = ImageUtiles.fromImageToBytes(filePath);
+                } catch (URISyntaxException e) {
+                    e.printStackTrace();
+                }
             }
-            imageCircle.setRadius(20);
+            Image image = ImageUtiles.fromBytesToImage(imageBytes);
+            imageCircle.setFill(new ImagePattern(image));
+
             nameLbl.setText(groupChat.getTitle());
             groupChatMessagesLv.getItems().clear();
             List<GroupChatMessage> groupChatMessages = RMIConnection.getGroupChatDao().getGroupChatMessages(groupChatId);
@@ -133,7 +140,7 @@ public class GroupChatViewController implements Initializable {
                         byte[] imageBytes = user.getProfileImage();
                         if (imageBytes == null) {
                             File file = null;
-                            URL res = getClass().getClassLoader().getResource("images/user.png");
+                            URL res = getClass().getClassLoader().getResource("images/group-icon.png");
                             try {
                                 file = Paths.get(res.toURI()).toFile();
                                 String filePath = file.getAbsolutePath();
@@ -183,21 +190,6 @@ public class GroupChatViewController implements Initializable {
             e.printStackTrace();
         }
     }
-
-//    public void displayNewGroupChatMessage(int groupChatMessageId) throws RemoteException {
-//        GroupChatMessage groupChatMessage = null;
-//        groupChatMessage = groupChatMessageDao.getGroupChatMessage(groupChatMessageId);
-//
-//        User user = userDao.getUser(groupChatMessage.getUserId());
-//        System.out.println(
-//                " groupChatMessageId : " + groupChatMessage.getGroupChatId()
-//                        + "\n userId: " + groupChatMessage.getUserId()
-//                        + "\n  Id " + groupChatMessage.getId()
-//                        + "\n content " + groupChatMessage.getContent()
-//                        + "\n TimeStamp " + groupChatMessage.getMessageDateTime());
-//        System.out.println("name : " + user.getUsername() + "Image : " + user.getProfileImage());
-//    }
-
 }
 
 
