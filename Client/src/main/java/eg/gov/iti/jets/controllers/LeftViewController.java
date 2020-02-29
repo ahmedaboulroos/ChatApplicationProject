@@ -178,14 +178,16 @@ public class LeftViewController implements Initializable {
                     ImageView imageView = new ImageView(image);
                     imageView.setFitHeight(50);
                     imageView.setFitWidth(50);
-                    Button block = new Button("Block");
+                    JFXButton block = new JFXButton("Block");
+
+                    block.setStyle("-fx-background-color: #ffcccb");
+
 
                     HBox box = new HBox();
                     box.getChildren().addAll(imageView, new Label(getUserDisplayName(user)), block);
                     setGraphic(box);
                     mAllContactsListCells.put(user.getId(), this);
-                    // add block button to the  allContactsLv listview
-                    ///////////////////////////////////////////////////
+
 
                     block.setOnAction(new EventHandler<ActionEvent>() {
                         @Override
@@ -204,7 +206,7 @@ public class LeftViewController implements Initializable {
 
                         }
                     });
-                    ///////////////////////////////////////////////////////
+
                 } else {
                     setGraphic(null);
                 }
@@ -475,7 +477,9 @@ public class LeftViewController implements Initializable {
             }
         }
     }
+
     GroupChat groupChat;
+
     @FXML
     void handleGroupChatSelection(MouseEvent event) {
         groupChat = groupChatsLv.getSelectionModel().getSelectedItem();
@@ -494,6 +498,8 @@ public class LeftViewController implements Initializable {
             Scene scene = new Scene(addContactView);
             stage.setScene(scene);
             stage.setTitle("Add Contact");
+            stage.setMaxHeight(295);
+            stage.setMaxWidth(600);
             stage.show();
         } catch (IOException e) {
             e.printStackTrace();
@@ -646,7 +652,6 @@ public class LeftViewController implements Initializable {
             e.printStackTrace();
         }
     }
-
 
 
 }
