@@ -1,5 +1,6 @@
 package eg.gov.iti.jets.models.network.implementations;
 
+import eg.gov.iti.jets.controllers.ServerStageCoordinator;
 import eg.gov.iti.jets.models.dao.implementations.UserDaoImpl;
 import eg.gov.iti.jets.models.dao.interfaces.UserDao;
 import eg.gov.iti.jets.models.entities.Relationship;
@@ -76,6 +77,7 @@ public class ServerService extends UnicastRemoteObject implements ServerInterfac
                     }
                 }
             }
+            ServerStageCoordinator.updateClients();
         } else {
             System.out.println("error in login");
         }
@@ -103,6 +105,7 @@ public class ServerService extends UnicastRemoteObject implements ServerInterfac
                     }
                 }
             }
+            ServerStageCoordinator.updateClients();
         } else {
             System.out.println("error in login");
         }
