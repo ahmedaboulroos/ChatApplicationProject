@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<server_settings>
+    <database_password>amin</database_password>
+    <database_port>123</database_port>
+    <database_url>amin</database_url>
+    <database_username>amin</database_username>
+    <server_password>amin</server_password>
+    <server_username>amin</server_username>
+</server_settings>
