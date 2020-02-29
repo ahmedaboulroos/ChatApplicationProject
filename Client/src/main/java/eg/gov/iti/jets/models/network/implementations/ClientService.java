@@ -139,7 +139,6 @@ public class ClientService extends UnicastRemoteObject implements ClientInterfac
             leftViewController.displayContactsGroup(groupId);
             leftViewController.getAddContactGroupViewController().displayContactsGroup(groupId);
         });
-
     }
 
     @Override
@@ -147,8 +146,9 @@ public class ClientService extends UnicastRemoteObject implements ClientInterfac
         System.out.println(">> New Contacts Group Membership :" + contactsGroupMembershipId);
         Platform.runLater(() -> {
             leftViewController.displayContactsGroupMembership(contactsGroupMembershipId);
-            leftViewController.getAddContactGroupViewController()
-                    .displayContactsGroupMembership(contactsGroupMembershipId);
+            if (leftViewController.getAddContactGroupViewController() != null)
+                leftViewController.getAddContactGroupViewController()
+                        .displayContactsGroupMembership(contactsGroupMembershipId);
         });
     }
 

@@ -44,14 +44,13 @@
         </AnchorPane>
     </bottom>
     <top>
-        <AnchorPane prefHeight="86.0" prefWidth="600.0" BorderPane.alignment="CENTER">
+        <AnchorPane prefHeight="60.0" prefWidth="600.0" BorderPane.alignment="CENTER">
             <children>
-                <Circle fx:id="imageCircle" fill="DODGERBLUE" layoutX="52.0" layoutY="40.0" radius="31.0" stroke="BLACK"
-                        strokeType="INSIDE" AnchorPane.bottomAnchor="9.0" AnchorPane.leftAnchor="21.0"
-                        AnchorPane.topAnchor="9.0"/>
-                <Label fx:id="nameLbl" layoutX="102.0" layoutY="22.0" text="Label">
+                <Circle fx:id="imageCircle" fill="DODGERBLUE" layoutX="47.0" layoutY="30.0" radius="24.0" stroke="BLACK"
+                        strokeType="INSIDE" AnchorPane.leftAnchor="20.0"/>
+                <Label fx:id="nameLbl" layoutX="84.0" layoutY="17.0" text="Label" AnchorPane.leftAnchor="80.0">
                     <font>
-                        <Font size="25.0"/>
+                        <Font size="18.0"/>
                     </font>
                 </Label>
             </children>

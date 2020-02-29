@@ -72,7 +72,7 @@ public class ContactsGroupMembershipDaoImpl extends UnicastRemoteObject implemen
         try (PreparedStatement ps = dbConnection.prepareStatement(sql, ResultSet.TYPE_SCROLL_INSENSITIVE, ResultSet.CONCUR_READ_ONLY)) {
             ps.setInt(1, contactsGroupMembershipId);
             ResultSet rs = ps.executeQuery();
-            if (rs.first()) {
+            if (rs.next()) {
                 contactsGroupMembership = new ContactsGroupMembership(rs.getInt(1), rs.getInt(2), rs.getInt(3));
             }
         } catch (SQLException ex) {
@@ -97,10 +97,20 @@ public class ContactsGroupMembershipDaoImpl extends UnicastRemoteObject implemen
     @Override
     public void deleteGroupContactMembership(int contactsGroupMembershipId) {
         String sql = "Delete from CONTACTS_GROUP_MEMBERSHIPS where ID=? ";
-        try (PreparedStatement ps = dbConnection.prepareStatement(sql)) {
-            ps.setInt(1, contactsGroupMembershipId);
-            ps.executeUpdate();
-        } catch (SQLException e) {
+        try {
+            ContactsGroup contactsGroup = ContactsGroupDaoImpl.getInstance(dbConnection).getContactsGroup(
+                    getContactsGroupMembership(contactsGroupMembershipId).getContactsGroupId());
+            try (PreparedStatement ps = dbConnection.prepareStatement(sql)) {
+                ps.setInt(1, contactsGroupMembershipId);
+                ps.executeUpdate();
+                ClientInterface client = ServerService.getClient(contactsGroup.getUserId());
+                if (client != null) {
+                    client.receiveNewContactsGroupMembership(contactsGroupMembershipId);
+                }
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
+        } catch (RemoteException e) {
             e.printStackTrace();
         }
     }

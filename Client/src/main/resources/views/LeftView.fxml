@@ -134,28 +134,23 @@
         </TabPane>
     </center>
     <top>
-        <HBox styleClass="mainPane" stylesheets="@../styles/leftViewStyle.css" BorderPane.alignment="CENTER">
+        <AnchorPane prefHeight="60.0" prefWidth="275.0" styleClass="mainPane" stylesheets="@../styles/leftViewStyle.css"
+                    BorderPane.alignment="CENTER">
             <children>
-                <JFXButton fx:id="userProfileBtn" alignment="CENTER" contentDisplay="CENTER"
-                           onAction="#handleUserProfileBtnClick" prefHeight="28.0" prefWidth="22.0"
+                <JFXButton fx:id="userProfileBtn" alignment="CENTER" contentDisplay="CENTER" layoutX="20.0"
+                           layoutY="12.0" onAction="#handleUserProfileBtnClick" prefHeight="28.0" prefWidth="22.0"
                            styleClass="addNewBtn" stylesheets="@../styles/leftViewStyle.css" textFill="TRANSPARENT">
-                    <graphic>
-                        <FontIcon iconLiteral="zondi-user-solid-circle" iconSize="20" styleClass="icons"/>
-                    </graphic>
                     <tooltip>
                         <Tooltip text="User Profile"/>
                     </tooltip>
+                    <graphic>
+                        <FontIcon iconLiteral="zondi-user-solid-circle" iconSize="35" styleClass="icons"/>
+                    </graphic>
                 </JFXButton>
-                <Region HBox.hgrow="ALWAYS"/>
-                <JFXComboBox fx:id="userStatusCb" onAction="#handleChangedStatus" prefWidth="120.0" promptText="Status"
-                             unFocusColor="#14181f00"/>
+                <Region layoutX="45.0" layoutY="7.0" prefHeight="60.0"/>
+                <JFXComboBox fx:id="userStatusCb" layoutX="138.0" layoutY="15.0" onAction="#handleChangedStatus"
+                             prefHeight="37.0" prefWidth="120.0" promptText="Status" unFocusColor="#14181f00"/>
             </children>
-            <BorderPane.margin>
-                <Insets/>
-            </BorderPane.margin>
-            <padding>
-                <Insets bottom="5.0" left="5.0" right="5.0" top="5.0"/>
-            </padding>
-        </HBox>
+        </AnchorPane>
     </top>
 </BorderPane>
