@@ -1,19 +1,45 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-
 <?import com.jfoenix.controls.JFXButton?>
 <?import com.jfoenix.controls.JFXTextField?>
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.layout.AnchorPane?>
-<AnchorPane xmlns:fx="http://javafx.com/fxml/1" prefHeight="400.0" prefWidth="600.0"
-            xmlns="http://javafx.com/javafx/11.0.1"
+<?import javafx.scene.text.Font?>
+<?import org.kordamp.ikonli.javafx.FontIcon?>
+<AnchorPane xmlns:fx="http://javafx.com/fxml/1" prefHeight="369.0" prefWidth="600.0"
+            style="-fx-background-color: #0087ED;" xmlns="http://javafx.com/javafx/11.0.1"
             fx:controller="eg.gov.iti.jets.controllers.AddGroupChatViewController">
     <children>
-        <JFXButton layoutX="437.0" layoutY="288.0" onAction="#handleCreateGroupChat"
-                   style="-fx-background-color: lightblue;" text="Create Group Chat"/>
-        <JFXTextField fx:id="titleTf" layoutX="59.0" layoutY="44.0" promptText="title"/>
-        <JFXTextField fx:id="descriptionTf" layoutX="59.0" layoutY="101.0" promptText="description"/>
-        <Label fx:id="pathLbl" layoutX="59.0" layoutY="169.0" text="Label"/>
-        <JFXButton layoutX="360.0" layoutY="165.0" onAction="#handleSelectImage" text="Select Image"/>
+        <JFXButton layoutX="217.0" layoutY="280.0" onAction="#handleCreateGroupChat" prefHeight="46.0" prefWidth="166.0"
+                   style="-fx-background-color: e8e8e8; -fx-border-radius: 10px; -fx-background-radius: 10px;"
+                   text="Create Group Chat">
+            <font>
+                <Font size="17.0"/>
+            </font>
+        </JFXButton>
+        <JFXTextField fx:id="titleTf" layoutX="82.0" layoutY="110.0" promptText="title">
+            <font>
+                <Font size="18.0"/>
+            </font>
+        </JFXTextField>
+        <JFXTextField fx:id="descriptionTf" layoutX="82.0" layoutY="186.0" promptText="description">
+            <font>
+                <Font size="18.0"/>
+            </font>
+        </JFXTextField>
+        <Label fx:id="pathLbl" layoutX="59.0" layoutY="169.0" textFill="RED"/>
+        <JFXButton layoutX="388.0" layoutY="158.0" onAction="#handleSelectImage" prefHeight="39.0" prefWidth="122.0"
+                   ripplerFill="GAINSBORO"
+                   style="-fx-background-color: e8e8e8; -fx-border-radius: 10px; -fx-background-radius: 10px;"
+                   text="Select Image"/>
+        <Label fx:id="errorsLbl1" layoutX="183.0" layoutY="14.0" text="Add New Goup" textFill="#fff9f9">
+            <font>
+                <Font name="Arial Rounded MT Bold" size="35.0"/>
+            </font>
+        </Label>
+        <FontIcon iconColor="#e8e8e8" iconLiteral="eli-slideshare" iconSize="35" layoutX="135.0" layoutY="53.0"/>
+        <FontIcon iconColor="#e8e8e8" iconLiteral="eli-slideshare" iconSize="35" layoutX="449.0" layoutY="50.0"/>
+        <FontIcon iconColor="#e8e8e8" iconLiteral="oct-file-text" iconSize="35" layoutX="32.0" layoutY="219.0"/>
+        <FontIcon iconColor="#e8e8e8" iconLiteral="oct-pencil" iconSize="35" layoutX="32.0" layoutY="142.0"/>
     </children>
 </AnchorPane>

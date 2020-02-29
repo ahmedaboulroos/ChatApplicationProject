@@ -2,6 +2,9 @@ package eg.gov.iti.jets.models.network.implementations;
 
 
 import eg.gov.iti.jets.controllers.*;
+import eg.gov.iti.jets.models.dao.interfaces.UserDao;
+import eg.gov.iti.jets.models.entities.User;
+import eg.gov.iti.jets.models.network.RMIConnection;
 import eg.gov.iti.jets.models.network.interfaces.ClientInterface;
 import javafx.application.Platform;
 
@@ -14,7 +17,7 @@ public class ClientService extends UnicastRemoteObject implements ClientInterfac
     private GroupChatViewController groupChatViewController = GroupChatViewController.getInstance();
     private LeftViewController leftViewController = LeftViewController.getInstance();
     private RightViewController rightViewController = RightViewController.getInstance();
-
+    private UserDao userDao = RMIConnection.getUserDao();
 
     private ClientService() throws RemoteException {
     }
@@ -34,16 +37,42 @@ public class ClientService extends UnicastRemoteObject implements ClientInterfac
 
     @Override
     public void userLoggedIn(int userId) throws RemoteException {
+
+
         Platform.runLater(() -> {
-            ClientStageCoordinator.getInstance().displayUserLoginNotification(userId);
+            User user = null;
+            try {
+                user = userDao.getUser(userId);
+            } catch (RemoteException e) {
+                e.printStackTrace();
+            }
+            if (user.getUsername() != null) {
+                ClientStageCoordinator.getInstance().displayUserLoginNotification(user.getUsername());
+            } else {
+
+                ClientStageCoordinator.getInstance().displayUserLoginNotification(user.getPhoneNumber());
+            }
         });
     }
 
     @Override
     public void userLoggedOut(int userId) throws RemoteException {
         Platform.runLater(() -> {
-            ClientStageCoordinator.getInstance().displayUserLogoutNotification(userId);
+            User user = null;
+            try {
+                user = userDao.getUser(userId);
+            } catch (RemoteException e) {
+                e.printStackTrace();
+            }
+            if (user.getUsername() != null) {
+                ClientStageCoordinator.getInstance().displayUserLogoutNotification(user.getUsername());
+            } else {
+                ClientStageCoordinator.getInstance().displayUserLogoutNotification(user.getPhoneNumber());
+            }
+
         });
+
+
     }
 
     @Override

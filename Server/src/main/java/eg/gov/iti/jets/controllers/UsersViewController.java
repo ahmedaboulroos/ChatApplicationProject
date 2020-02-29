@@ -84,7 +84,7 @@ public class UsersViewController implements Initializable {
         clearFieldsData();
         initUsersTableColumns();
         updateUsersTable();
-        userProfileImageView.setImage(new Image("/images/user.png"));
+        //userProfileImageView.setImage(new Image("/images/user.png"));
         userGenderCb.getItems().addAll(UserGender.MALE, UserGender.FEMALE);
     }
 
@@ -181,7 +181,7 @@ public class UsersViewController implements Initializable {
         birthDateDp.setValue(null);
         userGenderCb.getSelectionModel().clearSelection();
         selectedImageBtn.setText("Selected Image ( Default )");
-        userProfileImageView.setImage(new Image("/images/user.png"));
+        //userProfileImageView.setImage(new Image("/images/user.png"));
         validationLbl.setText("");
     }
 
