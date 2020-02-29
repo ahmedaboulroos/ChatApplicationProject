@@ -1,10 +1,14 @@
 package eg.gov.iti.jets.controllers;
 
+import javafx.application.Platform;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
+import javafx.scene.Node;
 import javafx.scene.Parent;
+import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.BorderPane;
+import javafx.stage.Stage;
 
 import java.io.IOException;
 import java.net.URL;
@@ -24,12 +28,12 @@ public class ChatAppViewController implements Initializable {
     LeftViewController leftViewController;
     CenterViewController centerViewController;
     RightViewController rightViewController;
-    //=CenterViewController.getInstance();
 
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
         try {
+
             FXMLLoader leftViewFxmlLoader = new FXMLLoader(getClass().getResource("/views/LeftView.fxml"));
             Parent leftView = leftViewFxmlLoader.load();
             leftViewController = leftViewFxmlLoader.getController();
@@ -52,6 +56,31 @@ public class ChatAppViewController implements Initializable {
             e.printStackTrace();
         }
 
+    }
+
+    @FXML
+    public void close(MouseEvent Event) {
+        Platform.exit();
+    }
+
+    @FXML
+    public void minimize(MouseEvent mouseEvent) {
+        Stage stage = (Stage) ((Node) mouseEvent.getSource()).getScene().getWindow();
+        stage.setIconified(true);
+    }
+
+    @FXML
+    public void maximize(MouseEvent mouseEvent) {
+        boolean isMaximized = false;
+        Stage stage = (Stage) ((Node) mouseEvent.getSource()).getScene().getWindow();
+        stage.setFullScreenExitHint(" ");
+        if (!isMaximized) {
+            isMaximized = true;
+            stage.setMaximized(true);
+        } else {
+            isMaximized = false;
+            stage.setMaximized(false);
+        }
     }
 
     public void openSingleChat(int singleChatId) {

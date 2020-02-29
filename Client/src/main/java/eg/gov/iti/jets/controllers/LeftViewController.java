@@ -432,20 +432,25 @@ public class LeftViewController implements Initializable {
                     @Override
                     public void updateItem(GroupChat item, boolean empty) {
                         super.updateItem(item, empty);
-                        if (item != null) {
-                            setText(item.getTitle());
-                            System.out.println("inside left view cell fact groupChat.getTitle() " + item.getTitle());
-                            Circle imageCircle = new Circle();
-                            try {
-                                Image imageForTasting = ImageUtiles.fromBytesToImage(item.getGroupImageBytes());
-                                imageCircle.setFill(new ImagePattern(imageForTasting));
-                            } catch (Exception e) {
-                                System.out.println("Group Chat Icon not loaded.");
+                        if (!empty) {
+                            if (item != null) {
+                                setText(item.getTitle());
+                                System.out.println("inside left view cell fact groupChat.getTitle() " + item.getTitle());
+                                Circle imageCircle = new Circle();
+                                try {
+                                    Image imageForTasting = ImageUtiles.fromBytesToImage(item.getGroupImageBytes());
+                                    imageCircle.setFill(new ImagePattern(imageForTasting));
+                                } catch (Exception e) {
+                                    System.out.println("Group Chat Icon not loaded.");
+                                }
+                                imageCircle.setRadius(20);
+                                imageCircle.setStroke(Color.GREEN);
+                                imageCircle.setStrokeWidth(3);
+                                setGraphic(imageCircle);
+                            } else {
+                                setGraphic(null);
                             }
-                            imageCircle.setRadius(20);
-                            imageCircle.setStroke(Color.GREEN);
-                            imageCircle.setStrokeWidth(3);
-                            setGraphic(imageCircle);
+
                         } else {
                             setGraphic(null);
                         }
@@ -567,17 +572,23 @@ public class LeftViewController implements Initializable {
                 case AVAILABLE:
                     RMIConnection.getUserDao().updateUserStatus(ClientStageCoordinator.getInstance().currentUser.getId(), UserStatus.AVAILABLE);
                     userStatusCb.setStyle("-fx-background-color: lightgreen");
-                    ClientStageCoordinator.getInstance().openNewGroupChat(groupChat.getId());
+                    if (groupChat != null) {
+                        ClientStageCoordinator.getInstance().openNewGroupChat(groupChat.getId());
+                    }
                     break;
                 case BUSY:
                     RMIConnection.getUserDao().updateUserStatus(ClientStageCoordinator.getInstance().currentUser.getId(), UserStatus.BUSY);
                     userStatusCb.setStyle("-fx-background-color: pink");
-                    ClientStageCoordinator.getInstance().openNewGroupChat(groupChat.getId());
+                    if (groupChat != null) {
+                        ClientStageCoordinator.getInstance().openNewGroupChat(groupChat.getId());
+                    }
                     break;
                 case AWAY:
                     RMIConnection.getUserDao().updateUserStatus(ClientStageCoordinator.getInstance().currentUser.getId(), UserStatus.AWAY);
-                    userStatusCb.setStyle("-fx-background-color: lightyellow");
-                    ClientStageCoordinator.getInstance().openNewGroupChat(groupChat.getId());
+                    userStatusCb.setStyle("-fx-background-color: #FCB801");
+                    if (groupChat != null) {
+                        ClientStageCoordinator.getInstance().openNewGroupChat(groupChat.getId());
+                    }
                     break;
                 default:
                     System.out.println("WT!?");
