@@ -12,6 +12,8 @@
                             <xs:element name="userId" type="xs:int" minOccurs="0" maxOccurs="1"/>
                             <xs:element name="content" type="xs:string" minOccurs="0" maxOccurs="1"/>
                             <xs:element name="messageTimestamp" type="xs:dateTime" minOccurs="0" maxOccurs="1"/>
+                            <xs:element name="font" type="xs:string" minOccurs="0" maxOccurs="1"/>
+                            <xs:element name="color" type="xs:string" minOccurs="0" maxOccurs="1"/>
                         </xs:sequence>
                     </xs:complexType>
                 </xs:element>

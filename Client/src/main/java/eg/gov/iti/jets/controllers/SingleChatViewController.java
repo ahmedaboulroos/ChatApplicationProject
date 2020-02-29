@@ -232,6 +232,8 @@ public class SingleChatViewController implements Initializable {
             for (int i = 0; i < singleChatMessageList.size(); i++) {
                 eg.gov.iti.jets.models.singleChat.SingleChat.SingleChatMessage singleChatMessage1 = new eg.gov.iti.jets.models.singleChat.SingleChat.SingleChatMessage();
                 singleChatMessage1.setContent(singleChatMessageList.get(i).getContent());
+                singleChatMessage1.setColor("lightblue");
+                singleChatMessage1.setFont("Arial Rounded MT Bold");
                 singleChatMessageList1.add(singleChatMessage1);
             }
             eg.gov.iti.jets.models.singleChat.SingleChat singleChat1 = new eg.gov.iti.jets.models.singleChat.SingleChat();
