@@ -166,4 +166,17 @@ public class ClientStageCoordinator {
             }
         });
     }
+
+    public void displayUserRejectNotification(int userId) {
+        System.out.println(">> User Logged In :" + userId);
+        Platform.runLater(() -> {
+            Notifications announcement = Notifications.create()
+                    .owner(this.stage)
+                    .title("User Reject you")
+                    .text("User reject : " + userId)
+                    .position(Pos.BOTTOM_RIGHT)
+                    .hideAfter(Duration.seconds(30));
+            announcement.showInformation();
+        });
+    }
 }

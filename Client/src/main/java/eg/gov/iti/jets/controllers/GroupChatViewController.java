@@ -80,14 +80,13 @@ public class GroupChatViewController implements Initializable {
     private void updateGroupChat() {
         try {
             byte[] imageBytes = groupChat.getGroupImageBytes();
-            Circle circle = new Circle();
             try {
                 Image imageForTasting = ImageUtiles.fromBytesToImage(imageBytes);
-                circle.setFill(new ImagePattern(imageForTasting));
+                imageCircle.setFill(new ImagePattern(imageForTasting));
             } catch (Exception e) {
                 System.out.println("Group Chat Icon not loaded.");
             }
-            circle.setRadius(20);
+            imageCircle.setRadius(20);
             nameLbl.setText(groupChat.getTitle());
             groupChatMessagesLv.getItems().clear();
             List<GroupChatMessage> groupChatMessages = RMIConnection.getGroupChatDao().getGroupChatMessages(groupChatId);
