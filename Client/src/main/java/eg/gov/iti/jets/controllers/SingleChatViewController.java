@@ -47,7 +47,6 @@ import java.util.ResourceBundle;
 
 public class SingleChatViewController implements Initializable {
     private static SingleChatViewController singleChatViewController;
-    private SingleChatMessageDao singleChatMessageDao = RMIConnection.getSingleChatMessageDao();
     private SingleChatDao singleChatDao = RMIConnection.getSingleChatDao();
     @FXML
     Circle imageCircle;
@@ -127,13 +126,26 @@ public class SingleChatViewController implements Initializable {
                         circle.setRadius(20);
 
                         WebView webView = new WebView();
+
                         webView.getEngine().loadContent(message.getContent());
                         webView.setMaxSize(400, 100);
 
                         if (pos == Pos.CENTER_RIGHT) {
+                            webView.setStyle("-fx-background-color: #EEEEEE ;" + "font-family: Arial, Helvetica, sans-serif;");
                             hBox.getChildren().addAll(webView, circle);
+
+                            hBox.setStyle("-fx-background-color: #EEEEEE ;" + "-fx-background-radius: 12px ;" +
+                                    "-fx-padding: 1;" + "-fx-border-style: solid inside;"
+                                    + "-fx-border-width: 0;" + "-fx-border-insets: 1;"
+                                    + "-fx-border-radius: 2;" + "-fx-border-color: white;");
                         } else {
+                            webView.setStyle("-fx-background-color: #8CD3EC ;" + "font-family: Arial, Helvetica, sans-serif;");
                             hBox.getChildren().addAll(circle, webView);
+
+                            hBox.setStyle("-fx-background-color: #8CD3EC ;" + "-fx-background-radius: 12px ;" +
+                                    "-fx-padding: 1;" + "-fx-border-style: solid inside;"
+                                    + "-fx-border-width: 0;" + "-fx-border-insets: 1;"
+                                    + "-fx-border-radius: 2;" + "-fx-border-color: white;");
                         }
                         hBox.setAlignment(pos);
                         setGraphic(hBox);
