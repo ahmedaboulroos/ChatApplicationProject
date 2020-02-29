@@ -1,6 +1,5 @@
 package eg.gov.iti.jets.controllers;
 
-import com.jfoenix.controls.JFXButton;
 import com.jfoenix.controls.JFXTextField;
 import eg.gov.iti.jets.models.dao.implementations.AnnouncementDaoImpl;
 import eg.gov.iti.jets.models.dao.interfaces.AnnouncementDao;
@@ -10,6 +9,7 @@ import javafx.collections.FXCollections;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
+import javafx.scene.control.Label;
 import javafx.scene.control.SelectionMode;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
@@ -27,13 +27,13 @@ public class AnnouncementsViewController implements Initializable {
     AnnouncementDao announcementDao = AnnouncementDaoImpl.getInstance(DBConnection.getConnection());
 
     @FXML
+    private Label validationLbl;
+    @FXML
     private HTMLEditor announcementContentHtml;
     @FXML
     private WebView contentWv;
     @FXML
     private JFXTextField announcementTitleTf;
-    @FXML
-    private JFXButton sendAnnouncementBtn;
     @FXML
     private TableView<Announcement> announcementsTv;
     @FXML
@@ -70,16 +70,23 @@ public class AnnouncementsViewController implements Initializable {
 
     @FXML
     void handleSendBtn(ActionEvent event) {
-        String title = announcementTitleTf.getText();
-        String content = announcementContentHtml.getHtmlText();
-        Announcement announcement = new Announcement(title, content, LocalDateTime.now());
-        try {
-            announcementDao.createAnnouncement(announcement);
-            updateAnnouncementsTable();
-        } catch (RemoteException e) {
-            e.printStackTrace();
+        if (validateInputFields()) {
+            String title = announcementTitleTf.getText();
+            String content = announcementContentHtml.getHtmlText();
+            Announcement announcement = new Announcement(title, content, LocalDateTime.now());
+            try {
+                announcementDao.createAnnouncement(announcement);
+                updateAnnouncementsTable();
+            } catch (RemoteException e) {
+                e.printStackTrace();
+            }
+            clearInputFields();
         }
-        announcementTitleTf.clear();
+    }
+
+    @FXML
+    void handleResetBtn(ActionEvent event) {
+        clearInputFields();
     }
 
     void updateAnnouncementsTable() {
@@ -89,6 +96,25 @@ public class AnnouncementsViewController implements Initializable {
         } catch (RemoteException e) {
             e.printStackTrace();
         }
+    }
+
+    boolean validateInputFields() {
+        boolean valid = true;
+        if (announcementTitleTf.getText().equals("")) {
+            validationLbl.setText("Fill in Announcement Title");
+            valid = false;
+        }
+        if (announcementContentHtml.getHtmlText().isEmpty() || announcementContentHtml.getHtmlText().isBlank()) {
+            validationLbl.setText("Fill in Announcement Content");
+            valid = false;
+        }
+        return valid;
+    }
+
+    void clearInputFields() {
+        announcementTitleTf.clear();
+        announcementContentHtml.setHtmlText("");
+        validationLbl.setText("");
     }
 
 }
