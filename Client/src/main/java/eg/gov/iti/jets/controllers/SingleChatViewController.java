@@ -149,7 +149,9 @@ public class SingleChatViewController implements Initializable {
 
     private void sendMessage() {
         try {
-            String msg = singleChatMessageHtml.getHtmlText();
+            String msg = singleChatMessageHtml.getHtmlText().replace("<html dir=\"ltr\"><head></head><body contenteditable=\"true\">", "").replace("<p>", "\n")
+                    .replace("<br>", "\n").replace("&nbsp;", " ").replace("</p>", "\n").replace("</body></html>", "");
+            // System.out.println("msggggggggggggggggggggggggggggggggggggggggg"+msg);
             SingleChatMessageDao singleChatDao = RMIConnection.getSingleChatMessageDao();
             SingleChatMessage singleChatMessage = new SingleChatMessage(this.singleChatId, currentUser.getId(), msg);
             singleChatDao.createSingleChatMessage(singleChatMessage);
