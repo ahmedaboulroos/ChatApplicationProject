@@ -467,8 +467,10 @@ public class LeftViewController implements Initializable {
         SingleChat singleChat = singleChatsLv.getSelectionModel().getSelectedItem();
         if (singleChat != null) {
             ListCell<SingleChat> singleChatListCell = singleChatListCellMap.get(singleChat.getId());
-            singleChatListCell.setStyle("-fx-background-color: #ffff");
-            ClientStageCoordinator.getInstance().openNewSingleChat(singleChat.getId());
+            if (singleChatListCell != null) {
+                singleChatListCell.setStyle("-fx-background-color: #ffff");
+                ClientStageCoordinator.getInstance().openNewSingleChat(singleChat.getId());
+            }
         }
     }
     GroupChat groupChat;
