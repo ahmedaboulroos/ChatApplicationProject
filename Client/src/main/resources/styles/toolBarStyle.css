@@ -1,0 +1,44 @@
+
+.closeIcon{
+	 -fx-fill: #2196F3;
+}
+
+.closeBtn:hover{
+-fx-background-color: #E81123;	
+
+	
+}
+.closeBtn:hover .closeIcon{
+
+	-fx-fill: #ffffff;
+	
+}
+
+
+.maxIcon{
+	-fx-fill: #2196F3;
+}
+
+.maxBtn:hover{
+	-fx-background-color: #65C1F5;
+}
+
+.maxBtn:hover .maxIcon{
+	-fx-fill: #ffffff;
+}
+
+
+
+.minIcon{
+	-fx-fill: #2196F3;
+}
+
+
+.minBtn:hover{
+	-fx-background-color: #65C1F5;
+}
+
+.minBtn:hover .minIcon{
+	-fx-fill: #ffffff;
+}
+

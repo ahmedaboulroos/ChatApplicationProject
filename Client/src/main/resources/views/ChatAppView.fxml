@@ -1,8 +1,14 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import com.jfoenix.controls.JFXButton?>
 <?import javafx.scene.layout.BorderPane?>
+<?import javafx.scene.layout.HBox?>
+<?import org.kordamp.ikonli.javafx.FontIcon?>
 <BorderPane xmlns:fx="http://javafx.com/fxml/1" fx:id="chatAppBp" xmlns="http://javafx.com/javafx/11.0.1"
             fx:controller="eg.gov.iti.jets.controllers.ChatAppViewController">
+
+   <top>
+   </top>
 
    <left>
    </left>
@@ -12,5 +18,33 @@
 
    <right>
    </right>
+   <top>
+      <HBox alignment="CENTER_RIGHT" prefHeight="47.0" prefWidth="665.0" style="-fx-background-color: #151920;"
+            stylesheets="@../styles/toolBarStyle.css" BorderPane.alignment="CENTER">
+         <children>
+            <JFXButton onMouseClicked="#minimize" styleClass="minBtn" stylesheets="@../styles/toolBarStyle.css"
+                       text=" ">
+               <graphic>
+                  <FontIcon iconColor="#2196f3" iconLiteral="fa-window-minimize" iconSize="20"
+                            onMouseClicked="#minimize" styleClass="minIcon"/>
+               </graphic>
+            </JFXButton>
+            <JFXButton onMouseClicked="#maximize" styleClass="maxBtn" stylesheets="@../styles/toolBarStyle.css"
+                       text=" ">
+               <graphic>
+                  <FontIcon iconColor="#2196f3" iconLiteral="fa-window-maximize" iconSize="20"
+                            onMouseClicked="#maximize" styleClass="maxIcon"/>
+               </graphic>
+            </JFXButton>
+            <JFXButton alignment="CENTER" onMouseClicked="#close" prefHeight="28.0" prefWidth="29.0"
+                       styleClass="closeBtn" stylesheets="@../styles/toolBarStyle.css" text=" ">
+               <graphic>
+                  <FontIcon iconColor="#1e85d40e" iconLiteral="fa-window-close-o" iconSize="20" onMouseClicked="#close"
+                            styleClass="closeIcon" wrappingWidth="12.0"/>
+               </graphic>
+            </JFXButton>
+         </children>
+      </HBox>
+   </top>
 
 </BorderPane>

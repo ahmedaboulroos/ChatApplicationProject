@@ -432,20 +432,25 @@ public class LeftViewController implements Initializable {
                     @Override
                     public void updateItem(GroupChat item, boolean empty) {
                         super.updateItem(item, empty);
-                        if (item != null) {
-                            setText(item.getTitle());
-                            System.out.println("inside left view cell fact groupChat.getTitle() " + item.getTitle());
-                            Circle imageCircle = new Circle();
-                            try {
-                                Image imageForTasting = ImageUtiles.fromBytesToImage(item.getGroupImageBytes());
-                                imageCircle.setFill(new ImagePattern(imageForTasting));
-                            } catch (Exception e) {
-                                System.out.println("Group Chat Icon not loaded.");
+                        if (!empty) {
+                            if (item != null) {
+                                setText(item.getTitle());
+                                System.out.println("inside left view cell fact groupChat.getTitle() " + item.getTitle());
+                                Circle imageCircle = new Circle();
+                                try {
+                                    Image imageForTasting = ImageUtiles.fromBytesToImage(item.getGroupImageBytes());
+                                    imageCircle.setFill(new ImagePattern(imageForTasting));
+                                } catch (Exception e) {
+                                    System.out.println("Group Chat Icon not loaded.");
+                                }
+                                imageCircle.setRadius(20);
+                                imageCircle.setStroke(Color.GREEN);
+                                imageCircle.setStrokeWidth(3);
+                                setGraphic(imageCircle);
+                            } else {
+                                setGraphic(null);
                             }
-                            imageCircle.setRadius(20);
-                            imageCircle.setStroke(Color.GREEN);
-                            imageCircle.setStrokeWidth(3);
-                            setGraphic(imageCircle);
+
                         } else {
                             setGraphic(null);
                         }
@@ -521,6 +526,8 @@ public class LeftViewController implements Initializable {
             Scene scene = new Scene(addGroupChatView);
             stage.setScene(scene);
             stage.setTitle("Add Group Chat");
+            stage.setMaxWidth(600);
+            stage.setMaxHeight(369);
             stage.show();
         } catch (IOException e) {
             e.printStackTrace();
