@@ -38,6 +38,8 @@ public class AddGroupChatViewController implements Initializable {
     Image defultImage = new Image("images/user.png");
     @FXML
     private ImageView imageView;
+    public String tileString = "";
+    public String descString = "";
 
     @FXML
     void handleSelectImage(ActionEvent event) {
@@ -54,29 +56,44 @@ public class AddGroupChatViewController implements Initializable {
     @FXML
     void handleCreateGroupChat(ActionEvent event) {
         try {
-            byte[] image = null;
-            if (file == null) {
-                URL res = getClass().getClassLoader().getResource("images/user.png");
-                try {
-                    file = Paths.get(res.toURI()).toFile();
-                } catch (URISyntaxException e) {
-                    e.printStackTrace();
+            tileString = titleTf.getText();
+            String newTitle = tileString.replaceAll("\\s+", "");
+            descString = descriptionTf.getText();
+            String newDesc = descString.replaceAll("\\s+", "");
+            if (newTitle.equals("")) {
+                pathLbl.setText("Please Enter Title");
+            } else if (newDesc.equals("")) {
+                pathLbl.setText("Please Enter Description");
+            } else if (newDesc.equals("") && newTitle.equals("")) {
+                pathLbl.setText("Please Enter Description&Title");
+            } else {
+                titleTf.getText().trim();
+                descriptionTf.getText().trim();
+                byte[] image = null;
+                if (file == null) {
+                    URL res = getClass().getClassLoader().getResource("images/user.png");
+                    try {
+                        file = Paths.get(res.toURI()).toFile();
+                    } catch (URISyntaxException e) {
+                        e.printStackTrace();
+                    }
                 }
-            }
-            String filePath = file.getAbsolutePath();
-            image = ImageUtiles.fromImageToBytes(filePath);
+                String filePath = file.getAbsolutePath();
+                image = ImageUtiles.fromImageToBytes(filePath);
             GroupChat groupChat = new GroupChat(titleTf.getText(), descriptionTf.getText(), image, LocalDateTime.now());
-            int autoGenGroupChatID = groupChatDao.createGroupChat(groupChat);
-            System.out.println("inside ====>> handleCreateGroupChat  isGroupChatCreated" + autoGenGroupChatID);
-            System.out.println("inside -->> AddGroupChatViewController Current user id" + ClientStageCoordinator.getInstance().currentUser.getId());
-            GroupChatMembership membership = new GroupChatMembership(ClientStageCoordinator.getInstance().currentUser.getId(), autoGenGroupChatID);
-            System.out.println("========================");
-            System.out.println(membership);
-            int autoGenMembershipID = groupChatMembershipDao.createGroupChatMembership(membership);
-            System.out.println("========================" + autoGenMembershipID);
-            System.out.println("inside ===> add group chatView controller membershipDao.getUser" + groupChatMembershipDao.getUser(autoGenMembershipID));
 
-            ((Node) (event.getSource())).getScene().getWindow().hide();
+            int autoGenGroupChatID = groupChatDao.createGroupChat(groupChat);
+                System.out.println("inside ====>> handleCreateGroupChat  isGroupChatCreated" + autoGenGroupChatID);
+                System.out.println("inside -->> AddGroupChatViewController Current user id" + ClientStageCoordinator.getInstance().currentUser.getId());
+                GroupChatMembership membership = new GroupChatMembership(ClientStageCoordinator.getInstance().currentUser.getId(), autoGenGroupChatID);
+                System.out.println("========================");
+                System.out.println(membership);
+                int autoGenMembershipID = groupChatMembershipDao.createGroupChatMembership(membership);
+                System.out.println("========================" + autoGenMembershipID);
+                System.out.println("inside ===> add group chatView controller membershipDao.getUser" + groupChatMembershipDao.getUser(autoGenMembershipID));
+
+                ((Node) (event.getSource())).getScene().getWindow().hide();
+            }
         } catch (RemoteException e) {
             e.printStackTrace();
         }
