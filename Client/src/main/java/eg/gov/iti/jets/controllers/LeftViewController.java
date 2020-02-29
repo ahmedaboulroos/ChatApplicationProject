@@ -517,6 +517,8 @@ public class LeftViewController implements Initializable {
             Scene scene = new Scene(addContactGroupView);
             stage.setScene(scene);
             stage.setTitle("Add Contact Group");
+            stage.setMaxWidth(791);
+            stage.setMaxHeight(434);
             stage.show();
         } catch (IOException e) {
             e.printStackTrace();
