@@ -4,4 +4,6 @@ Server/target
 /ChatApplicationProject.iml
 /Client/Client.iml
 /Server/Server.iml
+/Server/server_settings.xml
+/Server/database_settings.xml
 

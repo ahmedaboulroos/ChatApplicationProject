@@ -91,6 +91,7 @@ public class CenterViewController {
     }
 
     private int groupChatId;
+    private int UserCreateGroup;
 
     public Pane loadGroupContactView() {
         Pane paneGroup = null;

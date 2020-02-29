@@ -1,5 +1,6 @@
 module Server {
 
+    requires java.xml.bind;
     requires java.sql;
     requires java.rmi;
     requires org.apache.commons.io;
@@ -29,6 +30,7 @@ module Server {
 
     opens eg.gov.iti.jets;
     opens eg.gov.iti.jets.controllers;
+    opens eg.gov.iti.jets.models.configs;
     opens eg.gov.iti.jets.models.entities;
     opens eg.gov.iti.jets.models.dao.interfaces;
 
