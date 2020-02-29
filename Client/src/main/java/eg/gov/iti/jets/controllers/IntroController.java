@@ -14,6 +14,7 @@ import javafx.fxml.Initializable;
 import javafx.scene.control.Label;
 import javafx.scene.image.Image;
 import javafx.scene.input.MouseEvent;
+import javafx.scene.paint.Color;
 import javafx.scene.paint.ImagePattern;
 import javafx.scene.shape.Circle;
 import org.w3c.dom.Document;
@@ -77,7 +78,8 @@ public class IntroController implements Initializable {
             checkServerAddressBtn.setDisable(true);
             LoginViewController.getInstance().enable();
             performRememberMeOperation();
-            errorLbl.setText("");
+            errorLbl.setText("Connection Established");
+            errorLbl.setTextFill(Color.MINTCREAM);
         } else {
             errorLbl.setText("Server Connection Error");
         }

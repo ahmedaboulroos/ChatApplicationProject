@@ -76,6 +76,7 @@ public class LeftViewController implements Initializable {
     Map<Integer, JFXListCell<User>> mAllContactsListCells = new HashMap<>();
     Map<Integer, JFXListView<ContactsGroupMembership>> mContactGroupsListViews =
             new HashMap<>();
+    private User user = ClientStageCoordinator.getInstance().currentUser;
 
     public static LeftViewController getInstance() {
         return leftViewController;
@@ -95,13 +96,22 @@ public class LeftViewController implements Initializable {
     private ContactsGroupMembershipDao contactsGroupMembershipDao =
             RMIConnection.getContactsGroupMembershipDao();
 
+    @Override
+    public void initialize(URL location, ResourceBundle resources) {
+        clientStageCoordinator = ClientStageCoordinator.getInstance();
+        loadContacts();
+        loadGroups();
+        loadSingleChats();
+        loadGroupChats();
+        loadUserStatus();
+    }
+
     String styleCell;
 
     public void updateSingleChat(int singleChatMessageId) {
         try {
             SingleChatMessage singleChatMessage = RMIConnection.getSingleChatMessageDao().getSingleChatMessage(singleChatMessageId);
             int singleChatId = singleChatMessage.getSingleChatId();
-            //          SingleChat singleChat = RMIConnection.getSingleChatDao().getSingleChat(singleChatId);
             SingleChat selectedSingleChat = singleChatsLv.getSelectionModel().getSelectedItem();
 
             if (selectedSingleChat != null) {
@@ -138,25 +148,18 @@ public class LeftViewController implements Initializable {
                 styleCell = groupChatListCell.getStyle();
                 groupChatListCell.setStyle("-fx-background-color: lightgreen");
             }
-
         } catch (RemoteException e) {
             e.printStackTrace();
         }
     }
 
-    @Override
-    public void initialize(URL location, ResourceBundle resources) {
-        clientStageCoordinator = ClientStageCoordinator.getInstance();
-        setUpAllContactsLv();
-        loadContacts();
-        loadGroups();
-        loadSingleChats();
-        loadGroupChats();
-        loadUserStatus();
+    private void loadUserStatus() {
+        userStatusCb.getItems().addAll(UserStatus.AVAILABLE, UserStatus.BUSY, UserStatus.AWAY);
+        userStatusCb.setValue(user.getUserStatus());
     }
 
-    private void setUpAllContactsLv() {
-        User user = clientStageCoordinator.currentUser;
+    private void loadContacts() {
+        User user = ClientStageCoordinator.getInstance().currentUser;
         allContactsLv = new JFXListView<>();
         allContactsLv.setCellFactory(listViewListCellCallback -> new JFXListCell<>() {
             @Override
@@ -175,11 +178,11 @@ public class LeftViewController implements Initializable {
                                 Relationship relationship = relationshipDao.getRelationshipBetween(ClientStageCoordinator.getInstance().currentUser.getId(), user.getId());
                                 relationship.setStatus(RelationshipStatus.BLOCKED);
                                 relationshipDao.updateRelationship(relationship);
-                                setGraphic(contactView);
                             } catch (RemoteException e) {
                                 e.printStackTrace();
                             }
                         });
+                        setGraphic(contactView);
                     } catch (IOException ex) {
                         ex.printStackTrace();
                     }
@@ -189,15 +192,6 @@ public class LeftViewController implements Initializable {
                 setText(null);
             }
         });
-    }
-
-    private void loadUserStatus() {
-        userStatusCb.getItems().addAll(UserStatus.AVAILABLE, UserStatus.BUSY, UserStatus.AWAY);
-        userStatusCb.setValue(UserStatus.AVAILABLE);
-    }
-
-    private void loadContacts() {
-        User user = ClientStageCoordinator.getInstance().currentUser;
         try {
             List<Relationship> userRelationships = userDao.getUserRelationships(user.getId());
             TitledPane allContactsTPane = new TitledPane();

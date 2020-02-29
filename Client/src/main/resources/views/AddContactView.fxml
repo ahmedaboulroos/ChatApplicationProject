@@ -6,11 +6,11 @@
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.text.Font?>
 <?import org.kordamp.ikonli.javafx.FontIcon?>
-<AnchorPane xmlns:fx="http://javafx.com/fxml/1" prefHeight="295.0" prefWidth="600.0"
+<AnchorPane xmlns:fx="http://javafx.com/fxml/1" prefHeight="295.0" prefWidth="551.0"
             style="-fx-background-color: #0087ED;" xmlns="http://javafx.com/javafx/11.0.1"
             fx:controller="eg.gov.iti.jets.controllers.AddContactViewController">
     <children>
-        <JFXButton fx:id="addContactBtn" layoutX="376.0" layoutY="147.0" onAction="#handleAddContactBtn"
+        <JFXButton fx:id="addContactBtn" layoutX="361.0" layoutY="147.0" onAction="#handleAddContactBtn"
                    prefHeight="35.0" prefWidth="114.0"
                    style="-fx-background-color: e8e8e8; -fx-border-radius: 10px; -fx-background-radius: 10px;"
                    text="Add Contact">
@@ -18,25 +18,25 @@
                 <Font size="14.0"/>
             </font>
         </JFXButton>
-        <JFXTextField fx:id="phoneNumberTf" layoutX="100.0" layoutY="134.0" prefHeight="42.0" prefWidth="173.0"
+        <JFXTextField fx:id="phoneNumberTf" layoutX="122.0" layoutY="139.0" prefHeight="42.0" prefWidth="173.0"
                       promptText="phone number">
             <font>
                 <Font name="System Bold" size="18.0"/>
             </font>
         </JFXTextField>
-        <Label fx:id="errorsLbl" layoutX="219.0" layoutY="248.0" prefHeight="26.0" prefWidth="114.0"
+        <Label fx:id="errorsLbl" layoutX="122.0" layoutY="247.0" prefHeight="26.0" prefWidth="327.0"
                textAlignment="CENTER" textFill="#ea0c0c">
             <font>
-                <Font size="17.0"/>
+                <Font size="15.0"/>
             </font>
         </Label>
-        <Label fx:id="errorsLbl1" layoutX="151.0" layoutY="23.0" text="Add New Contact" textFill="#fff9f9">
+        <Label fx:id="errorsLbl1" layoutX="136.0" layoutY="23.0" text="Add New Contact" textFill="#fff9f9">
             <font>
                 <Font name="Arial Rounded MT Bold" size="35.0"/>
             </font>
         </Label>
-        <FontIcon iconColor="#e8e8e8" iconLiteral="typ-user-add-outline" iconSize="40" layoutX="114.0" layoutY="55.0"/>
-        <FontIcon iconColor="#e8e8e8" iconLiteral="typ-user-add-outline" iconSize="40" layoutX="465.0" layoutY="55.0"/>
-        <FontIcon iconColor="#e8e8e8" iconLiteral="eli-phone" iconSize="35" layoutX="58.0" layoutY="179.0"/>
+        <FontIcon iconColor="#e8e8e8" iconLiteral="typ-user-add-outline" iconSize="40" layoutX="99.0" layoutY="55.0"/>
+        <FontIcon iconColor="#e8e8e8" iconLiteral="typ-user-add-outline" iconSize="40" layoutX="450.0" layoutY="55.0"/>
+        <FontIcon iconColor="#e8e8e8" iconLiteral="eli-phone" iconSize="35" layoutX="70.0" layoutY="175.0"/>
     </children>
 </AnchorPane>
