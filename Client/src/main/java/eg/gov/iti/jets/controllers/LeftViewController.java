@@ -235,7 +235,7 @@ public class LeftViewController implements Initializable {
         }
     }
 
-    private void loadGroups() {
+    public void loadGroups() {
         User user = clientStageCoordinator.currentUser;
         int userId = user.getId();
         try {
@@ -414,9 +414,7 @@ public class LeftViewController implements Initializable {
 
 
     public void displayNewGroupChat() {
-        Platform.runLater(() -> {
-            loadGroupChats();
-        });
+        Platform.runLater(this::loadGroupChats);
     }
 
     private void loadGroupChats() {

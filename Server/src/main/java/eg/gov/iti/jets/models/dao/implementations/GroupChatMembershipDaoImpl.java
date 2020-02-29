@@ -115,12 +115,30 @@ public class GroupChatMembershipDaoImpl extends UnicastRemoteObject implements G
 
     @Override
     public void deleteGroupChatMembership(int groupChatMembershipId) {
-        String sql = "delete from GROUP_CHAT_MEMBERSHIPS where ID = ?";
-        try (PreparedStatement ps = dbConnection.prepareStatement(sql)) {
-            ps.setInt(1, groupChatMembershipId);
-            ps.executeUpdate();
-        } catch (SQLException sqe) {
-            sqe.printStackTrace();
+        try {
+            GroupChatMembership groupChatMembership = GroupChatMembershipDaoImpl.getInstance(dbConnection)
+                    .getGroupChatMembership(groupChatMembershipId);
+            String sql = "delete from GROUP_CHAT_MEMBERSHIPS where ID = ?";
+            try (PreparedStatement ps = dbConnection.prepareStatement(sql)) {
+                ps.setInt(1, groupChatMembershipId);
+                ps.executeUpdate();
+                List<GroupChatMembership> groupChatMemberships = GroupChatDaoImpl.getInstance(dbConnection)
+                        .getGroupChatMemberships(groupChatMembership.getGroupChatId());
+
+                ClientInterface deletedClient = ServerService.getClient(groupChatMembership.getUserId());
+                deletedClient.receiveNewGroupChatMembership(groupChatMembershipId);
+
+                for (GroupChatMembership m : groupChatMemberships) {
+                    ClientInterface client = ServerService.getClient(m.getUserId());
+                    if (client != null) {
+                        client.receiveNewGroupChatMembership(groupChatMembershipId);
+                    }
+                }
+            } catch (SQLException | RemoteException sqe) {
+                sqe.printStackTrace();
+            }
+        } catch (RemoteException e) {
+            e.printStackTrace();
         }
     }
 }
