@@ -82,8 +82,6 @@ public class GroupInfoViewController implements Initializable {
             addMembershipGroupController = fxmlLoader.getController();
             addMembershipGroupController.setController(addMembershipGroupController);
             addMembershipGroupController.setGroupChatId(groupChatId);
-            addMembershipGroupController.setRefresh(membershipListView);
-            addMembershipGroupController.setClear(groupChatMemberships);
             Stage stage = new Stage();
             Scene scene = new Scene(addContactView);
             stage.setScene(scene);
@@ -97,21 +95,11 @@ public class GroupInfoViewController implements Initializable {
 
     @FXML
     void handleDeleteContactGroup(ActionEvent event) {
-
-         /*   FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/views/DeleteContactViewGroup.fxml"));
-            Parent addContactView = fxmlLoader.load();
-            Stage stage = new Stage();
-            Scene scene = new Scene(addContactView);
-            stage.setScene(scene);
-            stage.setTitle("Delete Contact");
-            stage.setMaxHeight(302);
-            stage.setMaxWidth(556);
-            stage.show();*/
         if (membershipListView.getSelectionModel().getSelectedItem() != null) {
             membershipListView.getSelectionModel().getSelectedItem();
             try {
                 RMIConnection.getGroupChatMembershipDao().deleteGroupChatMembership(membershipListView.getSelectionModel().getSelectedItem().getId());
-
+                ClientStageCoordinator.getInstance().openNewGroupChat(groupChatId);
             } catch (RemoteException e) {
                 e.printStackTrace();
             }
@@ -120,7 +108,7 @@ public class GroupInfoViewController implements Initializable {
 
     public void setGroupInfo(int groupChatId) {
         try {
-            System.out.println(groupChatId);
+            // System.out.println(groupChatId);
             groupChat = groupChatDao.getGroupChat(groupChatId);
             if (groupChat.getTitle() != null) {
                 gname.setText(groupChat.getTitle());
@@ -143,7 +131,7 @@ public class GroupInfoViewController implements Initializable {
         try {
             // System.out.println(groupChat.getId()+"groupchat"+"group is here"+groupChatId);
             groupChatMemberships = groupChatDao.getGroupChatMemberships(groupChatId);
-            System.out.println(groupChatMemberships + "nour membership");
+            // System.out.println(groupChatMemberships + "nour membership");
         } catch (RemoteException e) {
             e.printStackTrace();
         }
@@ -157,7 +145,7 @@ public class GroupInfoViewController implements Initializable {
                 public void updateItem(GroupChatMembership item, boolean empty) {
                     super.updateItem(item, empty);
                     if (item != null) {
-                        System.out.println(item.getUserId());
+                        //    System.out.println(item.getUserId());
                         try {
                             User user = userDao.getUser(item.getUserId());
                             //   System.out.println("name is "+"    "+item.getUserId()+"   "+user.getUsername());
@@ -166,18 +154,23 @@ public class GroupInfoViewController implements Initializable {
                             e.printStackTrace();
                         }
                         //   System.out.println("inside Right view cell ");
-                        //  Image imageForTasting = ImageUtiles.fromBytesToImage(item.getGroupImageBytes());
+
                         Circle imageCircle = new Circle();
                         try {
+                            User user = userDao.getUser(item.getUserId());
+                            //  Image imageForTasting = ImageUtiles.fromBytesToImage(user.getProfileImage());
                             Image imageForTasting = new Image("images/chat-circle-blue-512.png");
                             imageCircle.setFill(new ImagePattern(imageForTasting));
+                            imageCircle.setRadius(20);
+                            imageCircle.setStroke(Color.GREEN);
+                            imageCircle.setStrokeWidth(3);
+                            setGraphic(imageCircle);
                         } catch (Exception e) {
-                            System.out.println("Group Chat Icon not loaded.");
+                            e.printStackTrace();
+                            System.out.println("Membership Icon not loaded.");
                         }
-                        imageCircle.setRadius(20);
-                        imageCircle.setStroke(Color.GREEN);
-                        imageCircle.setStrokeWidth(3);
-                        setGraphic(imageCircle);
+
+
                     }
                 }
             });
@@ -187,12 +180,5 @@ public class GroupInfoViewController implements Initializable {
     }
 }
 
-/*
-    public void addInList(GroupChatMembership groupChatMembership){
-        listProperty.add(groupChatMembership);
-        membershipListView.refresh();
-
-    }
-*/
 
 
