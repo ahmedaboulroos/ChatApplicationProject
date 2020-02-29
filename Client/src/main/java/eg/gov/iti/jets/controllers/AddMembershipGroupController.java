@@ -9,7 +9,6 @@ import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.Node;
 import javafx.scene.control.Label;
-import javafx.scene.control.ListView;
 
 import java.rmi.RemoteException;
 import java.util.List;
@@ -23,10 +22,9 @@ public class AddMembershipGroupController {
     @FXML
     private Label errorsLbl;
     private int groupChatId;
-    private ListView<GroupChatMembership> membershipListView;
     User user;
     GroupInfoViewController groupInfoViewController;
-    private List<GroupChatMembership> groupChatMembershipList;
+
 
     public boolean checkmembership(int groupChatId) {
 
@@ -59,6 +57,7 @@ public class AddMembershipGroupController {
                     System.out.println(groupChatMembership + "user   groupChatMembership  number");
                     errorsLbl.setText("user added");
                     phoneNumberTf.clear();
+                    ClientStageCoordinator.getInstance().openNewGroupChat(groupChatId);
                     // groupInfoViewController.addInList(groupChatMembership);
                     ((Node) (event.getSource())).getScene().getWindow().hide();
 
@@ -90,14 +89,7 @@ public class AddMembershipGroupController {
         this.groupInfoViewController = groupInfoViewController;
     }
 
-    public void setRefresh(ListView<GroupChatMembership> membershipListView) {
-        this.membershipListView = membershipListView;
 
-    }
-
-    public void setClear(List<GroupChatMembership> groupChatMembershipList) {
-        this.groupChatMembershipList = groupChatMembershipList;
-    }
 
 
 }
