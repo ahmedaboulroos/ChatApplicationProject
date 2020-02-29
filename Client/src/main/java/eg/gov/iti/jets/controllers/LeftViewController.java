@@ -521,6 +521,8 @@ public class LeftViewController implements Initializable {
             Scene scene = new Scene(addGroupChatView);
             stage.setScene(scene);
             stage.setTitle("Add Group Chat");
+            stage.setMaxWidth(600);
+            stage.setMaxHeight(369);
             stage.show();
         } catch (IOException e) {
             e.printStackTrace();
