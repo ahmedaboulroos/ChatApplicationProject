@@ -16,8 +16,9 @@
                   stylesheets="@../styles/loginStyle.css" AnchorPane.leftAnchor="0.0" AnchorPane.topAnchor="0.0">
          <children>
             <FontIcon iconColor="#2196f3" iconLiteral="dashicons-no" iconSize="25" layoutX="449.0" layoutY="32.0"
-                      text=""/>
-            <JFXButton layoutX="448.0" layoutY="8.0" prefHeight="25.0" prefWidth="0.0" textFill="TRANSPARENT"/>
+                      onMouseClicked="#closeBtnHandler" text=""/>
+            <JFXButton layoutX="448.0" layoutY="8.0" prefHeight="25.0" prefWidth="0.0" textFill="TRANSPARENT"
+                       onMouseClicked="#closeBtnHandler"/>
          </children>
       </AnchorPane>
       <Circle fx:id="circleIcon" fill="DODGERBLUE" layoutX="240.0" layoutY="197.0" radius="100.0" stroke="BLACK"

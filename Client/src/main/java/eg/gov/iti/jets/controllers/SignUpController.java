@@ -6,6 +6,7 @@ import eg.gov.iti.jets.models.entities.enums.UserGender;
 import eg.gov.iti.jets.models.entities.enums.UserStatus;
 import eg.gov.iti.jets.models.imageutiles.ImageUtiles;
 import eg.gov.iti.jets.models.network.RMIConnection;
+import javafx.application.Platform;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
@@ -126,6 +127,11 @@ public class SignUpController implements Initializable {
         circleImage.setFill(new ImagePattern(userImage));
 
 
+    }
+
+    @FXML
+    public void closeBtnHandler(MouseEvent Event) {
+        Platform.exit();
     }
 
 

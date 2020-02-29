@@ -6,11 +6,13 @@ import eg.gov.iti.jets.models.dao.interfaces.UserDao;
 import eg.gov.iti.jets.models.entities.User;
 import eg.gov.iti.jets.models.network.RMIConnection;
 import eg.gov.iti.jets.models.network.implementations.ClientService;
+import javafx.application.Platform;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.Label;
 import javafx.scene.image.Image;
+import javafx.scene.input.MouseEvent;
 import javafx.scene.paint.ImagePattern;
 import javafx.scene.shape.Circle;
 import org.w3c.dom.Document;
@@ -60,6 +62,12 @@ public class IntroController implements Initializable {
             e.printStackTrace();
         }
     }
+
+    @FXML
+    public void closeBtnHandler(MouseEvent Event) {
+        Platform.exit();
+    }
+
 
     public void handleCheckServerConnection(ActionEvent actionEvent) {
         connectionEstablished = RMIConnection.startConnection(serverAddressTf.getText());
