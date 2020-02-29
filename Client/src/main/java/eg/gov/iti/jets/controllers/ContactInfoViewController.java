@@ -33,6 +33,8 @@ public class ContactInfoViewController implements Initializable {
 
     @FXML
     private Label userStatusLb;
+    @FXML
+    private Label statusLb;
 
     @FXML
     private Label userGenderLb;
@@ -107,7 +109,7 @@ public class ContactInfoViewController implements Initializable {
             }
             //imageCircle.setRadius(20);
             imageCircle.setStroke(Color.NAVY);
-            imageCircle.setStrokeWidth(1);
+            imageCircle.setStrokeWidth(3);
             System.out.println(singleChat.getUserTwoId());
             if (userTwo.getUsername() != null) {
                 UserName.setText(userTwo.getUsername());
@@ -117,7 +119,7 @@ public class ContactInfoViewController implements Initializable {
             if (userTwo.getUserGender() != null)
                 userGenderLb.setText(userTwo.getUserGender().toString());
             if (userTwo.getUserStatus() != null)
-                userStatusLb.setText(userTwo.getUserStatus().toString());
+                getUserStatus(userTwo);
             if (userTwo.getEmail() != null)
                 emailLb.setText(userTwo.getEmail());
             if (userTwo.getCountry() != null)
@@ -128,5 +130,22 @@ public class ContactInfoViewController implements Initializable {
         } catch (RemoteException e) {
             e.printStackTrace();
         }
+    }
+
+    public void getUserStatus(User user) {
+        switch (user.getUserStatus()) {
+            case AVAILABLE:
+                statusLb.setStyle("-fx-background-color: lightgreen");
+                break;
+            case BUSY:
+                statusLb.setStyle("-fx-background-color: pink");
+                break;
+            case AWAY:
+                statusLb.setStyle("-fx-background-color: #FCB801");
+                break;
+            default:
+                System.out.println("WT!?");
+        }
+
     }
 }

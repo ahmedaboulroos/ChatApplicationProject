@@ -33,15 +33,15 @@
 }
 
 .buttons {
-    -fx-background-color: #596575;
-    -fx-background-radius: 0px;
+    -fx-background-color: #151920;
+    -fx-background-radius: 1px;
     -fx-text-fill: white;
 }
 
 .buttons:hover {
-    -fx-background-color: #F3A978;
-    -fx-background-radius: 0px;
-    -fx-text-fill: white;
+    -fx-background-color: lightblue;
+    -fx-background-radius: 3px;
+    -fx-text-fill: #151920;
 }
 
 .circle {
@@ -62,7 +62,7 @@
 }
 
 .pane {
-    -fx-background-color: #e1f4f3;
+    -fx-background-color: #2196F3;
 }
 
 .BtnHbox {
