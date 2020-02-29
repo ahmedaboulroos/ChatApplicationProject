@@ -47,12 +47,11 @@ public class GroupInfoViewController implements Initializable {
     private Label desc;
     @FXML
     private Label createdate;
-    @FXML
-    private Label whocreted;
     private GroupChatDao groupChatDao = RMIConnection.getGroupChatDao();
     private UserDao userDao = RMIConnection.getUserDao();
     private int groupChatId;
     private ClientStageCoordinator clientStageCoordinator;
+
     private GroupChatMessageDao GroupChatMessageDao = RMIConnection.getGroupChatMessageDao();
     private GroupChatMembershipDao groupChatMembershipDao = RMIConnection.getGroupChatMembershipDao();
     @FXML
@@ -101,7 +100,9 @@ public class GroupInfoViewController implements Initializable {
             membershipListView.getSelectionModel().getSelectedItem();
             try {
                 RMIConnection.getGroupChatMembershipDao().deleteGroupChatMembership(membershipListView.getSelectionModel().getSelectedItem().getId());
-                ClientStageCoordinator.getInstance().openNewGroupChat(groupChatId);
+                CenterViewController.getInstance().centerViewBp.setCenter(null);
+                RightViewController.getInstance().rightViewBp.setCenter(null);
+                //ClientStageCoordinator.getInstance().openNewGroupChat(groupChatId);
             } catch (RemoteException e) {
                 e.printStackTrace();
             }
