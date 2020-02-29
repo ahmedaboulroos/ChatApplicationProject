@@ -77,6 +77,7 @@ public class SignInController implements Initializable {
                 if (rememberMeCb.isSelected()) {
                     rememberMeCbHandelAction();
                 }
+                errorLbl.setText("");
             } else {
                 errorLbl.setText("Invalid Credentials");
             }

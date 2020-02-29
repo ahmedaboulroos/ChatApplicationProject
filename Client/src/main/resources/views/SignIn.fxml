@@ -107,7 +107,7 @@
                         </Button>
                         <HBox alignment="CENTER" prefHeight="61.0" prefWidth="480.0">
                             <children>
-                                <Label fx:id="errorLbl"/>
+                                <Label fx:id="errorLbl" textFill="RED"/>
                             </children>
                         </HBox>
                     </children>
