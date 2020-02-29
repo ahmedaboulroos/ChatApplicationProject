@@ -43,11 +43,7 @@ public class RightViewController implements Initializable {
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
-        //System.out.println("ana omt");
 
-        //  rightViewBp.setCenter(addContactView());
-        //System.out.println("ana omt");
-        //rightViewBp.setCenter(addContactView());
         relationshipLv = new ListView<>();
         rightViewBp.setCenter(relationshipLv);
         relationshipLv.setCellFactory(listViewListCellCallback -> new ListCell<>() {
@@ -72,6 +68,20 @@ public class RightViewController implements Initializable {
                         Text content = new Text("You are now friends with " + getUserDisplayName(user));
                         hBox.getChildren().addAll(content);
                         setGraphic(hBox);
+                    } else if (relationship.getStatus() == RelationshipStatus.REJECTED) {
+
+
+                        if (relationship.getFirstUserId() == ClientStageCoordinator.getInstance().currentUser.getId()) {
+                            userId = relationship.getSecondUserId();
+                            try {
+                                user = userDao.getUser(userId);
+                                Text content = new Text("Friend reject you :" + getUserDisplayName(user));
+                                hBox.getChildren().addAll(content);
+                                setGraphic(hBox);
+                            } catch (RemoteException e) {
+                                e.printStackTrace();
+                            }
+                        }
                     }
                     // shows notfication of frindship request
                     else if (relationship.getStatus() == RelationshipStatus.PENDING) {
@@ -114,10 +124,10 @@ public class RightViewController implements Initializable {
                                     @Override
                                     public void handle(ActionEvent actionEvent) {
                                         try {
-                                            relationship.getSecondUserId();
 
-                                            relationshipDao.deleteRelationship(relationship.getId());
-
+                                            relationship.setStatus(RelationshipStatus.REJECTED);
+                                            relationshipDao.updateRelationship(relationship);
+                                            //relationshipDao.deleteRelationship(relationship.getId());
 
                                         } catch (RemoteException e) {
                                             e.printStackTrace();
@@ -178,3 +188,4 @@ public class RightViewController implements Initializable {
     }
 
 }
+
