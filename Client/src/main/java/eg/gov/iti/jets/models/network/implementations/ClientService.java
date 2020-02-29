@@ -37,32 +37,41 @@ public class ClientService extends UnicastRemoteObject implements ClientInterfac
 
     @Override
     public void userLoggedIn(int userId) throws RemoteException {
-        User user = userDao.getUser(userId);
-        if (user.getUsername() != null) {
-            ClientStageCoordinator.getInstance().displayUserLoginNotification(user.getUsername());
-        } else {
 
-            ClientStageCoordinator.getInstance().displayUserLoginNotification(user.getPhoneNumber());
-        }
 
         Platform.runLater(() -> {
-            ClientStageCoordinator.getInstance().displayUserLoginNotification(userId);
+            User user = null;
+            try {
+                user = userDao.getUser(userId);
+            } catch (RemoteException e) {
+                e.printStackTrace();
+            }
+            if (user.getUsername() != null) {
+                ClientStageCoordinator.getInstance().displayUserLoginNotification(user.getUsername());
+            } else {
+
+                ClientStageCoordinator.getInstance().displayUserLoginNotification(user.getPhoneNumber());
+            }
         });
     }
 
     @Override
     public void userLoggedOut(int userId) throws RemoteException {
         Platform.runLater(() -> {
-            ClientStageCoordinator.getInstance().displayUserLogoutNotification(userId);
+            User user = null;
+            try {
+                user = userDao.getUser(userId);
+            } catch (RemoteException e) {
+                e.printStackTrace();
+            }
+            if (user.getUsername() != null) {
+                ClientStageCoordinator.getInstance().displayUserLogoutNotification(user.getUsername());
+            } else {
+                ClientStageCoordinator.getInstance().displayUserLogoutNotification(user.getPhoneNumber());
+            }
+
         });
 
-
-        User user = userDao.getUser(userId);
-        if (user.getUsername() != null) {
-            ClientStageCoordinator.getInstance().displayUserLogoutNotification(user.getUsername());
-        } else {
-            ClientStageCoordinator.getInstance().displayUserLogoutNotification(user.getPhoneNumber());
-        }
 
     }
 
