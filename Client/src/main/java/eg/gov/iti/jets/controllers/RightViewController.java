@@ -176,7 +176,9 @@ public class RightViewController implements Initializable {
                 setText(null);
             }
         });
-        relationshipLv.setItems(FXCollections.observableList(relationshipList));
+        if (relationshipLv != null) {
+            relationshipLv.setItems(FXCollections.observableList(relationshipList));
+        }
     }
 
     boolean flag = true;
