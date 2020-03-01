@@ -91,14 +91,12 @@ public class ChatAppViewController implements Initializable {
 
     @FXML
     public void maximize(MouseEvent mouseEvent) {
-        boolean isMaximized = false;
+
         Stage stage = (Stage) ((Node) mouseEvent.getSource()).getScene().getWindow();
-        stage.setFullScreenExitHint(" ");
+        boolean isMaximized = stage.isMaximized();
         if (!isMaximized) {
-            isMaximized = true;
             stage.setMaximized(true);
         } else {
-            isMaximized = false;
             stage.setMaximized(false);
         }
     }
