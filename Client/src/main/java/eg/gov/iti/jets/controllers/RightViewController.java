@@ -12,6 +12,7 @@ import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
+import javafx.scene.Node;
 import javafx.scene.control.ListCell;
 import javafx.scene.control.ListView;
 import javafx.scene.layout.BorderPane;
@@ -178,11 +179,20 @@ public class RightViewController implements Initializable {
         relationshipLv.setItems(FXCollections.observableList(relationshipList));
     }
 
+    boolean flag = true;
+    Node node = null;
+
     @FXML
     public void handleRequestsBtn(ActionEvent event) {
-        requestsNotifCircle.setVisible(false);
-        relationshipLv.setItems(FXCollections.observableList(relationshipList));
-        rightViewBp.setCenter(relationshipLv);
+        if (flag) {
+            node = rightViewBp.getCenter();
+            requestsNotifCircle.setVisible(false);
+            relationshipLv.setItems(FXCollections.observableList(relationshipList));
+            rightViewBp.setCenter(relationshipLv);
+        } else {
+            rightViewBp.setCenter(node);
+        }
+        flag = !flag;
     }
 
     private String getUserDisplayName(User user) {

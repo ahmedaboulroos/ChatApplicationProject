@@ -79,7 +79,7 @@ public class IntroController implements Initializable {
             LoginViewController.getInstance().enable();
             performRememberMeOperation();
             errorLbl.setText("Connection Established");
-            errorLbl.setTextFill(Color.MINTCREAM);
+            errorLbl.setTextFill(Color.web("lightgreen"));
         } else {
             errorLbl.setText("Server Connection Error");
         }
