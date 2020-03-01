@@ -15,6 +15,9 @@ import javafx.scene.control.Label;
 import javafx.scene.input.MouseEvent;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
+import org.w3c.dom.Node;
+import org.w3c.dom.NodeList;
+import org.xml.sax.SAXException;
 
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
@@ -45,9 +48,58 @@ public class SignInController implements Initializable {
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
-
-
+        performRememberMeOperation();
     }
+
+    private void performRememberMeOperation() {
+        final String xmlFilePath = "loginFile.xml";
+        File file = new File(xmlFilePath);
+        if (file.exists()) {
+
+            DocumentBuilderFactory documentFactory = DocumentBuilderFactory.newInstance();
+            DocumentBuilder documentBuilder = null;
+            try {
+                String phone = null;
+                String password = null;
+                documentBuilder = documentFactory.newDocumentBuilder();
+
+
+                Document document = documentBuilder.parse(file);
+
+                NodeList userInfo = document.getElementsByTagName("User");
+
+                for (int itr = 0; itr < userInfo.getLength(); itr++) {
+                    Node node = userInfo.item(itr);
+
+                    if (node.getNodeType() == Node.ELEMENT_NODE) {
+
+                        Element element = (Element) node;
+                        phone = element.getElementsByTagName("phone").item(0).getTextContent();
+                        password = element.getElementsByTagName("password").item(0).getTextContent();
+                    }
+                }
+                UserDao userDao = RMIConnection.getUserDao();
+                User user = userDao.getUser(phone, password);
+                //System.out.println(user.getPhoneNumber());
+                if (user != null) {
+                    /*ClientStageCoordinator coordinator = ClientStageCoordinator.getInstance();
+                    coordinator.currentUser = user;
+                    //System.out.println(ClientService.getInstance() + "client service");
+                    RMIConnection.getServerService().login(user.getId(), ClientService.getInstance());
+                    coordinator.startMainChatAppScene();*/
+                    phoneNumberTf.setText(user.getPhoneNumber());
+                    passwordPf.setText(user.getPassword());
+                    rememberMeCb.setSelected(true);
+                }
+            } catch (ParserConfigurationException e) {
+                e.printStackTrace();
+            } catch (SAXException | IOException e) {
+                e.printStackTrace();
+            }
+
+        }
+    }
+
 
     public void openSignIn(ActionEvent actionEvent) {
     }
@@ -75,7 +127,9 @@ public class SignInController implements Initializable {
                 ClientStageCoordinator.getInstance().startMainChatAppScene();
                 RMIConnection.getServerService().login(user.getId(), ClientService.getInstance());
                 if (rememberMeCb.isSelected()) {
-                    rememberMeCbHandelAction();
+                    enableRememberMeOption();
+                } else {
+                    //disableRememberMeOption();
                 }
                 errorLbl.setText("");
             } else {
@@ -86,13 +140,18 @@ public class SignInController implements Initializable {
         }
     }
 
+    private void disableRememberMeOption() {
+        final String xmlFilePath = "loginFile.xml";
+
+    }
+
 
     @FXML
     public void closeBtnHandler(MouseEvent Event) {
         Platform.exit();
     }
 
-    private void rememberMeCbHandelAction() {
+    private void enableRememberMeOption() {
         final String xmlFilePath = "loginFile.xml";
         try {
             DocumentBuilderFactory documentFactory = DocumentBuilderFactory.newInstance();
