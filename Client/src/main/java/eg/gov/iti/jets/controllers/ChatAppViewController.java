@@ -1,6 +1,7 @@
 package eg.gov.iti.jets.controllers;
 
 import javafx.application.Platform;
+import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
@@ -22,13 +23,14 @@ public class ChatAppViewController implements Initializable {
         return chatAppViewController;
     }
 
+    private static double xOffset = 0;
+    private static double yOffset = 0;
 
     @FXML
     private BorderPane chatAppBp;
     LeftViewController leftViewController;
     CenterViewController centerViewController;
     RightViewController rightViewController;
-
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
@@ -51,6 +53,24 @@ public class ChatAppViewController implements Initializable {
             rightViewController = rightViewFxmlLoader.getController();
             rightViewController.setController(rightViewController);
             chatAppBp.setRight(rightView);
+
+            chatAppBp.setOnMousePressed(new EventHandler<MouseEvent>() {
+                @Override
+                public void handle(MouseEvent event) {
+                    xOffset = event.getSceneX();
+                    yOffset = event.getSceneY();
+                }
+            });
+            chatAppBp.setOnMouseDragged(new EventHandler<MouseEvent>() {
+
+                @Override
+                public void handle(MouseEvent event) {
+                    Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
+                    stage.setX(event.getScreenX() - xOffset);
+                    stage.setY(event.getScreenY() - yOffset);
+                }
+            });
+
 
         } catch (IOException e) {
             e.printStackTrace();
@@ -82,6 +102,7 @@ public class ChatAppViewController implements Initializable {
             stage.setMaximized(false);
         }
     }
+
 
     public void openSingleChat(int singleChatId) {
         centerViewController.addSingleChat(singleChatId);
